@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8BC93885193C1C8200418F32"
-               BuildableName = "Fifty-Two Frames.app"
+               BuildableName = "FiftyTwoFrames.app"
                BlueprintName = "FiftyTwoFrames"
                ReferencedContainer = "container:FiftyTwoFrames.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8BC938A6193C1C8300418F32"
-               BuildableName = "Fifty-Two FramesTests.xctest"
+               BuildableName = "FiftyTwoFramesTests.xctest"
                BlueprintName = "FiftyTwoFramesTests"
                ReferencedContainer = "container:FiftyTwoFrames.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8BC93885193C1C8200418F32"
-            BuildableName = "Fifty-Two Frames.app"
+            BuildableName = "FiftyTwoFrames.app"
             BlueprintName = "FiftyTwoFrames"
             ReferencedContainer = "container:FiftyTwoFrames.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8BC93885193C1C8200418F32"
-            BuildableName = "Fifty-Two Frames.app"
+            BuildableName = "FiftyTwoFrames.app"
             BlueprintName = "FiftyTwoFrames"
             ReferencedContainer = "container:FiftyTwoFrames.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8BC93885193C1C8200418F32"
-            BuildableName = "Fifty-Two Frames.app"
+            BuildableName = "FiftyTwoFrames.app"
             BlueprintName = "FiftyTwoFrames"
             ReferencedContainer = "container:FiftyTwoFrames.xcodeproj">
          </BuildableReference>

@@ -81,7 +81,7 @@
                     <toolbarItems>
                         <barButtonItem image="gear.png" id="h4P-rn-NRx">
                             <connections>
-                                <action selector="settingsButtonTapped:" destination="dCf-uT-a31" id="MfK-Px-PdX"/>
+                                <action selector="settingsButtonTapped:" destination="dCf-uT-a31" id="hSW-Wd-hBP"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="OP4-Li-hCE"/>
@@ -137,21 +137,21 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="7ge-Jf-o5k">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="reuseIdentifier" textLabel="o4z-4f-5Vs" imageView="WT4-P6-3FD" style="IBUITableViewCellStyleDefault" id="7fG-Bq-XFC">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="reuseIdentifier" textLabel="o4z-4f-5Vs" imageView="WT4-P6-3FD" style="IBUITableViewCellStyleDefault" id="7fG-Bq-XFC">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7fG-Bq-XFC" id="KW7-ko-k3Z">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="o4z-4f-5Vs">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="232" id="o4z-4f-5Vs">
                                             <rect key="frame" x="73" y="0.0" width="232" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="highlightedColor" red="0.24540744689581473" green="0.24126789606292012" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="52frames.jpg" id="WT4-P6-3FD">
                                             <rect key="frame" x="15" y="0.0" width="43" height="43"/>
@@ -159,6 +159,7 @@
                                         </imageView>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -166,11 +167,39 @@
                             <outlet property="delegate" destination="c5N-xu-zrO" id="kdP-43-oIH"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="3vk-s2-2Ux"/>
+                    <toolbarItems>
+                        <barButtonItem image="calendar-128.png" id="SyI-Uc-dci"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="EHD-QX-W3x"/>
+                        <barButtonItem title="Dismiss" id="7pd-rJ-wCI">
+                            <connections>
+                                <action selector="dismissButtonTapped:" destination="c5N-xu-zrO" id="5ei-qv-lZS"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="3vk-s2-2Ux">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="R2j-DH-PeO">
+                            <rect key="frame" x="8" y="7" width="304" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="52"/>
+                                <segment title="Photo-Walks"/>
+                                <segment title="Other"/>
+                            </segments>
+                            <connections>
+                                <action selector="segmentedControlTapped:" destination="c5N-xu-zrO" eventType="valueChanged" id="Wg7-ng-acG"/>
+                            </connections>
+                        </segmentedControl>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <size key="freeformSize" width="220" height="468"/>
+                    <connections>
+                        <outlet property="segmentedControl" destination="R2j-DH-PeO" id="xEl-5Z-BRy"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9cZ-AA-sWu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1343" y="750"/>
+            <point key="canvasLocation" x="1760" y="752"/>
         </scene>
         <!--Facebook Login View Controller-->
         <scene sceneID="YPl-La-4qf">
@@ -236,25 +265,32 @@
         <!--Navigation Controller-->
         <scene sceneID="YWT-uY-J36">
             <objects>
-                <navigationController storyboardIdentifier="popoverView" automaticallyAdjustsScrollViewInsets="NO" id="Hkn-Dg-hdK" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tCw-On-TV3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController storyboardIdentifier="popoverView" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="Hkn-Dg-hdK" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oO7-0i-EUx">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <size key="freeformSize" width="220" height="468"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="oO7-0i-EUx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="742-wz-JbI">
+                        <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="c5N-xu-zrO" kind="relationship" relationship="rootViewController" id="VHE-Kh-ur9"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tCw-On-TV3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="944" y="732"/>
+            <point key="canvasLocation" x="1348" y="752"/>
         </scene>
     </scenes>
     <resources>
         <image name="52frames.jpg" width="230" height="230"/>
         <image name="Facebook_like_button_thumb.png" width="27" height="23"/>
+        <image name="calendar-128.png" width="25" height="25"/>
         <image name="facebook-login.png" width="250" height="61"/>
         <image name="gear.png" width="32" height="32"/>
         <image name="info-3.png" width="32" height="32"/>

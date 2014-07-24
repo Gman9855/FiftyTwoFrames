@@ -10,6 +10,8 @@
 
 @interface FTFPopoverContentViewController : UITableViewController
 
-@property (nonatomic, strong) NSArray *albumNames;
+@property (nonatomic, strong) NSArray *weeklySubmissions;
+@property (nonatomic, strong) NSArray *photoWalks;
+@property (nonatomic, strong) NSArray *miscellaneousAlbums;
 
 @end

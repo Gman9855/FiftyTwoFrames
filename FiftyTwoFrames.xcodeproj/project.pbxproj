@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B451D49197E629B005D7159 /* pic.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D48197E629B005D7159 /* pic.jpg */; };
+		8B451D4B197ECD55005D7159 /* calendar-128.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D4A197ECD55005D7159 /* calendar-128.png */; };
+		8B451D4F198178A9005D7159 /* FTFAlbumData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D4E198178A9005D7159 /* FTFAlbumData.m */; };
 		8B64587F194CD5F6006D4B75 /* message.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B64587E194CD5F6006D4B75 /* message.png */; };
 		8B645881194CD614006D4B75 /* thumbnails-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B645880194CD614006D4B75 /* thumbnails-1.png */; };
 		8B645883194CD632006D4B75 /* list.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B645882194CD632006D4B75 /* list.png */; };
@@ -100,6 +103,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B451D48197E629B005D7159 /* pic.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = pic.jpg; path = ../../../../Downloads/pic.jpg; sourceTree = "<group>"; };
+		8B451D4A197ECD55005D7159 /* calendar-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar-128.png"; sourceTree = "<group>"; };
+		8B451D4D198178A9005D7159 /* FTFAlbumData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbumData.h; sourceTree = "<group>"; };
+		8B451D4E198178A9005D7159 /* FTFAlbumData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbumData.m; sourceTree = "<group>"; };
 		8B64587E194CD5F6006D4B75 /* message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message.png; sourceTree = "<group>"; };
 		8B645880194CD614006D4B75 /* thumbnails-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnails-1.png"; sourceTree = "<group>"; };
 		8B645882194CD632006D4B75 /* list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list.png; sourceTree = "<group>"; };
@@ -270,9 +277,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B451D50198178C0005D7159 /* Model Objects */ = {
+			isa = PBXGroup;
+			children = (
+				8B6458C0194D0BE6006D4B75 /* FTFImage.h */,
+				8B6458C1194D0BE6006D4B75 /* FTFImage.m */,
+				8B451D4D198178A9005D7159 /* FTFAlbumData.h */,
+				8B451D4E198178A9005D7159 /* FTFAlbumData.m */,
+			);
+			name = "Model Objects";
+			sourceTree = "<group>";
+		};
 		8B6458B9194CDE88006D4B75 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8B451D4A197ECD55005D7159 /* calendar-128.png */,
 				8BA2A6F6194E5E5300341260 /* Very-Basic-Cancel-icon.png */,
 				8BC938DF1946BD2000418F32 /* facebook-login.png */,
 				8BC938E31946BE7400418F32 /* 52frames.jpg */,
@@ -492,8 +511,7 @@
 		8BC9388F193C1C8300418F32 /* Fifty-Two Frames */ = {
 			isa = PBXGroup;
 			children = (
-				8B6458C0194D0BE6006D4B75 /* FTFImage.h */,
-				8B6458C1194D0BE6006D4B75 /* FTFImage.m */,
+				8B451D50198178C0005D7159 /* Model Objects */,
 				8BC93898193C1C8300418F32 /* FTFAppDelegate.h */,
 				8BC93899193C1C8300418F32 /* FTFAppDelegate.m */,
 				8BC9389B193C1C8300418F32 /* Main.storyboard */,
@@ -503,6 +521,7 @@
 				8BA2A6F4194E226D00341260 /* FTFContentTableViewController.m */,
 				8BA2A6E5194D791900341260 /* FTFPhotoViewController.h */,
 				8BA2A6E6194D791900341260 /* FTFPhotoViewController.m */,
+				8B451D48197E629B005D7159 /* pic.jpg */,
 				8BD200281975018A00F9F347 /* Popover View */,
 				8BC938D71940593400418F32 /* FTFFacebookLoginViewController.h */,
 				8BC938D81940593400418F32 /* FTFFacebookLoginViewController.m */,
@@ -640,6 +659,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BA8793719674E6A00A43819 /* README.mdown in Resources */,
+				8B451D4B197ECD55005D7159 /* calendar-128.png in Resources */,
 				8BC938A2193C1C8300418F32 /* Images.xcassets in Resources */,
 				8B645883194CD632006D4B75 /* list.png in Resources */,
 				8BC938E01946BD2000418F32 /* facebook-login.png in Resources */,
@@ -655,6 +675,7 @@
 				8BD200211974B40200F9F347 /* info-3.png in Resources */,
 				8B645881194CD614006D4B75 /* thumbnails-1.png in Resources */,
 				8BA2A6F7194E5E5300341260 /* Very-Basic-Cancel-icon.png in Resources */,
+				8B451D49197E629B005D7159 /* pic.jpg in Resources */,
 				8BD2001F1974B3B700F9F347 /* info-2.png in Resources */,
 				8BA8795619674E6A00A43819 /* MWPhotoBrowser.bundle in Resources */,
 			);
@@ -697,6 +718,7 @@
 				8BA8794119674E6A00A43819 /* PSTGridLayoutInfo.m in Sources */,
 				8BA8793F19674E6A00A43819 /* PSTCollectionViewLayout.m in Sources */,
 				8BA8798619675FF400A43819 /* UIImage+WebP.m in Sources */,
+				8B451D4F198178A9005D7159 /* FTFAlbumData.m in Sources */,
 				8BA8794319674E6A00A43819 /* PSTGridLayoutRow.m in Sources */,
 				8BA8798019675FF400A43819 /* SDWebImageDownloaderOperation.m in Sources */,
 				8BA2A6EE194E12E600341260 /* WYStoryboardPopoverSegue.m in Sources */,

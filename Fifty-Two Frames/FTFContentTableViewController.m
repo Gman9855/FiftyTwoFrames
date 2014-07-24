@@ -11,19 +11,18 @@
 #import "UIImageView+WebCache.h"
 #import "FTFImage.h"
 #import "FTFPhotoViewController.h"
-#import "WYPopoverController.h"
 #import "FTFPopoverContentViewController.h"
 #import "MWPhotoBrowser.h"
 #import "MBProgressHUD.h"
 
-@interface FTFContentTableViewController () <WYPopoverControllerDelegate, MWPhotoBrowserDelegate, UINavigationControllerDelegate>
+@interface FTFContentTableViewController () <MWPhotoBrowserDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSArray *weeklySubmissions;
 @property (nonatomic, strong) NSArray *photoWalks;
 @property (nonatomic, strong) NSArray *miscellaneousSubmissions;
-@property (nonatomic, strong) WYPopoverController *poc;
-@property (nonatomic, strong) FTFPopoverContentViewController *pocvc;
+@property (nonatomic, strong) FTFPopoverContentViewController *albumListViewController;
+@property (nonatomic, strong) UINavigationController *navController;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, strong) NSMutableArray *photosForDisplayInBrowser;
 @property (nonatomic, strong) MWPhotoBrowser *browser;
@@ -33,17 +32,25 @@
 
 @end
 
-CGFloat popoverHeight;
 static NSString * const reuseIdentifier = @"photo";
 BOOL viewLoadedForFirstTime = NO;
 
 @implementation FTFContentTableViewController
 
-- (FTFPopoverContentViewController *)pocvc {
-    if (!_pocvc) {
-        _pocvc = [self.storyboard instantiateViewControllerWithIdentifier:@"popoverView"];
+- (UINavigationController *)navController {
+    if (!_navController) {
+        _navController = [self.storyboard instantiateViewControllerWithIdentifier:@"popoverView"];
     }
-    return _pocvc;
+    return _navController;
+}
+
+- (FTFPopoverContentViewController *)albumListViewController {
+    if (!_albumListViewController) {
+        
+        UINavigationController *navController = [self.storyboard instantiateViewControllerWithIdentifier:@"popoverView"];
+        _albumListViewController = (FTFPopoverContentViewController *)navController.topViewController;
+    }
+    return _albumListViewController;
 }
 
 - (IBAction)refreshTableView:(id)sender {
@@ -71,10 +78,6 @@ BOOL viewLoadedForFirstTime = NO;
     self.navigationController.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-//    FTFPopoverContentViewController *contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"popoverView"];
-//    self.poc = [[WYPopoverController alloc] initWithContentViewController:contentViewController];
-//    self.poc.delegate = self;
-    
     [self setUpActivityIndicator];
     
     viewLoadedForFirstTime = YES;   //load the latest weekly photos on first launch
@@ -94,20 +97,20 @@ BOOL viewLoadedForFirstTime = NO;
 }
 
 - (void)setUpNavigationBarTitle {
-    self.navBarTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 20)];
+    self.navBarTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 85)];
     self.navBarTitle.textAlignment = NSTextAlignmentCenter;
     self.navBarTitle.text = @"Fifty-Two Frames";
     self.navBarTitle.textColor = [UIColor whiteColor];
-    self.navBarTitle.font = [UIFont boldSystemFontOfSize:17];
-    self.navBarTitle.adjustsFontSizeToFitWidth = YES;
+    self.navBarTitle.font = [UIFont boldSystemFontOfSize:14];
+    self.navBarTitle.numberOfLines = 2;
+    //self.navBarTitle.lineBreakMode = NSLineBreak;
     self.navigationItem.titleView = self.navBarTitle;
 }
 
 - (void)setUpActivityIndicator {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = @"Loading photos";
-    hud.yOffset = -50.0;
+    hud.yOffset = -60;
 }
 
 - (IBAction)likeIconTapped:(id)sender {
@@ -132,37 +135,31 @@ BOOL viewLoadedForFirstTime = NO;
 - (void)populateAlbumInfoArrays:(id)fetchResult;
 {
     NSDictionary *fr = fetchResult;
-    NSArray *names = [fr valueForKeyPath:@"albums.data"];
+    NSArray *albumInfoDicts = [fr valueForKeyPath:@"albums.data"];
     NSPredicate *weekPredicate = [NSPredicate predicateWithFormat:@"(name BEGINSWITH[cd] %@)", @"week"];
-    NSPredicate *photoWalkPredicate = [NSPredicate predicateWithFormat:@"(name CONTAINS[cd] %@ || name CONTAINS[cd] %@)", @"photowalk", @"photo walk"];
+    NSPredicate *photoWalkPredicate = [NSPredicate predicateWithFormat:@"(name CONTAINS[cd] %@ || name CONTAINS[cd] %@ || name CONTAINS[cd] %@)", @"photowalk", @"photo walk", @"photo-walk"];
+    NSPredicate *orPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[weekPredicate, photoWalkPredicate]];
+    NSPredicate *compoundPredicate = [NSCompoundPredicate notPredicateWithSubpredicate:orPredicate];
     
-    NSArray *weekNames = [names filteredArrayUsingPredicate:weekPredicate];
-    NSArray *photoWalkNames = [names filteredArrayUsingPredicate:photoWalkPredicate];
-    
-    NSMutableArray *weeksAndPhotoWalkNames = [NSMutableArray new];
-    for (int i = 0; i < [weekNames count]; i++) {
-        [weeksAndPhotoWalkNames addObject:weekNames[i]];
-    }
-    for (int i = 0; i < [photoWalkNames count]; i++) {
-        [weeksAndPhotoWalkNames addObject:photoWalkNames[i]];
-    }
-    NSMutableArray *miscellaneousAlbumNames = [NSMutableArray new];
-    
-    [names enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if (![weeksAndPhotoWalkNames containsObject:obj]) {
-            [miscellaneousAlbumNames addObject:obj];
-        }
-    }];
-    
+    NSArray *miscellaneousAlbumNames = [albumInfoDicts filteredArrayUsingPredicate:compoundPredicate];
+    NSArray *weekNames = [albumInfoDicts filteredArrayUsingPredicate:weekPredicate];
+    NSArray *photoWalkNames = [albumInfoDicts filteredArrayUsingPredicate:photoWalkPredicate];
+
     NSSortDescriptor *createdDateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"created_time" ascending:NO];
-    self.weeklySubmissions = [self removeAlbumDuplicates:[weekNames sortedArrayUsingDescriptors:@[createdDateSortDescriptor]]];
-    self.photoWalks = [self removeAlbumDuplicates:[photoWalkNames sortedArrayUsingDescriptors:@[createdDateSortDescriptor]]];
-    self.miscellaneousSubmissions = [self removeAlbumDuplicates:[miscellaneousAlbumNames sortedArrayUsingDescriptors:@[createdDateSortDescriptor]]];
+    self.weeklySubmissions = [weekNames sortedArrayUsingDescriptors:@[createdDateSortDescriptor]];
+    self.photoWalks = [photoWalkNames sortedArrayUsingDescriptors:@[createdDateSortDescriptor]];
+    self.miscellaneousSubmissions = [miscellaneousAlbumNames sortedArrayUsingDescriptors:@[createdDateSortDescriptor]];
     
     if (viewLoadedForFirstTime) {
         NSDictionary *latestWeek = [self.weeklySubmissions firstObject];
         [self makeRequestForAlbumPhotos:latestWeek];
     }
+    
+    FTFPopoverContentViewController *poc = (FTFPopoverContentViewController *)self.navController.topViewController;
+    poc.weeklySubmissions = self.weeklySubmissions;
+    poc.photoWalks = self.photoWalks;
+    poc.miscellaneousAlbums = self.miscellaneousSubmissions;
+    
     viewLoadedForFirstTime = NO;
 }
 
@@ -237,6 +234,12 @@ BOOL viewLoadedForFirstTime = NO;
 {
     NSDictionary *result = fetchResult;
     NSArray *imageCollections = [result valueForKeyPath:@"photos.data.images"];
+    if (!imageCollections) {
+        [MBProgressHUD hideHUDForView:self.tableView animated:NO];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Shoot!" message:@"No photos found in this album" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
     NSArray *photoDescriptionCollection = [result valueForKeyPath:@"photos.data.name"];
     NSArray *likesCollection = [result valueForKeyPath:@"photos.data.likes.data"];
     NSArray *commentsCollection = [result valueForKeyPath:@"photos.comments.data"];
@@ -258,15 +261,11 @@ BOOL viewLoadedForFirstTime = NO;
     NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
     
     [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    
-//    FTFPopoverContentViewController *pocvc = (FTFPopoverContentViewController *)self.poc.contentViewController;
-    
-    self.pocvc.albumNames = self.weeklySubmissions;
 }
 
 - (void)albumSelectionChanged:(NSNotification *)notification {
     NSDictionary *album = notification.userInfo;
-//    [self.poc dismissPopoverAnimated:YES];
+    [self.navController dismissViewControllerAnimated:YES completion:nil];
     [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
     [self makeRequestForAlbumPhotos:album];
 }
@@ -342,16 +341,7 @@ BOOL viewLoadedForFirstTime = NO;
 
 - (IBAction)settingsButtonTapped:(UIBarButtonItem *)sender;
 {
-//    [self.poc presentPopoverFromBarButtonItem:self.settingsButton
-//                     permittedArrowDirections:WYPopoverArrowDirectionDown
-//                                     animated:YES
-//                                      options:WYPopoverAnimationOptionFade];
-//    
-//    CGSize size = self.view.frame.size;
-//    size.height = size.height / 1.5;
-//    self.poc.popoverContentSize = size;
-    
-    [self presentViewController:self.pocvc animated:YES completion:nil];
+    [self presentViewController:self.navController animated:YES completion:nil];
 }
 
 - (IBAction)menuButtonTapped:(UIBarButtonItem *)sender;

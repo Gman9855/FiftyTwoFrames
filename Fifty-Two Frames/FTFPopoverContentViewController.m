@@ -18,6 +18,9 @@
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
 @property (nonatomic, strong) NSMutableArray *yearKeys;
 @property (nonatomic, strong) NSArray *yearsMappingToAlbumInfo;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+@property (strong, nonatomic) NSArray *selectedAlbumCollection;
+@property (nonatomic, strong) UIPickerView *yearPicker;
 
 @end
 
@@ -44,8 +47,13 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.yearPicker.backgroundColor = [UIColor blueColor];
+    [self.navigationController.view addSubview:self.yearPicker];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    if (![self.albumNames count]) {
+//    UIImageView *tempImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pic.jpg"]];
+//    self.tableView.backgroundView = tempImageView;
+    if (![self.weeklySubmissions count]) {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     }
 
@@ -56,25 +64,35 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)setAlbumNames:(NSArray *)albumNames {
-    _albumNames = albumNames;
+- (void)setWeeklySubmissions:(NSArray *)weeklySubmissions {
+    _weeklySubmissions = [self mapYearsToAlbumDictionaries:weeklySubmissions];
+    self.selectedAlbumCollection = _weeklySubmissions;
     [MBProgressHUD hideHUDForView:self.view animated:YES];
-    [self mapYearSectionsToAlbumDictionaries];
     [self.tableView reloadData];
 }
 
-- (void)mapYearSectionsToAlbumDictionaries {
+- (void)setPhotoWalks:(NSArray *)photoWalks {
+    _photoWalks = [self mapYearsToAlbumDictionaries:photoWalks];
+    [self.tableView reloadData];
+}
+
+- (void)setMiscellaneousAlbums:(NSArray *)miscellaneousAlbums {
+    _miscellaneousAlbums = [self mapYearsToAlbumDictionaries:miscellaneousAlbums];
+    [self.tableView reloadData];
+}
+
+- (NSArray *)mapYearsToAlbumDictionaries:(NSArray *)albumData {
     
-    NSString *mostRecentYear = [[[self.albumNames firstObject]valueForKeyPath:@"created_time"]substringToIndex:4];
+    NSString *mostRecentYear = [[[albumData firstObject]valueForKeyPath:@"created_time"]substringToIndex:4];
     NSString *currentYearKey = mostRecentYear;
     NSMutableDictionary *albumYearsToAlbumInfo = [NSMutableDictionary new];
     NSMutableArray *albumsForYearInLoop = [NSMutableArray new];
     NSMutableArray *dictionariesOfYearsToAlbumInfo = [NSMutableArray new];
-    for (NSDictionary *albumDict in self.albumNames) {
+    for (NSDictionary *albumDict in albumData) {
         NSString *albumYear = [[albumDict valueForKeyPath:@"created_time"]substringToIndex:4];
 
-        if (![currentYearKey isEqualToString:albumYear] || albumDict == [self.albumNames lastObject]) {
-            if (albumDict == [self.albumNames lastObject]) {
+        if (![currentYearKey isEqualToString:albumYear] || albumDict == [albumData lastObject]) {
+            if (albumDict == [albumData lastObject]) {
                 [albumsForYearInLoop addObject:albumDict];
             }
             [albumYearsToAlbumInfo setObject:[albumsForYearInLoop copy] forKey:currentYearKey];
@@ -88,7 +106,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
             [albumsForYearInLoop addObject:albumDict];
         }
     }
-    self.yearsMappingToAlbumInfo = [dictionariesOfYearsToAlbumInfo copy];
+    return [dictionariesOfYearsToAlbumInfo copy];
 }
 
 - (void)didReceiveMemoryWarning
@@ -97,24 +115,42 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)dismissButtonTapped:(UIBarButtonItem *)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)segmentedControlTapped:(UISegmentedControl *)sender {
+    switch (sender.selectedSegmentIndex) {
+        case 0:
+            self.selectedAlbumCollection = self.weeklySubmissions;
+            [self.tableView reloadData];
+            break;
+        case 1:
+            self.selectedAlbumCollection = self.photoWalks;
+            [self.tableView reloadData];
+            break;
+        case 2:
+            self.selectedAlbumCollection = self.miscellaneousAlbums;
+            [self.tableView reloadData];
+            break;
+        default:
+            break;
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return [self.yearsMappingToAlbumInfo count];
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    NSDictionary *year = self.yearsMappingToAlbumInfo[section];
-    NSArray *albumsFromYear = [year valueForKey:self.yearKeys[section]];
-    return [albumsFromYear count];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return self.yearKeys[section];
+    NSDictionary *latestYearAlbum = [self.selectedAlbumCollection firstObject];
+    return [[latestYearAlbum valueForKeyPath:@"2014"] count];
 }
 
 //- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -129,21 +165,25 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-    NSDictionary *albumYear = self.yearsMappingToAlbumInfo[indexPath.section];
-    NSArray *albumsFromYear = [albumYear valueForKey:self.yearKeys[indexPath.section]];
-    NSDictionary *album = albumsFromYear[indexPath.row];
-    cell.textLabel.text = [album valueForKeyPath:@"name"];
+    NSDictionary *albumCollection = [self.selectedAlbumCollection firstObject];
+    NSArray *albums = [albumCollection valueForKey:@"2014"];
+    NSDictionary *albumInfo = albums[indexPath.row];
+    cell.textLabel.text = [albumInfo valueForKey:@"name"];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *albumYear = self.yearsMappingToAlbumInfo[indexPath.section];
-    NSArray *albumsFromYear = [albumYear valueForKey:self.yearKeys[indexPath.section]];
-    NSDictionary *album = albumsFromYear[indexPath.row];
+    NSDictionary *albumYear = [self.selectedAlbumCollection firstObject];
+    NSArray *albumCollection = [albumYear valueForKey:@"2014"];
+    NSDictionary *album = albumCollection[indexPath.row];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"albumSelectedNotification"
                       object:self
                     userInfo:album];
 }
+
+#pragma Year Popover
+
+
 
 /*
 // Override to support conditional editing of the table view.
