@@ -19,6 +19,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+    [@[@"foo", @"bar", @"baz", @"faz"] map:^id(id object, NSUInteger index) {
+        NSLog(@"object: %@, index %u", object, index);
+        return object;
+    }];
+
     // Override point for customization after application launch.
     [FBLoginView class];
     
@@ -35,7 +41,22 @@
                                           [self sessionStateChanged:session state:state error:error];
                                       }];
     };
-
+    
+    [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(10000).fields(name)"
+                                 parameters:nil
+                                 HTTPMethod:@"GET"
+                          completionHandler:^(
+                                              FBRequestConnection *connection,
+                                              id result,
+                                              NSError *error
+                                              ) {
+                              /* handle the result */
+                              [[NSNotificationCenter defaultCenter] postNotificationName:@"albumDataReceivedFromFacebookNotification"
+                                                                                  object:self
+                                                                                userInfo:result];
+                          }];
+    
+    
     return YES;
 }
 

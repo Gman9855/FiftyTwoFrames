@@ -14,10 +14,12 @@
 #import "FTFPopoverContentViewController.h"
 #import "MWPhotoBrowser.h"
 #import "MBProgressHUD.h"
+#import "FTFAlbumCollection.h"
+#import "FTFAlbum.h"
 
 @interface FTFContentTableViewController () <MWPhotoBrowserDelegate, UINavigationControllerDelegate>
 
-@property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) NSArray *weeklyThemeAlbumArrays;
 @property (nonatomic, strong) NSArray *weeklySubmissions;
 @property (nonatomic, strong) NSArray *photoWalks;
 @property (nonatomic, strong) NSArray *miscellaneousSubmissions;
@@ -28,7 +30,9 @@
 @property (nonatomic, strong) MWPhotoBrowser *browser;
 @property (nonatomic, assign) NSUInteger indexOfPhoto;
 @property (nonatomic, strong) UILabel *navBarTitle;
-
+@property (nonatomic, strong) FTFAlbumCollection *photoAlbumCollection;
+@property (nonatomic, strong) FTFAlbum *albumForDisplay;
+@property (nonatomic, strong) NSArray *albumPhotos;
 
 @end
 
@@ -73,6 +77,8 @@ BOOL viewLoadedForFirstTime = NO;
 {
     [super viewDidLoad];
     
+    self.photoAlbumCollection = [[FTFAlbumCollection alloc] init];
+
     [self setUpNavigationBarTitle];
 
     self.navigationController.delegate = self;
@@ -80,20 +86,41 @@ BOOL viewLoadedForFirstTime = NO;
     
     [self setUpActivityIndicator];
     
-    viewLoadedForFirstTime = YES;   //load the latest weekly photos on first launch
-    
-    [self makeRequestForAlbumInfo];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(initializeAlbumCollectionObject:)
+                                                 name:@"didFinishLoadingAlbumCollectionNotification"
+                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(albumSelectionChanged:)
                                                  name:@"albumSelectedNotification"
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadTableViewData:)
+                                                 name:@"downloadedAlbumPhotosNotification"
+                                               object:nil];
+    
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)initializeAlbumCollectionObject:(NSNotification *)notification {
+    self.weeklyThemeAlbumArrays = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
+    self.albumForDisplay = [self.weeklyThemeAlbumArrays firstObject];
+    [self.albumForDisplay retrieveAlbumPhotos:^(NSArray *photos, NSError *error) {
+        if (error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"No photos for this album" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alert show];
+            return;
+        }
+        self.albumPhotos = photos;
+        [self.tableView reloadData];
+    }];
 }
 
 - (void)setUpNavigationBarTitle {
@@ -117,157 +144,157 @@ BOOL viewLoadedForFirstTime = NO;
     
 }
 
-- (void)makeRequestForAlbumInfo;
-{
-    [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(10000).fields(name)"
-                                 parameters:nil
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              /* handle the result */
-                              [self populateAlbumInfoArrays:result];
-                          }];
-}
-
-- (void)populateAlbumInfoArrays:(id)fetchResult;
-{
-    NSDictionary *fr = fetchResult;
-    NSArray *albumInfoDicts = [fr valueForKeyPath:@"albums.data"];
-    NSPredicate *weekPredicate = [NSPredicate predicateWithFormat:@"(name BEGINSWITH[cd] %@)", @"week"];
-    NSPredicate *photoWalkPredicate = [NSPredicate predicateWithFormat:@"(name CONTAINS[cd] %@ || name CONTAINS[cd] %@ || name CONTAINS[cd] %@)", @"photowalk", @"photo walk", @"photo-walk"];
-    NSPredicate *orPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[weekPredicate, photoWalkPredicate]];
-    NSPredicate *compoundPredicate = [NSCompoundPredicate notPredicateWithSubpredicate:orPredicate];
-    
-    NSArray *miscellaneousAlbumNames = [albumInfoDicts filteredArrayUsingPredicate:compoundPredicate];
-    NSArray *weekNames = [albumInfoDicts filteredArrayUsingPredicate:weekPredicate];
-    NSArray *photoWalkNames = [albumInfoDicts filteredArrayUsingPredicate:photoWalkPredicate];
-
-    NSSortDescriptor *createdDateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"created_time" ascending:NO];
-    self.weeklySubmissions = [weekNames sortedArrayUsingDescriptors:@[createdDateSortDescriptor]];
-    self.photoWalks = [photoWalkNames sortedArrayUsingDescriptors:@[createdDateSortDescriptor]];
-    self.miscellaneousSubmissions = [miscellaneousAlbumNames sortedArrayUsingDescriptors:@[createdDateSortDescriptor]];
-    
-    if (viewLoadedForFirstTime) {
-        NSDictionary *latestWeek = [self.weeklySubmissions firstObject];
-        [self makeRequestForAlbumPhotos:latestWeek];
-    }
-    
-    FTFPopoverContentViewController *poc = (FTFPopoverContentViewController *)self.navController.topViewController;
-    poc.weeklySubmissions = self.weeklySubmissions;
-    poc.photoWalks = self.photoWalks;
-    poc.miscellaneousAlbums = self.miscellaneousSubmissions;
-    
-    viewLoadedForFirstTime = NO;
-}
-
-- (NSArray *)removeAlbumDuplicates:(NSArray *)albums {
-    NSMutableArray *albumsFiltered = [[NSMutableArray alloc] init];    //This will be the array of groups you need
-    NSMutableArray *albumNamesEncountered = [[NSMutableArray alloc] init]; //This is an array of group names seen so far
-    
-    NSString *name;        //Preallocation of group name
-    for (NSDictionary *albumInfo in albums) {  //Iterate through all groups
-        name = [albumInfo objectForKey:@"name"]; //Get the group name
-        if ([albumNamesEncountered indexOfObject:name] == NSNotFound) {  //Check if this group name hasn't been encountered before
-            [albumNamesEncountered addObject:name]; //Now you've encountered it, so add it to the list of encountered names
-            [albumsFiltered addObject:albumInfo];   //And add the group to the list, as this is the first time it's encountered
-        }
-    }
-    return [albumsFiltered copy];
-}
-
-- (void)makeRequestForAlbumPhotos:(NSDictionary *)albumInfo;
-{
-//    /180889155269546?fields=albums.limit(1).fields(photos.limit(200))
-    id albumID = [albumInfo valueForKeyPath:@"id"];
-
-    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@?fields=photos.limit(200)", albumID]
-                                 parameters:nil
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              /* handle the result */
-                              [self populateUserPhotosArray:result];
-                              
-                              NSString *weekName = [albumInfo valueForKeyPath:@"name"];
-
-                              [UIView animateWithDuration:1.7 animations:^{
-                                  self.navigationItem.titleView.alpha = 0.0;
-                                  self.navBarTitle.text = weekName;
-                                  self.navigationItem.titleView.alpha = 1.0;
-                              }];
-
-                          }];
-    
-}
-
-- (NSArray *)urlsFromPhotoArray:(NSArray *)array;
-{
-    NSString *largeImageURL = [self sourceOfImageData:array[0]];
-    NSString *smallImageURL;
-    for (NSDictionary *dict in array) {
-        smallImageURL = largeImageURL;
-        NSInteger imageHeight = [[dict valueForKeyPath:@"height"]intValue];
-        if (imageHeight <= 500 && imageHeight >= 350) {
-            smallImageURL = [self sourceOfImageData:dict];
-            break;
-        }
-    }
-    
-    return [@[largeImageURL,
-              smallImageURL] map:^id(id object, NSUInteger index) {
-        return [NSURL URLWithString:object];
-    }];
-}
-
-- (NSString *)sourceOfImageData:(NSDictionary *)data;
-{
-    return [data valueForKeyPath:@"source"];
-}
-
-- (void)populateUserPhotosArray:(id)fetchResult;
-{
-    NSDictionary *result = fetchResult;
-    NSArray *imageCollections = [result valueForKeyPath:@"photos.data.images"];
-    if (!imageCollections) {
-        [MBProgressHUD hideHUDForView:self.tableView animated:NO];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Shoot!" message:@"No photos found in this album" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-        [alert show];
-        return;
-    }
-    NSArray *photoDescriptionCollection = [result valueForKeyPath:@"photos.data.name"];
-    NSArray *likesCollection = [result valueForKeyPath:@"photos.data.likes.data"];
-    NSArray *commentsCollection = [result valueForKeyPath:@"photos.comments.data"];
-    
-    NSMutableArray *objects = [NSMutableArray new];
-    
-    for (int i = 0; i < [imageCollections count]; i++) {
-        NSArray *imageURLs = [self urlsFromPhotoArray:imageCollections[i]];
-        FTFImage *image = [[FTFImage alloc] initWithImageURLs:imageURLs];
-        image.photoDescription = photoDescriptionCollection[i];
-        image.photoLikes = likesCollection[i];
-        image.photoComments = commentsCollection[i];
-        [objects addObject:image];
-    }
-    
-    self.images = objects;
-    [self.tableView reloadData];
-    
-    NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
-    
-    [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
-}
+//- (void)makeRequestForAlbumInfo;
+//{
+//    [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(10000).fields(name)"
+//                                 parameters:nil
+//                                 HTTPMethod:@"GET"
+//                          completionHandler:^(
+//                                              FBRequestConnection *connection,
+//                                              id result,
+//                                              NSError *error
+//                                              ) {
+//                              /* handle the result */
+//                              [self populateAlbumInfoArrays:result];
+//                          }];
+//}
+//
+//- (void)populateAlbumInfoArrays:(id)fetchResult;
+//{
+//    NSDictionary *fr = fetchResult;
+//    NSArray *albumInfoDicts = [fr valueForKeyPath:@"albums.data"];
+//    NSPredicate *weekPredicate = [NSPredicate predicateWithFormat:@"(name BEGINSWITH[cd] %@)", @"week"];
+//    NSPredicate *photoWalkPredicate = [NSPredicate predicateWithFormat:@"(name CONTAINS[cd] %@ || name CONTAINS[cd] %@ || name CONTAINS[cd] %@)", @"photowalk", @"photo walk", @"photo-walk"];
+//    NSPredicate *orPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[weekPredicate, photoWalkPredicate]];
+//    NSPredicate *compoundPredicate = [NSCompoundPredicate notPredicateWithSubpredicate:orPredicate];
+//    
+//    NSArray *miscellaneousAlbumNames = [albumInfoDicts filteredArrayUsingPredicate:compoundPredicate];
+//    NSArray *weekNames = [albumInfoDicts filteredArrayUsingPredicate:weekPredicate];
+//    NSArray *photoWalkNames = [albumInfoDicts filteredArrayUsingPredicate:photoWalkPredicate];
+//
+//    NSSortDescriptor *createdDateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"created_time" ascending:NO];
+//    self.weeklySubmissions = [weekNames sortedArrayUsingDescriptors:@[createdDateSortDescriptor]];
+//    self.photoWalks = [photoWalkNames sortedArrayUsingDescriptors:@[createdDateSortDescriptor]];
+//    self.miscellaneousSubmissions = [miscellaneousAlbumNames sortedArrayUsingDescriptors:@[createdDateSortDescriptor]];
+//    
+//    if (viewLoadedForFirstTime) {
+//        NSDictionary *latestWeek = [self.weeklySubmissions firstObject];
+//        [self makeRequestForAlbumPhotos:latestWeek];
+//    }
+//    
+//    FTFPopoverContentViewController *poc = (FTFPopoverContentViewController *)self.navController.topViewController;
+//    poc.weeklySubmissions = self.weeklySubmissions;
+//    poc.photoWalks = self.photoWalks;
+//    poc.miscellaneousAlbums = self.miscellaneousSubmissions;
+//    
+//    viewLoadedForFirstTime = NO;
+//}
+//
+//- (NSArray *)removeAlbumDuplicates:(NSArray *)albums {
+//    NSMutableArray *albumsFiltered = [[NSMutableArray alloc] init];    //This will be the array of groups you need
+//    NSMutableArray *albumNamesEncountered = [[NSMutableArray alloc] init]; //This is an array of group names seen so far
+//    
+//    NSString *name;        //Preallocation of group name
+//    for (NSDictionary *albumInfo in albums) {  //Iterate through all groups
+//        name = [albumInfo objectForKey:@"name"]; //Get the group name
+//        if ([albumNamesEncountered indexOfObject:name] == NSNotFound) {  //Check if this group name hasn't been encountered before
+//            [albumNamesEncountered addObject:name]; //Now you've encountered it, so add it to the list of encountered names
+//            [albumsFiltered addObject:albumInfo];   //And add the group to the list, as this is the first time it's encountered
+//        }
+//    }
+//    return [albumsFiltered copy];
+//}
+//
+//- (void)makeRequestForAlbumPhotos:(NSDictionary *)albumInfo;
+//{
+////    /180889155269546?fields=albums.limit(1).fields(photos.limit(200))
+//    id albumID = [albumInfo valueForKeyPath:@"id"];
+//
+//    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@?fields=photos.limit(200)", albumID]
+//                                 parameters:nil
+//                                 HTTPMethod:@"GET"
+//                          completionHandler:^(
+//                                              FBRequestConnection *connection,
+//                                              id result,
+//                                              NSError *error
+//                                              ) {
+//                              /* handle the result */
+//                              [self populateUserPhotosArray:result];
+//                              
+//                              NSString *weekName = [albumInfo valueForKeyPath:@"name"];
+//
+//                              [UIView animateWithDuration:1.7 animations:^{
+//                                  self.navigationItem.titleView.alpha = 0.0;
+//                                  self.navBarTitle.text = weekName;
+//                                  self.navigationItem.titleView.alpha = 1.0;
+//                              }];
+//
+//                          }];
+//    
+//}
+//
+//- (NSArray *)urlsFromPhotoArray:(NSArray *)array;
+//{
+//    NSString *largeImageURL = [self sourceOfImageData:[array firstObject]];
+//    NSString *smallImageURL;
+//    for (NSDictionary *dict in array) {
+//        smallImageURL = largeImageURL;
+//        NSInteger imageHeight = [[dict valueForKeyPath:@"height"]intValue];
+//        if (imageHeight <= 500 && imageHeight >= 350) {
+//            smallImageURL = [self sourceOfImageData:dict];
+//            break;
+//        }
+//    }
+//    
+//    return [@[largeImageURL,
+//              smallImageURL] map:^id(id object, NSUInteger index) {
+//        return [NSURL URLWithString:object];
+//    }];
+//}
+//
+//- (NSString *)sourceOfImageData:(NSDictionary *)data;
+//{
+//    return [data valueForKeyPath:@"source"];
+//}
+//
+//- (void)populateUserPhotosArray:(id)fetchResult;
+//{
+//    NSDictionary *result = fetchResult;
+//    NSArray *imageCollections = [result valueForKeyPath:@"photos.data.images"];
+//    if (!imageCollections) {
+//        [MBProgressHUD hideHUDForView:self.tableView animated:NO];
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Shoot!" message:@"No photos found in this album" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+//        [alert show];
+//        return;
+//    }
+//    NSArray *photoDescriptionCollection = [result valueForKeyPath:@"photos.data.name"];
+//    NSArray *likesCollection = [result valueForKeyPath:@"photos.data.likes.data"];
+//    NSArray *commentsCollection = [result valueForKeyPath:@"photos.comments.data"];
+//    
+//    NSMutableArray *objects = [NSMutableArray new];
+//    
+//    for (int i = 0; i < [imageCollections count]; i++) {
+//        NSArray *imageURLs = [self urlsFromPhotoArray:imageCollections[i]];
+//        FTFImage *image = [[FTFImage alloc] initWithImageURLs:imageURLs];
+//        image.photoDescription = photoDescriptionCollection[i];
+//        image.photoLikes = likesCollection[i];
+//        image.photoComments = commentsCollection[i];
+//        [objects addObject:image];
+//    }
+//    
+//    self.images = objects;
+//    [self.tableView reloadData];
+//    
+//    NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
+//    
+//    [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//}
 
 - (void)albumSelectionChanged:(NSNotification *)notification {
     NSDictionary *album = notification.userInfo;
     [self.navController dismissViewControllerAnimated:YES completion:nil];
     [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
-    [self makeRequestForAlbumPhotos:album];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -278,6 +305,10 @@ BOOL viewLoadedForFirstTime = NO;
 
 #pragma mark - Table view data source
 
+- (void)reloadTableViewData:(NSNotification *)notification {
+    [self.tableView reloadData];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
@@ -286,7 +317,7 @@ BOOL viewLoadedForFirstTime = NO;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    FTFImage *photo = self.images[indexPath.row];
+    FTFImage *photo = self.albumPhotos[indexPath.row];
     FTFTableViewCell *ftfCell = (FTFTableViewCell *)cell;
 
     if (![photo.photoComments isEqual:[NSNull null]]) {
@@ -329,7 +360,7 @@ BOOL viewLoadedForFirstTime = NO;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.images count];
+    return [self.albumPhotos count];
 }
 
 
@@ -404,7 +435,7 @@ BOOL viewLoadedForFirstTime = NO;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.photosForDisplayInBrowser = [NSMutableArray array];
-    for (FTFImage *image in self.images) {
+    for (FTFImage *image in self.albumPhotos) {
         NSURL *largePhotoURL = [image largePhotoURL];
         MWPhoto *photo = [MWPhoto photoWithURL:largePhotoURL];
         if (![image.photoDescription isEqual:[NSNull null]]) {
@@ -424,7 +455,6 @@ BOOL viewLoadedForFirstTime = NO;
     
     [self.navigationController pushViewController:self.browser animated:YES];
 }
-
 
 #pragma mark - Navigation
 

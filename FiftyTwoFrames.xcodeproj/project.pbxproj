@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		8B451D49197E629B005D7159 /* pic.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D48197E629B005D7159 /* pic.jpg */; };
 		8B451D4B197ECD55005D7159 /* calendar-128.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D4A197ECD55005D7159 /* calendar-128.png */; };
-		8B451D4F198178A9005D7159 /* FTFAlbumData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D4E198178A9005D7159 /* FTFAlbumData.m */; };
+		8B451D531981B9B4005D7159 /* FTFAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D521981B9B4005D7159 /* FTFAlbum.m */; };
+		8B451D561981C046005D7159 /* FTFAlbumCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D551981C046005D7159 /* FTFAlbumCollection.m */; };
 		8B64587F194CD5F6006D4B75 /* message.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B64587E194CD5F6006D4B75 /* message.png */; };
 		8B645881194CD614006D4B75 /* thumbnails-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B645880194CD614006D4B75 /* thumbnails-1.png */; };
 		8B645883194CD632006D4B75 /* list.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B645882194CD632006D4B75 /* list.png */; };
@@ -105,8 +106,10 @@
 /* Begin PBXFileReference section */
 		8B451D48197E629B005D7159 /* pic.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = pic.jpg; path = ../../../../Downloads/pic.jpg; sourceTree = "<group>"; };
 		8B451D4A197ECD55005D7159 /* calendar-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar-128.png"; sourceTree = "<group>"; };
-		8B451D4D198178A9005D7159 /* FTFAlbumData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbumData.h; sourceTree = "<group>"; };
-		8B451D4E198178A9005D7159 /* FTFAlbumData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbumData.m; sourceTree = "<group>"; };
+		8B451D511981B9B4005D7159 /* FTFAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbum.h; sourceTree = "<group>"; };
+		8B451D521981B9B4005D7159 /* FTFAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbum.m; sourceTree = "<group>"; };
+		8B451D541981C046005D7159 /* FTFAlbumCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbumCollection.h; sourceTree = "<group>"; };
+		8B451D551981C046005D7159 /* FTFAlbumCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbumCollection.m; sourceTree = "<group>"; };
 		8B64587E194CD5F6006D4B75 /* message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message.png; sourceTree = "<group>"; };
 		8B645880194CD614006D4B75 /* thumbnails-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnails-1.png"; sourceTree = "<group>"; };
 		8B645882194CD632006D4B75 /* list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list.png; sourceTree = "<group>"; };
@@ -280,10 +283,12 @@
 		8B451D50198178C0005D7159 /* Model Objects */ = {
 			isa = PBXGroup;
 			children = (
+				8B451D541981C046005D7159 /* FTFAlbumCollection.h */,
+				8B451D551981C046005D7159 /* FTFAlbumCollection.m */,
+				8B451D511981B9B4005D7159 /* FTFAlbum.h */,
+				8B451D521981B9B4005D7159 /* FTFAlbum.m */,
 				8B6458C0194D0BE6006D4B75 /* FTFImage.h */,
 				8B6458C1194D0BE6006D4B75 /* FTFImage.m */,
-				8B451D4D198178A9005D7159 /* FTFAlbumData.h */,
-				8B451D4E198178A9005D7159 /* FTFAlbumData.m */,
 			);
 			name = "Model Objects";
 			sourceTree = "<group>";
@@ -718,7 +723,6 @@
 				8BA8794119674E6A00A43819 /* PSTGridLayoutInfo.m in Sources */,
 				8BA8793F19674E6A00A43819 /* PSTCollectionViewLayout.m in Sources */,
 				8BA8798619675FF400A43819 /* UIImage+WebP.m in Sources */,
-				8B451D4F198178A9005D7159 /* FTFAlbumData.m in Sources */,
 				8BA8794319674E6A00A43819 /* PSTGridLayoutRow.m in Sources */,
 				8BA8798019675FF400A43819 /* SDWebImageDownloaderOperation.m in Sources */,
 				8BA2A6EE194E12E600341260 /* WYStoryboardPopoverSegue.m in Sources */,
@@ -741,7 +745,9 @@
 				8BA2A6F5194E226D00341260 /* FTFContentTableViewController.m in Sources */,
 				8BA8797F19675FF400A43819 /* SDWebImageDownloader.m in Sources */,
 				8BA8793319674E6A00A43819 /* MWTapDetectingView.m in Sources */,
+				8B451D561981C046005D7159 /* FTFAlbumCollection.m in Sources */,
 				8BA8798419675FF400A43819 /* UIImage+GIF.m in Sources */,
+				8B451D531981B9B4005D7159 /* FTFAlbum.m in Sources */,
 				8BA8793919674E6A00A43819 /* PSTCollectionView.m in Sources */,
 				8BA8797C19675FF400A43819 /* SDImageCache.m in Sources */,
 				8BA8797B19675FF400A43819 /* NSData+ImageContentType.m in Sources */,

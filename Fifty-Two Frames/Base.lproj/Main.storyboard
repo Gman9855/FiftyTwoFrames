@@ -265,7 +265,6 @@
         <!--Navigation Controller-->
         <scene sceneID="YWT-uY-J36">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tCw-On-TV3" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="popoverView" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="Hkn-Dg-hdK" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
@@ -283,6 +282,7 @@
                         <segue destination="c5N-xu-zrO" kind="relationship" relationship="rootViewController" id="VHE-Kh-ur9"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tCw-On-TV3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1348" y="752"/>
         </scene>

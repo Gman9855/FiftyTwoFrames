@@ -15,7 +15,6 @@
 
 @property (strong, nonatomic) UIViewController *contentViewController;
 @property (strong, nonatomic) UIViewController *facebookLoginViewController;
-
 @property (strong, nonatomic) UIViewController *currentViewController;
 
 @end

@@ -9,7 +9,7 @@
 #import "FTFImage.h"
 #import "SDWebImageManager.h"
 
-@interface FTFImage()
+@interface FTFImage ()
 
 @property (nonatomic, strong) NSArray *imageURLs;
 @property (nonatomic, strong) NSMutableDictionary *runningDownloadOperationsKeyedByURL;
