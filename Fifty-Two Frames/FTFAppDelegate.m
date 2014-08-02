@@ -42,6 +42,12 @@
                                       }];
     };
     
+    [self requestAlbumDataFromFacebook];
+    
+    return YES;
+}
+
+- (void)requestAlbumDataFromFacebook {
     [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(10000).fields(name)"
                                  parameters:nil
                                  HTTPMethod:@"GET"
@@ -55,9 +61,6 @@
                                                                                   object:self
                                                                                 userInfo:result];
                           }];
-    
-    
-    return YES;
 }
 
 - (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error

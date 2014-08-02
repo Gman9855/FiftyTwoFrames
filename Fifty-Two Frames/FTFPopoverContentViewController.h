@@ -13,5 +13,11 @@
 @property (nonatomic, strong) NSArray *weeklySubmissions;
 @property (nonatomic, strong) NSArray *photoWalks;
 @property (nonatomic, strong) NSArray *miscellaneousAlbums;
+@property (strong, nonatomic) NSArray *selectedAlbumCollection;
+@property (nonatomic, strong) NSString *selectedAlbumYear;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *yearButton;
+
+- (NSArray *)albumsForGivenYear:(NSString *)year fromAlbumCollection:(NSArray *)albumCollection;
+
 
 @end

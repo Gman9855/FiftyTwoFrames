@@ -12,6 +12,7 @@ typedef enum {
     FTFAlbumCollectionCategoryWeeklyThemes,
     FTFAlbumCollectionCategoryPhotoWalks,
     FTFAlbumCollectionCategoryMiscellaneous,
+    FTFAlbumCollectionCategoryAll
 } FTFAlbumCollectionCategory;
 
 @interface FTFAlbumCollection : NSObject

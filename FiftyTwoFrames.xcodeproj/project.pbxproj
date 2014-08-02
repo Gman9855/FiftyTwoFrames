@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */; };
 		8B451D49197E629B005D7159 /* pic.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D48197E629B005D7159 /* pic.jpg */; };
 		8B451D4B197ECD55005D7159 /* calendar-128.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D4A197ECD55005D7159 /* calendar-128.png */; };
 		8B451D531981B9B4005D7159 /* FTFAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D521981B9B4005D7159 /* FTFAlbum.m */; };
@@ -89,8 +90,6 @@
 		8BC938E41946BE7400418F32 /* 52frames.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BC938E31946BE7400418F32 /* 52frames.jpg */; };
 		8BD2001F1974B3B700F9F347 /* info-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2001E1974B3B700F9F347 /* info-2.png */; };
 		8BD200211974B40200F9F347 /* info-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD200201974B40200F9F347 /* info-3.png */; };
-		8BD200241974EACC00F9F347 /* FTFPopoverYearTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD200231974EACC00F9F347 /* FTFPopoverYearTableViewController.m */; };
-		8BD200271974EAE900F9F347 /* FTFPopoverWeekTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD200261974EAE900F9F347 /* FTFPopoverWeekTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +103,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B20E98B198CA1920074E66B /* FTFYearPopoverTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFYearPopoverTableViewController.h; sourceTree = "<group>"; };
+		8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFYearPopoverTableViewController.m; sourceTree = "<group>"; };
 		8B451D48197E629B005D7159 /* pic.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = pic.jpg; path = ../../../../Downloads/pic.jpg; sourceTree = "<group>"; };
 		8B451D4A197ECD55005D7159 /* calendar-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar-128.png"; sourceTree = "<group>"; };
 		8B451D511981B9B4005D7159 /* FTFAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbum.h; sourceTree = "<group>"; };
@@ -248,10 +249,6 @@
 		8BC938E31946BE7400418F32 /* 52frames.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 52frames.jpg; sourceTree = "<group>"; };
 		8BD2001E1974B3B700F9F347 /* info-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-2.png"; sourceTree = "<group>"; };
 		8BD200201974B40200F9F347 /* info-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-3.png"; sourceTree = "<group>"; };
-		8BD200221974EACC00F9F347 /* FTFPopoverYearTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPopoverYearTableViewController.h; sourceTree = "<group>"; };
-		8BD200231974EACC00F9F347 /* FTFPopoverYearTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPopoverYearTableViewController.m; sourceTree = "<group>"; };
-		8BD200251974EAE900F9F347 /* FTFPopoverWeekTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPopoverWeekTableViewController.h; sourceTree = "<group>"; };
-		8BD200261974EAE900F9F347 /* FTFPopoverWeekTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPopoverWeekTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -527,7 +524,7 @@
 				8BA2A6E5194D791900341260 /* FTFPhotoViewController.h */,
 				8BA2A6E6194D791900341260 /* FTFPhotoViewController.m */,
 				8B451D48197E629B005D7159 /* pic.jpg */,
-				8BD200281975018A00F9F347 /* Popover View */,
+				8BD200281975018A00F9F347 /* Album List VC */,
 				8BC938D71940593400418F32 /* FTFFacebookLoginViewController.h */,
 				8BC938D81940593400418F32 /* FTFFacebookLoginViewController.m */,
 				8BC938A1193C1C8300418F32 /* Images.xcassets */,
@@ -573,17 +570,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8BD200281975018A00F9F347 /* Popover View */ = {
+		8BD200281975018A00F9F347 /* Album List VC */ = {
 			isa = PBXGroup;
 			children = (
 				8BC32591197B71D4002A17AC /* FTFPopoverContentViewController.h */,
 				8BC32590197B71D4002A17AC /* FTFPopoverContentViewController.m */,
-				8BD200221974EACC00F9F347 /* FTFPopoverYearTableViewController.h */,
-				8BD200231974EACC00F9F347 /* FTFPopoverYearTableViewController.m */,
-				8BD200251974EAE900F9F347 /* FTFPopoverWeekTableViewController.h */,
-				8BD200261974EAE900F9F347 /* FTFPopoverWeekTableViewController.m */,
+				8B20E98B198CA1920074E66B /* FTFYearPopoverTableViewController.h */,
+				8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */,
 			);
-			name = "Popover View";
+			name = "Album List VC";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -705,9 +700,7 @@
 				8BA8793219674E6A00A43819 /* MWTapDetectingImageView.m in Sources */,
 				8BA8794219674E6A00A43819 /* PSTGridLayoutItem.m in Sources */,
 				8BA8793619674E6A00A43819 /* MBProgressHUD.m in Sources */,
-				8BD200271974EAE900F9F347 /* FTFPopoverWeekTableViewController.m in Sources */,
 				8BA8797D19675FF400A43819 /* SDWebImageCompat.m in Sources */,
-				8BD200241974EACC00F9F347 /* FTFPopoverYearTableViewController.m in Sources */,
 				8BC938D219400B5A00418F32 /* FTFTableViewCell.m in Sources */,
 				8BA8793C19674E6A00A43819 /* PSTCollectionViewData.m in Sources */,
 				8BA8798319675FF400A43819 /* UIButton+WebCache.m in Sources */,
@@ -718,6 +711,7 @@
 				8BA2A6ED194E12E600341260 /* WYPopoverController.m in Sources */,
 				8BA8794019674E6A00A43819 /* PSTCollectionViewUpdateItem.m in Sources */,
 				8BA8797E19675FF400A43819 /* SDWebImageDecoder.m in Sources */,
+				8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */,
 				8BA8793819674E6A00A43819 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
 				8BA8794419674E6A00A43819 /* PSTGridLayoutSection.m in Sources */,
 				8BA8794119674E6A00A43819 /* PSTGridLayoutInfo.m in Sources */,

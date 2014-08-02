@@ -1,18 +1,20 @@
 //
-//  FTFPopoverWeekTableViewController.m
-//  Fifty-Two Frames
+//  FTFYearPopoverTableViewController.m
+//  FiftyTwoFrames
 //
-//  Created by Gershy Lev on 7/14/14.
+//  Created by Gershy Lev on 8/1/14.
 //  Copyright (c) 2014 Gershy Lev. All rights reserved.
 //
 
-#import "FTFPopoverWeekTableViewController.h"
+#import "FTFYearPopoverTableViewController.h"
 
-@interface FTFPopoverWeekTableViewController ()
+@interface FTFYearPopoverTableViewController ()
 
 @end
 
-@implementation FTFPopoverWeekTableViewController
+static NSString * const reuseIdentifier = @"reuseIdentifier";
+
+@implementation FTFYearPopoverTableViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -26,7 +28,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:reuseIdentifier];
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -44,28 +47,32 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return [self.years count];
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
+    cell.textLabel.text = self.years[indexPath.row];
     return cell;
 }
-*/
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *year = self.years[indexPath.row];
+    NSDictionary *yearDict = [NSDictionary dictionaryWithObjectsAndKeys:year, @"year", nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"yearSelectedNotification"
+                                                       object:self
+                                                     userInfo:yearDict];
+}
+
 
 /*
 // Override to support conditional editing of the table view.

@@ -133,7 +133,7 @@
         <!--Popover Content View Controller-->
         <scene sceneID="Kla-3m-naI">
             <objects>
-                <tableViewController id="c5N-xu-zrO" customClass="FTFPopoverContentViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="popoverView" id="c5N-xu-zrO" customClass="FTFPopoverContentViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="7ge-Jf-o5k">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -168,11 +168,15 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem image="calendar-128.png" id="SyI-Uc-dci"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="EHD-QX-W3x"/>
                         <barButtonItem title="Dismiss" id="7pd-rJ-wCI">
                             <connections>
                                 <action selector="dismissButtonTapped:" destination="c5N-xu-zrO" id="5ei-qv-lZS"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="EHD-QX-W3x"/>
+                        <barButtonItem title="2014" id="SyI-Uc-dci">
+                            <connections>
+                                <action selector="yearButtonTapped:" destination="c5N-xu-zrO" id="1C1-aL-YtZ"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
@@ -192,14 +196,44 @@
                         </segmentedControl>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black"/>
                     <size key="freeformSize" width="220" height="468"/>
                     <connections>
                         <outlet property="segmentedControl" destination="R2j-DH-PeO" id="xEl-5Z-BRy"/>
+                        <outlet property="yearButton" destination="SyI-Uc-dci" id="zYC-Hn-Hya"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9cZ-AA-sWu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1760" y="752"/>
+            <point key="canvasLocation" x="2191" y="752"/>
+        </scene>
+        <!--Year Popover Table View Controller-->
+        <scene sceneID="KMn-xh-OD4">
+            <objects>
+                <tableViewController storyboardIdentifier="yearPopoverVC" id="sMb-TG-KZ1" customClass="FTFYearPopoverTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="HaS-Q8-JWF">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="9eg-iE-CHl">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9eg-iE-CHl" id="hZz-qE-ghn">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="sMb-TG-KZ1" id="8xz-A8-2Mp"/>
+                            <outlet property="delegate" destination="sMb-TG-KZ1" id="vdL-Wp-xZK"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2xE-bt-j5Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2561" y="752"/>
         </scene>
         <!--Facebook Login View Controller-->
         <scene sceneID="YPl-La-4qf">
@@ -263,34 +297,33 @@
             <point key="canvasLocation" x="569" y="82"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="YWT-uY-J36">
+        <scene sceneID="8fG-w5-3oy">
             <objects>
-                <navigationController storyboardIdentifier="popoverView" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="Hkn-Dg-hdK" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="albumListNavController" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="wSd-LG-fg2" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <size key="freeformSize" width="220" height="468"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="oO7-0i-EUx">
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="dTy-cA-u2G">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="742-wz-JbI">
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="i2V-X0-Yiv">
                         <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
-                        <segue destination="c5N-xu-zrO" kind="relationship" relationship="rootViewController" id="VHE-Kh-ur9"/>
+                        <segue destination="c5N-xu-zrO" kind="relationship" relationship="rootViewController" id="cSw-KJ-15h"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tCw-On-TV3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="q2H-TM-iEo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1348" y="752"/>
+            <point key="canvasLocation" x="1760" y="752"/>
         </scene>
     </scenes>
     <resources>
         <image name="52frames.jpg" width="230" height="230"/>
         <image name="Facebook_like_button_thumb.png" width="27" height="23"/>
-        <image name="calendar-128.png" width="25" height="25"/>
         <image name="facebook-login.png" width="250" height="61"/>
         <image name="gear.png" width="32" height="32"/>
         <image name="info-3.png" width="32" height="32"/>

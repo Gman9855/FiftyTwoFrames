@@ -40,27 +40,31 @@
 }
 
 - (NSArray *)albumsForCategory:(FTFAlbumCollectionCategory)collectionCategory {
+    if (collectionCategory == FTFAlbumCollectionCategoryAll) {
+        return self.allPhotoAlbums;
+    } else {
         return self.allPhotoAlbums[collectionCategory];
+    }
 }
 
 - (NSArray *)retrieveAllPhotoAlbums {
     return self.allPhotoAlbums;
 }
 
-- (void)makeRequestForAlbumData;
-{
-    [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(10000).fields(name)"
-                                 parameters:nil
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              /* handle the result */
-                              [self populateAlbumCategoryArrays:result];
-                          }];
-}
+//- (void)makeRequestForAlbumData;
+//{
+//    [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(10000).fields(name)"
+//                                 parameters:nil
+//                                 HTTPMethod:@"GET"
+//                          completionHandler:^(
+//                                              FBRequestConnection *connection,
+//                                              id result,
+//                                              NSError *error
+//                                              ) {
+//                              /* handle the result */
+//                              [self populateAlbumCategoryArrays:result];
+//                          }];
+//}
 
 - (void)populateAlbumCategoryArrays:(NSNotification *)notification;
 {
@@ -101,10 +105,9 @@
     self.weeklyThemeAlbums = weeklyThemeAlbums;
     self.photoWalkAlbums = photoWalkAlbums;
     self.miscellaneousAlbums = miscellaneousAlbums;
-    
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    
-    [nc postNotificationName:@"didFinishLoadingAlbumCollectionNotification" object:self];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didFinishLoadingAlbumCollectionNotification"
+                                                        object:self];
 }
 
 @end
