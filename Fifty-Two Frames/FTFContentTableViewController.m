@@ -166,16 +166,6 @@ static NSString * const reuseIdentifier = @"photo";
     
 }
 
-- (IBAction)settingsButtonTapped:(UIBarButtonItem *)sender;
-{
-    [self presentViewController:self.navController animated:YES completion:nil];
-}
-
-- (IBAction)menuButtonTapped:(UIBarButtonItem *)sender;
-{
-    
-}
-
 - (void)albumSelectionChanged:(NSNotification *)notification {
     [self.navController dismissViewControllerAnimated:YES completion:nil];
     [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
@@ -205,11 +195,14 @@ static NSString * const reuseIdentifier = @"photo";
             [self.tableView reloadData];
         } else {
             [MBProgressHUD hideHUDForView:self.tableView animated:NO];
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Sorry, no photos found for this album"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Okay"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Sorry, no photos found for this album"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Okay"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            });
+            
             return;
         }
     }];
@@ -334,6 +327,16 @@ static NSString * const reuseIdentifier = @"photo";
 
 
 #pragma mark - Navigation
+
+- (IBAction)settingsButtonTapped:(UIBarButtonItem *)sender;
+{
+    [self presentViewController:self.navController animated:YES completion:nil];
+}
+
+- (IBAction)menuButtonTapped:(UIBarButtonItem *)sender;
+{
+    
+}
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
 {

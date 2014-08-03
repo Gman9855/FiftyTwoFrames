@@ -207,34 +207,6 @@
             </objects>
             <point key="canvasLocation" x="2191" y="752"/>
         </scene>
-        <!--Year Popover Table View Controller-->
-        <scene sceneID="KMn-xh-OD4">
-            <objects>
-                <tableViewController storyboardIdentifier="yearPopoverVC" id="sMb-TG-KZ1" customClass="FTFYearPopoverTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="HaS-Q8-JWF">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="9eg-iE-CHl">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9eg-iE-CHl" id="hZz-qE-ghn">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="sMb-TG-KZ1" id="8xz-A8-2Mp"/>
-                            <outlet property="delegate" destination="sMb-TG-KZ1" id="vdL-Wp-xZK"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2xE-bt-j5Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2561" y="752"/>
-        </scene>
         <!--Facebook Login View Controller-->
         <scene sceneID="YPl-La-4qf">
             <objects>

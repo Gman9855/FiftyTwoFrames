@@ -30,7 +30,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 
 - (FTFYearPopoverTableViewController *)yearPopoverTableViewController {
     if (!_yearPopoverTableViewController) {
-        _yearPopoverTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"yearPopoverVC"];
+        _yearPopoverTableViewController = [[FTFYearPopoverTableViewController alloc] init];
     }
     return _yearPopoverTableViewController;
 }
@@ -94,22 +94,11 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 }
 
 - (IBAction)segmentedControlTapped:(UISegmentedControl *)sender {
-    switch (sender.selectedSegmentIndex) {
-        case 0:
-            self.selectedAlbumCollection = [self albumsForGivenYear:self.selectedAlbumYear fromAlbumCollection:self.weeklySubmissions];
-            [self.tableView reloadData];
-            break;
-        case 1:
-            self.selectedAlbumCollection = [self albumsForGivenYear:self.selectedAlbumYear fromAlbumCollection:self.photoWalks];
-            [self.tableView reloadData];
-            break;
-        case 2:
-            self.selectedAlbumCollection = [self albumsForGivenYear:self.selectedAlbumYear fromAlbumCollection:self.miscellaneousAlbums];
-            [self.tableView reloadData];
-            break;
-        default:
-            break;
-    }
+    NSArray *allAlbumCollections = @[self.weeklySubmissions, self.photoWalks, self.miscellaneousAlbums];
+    self.selectedAlbumCollection = [self albumsForGivenYear:self.selectedAlbumYear
+                                        fromAlbumCollection:allAlbumCollections[sender.selectedSegmentIndex]];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0]
+                  withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (NSArray *)albumsForGivenYear:(NSString *)year fromAlbumCollection:(NSArray *)albumCollection {
@@ -121,15 +110,11 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     [self.popover dismissPopoverAnimated:YES];
     self.selectedAlbumYear = [notification.userInfo objectForKey:@"year"];
     self.yearButton.title = self.selectedAlbumYear;
-    if (self.segmentedControl.selectedSegmentIndex == 0) {
-        self.selectedAlbumCollection = [self albumsForGivenYear:self.selectedAlbumYear fromAlbumCollection:self.weeklySubmissions];
-    } else if (self.segmentedControl.selectedSegmentIndex == 1) {
-        self.selectedAlbumCollection = [self albumsForGivenYear:self.selectedAlbumYear fromAlbumCollection:self.photoWalks];
-    } else {
-        self.selectedAlbumCollection = [self albumsForGivenYear:self.selectedAlbumYear fromAlbumCollection:self.miscellaneousAlbums];
-    }
-    
-    [self.tableView reloadData];
+    NSArray *allAlbumCollections = @[self.weeklySubmissions, self.photoWalks, self.miscellaneousAlbums];
+    self.selectedAlbumCollection = [self albumsForGivenYear:self.selectedAlbumYear
+                                        fromAlbumCollection:allAlbumCollections[self.segmentedControl.selectedSegmentIndex]];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0]
+                  withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - Table view data source
@@ -145,15 +130,6 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     // Return the number of rows in the section.
     return [self.selectedAlbumCollection count];
 }
-
-//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    CATransition *t = [CATransition animation];
-//    t.duration = 0.60;
-//    t.type = kCATransitionFade;
-//    [cell.textLabel.layer addAnimation:t forKey:nil];
-//    NSDictionary *albumName = self.albumNames[indexPath.row];
-//    cell.textLabel.text = [albumName valueForKeyPath:@"name"];
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -177,14 +153,15 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     self.yearPopoverTableViewController.years = [self allYearsFromAlbumCollection:self.weeklySubmissions];
 
     self.popover = [[WYPopoverController alloc] initWithContentViewController:self.yearPopoverTableViewController];
-    [self.popover presentPopoverFromBarButtonItem:self.yearButton
-                    permittedArrowDirections:WYPopoverArrowDirectionAny
-                                    animated:YES
-                                     options:WYPopoverAnimationOptionFadeWithScale];
+    self.popover.theme = [WYPopoverTheme themeForIOS7];
     CGSize size = self.popover.popoverContentSize;
     size.height = size.height / 3;
     size.width = size.width / 4;
     self.popover.popoverContentSize = size;
+    [self.popover presentPopoverFromBarButtonItem:self.yearButton
+                         permittedArrowDirections:WYPopoverArrowDirectionDown
+                                         animated:YES
+                                          options:WYPopoverAnimationOptionFadeWithScale];
 }
 
 - (NSArray *)allYearsFromAlbumCollection:(NSArray *)albumCollection {
