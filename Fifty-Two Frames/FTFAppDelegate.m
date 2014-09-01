@@ -40,27 +40,37 @@
                                           // also for intermediate states and NOT just when the session open
                                           [self sessionStateChanged:session state:state error:error];
                                       }];
+        
+        NSArray *permissions = [[FBSession activeSession] permissions];
+        if (![permissions containsObject:@"publish_actions"]) {
+            [FBSession.activeSession requestNewPublishPermissions:[NSArray arrayWithObject:@"publish_actions"]
+                                                  defaultAudience:FBSessionDefaultAudienceEveryone
+                                                completionHandler:^(FBSession *session, NSError *error) {
+                                                    __block NSString *alertText;
+                                                    __block NSString *alertTitle;
+                                                    if (!error) {
+                                                        if ([FBSession.activeSession.permissions
+                                                             indexOfObject:@"publish_actions"] == NSNotFound){
+                                                            // Permission not granted, tell the user we will not publish
+                                                            alertTitle = @"Permission not granted";
+                                                            alertText = @"Your action will not be published to Facebook.";
+                                                            [[[UIAlertView alloc] initWithTitle:alertTitle
+                                                                                        message:alertText
+                                                                                       delegate:self
+                                                                              cancelButtonTitle:@"OK!"
+                                                                              otherButtonTitles:nil] show];
+                                                        } else {
+                                                            // Permission granted, publish the OG story
+                                                        }
+                                                        
+                                                    } else {
+                                                        // There was an error, handle it
+                                                        // See https://developers.facebook.com/docs/ios/errors/
+                                                    }
+                                                }];
+        }
     };
-    
-    [self requestAlbumDataFromFacebook];
-    
     return YES;
-}
-
-- (void)requestAlbumDataFromFacebook {
-    [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(10000).fields(name)"
-                                 parameters:nil
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              /* handle the result */
-                              [[NSNotificationCenter defaultCenter] postNotificationName:@"albumDataReceivedFromFacebookNotification"
-                                                                                  object:self
-                                                                                userInfo:result];
-                          }];
 }
 
 - (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error

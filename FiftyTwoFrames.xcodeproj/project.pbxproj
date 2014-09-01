@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B12265019B2DE9700FBFE4E /* FTFPhotoContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */; };
+		8B12265319B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */; };
 		8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */; };
+		8B20E9E21992084C0074E66B /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B20E9E11992084C0074E66B /* libc++.1.dylib */; };
 		8B451D49197E629B005D7159 /* pic.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D48197E629B005D7159 /* pic.jpg */; };
 		8B451D4B197ECD55005D7159 /* calendar-128.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D4A197ECD55005D7159 /* calendar-128.png */; };
 		8B451D531981B9B4005D7159 /* FTFAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D521981B9B4005D7159 /* FTFAlbum.m */; };
@@ -88,8 +91,13 @@
 		8BC938DC194529EB00418F32 /* FTFContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC938DB194529EB00418F32 /* FTFContainerViewController.m */; };
 		8BC938E01946BD2000418F32 /* facebook-login.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BC938DF1946BD2000418F32 /* facebook-login.png */; };
 		8BC938E41946BE7400418F32 /* 52frames.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BC938E31946BE7400418F32 /* 52frames.jpg */; };
+		8BCB4BF719931B7E00B9C751 /* FTFPhotoComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCB4BF619931B7E00B9C751 /* FTFPhotoComment.m */; };
+		8BCB4C021993F31700B9C751 /* FTFPhotoBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCB4C011993F31700B9C751 /* FTFPhotoBrowserViewController.m */; };
+		8BCB4C051994692F00B9C751 /* FTFPhotoCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCB4C041994692F00B9C751 /* FTFPhotoCommentsViewController.m */; };
+		8BCB4C081995777000B9C751 /* FTFPhotoCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCB4C071995777000B9C751 /* FTFPhotoCommentTableViewCell.m */; };
 		8BD2001F1974B3B700F9F347 /* info-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2001E1974B3B700F9F347 /* info-2.png */; };
 		8BD200211974B40200F9F347 /* info-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD200201974B40200F9F347 /* info-3.png */; };
+		E96395B3DFD043DDB4965E32 /* libPods-FiftyTwoFrames.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A678DE796649F1B681F522 /* libPods-FiftyTwoFrames.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,8 +111,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B12264E19B2DE9700FBFE4E /* FTFPhotoContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoContainerViewController.h; sourceTree = "<group>"; };
+		8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoContainerViewController.m; sourceTree = "<group>"; };
+		8B12265119B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FTFImage+MWPhotoAdditions.h"; sourceTree = "<group>"; };
+		8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FTFImage+MWPhotoAdditions.m"; sourceTree = "<group>"; };
 		8B20E98B198CA1920074E66B /* FTFYearPopoverTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFYearPopoverTableViewController.h; sourceTree = "<group>"; };
 		8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFYearPopoverTableViewController.m; sourceTree = "<group>"; };
+		8B20E9E11992084C0074E66B /* libc++.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.1.dylib"; path = "usr/lib/libc++.1.dylib"; sourceTree = SDKROOT; };
 		8B451D48197E629B005D7159 /* pic.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = pic.jpg; path = ../../../../Downloads/pic.jpg; sourceTree = "<group>"; };
 		8B451D4A197ECD55005D7159 /* calendar-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar-128.png"; sourceTree = "<group>"; };
 		8B451D511981B9B4005D7159 /* FTFAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbum.h; sourceTree = "<group>"; };
@@ -247,8 +260,18 @@
 		8BC938DB194529EB00418F32 /* FTFContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFContainerViewController.m; sourceTree = "<group>"; };
 		8BC938DF1946BD2000418F32 /* facebook-login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-login.png"; sourceTree = "<group>"; };
 		8BC938E31946BE7400418F32 /* 52frames.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 52frames.jpg; sourceTree = "<group>"; };
+		8BCB4BF519931B7E00B9C751 /* FTFPhotoComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoComment.h; sourceTree = "<group>"; };
+		8BCB4BF619931B7E00B9C751 /* FTFPhotoComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoComment.m; sourceTree = "<group>"; };
+		8BCB4C001993F31700B9C751 /* FTFPhotoBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoBrowserViewController.h; sourceTree = "<group>"; };
+		8BCB4C011993F31700B9C751 /* FTFPhotoBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoBrowserViewController.m; sourceTree = "<group>"; };
+		8BCB4C031994692F00B9C751 /* FTFPhotoCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoCommentsViewController.h; sourceTree = "<group>"; };
+		8BCB4C041994692F00B9C751 /* FTFPhotoCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoCommentsViewController.m; sourceTree = "<group>"; };
+		8BCB4C061995777000B9C751 /* FTFPhotoCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoCommentTableViewCell.h; sourceTree = "<group>"; };
+		8BCB4C071995777000B9C751 /* FTFPhotoCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoCommentTableViewCell.m; sourceTree = "<group>"; };
 		8BD2001E1974B3B700F9F347 /* info-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-2.png"; sourceTree = "<group>"; };
 		8BD200201974B40200F9F347 /* info-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-3.png"; sourceTree = "<group>"; };
+		D3A678DE796649F1B681F522 /* libPods-FiftyTwoFrames.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FiftyTwoFrames.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E37038A709514EDEA37A695F /* Pods-FiftyTwoFrames.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiftyTwoFrames.xcconfig"; path = "Pods/Pods-FiftyTwoFrames.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,11 +279,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B20E9E21992084C0074E66B /* libc++.1.dylib in Frameworks */,
 				8BA2A6F3194E20E700341260 /* QuartzCore.framework in Frameworks */,
 				8BC9388C193C1C8300418F32 /* CoreGraphics.framework in Frameworks */,
 				8BC938D6194020A400418F32 /* FacebookSDK.framework in Frameworks */,
 				8BC9388E193C1C8300418F32 /* UIKit.framework in Frameworks */,
 				8BC9388A193C1C8300418F32 /* Foundation.framework in Frameworks */,
+				E96395B3DFD043DDB4965E32 /* libPods-FiftyTwoFrames.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +311,10 @@
 				8B451D521981B9B4005D7159 /* FTFAlbum.m */,
 				8B6458C0194D0BE6006D4B75 /* FTFImage.h */,
 				8B6458C1194D0BE6006D4B75 /* FTFImage.m */,
+				8B12265119B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.h */,
+				8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */,
+				8BCB4BF519931B7E00B9C751 /* FTFPhotoComment.h */,
+				8BCB4BF619931B7E00B9C751 /* FTFPhotoComment.m */,
 			);
 			name = "Model Objects";
 			sourceTree = "<group>";
@@ -485,6 +514,7 @@
 				8BC938AE193C1C8300418F32 /* Fifty-Two FramesTests */,
 				8BC93888193C1C8300418F32 /* Frameworks */,
 				8BC93887193C1C8300418F32 /* Products */,
+				E37038A709514EDEA37A695F /* Pods-FiftyTwoFrames.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -500,12 +530,14 @@
 		8BC93888193C1C8300418F32 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B20E9E11992084C0074E66B /* libc++.1.dylib */,
 				8BA2A6F2194E20E700341260 /* QuartzCore.framework */,
 				8BC938D5194020A400418F32 /* FacebookSDK.framework */,
 				8BC93889193C1C8300418F32 /* Foundation.framework */,
 				8BC9388B193C1C8300418F32 /* CoreGraphics.framework */,
 				8BC9388D193C1C8300418F32 /* UIKit.framework */,
 				8BC938A8193C1C8300418F32 /* XCTest.framework */,
+				D3A678DE796649F1B681F522 /* libPods-FiftyTwoFrames.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -521,6 +553,14 @@
 				8BC938DB194529EB00418F32 /* FTFContainerViewController.m */,
 				8BC938CD193CE3EF00418F32 /* FTFContentTableViewController.h */,
 				8BA2A6F4194E226D00341260 /* FTFContentTableViewController.m */,
+				8B12264E19B2DE9700FBFE4E /* FTFPhotoContainerViewController.h */,
+				8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */,
+				8BCB4C001993F31700B9C751 /* FTFPhotoBrowserViewController.h */,
+				8BCB4C011993F31700B9C751 /* FTFPhotoBrowserViewController.m */,
+				8BCB4C061995777000B9C751 /* FTFPhotoCommentTableViewCell.h */,
+				8BCB4C071995777000B9C751 /* FTFPhotoCommentTableViewCell.m */,
+				8BCB4C031994692F00B9C751 /* FTFPhotoCommentsViewController.h */,
+				8BCB4C041994692F00B9C751 /* FTFPhotoCommentsViewController.m */,
 				8BA2A6E5194D791900341260 /* FTFPhotoViewController.h */,
 				8BA2A6E6194D791900341260 /* FTFPhotoViewController.m */,
 				8B451D48197E629B005D7159 /* pic.jpg */,
@@ -588,9 +628,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8BC938B8193C1C8300418F32 /* Build configuration list for PBXNativeTarget "FiftyTwoFrames" */;
 			buildPhases = (
+				FA330C16DDAF4D47B13A098F /* Check Pods Manifest.lock */,
 				8BC93882193C1C8200418F32 /* Sources */,
 				8BC93883193C1C8200418F32 /* Frameworks */,
 				8BC93884193C1C8200418F32 /* Resources */,
+				4EF85EA888C740BC81C17585 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -691,6 +733,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4EF85EA888C740BC81C17585 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-FiftyTwoFrames-resources.sh\"";
+			showEnvVarsInLog = 0;
+		};
+		FA330C16DDAF4D47B13A098F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8BC93882193C1C8200418F32 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -704,10 +779,12 @@
 				8BC938D219400B5A00418F32 /* FTFTableViewCell.m in Sources */,
 				8BA8793C19674E6A00A43819 /* PSTCollectionViewData.m in Sources */,
 				8BA8798319675FF400A43819 /* UIButton+WebCache.m in Sources */,
+				8B12265019B2DE9700FBFE4E /* FTFPhotoContainerViewController.m in Sources */,
 				8B6458BF194CFADC006D4B75 /* NSArray+FTFAdditions.m in Sources */,
 				8BC93896193C1C8300418F32 /* main.m in Sources */,
 				8BA8798119675FF400A43819 /* SDWebImageManager.m in Sources */,
 				8BA8793119674E6A00A43819 /* MWPhotoBrowser.m in Sources */,
+				8BCB4C051994692F00B9C751 /* FTFPhotoCommentsViewController.m in Sources */,
 				8BA2A6ED194E12E600341260 /* WYPopoverController.m in Sources */,
 				8BA8794019674E6A00A43819 /* PSTCollectionViewUpdateItem.m in Sources */,
 				8BA8797E19675FF400A43819 /* SDWebImageDecoder.m in Sources */,
@@ -723,6 +800,7 @@
 				8BA8797A19675FF400A43819 /* MKAnnotationView+WebCache.m in Sources */,
 				8BC938DC194529EB00418F32 /* FTFContainerViewController.m in Sources */,
 				8BA8793019674E6A00A43819 /* MWPhoto.m in Sources */,
+				8BCB4C081995777000B9C751 /* FTFPhotoCommentTableViewCell.m in Sources */,
 				8BA8798719675FF400A43819 /* UIImageView+HighlightedWebCache.m in Sources */,
 				8BA8793419674E6A00A43819 /* MWZoomingScrollView.m in Sources */,
 				8B6458C2194D0BE6006D4B75 /* FTFImage.m in Sources */,
@@ -734,8 +812,10 @@
 				8BA8792F19674E6A00A43819 /* MWGridViewController.m in Sources */,
 				8BC9389A193C1C8300418F32 /* FTFAppDelegate.m in Sources */,
 				8BA8793519674E6A00A43819 /* DACircularProgressView.m in Sources */,
+				8BCB4C021993F31700B9C751 /* FTFPhotoBrowserViewController.m in Sources */,
 				8BA8793A19674E6A00A43819 /* PSTCollectionViewCell.m in Sources */,
 				8BC938D91940593400418F32 /* FTFFacebookLoginViewController.m in Sources */,
+				8BCB4BF719931B7E00B9C751 /* FTFPhotoComment.m in Sources */,
 				8BA2A6F5194E226D00341260 /* FTFContentTableViewController.m in Sources */,
 				8BA8797F19675FF400A43819 /* SDWebImageDownloader.m in Sources */,
 				8BA8793319674E6A00A43819 /* MWTapDetectingView.m in Sources */,
@@ -748,6 +828,7 @@
 				8BA8798219675FF400A43819 /* SDWebImagePrefetcher.m in Sources */,
 				8BA8798519675FF400A43819 /* UIImage+MultiFormat.m in Sources */,
 				8BA8793B19674E6A00A43819 /* PSTCollectionViewController.m in Sources */,
+				8B12265319B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m in Sources */,
 				8BA8792D19674E6A00A43819 /* MWCaptionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -870,6 +951,7 @@
 		};
 		8BC938B9193C1C8300418F32 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E37038A709514EDEA37A695F /* Pods-FiftyTwoFrames.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -881,6 +963,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Fifty-Two Frames/FiftyTwoFrames-Prefix.pch";
 				INFOPLIST_FILE = "Fifty-Two Frames/FiftyTwoFrames-Info.plist";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FiftyTwoFrames;
 				WRAPPER_EXTENSION = app;
 			};
@@ -888,6 +971,7 @@
 		};
 		8BC938BA193C1C8300418F32 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E37038A709514EDEA37A695F /* Pods-FiftyTwoFrames.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -899,6 +983,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Fifty-Two Frames/FiftyTwoFrames-Prefix.pch";
 				INFOPLIST_FILE = "Fifty-Two Frames/FiftyTwoFrames-Info.plist";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FiftyTwoFrames;
 				WRAPPER_EXTENSION = app;
 			};

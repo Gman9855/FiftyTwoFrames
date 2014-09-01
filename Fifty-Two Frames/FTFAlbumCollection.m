@@ -27,7 +27,6 @@
                                                  selector:@selector(populateAlbumCategoryArrays:)
                                                      name:@"albumDataReceivedFromFacebookNotification"
                                                    object:nil];
-//        [self makeRequestForAlbumData];
     }
     return self;
 }

@@ -9,15 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
 
-@class FTFContentTableViewController;
-
-@protocol FTFContentTableViewDelegate <NSObject>
-
-//- (void)
-
-@end
+@class FTFImage;
 
 @interface FTFContentTableViewController : UITableViewController
 
+- (void)scrollToPhoto:(FTFImage *)photo;
 
 @end

@@ -8,6 +8,7 @@
 
 #import "FTFAlbum.h"
 #import "FTFImage.h"
+#import "FTFPhotoComment.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface FTFAlbum ()
@@ -33,19 +34,36 @@
                                   block(nil, error);
                                   return;
                               }
-                              NSArray *imageCollections = [result valueForKeyPath:@"photos.data.images"];
+                              
+                              NSArray *photoIDs = [result valueForKeyPath:@"photos.data.id"];
+                              NSArray *photoCollections = [result valueForKeyPath:@"photos.data.images"];
                               NSArray *photoDescriptionCollection = [result valueForKeyPath:@"photos.data.name"];
                               NSArray *likesCollection = [result valueForKeyPath:@"photos.data.likes.data"];
-                              NSArray *commentsCollection = [result valueForKeyPath:@"photos.comments.data"];
+                              NSArray *commentsCollection = [result valueForKeyPath:@"photos.data.comments.data"];
                               
                               NSMutableArray *objects = [NSMutableArray new];
                               
-                              for (int i = 0; i < [imageCollections count]; i++) {
-                                  NSArray *imageURLs = [self urlsFromPhotoArray:imageCollections[i]];
+                              for (int i = 0; i < [photoCollections count]; i++) {
+                                  NSArray *imageURLs = [self urlsFromPhotoArray:photoCollections[i]];
                                   FTFImage *image = [[FTFImage alloc] initWithImageURLs:imageURLs];
                                   image.photoDescription = photoDescriptionCollection[i];
                                   image.photoLikes = likesCollection[i];
-                                  image.photoComments = commentsCollection[i];
+                                  image.photoID = photoIDs[i];
+                                  NSArray *photoComments = commentsCollection[i];
+                                  NSMutableArray *arrayOfphotoCommentObjects = [NSMutableArray new];
+                                  if (photoComments != (id)[NSNull null]) {
+                                      for (NSDictionary *comment in photoComments) {
+                                          FTFPhotoComment *photoComment = [FTFPhotoComment new];
+                                          photoComment.commenterName = [comment valueForKeyPath:@"from.name"];
+                                          photoComment.commenterID = [comment valueForKeyPath:@"from.id"];
+                                          NSString *commentDate = [comment valueForKey:@"created_time"];
+                                          photoComment.createdTime = [self formattedDateFromFacebookDate:commentDate];
+                                          photoComment.likeCount = [comment valueForKey:@"like_count"];
+                                          photoComment.comment = [comment valueForKey:@"message"];
+                                          [arrayOfphotoCommentObjects addObject:photoComment];
+                                      }
+                                      image.photoComments = [arrayOfphotoCommentObjects copy];
+                                  }
                                   [objects addObject:image];
                               }
                               
@@ -53,6 +71,15 @@
                               if (block) block(self.photos, nil);
                           }];
 
+}
+
+- (NSDate *)formattedDateFromFacebookDate:(NSString *)fbDate {
+    NSDateFormatter *parser = [[NSDateFormatter alloc] init];
+    [parser setTimeStyle:NSDateFormatterFullStyle];
+    [parser setFormatterBehavior:NSDateFormatterBehavior10_4];
+    [parser setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssz"];
+    return [parser dateFromString:fbDate];
+;
 }
 
 - (NSArray *)urlsFromPhotoArray:(NSArray *)array;
@@ -77,24 +104,6 @@
 - (NSString *)sourceOfImageData:(NSDictionary *)data;
 {
     return [data valueForKeyPath:@"source"];
-}
-
-- (id)makeRequestForAlbumPhotos:(id)albumID;
-{
-    //    /180889155269546?fields=albums.limit(1).fields(photos.limit(200))
-    __block id resultsData;
-    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@?fields=photos.limit(200)", albumID]
-                                 parameters:nil
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              /* handle the result */
-                              resultsData = result;
-                          }];
-    return resultsData;
 }
 
 @end

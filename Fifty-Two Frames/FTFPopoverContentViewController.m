@@ -52,8 +52,6 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
         self.noAlbumsForYearlabel.hidden = NO;
         [UIView animateWithDuration:0.8 animations:^{
             self.noAlbumsForYearlabel.alpha = 1.0;
-
-
         }];
     }
 }
