@@ -13,6 +13,4 @@
 
 @interface FTFContentTableViewController : UITableViewController
 
-- (void)scrollToPhoto:(FTFImage *)photo;
-
 @end

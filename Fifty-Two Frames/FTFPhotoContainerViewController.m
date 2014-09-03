@@ -28,7 +28,7 @@
     if (self) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         _photoCommentsNavigationController = [storyboard instantiateViewControllerWithIdentifier:@"photoCommentsNavigationController"];
-        _photoBrowserViewController = [[FTFPhotoBrowserViewController alloc] initWithDelegate:self];
+//        _photoBrowserViewController = [[FTFPhotoBrowserViewController alloc] initWithDelegate:self];
         _photosForUseInBrowser = [NSMutableArray new];
         for (FTFImage *image in albumPhotos) {
             [_photosForUseInBrowser addObject:image.browserPhoto];
@@ -63,7 +63,7 @@
         if ([viewControllers isKindOfClass:[FTFContentTableViewController class]]) {
             NSInteger indexOfPhoto = self.photoBrowserViewController.currentIndex;
             FTFImage *photo = self.albumPhotos[indexOfPhoto];
-            [(FTFContentTableViewController *)vc scrollToPhoto:photo];
+//            [(FTFContentTableViewController *)vc scrollToPhoto:photo];
             break;
         }
     }

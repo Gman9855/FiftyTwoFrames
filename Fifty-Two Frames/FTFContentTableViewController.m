@@ -59,13 +59,11 @@ static NSString * const reuseIdentifier = @"photo";
 }
 
 - (NSArray *)photosForUseInBrowser {
-    if (!_photosForUseInBrowser) {
-        NSMutableArray *photos = [NSMutableArray new];
-        for (FTFImage *image in self.albumPhotos) {
-            [photos addObject:image.browserPhoto];
-        }
-        _photosForUseInBrowser = photos;
+    NSMutableArray *photos = [NSMutableArray new];
+    for (FTFImage *image in self.albumPhotos) {
+        [photos addObject:image.browserPhoto];
     }
+    _photosForUseInBrowser = photos;
     return _photosForUseInBrowser;
 }
 

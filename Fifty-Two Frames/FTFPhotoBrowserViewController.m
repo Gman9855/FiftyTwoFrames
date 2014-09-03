@@ -60,6 +60,7 @@
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.adjustsImageWhenHighlighted = YES;
         button.frame = CGRectMake(0, 0, 40, 40);
+        
         [button addSubview:self.imageView];
         [button addTarget:self action:@selector(fbLikeButtonTapped)
          forControlEvents:UIControlEventTouchUpInside];
@@ -84,7 +85,7 @@
 
     CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
     anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    anim.duration = 0.125;
+    anim.duration = 0.2;
     anim.repeatCount = 1;
     anim.autoreverses = YES;
     anim.removedOnCompletion = YES;
@@ -104,8 +105,6 @@
                                               ) {
                               NSLog(@"Result: %@, Error: %@", result, error);
                           }];
-    
-    
 }
 
 - (void)fbCommentsButtonTapped {
