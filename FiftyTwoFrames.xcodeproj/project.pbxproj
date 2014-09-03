@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8B12265019B2DE9700FBFE4E /* FTFPhotoContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */; };
 		8B12265319B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */; };
+		8B12265619B7027400FBFE4E /* FTFFacebookLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12265519B7027400FBFE4E /* FTFFacebookLikeButton.m */; };
 		8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */; };
 		8B20E9E21992084C0074E66B /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B20E9E11992084C0074E66B /* libc++.1.dylib */; };
 		8B451D49197E629B005D7159 /* pic.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D48197E629B005D7159 /* pic.jpg */; };
@@ -115,6 +116,8 @@
 		8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoContainerViewController.m; sourceTree = "<group>"; };
 		8B12265119B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FTFImage+MWPhotoAdditions.h"; sourceTree = "<group>"; };
 		8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FTFImage+MWPhotoAdditions.m"; sourceTree = "<group>"; };
+		8B12265419B7027400FBFE4E /* FTFFacebookLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFFacebookLikeButton.h; sourceTree = "<group>"; };
+		8B12265519B7027400FBFE4E /* FTFFacebookLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFFacebookLikeButton.m; sourceTree = "<group>"; };
 		8B20E98B198CA1920074E66B /* FTFYearPopoverTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFYearPopoverTableViewController.h; sourceTree = "<group>"; };
 		8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFYearPopoverTableViewController.m; sourceTree = "<group>"; };
 		8B20E9E11992084C0074E66B /* libc++.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.1.dylib"; path = "usr/lib/libc++.1.dylib"; sourceTree = SDKROOT; };
@@ -557,6 +560,8 @@
 				8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */,
 				8BCB4C001993F31700B9C751 /* FTFPhotoBrowserViewController.h */,
 				8BCB4C011993F31700B9C751 /* FTFPhotoBrowserViewController.m */,
+				8B12265419B7027400FBFE4E /* FTFFacebookLikeButton.h */,
+				8B12265519B7027400FBFE4E /* FTFFacebookLikeButton.m */,
 				8BCB4C061995777000B9C751 /* FTFPhotoCommentTableViewCell.h */,
 				8BCB4C071995777000B9C751 /* FTFPhotoCommentTableViewCell.m */,
 				8BCB4C031994692F00B9C751 /* FTFPhotoCommentsViewController.h */,
@@ -776,6 +781,7 @@
 				8BA8794219674E6A00A43819 /* PSTGridLayoutItem.m in Sources */,
 				8BA8793619674E6A00A43819 /* MBProgressHUD.m in Sources */,
 				8BA8797D19675FF400A43819 /* SDWebImageCompat.m in Sources */,
+				8B12265619B7027400FBFE4E /* FTFFacebookLikeButton.m in Sources */,
 				8BC938D219400B5A00418F32 /* FTFTableViewCell.m in Sources */,
 				8BA8793C19674E6A00A43819 /* PSTCollectionViewData.m in Sources */,
 				8BA8798319675FF400A43819 /* UIButton+WebCache.m in Sources */,

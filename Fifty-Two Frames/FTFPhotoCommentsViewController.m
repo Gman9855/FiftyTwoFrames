@@ -49,6 +49,9 @@ static NSString * const reuseIdentifier = @"commentCell";
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     [self animateTextField:textField up:YES];
+    NSInteger lastRow = [self.photoComments count] - 1;
+    NSIndexPath *ip = [NSIndexPath indexPathWithIndex:lastRow];
+    [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 
@@ -59,14 +62,8 @@ static NSString * const reuseIdentifier = @"commentCell";
 
 - (void) animateTextField: (UITextField*) textField up: (BOOL) up
 {
-    const int movementDistance = 205; // tweak as needed    
+    const int movementDistance = 205;
     int movement = (up ? -movementDistance : movementDistance);
-    
-//    [UIView beginAnimations: @"anim" context: nil];
-//    [UIView setAnimationBeginsFromCurrentState: YES];
-//    [UIView setAnimationDuration: movementDuration];
-//    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
-//    [UIView commitAnimations];
     
     [UIView animateWithDuration:0.3 animations:^{
         self.view.frame = CGRectOffset(self.view.frame, 0, movement);
@@ -101,7 +98,6 @@ static NSString * const reuseIdentifier = @"commentCell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    //return [self basicCellAtIndexPath:indexPath];
     FTFPhotoCommentTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reuseIdentifier
                                                                               forIndexPath:indexPath];
     return cell;

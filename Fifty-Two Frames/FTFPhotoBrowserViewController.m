@@ -17,6 +17,7 @@
 @property (nonatomic, strong) WYPopoverController *photoCommentsPopoverController;
 @property (nonatomic, strong) UINavigationController *photoCommentsNavigationController;
 @property (nonatomic, strong) UIView *hostingView;
+@property (nonatomic, strong) UIImageView *imageView;
 
 @end
 
@@ -53,16 +54,16 @@
         //    UIBarButtonItem *fbLikeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Facebook_like_button_thumb.png"] style:UIBarButtonItemStylePlain target:self action:@selector(fbLikeButtonTapped)];
         UIBarButtonItem *fbCommentsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"messageIcon.png"] style:UIBarButtonItemStylePlain target:self action:@selector(fbCommentsButtonTapped)];
         
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Facebook_like_button_thumb.png"]];
-        imageView.autoresizingMask = UIViewAutoresizingNone;
-        imageView.contentMode = UIViewContentModeCenter;
+        self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Facebook_like_button_thumb.png"]];
+        self.imageView.autoresizingMask = UIViewAutoresizingNone;
+        self.imageView.contentMode = UIViewContentModeCenter;
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.adjustsImageWhenHighlighted = YES;
         button.frame = CGRectMake(0, 0, 40, 40);
-        [button addSubview:imageView];
+        [button addSubview:self.imageView];
         [button addTarget:self action:@selector(fbLikeButtonTapped)
          forControlEvents:UIControlEventTouchUpInside];
-        imageView.center = button.center;
+        self.imageView.center = button.center;
         UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:button];
         
         self.rightToolbarButtons = @[barItem];
@@ -80,9 +81,15 @@
 }
 
 - (void)fbLikeButtonTapped {
-    //    POPSpringAnimation *anim = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerBounds];
-    //    anim.toValue = [NSValue valueWithCGRect:CGRectMake(0, 0, 400, 400)];
-    //    [self.imageView.layer pop_addAnimation:anim forKey:@"myKey"];
+
+    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
+    anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    anim.duration = 0.125;
+    anim.repeatCount = 1;
+    anim.autoreverses = YES;
+    anim.removedOnCompletion = YES;
+    anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)];
+    [self.imageView.layer addAnimation:anim forKey:nil];
     
     NSInteger indexOfPhoto = self.currentIndex;
     FTFImage *photoAtIndex = self.albumPhotos[indexOfPhoto];
