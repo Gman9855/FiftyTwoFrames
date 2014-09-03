@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol FTFPhotoCommentsViewControllerDelegate <NSObject>
+
+- (void)dismissPhotoCommentsViewController;
+
+@end
+
 @interface FTFPhotoCommentsViewController : UIViewController
 
+@property (nonatomic, weak) id <FTFPhotoCommentsViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSArray *photoComments;
 
 @end

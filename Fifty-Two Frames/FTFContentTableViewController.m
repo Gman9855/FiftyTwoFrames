@@ -307,6 +307,7 @@ static NSString * const reuseIdentifier = @"photo";
     
     self.photoBrowserViewController = [[FTFPhotoBrowserViewController alloc] initWithDelegate:self];
     [self.photoBrowserViewController setCurrentPhotoIndex:indexPath.row];
+    self.photoBrowserViewController.albumPhotos = self.albumPhotos;
     [self.navigationController pushViewController:self.photoBrowserViewController animated:YES];
 }
 

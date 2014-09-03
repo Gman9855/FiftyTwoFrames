@@ -49,9 +49,6 @@ static NSString * const reuseIdentifier = @"commentCell";
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     [self animateTextField:textField up:YES];
-//    NSIndexPath *lastIndex = [NSIndexPath indexPathForRow:1 inSection:[self.photoComments count] - 1];
-//    NSIndexPath *ip = [NSIndexPath indexPathWithIndex:1];
-//    [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 
@@ -62,34 +59,38 @@ static NSString * const reuseIdentifier = @"commentCell";
 
 - (void) animateTextField: (UITextField*) textField up: (BOOL) up
 {
-    const int movementDistance = 216; // tweak as needed
-    const float movementDuration = 0.3f; // tweak as needed
-    
+    const int movementDistance = 205; // tweak as needed    
     int movement = (up ? -movementDistance : movementDistance);
     
-    [UIView beginAnimations: @"anim" context: nil];
-    [UIView setAnimationBeginsFromCurrentState: YES];
-    [UIView setAnimationDuration: movementDuration];
-    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
-    [UIView commitAnimations];
+//    [UIView beginAnimations: @"anim" context: nil];
+//    [UIView setAnimationBeginsFromCurrentState: YES];
+//    [UIView setAnimationDuration: movementDuration];
+//    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
+//    [UIView commitAnimations];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.frame = CGRectOffset(self.view.frame, 0, movement);
+    }];
 }
 
+#pragma mark - Actions
+
 - (IBAction)doneButtonPressed:(UIBarButtonItem *)sender {
-    if ([self.view endEditing:YES]) {
-        
-    } else {
+    if ([self.textField isFirstResponder]) {
         [self.view endEditing:YES];
+    } else {
+        [self.delegate dismissPhotoCommentsViewController];
     }
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return [self.photoComments count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.photoComments count];
+    return 1;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
