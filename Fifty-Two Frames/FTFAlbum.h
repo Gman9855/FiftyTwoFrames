@@ -11,8 +11,9 @@
 @interface FTFAlbum : NSObject
 
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) id albumID;
+@property (nonatomic, strong) NSString *albumID;
 @property (nonatomic, strong) NSString *yearCreated;
+@property (nonatomic, strong) NSArray *photos;
 
 - (void)retrieveAlbumPhotos:(void(^)(NSArray *photos, NSError *error))block;
  // of FTFImage's

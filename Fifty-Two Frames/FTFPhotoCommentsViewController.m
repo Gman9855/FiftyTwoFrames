@@ -18,12 +18,12 @@
 @end
 
 static NSString * const reuseIdentifier = @"commentCell";
+CGRect tableViewFrame;
 
 @implementation FTFPhotoCommentsViewController
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
+- (void)setPhotoComments:(NSArray *)photoComments {
+    _photoComments = photoComments;
     [self.tableView reloadData];
 }
 
@@ -35,6 +35,7 @@ static NSString * const reuseIdentifier = @"commentCell";
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.textField.delegate = self;
+    tableViewFrame = self.tableView.frame;
     // Do any additional setup after loading the view.
 }
 
@@ -48,16 +49,27 @@ static NSString * const reuseIdentifier = @"commentCell";
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    NSArray *visibleCells = [self.tableView visibleCells];
+    FTFPhotoCommentTableViewCell *bottomCell = [visibleCells lastObject];
+    FTFPhotoComment *bottomComment = [self.photoComments lastObject];
+    if (![bottomCell.commentBody.text isEqualToString:bottomComment.comment]) {
+        NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:[self.photoComments count] - 1];
+        [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+    CGRect frame = CGRectMake(0, 205, self.tableView.frame.size.width, self.tableView.frame.size.height - 205);
+    self.tableView.frame = frame;
     [self animateTextField:textField up:YES];
-    NSInteger lastRow = [self.photoComments count] - 1;
-    NSIndexPath *ip = [NSIndexPath indexPathWithIndex:lastRow];
-    [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    self.view.layer.cornerRadius = 10;
+    self.view.layer.masksToBounds = YES;
 }
 
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [self animateTextField:textField up:NO];
+    self.tableView.frame = tableViewFrame;
+    self.view.layer.cornerRadius = 0;
+    self.view.layer.masksToBounds = YES;
 }
 
 - (void) animateTextField: (UITextField*) textField up: (BOOL) up
@@ -76,7 +88,7 @@ static NSString * const reuseIdentifier = @"commentCell";
     if ([self.textField isFirstResponder]) {
         [self.view endEditing:YES];
     } else {
-        [self.delegate dismissPhotoCommentsViewController];
+        [self.delegate photoCommentsViewControllerDidTapDoneButton];
     }
 }
 
@@ -116,15 +128,17 @@ static NSString * const reuseIdentifier = @"commentCell";
 
 - (void)configureCommentCell:(FTFPhotoCommentTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     FTFPhotoComment *photoComment = self.photoComments[indexPath.section];
-    [photoComment requestCommenterProfilePictureWithCompletionBlock:^(UIImage *image, NSError *error) {
-        if (image) cell.commenterProfilePicture.image = image;
-    }];
     cell.commenterName.text = photoComment.commenterName;
     cell.commentBody.text = photoComment.comment;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM-dd-yyyy"];
     NSString *strDate = [dateFormatter stringFromDate:photoComment.createdTime];
     cell.commentDate.text = strDate;
+    
+    [photoComment requestCommenterProfilePictureWithCompletionBlock:^(UIImage *image, NSError *error) {
+        if (image) cell.commenterProfilePicture.image = image;
+    }];
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

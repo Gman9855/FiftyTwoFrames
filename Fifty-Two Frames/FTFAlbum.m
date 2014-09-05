@@ -13,8 +13,6 @@
 
 @interface FTFAlbum ()
 
-@property (nonatomic, strong) NSArray *photos;
-
 @end
 
 @implementation FTFAlbum

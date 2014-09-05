@@ -81,6 +81,14 @@
         // Do any additional setup after loading the view.
 }
 
+- (void)passPhotoCommentsToPhotoCommentsViewController {
+    NSInteger indexOfPhoto = self.currentIndex;
+    FTFImage *photoAtIndex = self.albumPhotos[indexOfPhoto];
+    self.photoCommentsVC.photoComments = photoAtIndex.photoComments;
+}
+
+#pragma mark - Action Methods
+
 - (void)fbLikeButtonTapped {
 
     CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
@@ -108,13 +116,7 @@
 }
 
 - (void)fbCommentsButtonTapped {
-    NSInteger indexOfPhoto = self.currentIndex;
-    FTFImage *photoAtIndex = self.albumPhotos[indexOfPhoto];
-    
-    if (photoAtIndex.photoComments != nil) {
-        self.photoCommentsVC.photoComments = photoAtIndex.photoComments;
-    }
-    
+    [self passPhotoCommentsToPhotoCommentsViewController];
     UIView *navigationView = self.navigationController.view;
     self.hostingView.frame = navigationView.bounds;
     self.hostingView.bounds = self.view.bounds;
@@ -135,10 +137,11 @@
                       animations:^{
                           self.hostingView.center = self.view.center;
                     } completion:nil];
-    
 }
 
-- (void)dismissPhotoCommentsViewController {
+#pragma mark - Photo Comments VC Delegate
+
+- (void)photoCommentsViewControllerDidTapDoneButton {
     [UIView animateWithDuration:0.7
                           delay:0.1
          usingSpringWithDamping:0.8

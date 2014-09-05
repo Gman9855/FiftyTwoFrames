@@ -21,6 +21,13 @@
 
 @implementation FTFAlbumCollection
 
+- (instancetype)initWithAlbums:(NSArray *)albums {
+    if (self = [super init]) {
+        _allPhotoAlbums = albums;
+    }
+    return self;
+}
+
 - (id)init {
     if (self = [super init]) {
         [[NSNotificationCenter defaultCenter] addObserver:self

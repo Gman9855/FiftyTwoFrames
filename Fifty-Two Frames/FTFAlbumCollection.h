@@ -17,7 +17,7 @@ typedef enum {
 
 @interface FTFAlbumCollection : NSObject
 
-//- (instancetype)initWithDictionary:(NSDictionary *)facebookResultData;  // initializes with FTFAlbum's
+- (instancetype)initWithAlbums:(NSArray *)albums;  // initializes with FTFAlbum's
 
 - (NSArray *)albumsForCategory:(FTFAlbumCollectionCategory)collectionCategory;
 - (NSArray *)retrieveAllPhotoAlbums;

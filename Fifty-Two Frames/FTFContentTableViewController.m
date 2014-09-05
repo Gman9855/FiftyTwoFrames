@@ -10,8 +10,7 @@
 #import "FTFTableViewCell.h"
 #import "UIImageView+WebCache.h"
 #import "FTFImage.h"
-#import "FTFPhotoViewController.h"
-#import "FTFPopoverContentViewController.h"
+#import "FTFAlbumSelectionMenuViewController.h"
 #import "MBProgressHUD.h"
 #import "MWPhotoBrowser.h"
 #import "FTFAlbumCollection.h"
@@ -21,15 +20,15 @@
 #import "FTFPhotoContainerViewController.h"
 #import "FTFImage+MWPhotoAdditions.h"
 
-@interface FTFContentTableViewController () <UINavigationControllerDelegate, MWPhotoBrowserDelegate>
+@interface FTFContentTableViewController () <UINavigationControllerDelegate, MWPhotoBrowserDelegate, FTFAlbumSelectionMenuViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *weeklyThemeAlbums;
 @property (nonatomic, strong) NSArray *photoWalksAlbums;
 @property (nonatomic, strong) NSArray *miscellaneousSubmissionsAlbums;
-@property (nonatomic, strong) FTFPopoverContentViewController *albumListViewController;
-@property (nonatomic, strong) UINavigationController *navController;
+@property (nonatomic, strong) FTFAlbumSelectionMenuViewController *albumSelectionMenuViewController;
+@property (nonatomic, strong) UINavigationController *albumSelectionMenuNavigationController;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
-@property (nonatomic, strong) NSArray *photosForUseInBrowser;
+@property (nonatomic, strong) NSArray *browserPhotos;
 @property (nonatomic, strong) FTFPhotoBrowserViewController *photoBrowserViewController;
 @property (nonatomic, assign) NSUInteger indexOfPhoto;
 @property (nonatomic, strong) UILabel *navBarTitle;
@@ -37,34 +36,31 @@
 @property (nonatomic, strong) FTFAlbum *albumForDisplay;
 @property (nonatomic, strong) NSArray *albumPhotos;
 @property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIView *hostingView;
 
 @end
 
 static NSString * const reuseIdentifier = @"photo";
+BOOL albumSelectionChanged = NO;
 
 @implementation FTFContentTableViewController
 
-- (UINavigationController *)navController {
-    if (!_navController) {
-        _navController = [self.storyboard instantiateViewControllerWithIdentifier:@"albumListNavController"];
+- (UIView *)hostingView {
+    if (!_hostingView) {
+        _hostingView = [UIView new];
     }
-    return _navController;
+    return _hostingView;
 }
 
-- (FTFPopoverContentViewController *)albumListViewController {
-    if (!_albumListViewController) {
-        _albumListViewController = (FTFPopoverContentViewController *)[self.navController topViewController];
+- (UINavigationController *)albumSelectionMenuNavigationController {
+    if (!_albumSelectionMenuNavigationController) {
+        _albumSelectionMenuNavigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"albumListNavController"];
     }
-    return _albumListViewController;
+    return _albumSelectionMenuNavigationController;
 }
 
-- (NSArray *)photosForUseInBrowser {
-    NSMutableArray *photos = [NSMutableArray new];
-    for (FTFImage *image in self.albumPhotos) {
-        [photos addObject:image.browserPhoto];
-    }
-    _photosForUseInBrowser = photos;
-    return _photosForUseInBrowser;
+- (FTFAlbumSelectionMenuViewController *)albumSelectionMenuViewController {
+    return (FTFAlbumSelectionMenuViewController *)[self.albumSelectionMenuNavigationController topViewController];
 }
 
 - (IBAction)refreshTableView:(id)sender {
@@ -86,7 +82,7 @@ static NSString * const reuseIdentifier = @"photo";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.albumSelectionMenuViewController.delegate = self;
     self.photoAlbumCollection = [[FTFAlbumCollection alloc] init];
     
     [self setUpNavigationBarTitle];
@@ -132,14 +128,23 @@ static NSString * const reuseIdentifier = @"photo";
     hud.yOffset = -60;
 }
 
-- (IBAction)likeIconTapped:(id)sender {
+- (IBAction)likeIconTapped:(UIButton *)sender {
+    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
+    anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    anim.duration = 0.2;
+    anim.repeatCount = 1;
+    anim.autoreverses = YES;
+    anim.removedOnCompletion = YES;
+    anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)];
+    [sender.layer addAnimation:anim forKey:nil];
+    
     
 }
 
 - (void)initializeAlbumCollectionObject:(NSNotification *)notification {
     self.weeklyThemeAlbums = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
     
-    FTFPopoverContentViewController *pocvc = (FTFPopoverContentViewController *)[self.navController topViewController];
+    FTFAlbumSelectionMenuViewController *pocvc = (FTFAlbumSelectionMenuViewController *)[self.albumSelectionMenuNavigationController topViewController];
     pocvc.weeklySubmissions = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
     pocvc.photoWalks = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryPhotoWalks];
     pocvc.miscellaneousAlbums = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryMiscellaneous];
@@ -161,6 +166,7 @@ static NSString * const reuseIdentifier = @"photo";
                                   cancelButtonTitle:@"Okay"
                                   otherButtonTitles:nil];
             [alert show];
+            [MBProgressHUD hideHUDForView:self.tableView animated:YES];
             return;
         }
         if ([photos count]) {
@@ -184,7 +190,8 @@ static NSString * const reuseIdentifier = @"photo";
 }
 
 - (void)albumSelectionChanged:(NSNotification *)notification {
-    [self.navController dismissViewControllerAnimated:YES completion:nil];
+    albumSelectionChanged = YES;
+    [self.albumSelectionMenuViewController dismissViewControllerAnimated:YES completion:nil];
     [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
     FTFAlbum *selectedAlbum = [notification.userInfo objectForKey:@"selectedAlbum"];
     [selectedAlbum retrieveAlbumPhotos:^(NSArray *photos, NSError *error) {
@@ -303,34 +310,84 @@ static NSString * const reuseIdentifier = @"photo";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {    
     
-    self.photoBrowserViewController = [[FTFPhotoBrowserViewController alloc] initWithDelegate:self];
-    [self.photoBrowserViewController setCurrentPhotoIndex:indexPath.row];
+    self.photoBrowserViewController = [[FTFPhotoBrowserViewController alloc]
+                                       initWithDelegate:self];
+    if (albumSelectionChanged || ![self.browserPhotos count]) {
+        self.browserPhotos = [self photosCompatibleForUseInPhotoBrowser];
+        albumSelectionChanged = NO;
+    }
+    self.photoBrowserViewController.browserPhotos = self.browserPhotos;
     self.photoBrowserViewController.albumPhotos = self.albumPhotos;
+    [self.photoBrowserViewController setCurrentPhotoIndex:indexPath.row];
     [self.navigationController pushViewController:self.photoBrowserViewController animated:YES];
 }
 
-#pragma mark - Photo Browser
+#pragma mark - MWPhotoBrowser Delegate
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
-    return self.photosForUseInBrowser.count;
+    return self.browserPhotos.count;
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
-    if (index < self.photosForUseInBrowser.count)
-        return [self.photosForUseInBrowser objectAtIndex:index];
+    if (index < self.browserPhotos.count) {
+        return [self.browserPhotos objectAtIndex:index];
+    }
     return nil;
+}
+
+- (NSArray *)photosCompatibleForUseInPhotoBrowser {
+    NSMutableArray *photos = [NSMutableArray new];
+    for (FTFImage *image in self.albumPhotos) {
+        [photos addObject:image.browserPhoto];
+    }
+    return [photos copy];
 }
 
 #pragma mark - Navigation
 
 - (IBAction)settingsButtonTapped:(UIBarButtonItem *)sender;
 {
-    [self presentViewController:self.navController animated:YES completion:nil];
+    
+//    [self presentViewController:self.albumSelectionMenuViewController animated:YES completion:nil];
+    
+    UIView *navigationView = self.navigationController.view;
+    self.hostingView.frame = navigationView.bounds;
+    self.hostingView.bounds = self.view.bounds;
+    
+    self.albumSelectionMenuNavigationController.view.frame = CGRectInset(self.hostingView.bounds, 15, 15);
+    [self.hostingView addSubview:self.albumSelectionMenuNavigationController.view];
+    [navigationView addSubview:self.hostingView];
+    self.hostingView.frame = (CGRect) {
+        CGPointMake(0, navigationView.frame.size.height),
+        self.hostingView.frame.size
+    };
+    self.hostingView.center = CGPointMake(navigationView.center.x, self.hostingView.center.y);
+
+    [UIView animateWithDuration:0.5
+                          delay:0.1
+         usingSpringWithDamping:0.8
+          initialSpringVelocity:0.1
+                        options:0
+                     animations:^{
+                         self.hostingView.center = self.view.center;
+                     } completion:nil];
 }
 
 - (IBAction)menuButtonTapped:(UIBarButtonItem *)sender;
 {
     
+}
+
+- (void)albumSelectionMenuViewControllerdidTapDismissButton {
+    [UIView animateWithDuration:0.7
+                          delay:0.1
+         usingSpringWithDamping:0.8
+          initialSpringVelocity:0.1
+                        options:0
+                     animations:^{
+                         CGPoint newCenter = CGPointMake(0, 1000);
+                         self.hostingView.center = newCenter;
+                     } completion:nil];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
@@ -341,6 +398,5 @@ static NSString * const reuseIdentifier = @"photo";
         [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
     }
 }
-
 
 @end

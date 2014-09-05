@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FTFPopoverContentViewController : UITableViewController
+@protocol FTFAlbumSelectionMenuViewControllerDelegate <NSObject>
+
+- (void)albumSelectionMenuViewControllerdidTapDismissButton;
+
+@end
+
+@interface FTFAlbumSelectionMenuViewController : UITableViewController
+
+@property (nonatomic, weak) id <FTFAlbumSelectionMenuViewControllerDelegate> delegate;
 
 @property (nonatomic, strong) NSArray *weeklySubmissions;
 @property (nonatomic, strong) NSArray *photoWalks;

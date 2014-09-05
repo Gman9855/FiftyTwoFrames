@@ -10,6 +10,8 @@
 
 @interface FTFPhotoBrowserViewController : MWPhotoBrowser
 
+@property (nonatomic, assign) NSInteger selectedPhotoIndex;
 @property (nonatomic, strong) NSArray *albumPhotos;
+@property (nonatomic, strong) NSArray *browserPhotos;
 
 @end

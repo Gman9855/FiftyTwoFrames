@@ -9,10 +9,8 @@
 /* Begin PBXBuildFile section */
 		8B12265019B2DE9700FBFE4E /* FTFPhotoContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */; };
 		8B12265319B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */; };
-		8B12265619B7027400FBFE4E /* FTFFacebookLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12265519B7027400FBFE4E /* FTFFacebookLikeButton.m */; };
 		8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */; };
 		8B20E9E21992084C0074E66B /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B20E9E11992084C0074E66B /* libc++.1.dylib */; };
-		8B451D49197E629B005D7159 /* pic.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D48197E629B005D7159 /* pic.jpg */; };
 		8B451D4B197ECD55005D7159 /* calendar-128.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D4A197ECD55005D7159 /* calendar-128.png */; };
 		8B451D531981B9B4005D7159 /* FTFAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D521981B9B4005D7159 /* FTFAlbum.m */; };
 		8B451D561981C046005D7159 /* FTFAlbumCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D551981C046005D7159 /* FTFAlbumCollection.m */; };
@@ -24,7 +22,6 @@
 		8B6458C2194D0BE6006D4B75 /* FTFImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6458C1194D0BE6006D4B75 /* FTFImage.m */; };
 		8B855F48194BA6F0008D06CE /* Facebook_like_button_thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B855F47194BA6F0008D06CE /* Facebook_like_button_thumb.png */; };
 		8B855F4A194BB18D008D06CE /* messageIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B855F49194BB18D008D06CE /* messageIcon.png */; };
-		8BA2A6E7194D791900341260 /* FTFPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA2A6E6194D791900341260 /* FTFPhotoViewController.m */; };
 		8BA2A6ED194E12E600341260 /* WYPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA2A6EA194E12E600341260 /* WYPopoverController.m */; };
 		8BA2A6EE194E12E600341260 /* WYStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA2A6EC194E12E600341260 /* WYStoryboardPopoverSegue.m */; };
 		8BA2A6F3194E20E700341260 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA2A6F2194E20E700341260 /* QuartzCore.framework */; };
@@ -72,7 +69,8 @@
 		8BA8798619675FF400A43819 /* UIImage+WebP.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8797519675FF400A43819 /* UIImage+WebP.m */; };
 		8BA8798719675FF400A43819 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8797719675FF400A43819 /* UIImageView+HighlightedWebCache.m */; };
 		8BA8798819675FF400A43819 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8797919675FF400A43819 /* UIImageView+WebCache.m */; };
-		8BC32592197B71D4002A17AC /* FTFPopoverContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC32590197B71D4002A17AC /* FTFPopoverContentViewController.m */; };
+		8BAC031319B83CF400451615 /* FiftyTwoFrames.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAC031219B83CF400451615 /* FiftyTwoFrames.m */; };
+		8BC32592197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC32590197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m */; };
 		8BC9388A193C1C8300418F32 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC93889193C1C8300418F32 /* Foundation.framework */; };
 		8BC9388C193C1C8300418F32 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC9388B193C1C8300418F32 /* CoreGraphics.framework */; };
 		8BC9388E193C1C8300418F32 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC9388D193C1C8300418F32 /* UIKit.framework */; };
@@ -116,12 +114,9 @@
 		8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoContainerViewController.m; sourceTree = "<group>"; };
 		8B12265119B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FTFImage+MWPhotoAdditions.h"; sourceTree = "<group>"; };
 		8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FTFImage+MWPhotoAdditions.m"; sourceTree = "<group>"; };
-		8B12265419B7027400FBFE4E /* FTFFacebookLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFFacebookLikeButton.h; sourceTree = "<group>"; };
-		8B12265519B7027400FBFE4E /* FTFFacebookLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFFacebookLikeButton.m; sourceTree = "<group>"; };
 		8B20E98B198CA1920074E66B /* FTFYearPopoverTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFYearPopoverTableViewController.h; sourceTree = "<group>"; };
 		8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFYearPopoverTableViewController.m; sourceTree = "<group>"; };
 		8B20E9E11992084C0074E66B /* libc++.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.1.dylib"; path = "usr/lib/libc++.1.dylib"; sourceTree = SDKROOT; };
-		8B451D48197E629B005D7159 /* pic.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = pic.jpg; path = ../../../../Downloads/pic.jpg; sourceTree = "<group>"; };
 		8B451D4A197ECD55005D7159 /* calendar-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar-128.png"; sourceTree = "<group>"; };
 		8B451D511981B9B4005D7159 /* FTFAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbum.h; sourceTree = "<group>"; };
 		8B451D521981B9B4005D7159 /* FTFAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbum.m; sourceTree = "<group>"; };
@@ -137,8 +132,6 @@
 		8B6458C1194D0BE6006D4B75 /* FTFImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFImage.m; sourceTree = "<group>"; };
 		8B855F47194BA6F0008D06CE /* Facebook_like_button_thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Facebook_like_button_thumb.png; sourceTree = "<group>"; };
 		8B855F49194BB18D008D06CE /* messageIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = messageIcon.png; sourceTree = "<group>"; };
-		8BA2A6E5194D791900341260 /* FTFPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoViewController.h; sourceTree = "<group>"; };
-		8BA2A6E6194D791900341260 /* FTFPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoViewController.m; sourceTree = "<group>"; };
 		8BA2A6E9194E12E600341260 /* WYPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPopoverController.h; sourceTree = "<group>"; };
 		8BA2A6EA194E12E600341260 /* WYPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPopoverController.m; sourceTree = "<group>"; };
 		8BA2A6EB194E12E600341260 /* WYStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYStoryboardPopoverSegue.h; sourceTree = "<group>"; };
@@ -232,10 +225,12 @@
 		8BA8797719675FF400A43819 /* UIImageView+HighlightedWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+HighlightedWebCache.m"; sourceTree = "<group>"; };
 		8BA8797819675FF400A43819 /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		8BA8797919675FF400A43819 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
+		8BAC031119B83CF400451615 /* FiftyTwoFrames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FiftyTwoFrames.h; sourceTree = "<group>"; };
+		8BAC031219B83CF400451615 /* FiftyTwoFrames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FiftyTwoFrames.m; sourceTree = "<group>"; };
 		8BC3258C1979C420002A17AC /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		8BC3258D1979C420002A17AC /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		8BC32590197B71D4002A17AC /* FTFPopoverContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPopoverContentViewController.m; sourceTree = "<group>"; };
-		8BC32591197B71D4002A17AC /* FTFPopoverContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPopoverContentViewController.h; sourceTree = "<group>"; };
+		8BC32590197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbumSelectionMenuViewController.m; sourceTree = "<group>"; };
+		8BC32591197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbumSelectionMenuViewController.h; sourceTree = "<group>"; };
 		8BC93886193C1C8300418F32 /* FiftyTwoFrames.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FiftyTwoFrames.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BC93889193C1C8300418F32 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8BC9388B193C1C8300418F32 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -308,6 +303,8 @@
 		8B451D50198178C0005D7159 /* Model Objects */ = {
 			isa = PBXGroup;
 			children = (
+				8BAC031119B83CF400451615 /* FiftyTwoFrames.h */,
+				8BAC031219B83CF400451615 /* FiftyTwoFrames.m */,
 				8B451D541981C046005D7159 /* FTFAlbumCollection.h */,
 				8B451D551981C046005D7159 /* FTFAlbumCollection.m */,
 				8B451D511981B9B4005D7159 /* FTFAlbum.h */,
@@ -560,15 +557,10 @@
 				8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */,
 				8BCB4C001993F31700B9C751 /* FTFPhotoBrowserViewController.h */,
 				8BCB4C011993F31700B9C751 /* FTFPhotoBrowserViewController.m */,
-				8B12265419B7027400FBFE4E /* FTFFacebookLikeButton.h */,
-				8B12265519B7027400FBFE4E /* FTFFacebookLikeButton.m */,
 				8BCB4C061995777000B9C751 /* FTFPhotoCommentTableViewCell.h */,
 				8BCB4C071995777000B9C751 /* FTFPhotoCommentTableViewCell.m */,
 				8BCB4C031994692F00B9C751 /* FTFPhotoCommentsViewController.h */,
 				8BCB4C041994692F00B9C751 /* FTFPhotoCommentsViewController.m */,
-				8BA2A6E5194D791900341260 /* FTFPhotoViewController.h */,
-				8BA2A6E6194D791900341260 /* FTFPhotoViewController.m */,
-				8B451D48197E629B005D7159 /* pic.jpg */,
 				8BD200281975018A00F9F347 /* Album List VC */,
 				8BC938D71940593400418F32 /* FTFFacebookLoginViewController.h */,
 				8BC938D81940593400418F32 /* FTFFacebookLoginViewController.m */,
@@ -618,8 +610,8 @@
 		8BD200281975018A00F9F347 /* Album List VC */ = {
 			isa = PBXGroup;
 			children = (
-				8BC32591197B71D4002A17AC /* FTFPopoverContentViewController.h */,
-				8BC32590197B71D4002A17AC /* FTFPopoverContentViewController.m */,
+				8BC32591197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.h */,
+				8BC32590197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m */,
 				8B20E98B198CA1920074E66B /* FTFYearPopoverTableViewController.h */,
 				8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */,
 			);
@@ -722,7 +714,6 @@
 				8BD200211974B40200F9F347 /* info-3.png in Resources */,
 				8B645881194CD614006D4B75 /* thumbnails-1.png in Resources */,
 				8BA2A6F7194E5E5300341260 /* Very-Basic-Cancel-icon.png in Resources */,
-				8B451D49197E629B005D7159 /* pic.jpg in Resources */,
 				8BD2001F1974B3B700F9F347 /* info-2.png in Resources */,
 				8BA8795619674E6A00A43819 /* MWPhotoBrowser.bundle in Resources */,
 			);
@@ -776,12 +767,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BA2A6E7194D791900341260 /* FTFPhotoViewController.m in Sources */,
 				8BA8793219674E6A00A43819 /* MWTapDetectingImageView.m in Sources */,
 				8BA8794219674E6A00A43819 /* PSTGridLayoutItem.m in Sources */,
 				8BA8793619674E6A00A43819 /* MBProgressHUD.m in Sources */,
 				8BA8797D19675FF400A43819 /* SDWebImageCompat.m in Sources */,
-				8B12265619B7027400FBFE4E /* FTFFacebookLikeButton.m in Sources */,
 				8BC938D219400B5A00418F32 /* FTFTableViewCell.m in Sources */,
 				8BA8793C19674E6A00A43819 /* PSTCollectionViewData.m in Sources */,
 				8BA8798319675FF400A43819 /* UIButton+WebCache.m in Sources */,
@@ -802,6 +791,7 @@
 				8BA8798619675FF400A43819 /* UIImage+WebP.m in Sources */,
 				8BA8794319674E6A00A43819 /* PSTGridLayoutRow.m in Sources */,
 				8BA8798019675FF400A43819 /* SDWebImageDownloaderOperation.m in Sources */,
+				8BAC031319B83CF400451615 /* FiftyTwoFrames.m in Sources */,
 				8BA2A6EE194E12E600341260 /* WYStoryboardPopoverSegue.m in Sources */,
 				8BA8797A19675FF400A43819 /* MKAnnotationView+WebCache.m in Sources */,
 				8BC938DC194529EB00418F32 /* FTFContainerViewController.m in Sources */,
@@ -810,7 +800,7 @@
 				8BA8798719675FF400A43819 /* UIImageView+HighlightedWebCache.m in Sources */,
 				8BA8793419674E6A00A43819 /* MWZoomingScrollView.m in Sources */,
 				8B6458C2194D0BE6006D4B75 /* FTFImage.m in Sources */,
-				8BC32592197B71D4002A17AC /* FTFPopoverContentViewController.m in Sources */,
+				8BC32592197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m in Sources */,
 				8BA8793D19674E6A00A43819 /* PSTCollectionViewFlowLayout.m in Sources */,
 				8BA8792E19674E6A00A43819 /* MWGridCell.m in Sources */,
 				8BA8793E19674E6A00A43819 /* PSTCollectionViewItemKey.m in Sources */,

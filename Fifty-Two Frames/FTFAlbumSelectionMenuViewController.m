@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Gershy Lev. All rights reserved.
 //
 
-#import "FTFPopoverContentViewController.h"
+#import "FTFAlbumSelectionMenuViewController.h"
 #import "WYPopoverController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "MBProgressHUD.h"
@@ -14,7 +14,7 @@
 #import "FTFYearPopoverTableViewController.h"
 
 
-@interface FTFPopoverContentViewController ()
+@interface FTFAlbumSelectionMenuViewController ()
 
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
@@ -26,7 +26,7 @@
 
 static NSString * const reuseIdentifier = @"reuseIdentifier";
 
-@implementation FTFPopoverContentViewController
+@implementation FTFAlbumSelectionMenuViewController
 
 - (FTFYearPopoverTableViewController *)yearPopoverTableViewController {
     if (!_yearPopoverTableViewController) {
@@ -68,6 +68,8 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationController.view.layer.cornerRadius = 10;
+    self.navigationController.view.layer.masksToBounds = YES;
     [self setUpNoAlbumsForYearLabel];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 //    UIImageView *tempImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pic.jpg"]];
@@ -88,7 +90,8 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 }
 
 - (IBAction)dismissButtonTapped:(UIBarButtonItem *)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.delegate albumSelectionMenuViewControllerdidTapDismissButton];
+//    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)segmentedControlTapped:(UISegmentedControl *)sender {

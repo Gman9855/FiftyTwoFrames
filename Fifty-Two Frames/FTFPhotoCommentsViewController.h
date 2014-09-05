@@ -10,7 +10,7 @@
 
 @protocol FTFPhotoCommentsViewControllerDelegate <NSObject>
 
-- (void)dismissPhotoCommentsViewController;
+- (void)photoCommentsViewControllerDidTapDoneButton;
 
 @end
 

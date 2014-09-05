@@ -28,6 +28,14 @@
     return self;
 }
 
+- (NSURL *)largePhotoURL {
+    return self.imageURLs[FTFImageSizeLarge];
+}
+
+- (NSURL *)smallPhotoURL {
+    return self.imageURLs[FTFImageSizeSmall];
+}
+
 - (NSURL *)imageURLWithSize:(FTFImageSize)size;
 {
     if(size >= self.imageURLs.count) {
@@ -72,10 +80,6 @@
 
 - (NSArray *)imageURLs {
     return _imageURLs;
-}
-
-- (NSURL *)largePhotoURL {
-    return self.imageURLs[FTFImageSizeLarge];
 }
 
 @end
