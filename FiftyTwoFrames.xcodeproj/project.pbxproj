@@ -70,6 +70,10 @@
 		8BA8798719675FF400A43819 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8797719675FF400A43819 /* UIImageView+HighlightedWebCache.m */; };
 		8BA8798819675FF400A43819 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8797919675FF400A43819 /* UIImageView+WebCache.m */; };
 		8BAC031319B83CF400451615 /* FiftyTwoFrames.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAC031219B83CF400451615 /* FiftyTwoFrames.m */; };
+		8BAC031719BAFE2C00451615 /* UIBarButtonItemGrid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BAC031619BAFE2C00451615 /* UIBarButtonItemGrid@2x.png */; };
+		8BAC031A19BB7C0F00451615 /* FTFPhotoCollectionGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAC031919BB7C0F00451615 /* FTFPhotoCollectionGridViewController.m */; };
+		8BAC031D19BBD3F700451615 /* FTFCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAC031C19BBD3F700451615 /* FTFCollectionViewCell.m */; };
+		8BAC032319BBE71D00451615 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BAC032219BBE71D00451615 /* placeholder.png */; };
 		8BC32592197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC32590197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m */; };
 		8BC9388A193C1C8300418F32 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC93889193C1C8300418F32 /* Foundation.framework */; };
 		8BC9388C193C1C8300418F32 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC9388B193C1C8300418F32 /* CoreGraphics.framework */; };
@@ -227,6 +231,12 @@
 		8BA8797919675FF400A43819 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		8BAC031119B83CF400451615 /* FiftyTwoFrames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FiftyTwoFrames.h; sourceTree = "<group>"; };
 		8BAC031219B83CF400451615 /* FiftyTwoFrames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FiftyTwoFrames.m; sourceTree = "<group>"; };
+		8BAC031619BAFE2C00451615 /* UIBarButtonItemGrid@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIBarButtonItemGrid@2x.png"; path = "MWPhotoBrowser.bundle/images/UIBarButtonItemGrid@2x.png"; sourceTree = "<group>"; };
+		8BAC031819BB7C0F00451615 /* FTFPhotoCollectionGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoCollectionGridViewController.h; sourceTree = "<group>"; };
+		8BAC031919BB7C0F00451615 /* FTFPhotoCollectionGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoCollectionGridViewController.m; sourceTree = "<group>"; };
+		8BAC031B19BBD3F700451615 /* FTFCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFCollectionViewCell.h; sourceTree = "<group>"; };
+		8BAC031C19BBD3F700451615 /* FTFCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFCollectionViewCell.m; sourceTree = "<group>"; };
+		8BAC032219BBE71D00451615 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
 		8BC3258C1979C420002A17AC /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		8BC3258D1979C420002A17AC /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		8BC32590197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbumSelectionMenuViewController.m; sourceTree = "<group>"; };
@@ -322,6 +332,8 @@
 		8B6458B9194CDE88006D4B75 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8BAC032219BBE71D00451615 /* placeholder.png */,
+				8BAC031619BAFE2C00451615 /* UIBarButtonItemGrid@2x.png */,
 				8B451D4A197ECD55005D7159 /* calendar-128.png */,
 				8BA2A6F6194E5E5300341260 /* Very-Basic-Cancel-icon.png */,
 				8BC938DF1946BD2000418F32 /* facebook-login.png */,
@@ -549,6 +561,10 @@
 				8BC93898193C1C8300418F32 /* FTFAppDelegate.h */,
 				8BC93899193C1C8300418F32 /* FTFAppDelegate.m */,
 				8BC9389B193C1C8300418F32 /* Main.storyboard */,
+				8BAC031819BB7C0F00451615 /* FTFPhotoCollectionGridViewController.h */,
+				8BAC031919BB7C0F00451615 /* FTFPhotoCollectionGridViewController.m */,
+				8BAC031B19BBD3F700451615 /* FTFCollectionViewCell.h */,
+				8BAC031C19BBD3F700451615 /* FTFCollectionViewCell.m */,
 				8BC938DA194529EB00418F32 /* FTFContainerViewController.h */,
 				8BC938DB194529EB00418F32 /* FTFContainerViewController.m */,
 				8BC938CD193CE3EF00418F32 /* FTFContentTableViewController.h */,
@@ -701,6 +717,7 @@
 				8B451D4B197ECD55005D7159 /* calendar-128.png in Resources */,
 				8BC938A2193C1C8300418F32 /* Images.xcassets in Resources */,
 				8B645883194CD632006D4B75 /* list.png in Resources */,
+				8BAC032319BBE71D00451615 /* placeholder.png in Resources */,
 				8BC938E01946BD2000418F32 /* facebook-login.png in Resources */,
 				8B855F48194BA6F0008D06CE /* Facebook_like_button_thumb.png in Resources */,
 				8B645885194CD64D006D4B75 /* gear.png in Resources */,
@@ -712,6 +729,7 @@
 				8BC9389D193C1C8300418F32 /* Main.storyboard in Resources */,
 				8BA8794619674E6A00A43819 /* README.md in Resources */,
 				8BD200211974B40200F9F347 /* info-3.png in Resources */,
+				8BAC031719BAFE2C00451615 /* UIBarButtonItemGrid@2x.png in Resources */,
 				8B645881194CD614006D4B75 /* thumbnails-1.png in Resources */,
 				8BA2A6F7194E5E5300341260 /* Very-Basic-Cancel-icon.png in Resources */,
 				8BD2001F1974B3B700F9F347 /* info-2.png in Resources */,
@@ -812,6 +830,7 @@
 				8BA8793A19674E6A00A43819 /* PSTCollectionViewCell.m in Sources */,
 				8BC938D91940593400418F32 /* FTFFacebookLoginViewController.m in Sources */,
 				8BCB4BF719931B7E00B9C751 /* FTFPhotoComment.m in Sources */,
+				8BAC031D19BBD3F700451615 /* FTFCollectionViewCell.m in Sources */,
 				8BA2A6F5194E226D00341260 /* FTFContentTableViewController.m in Sources */,
 				8BA8797F19675FF400A43819 /* SDWebImageDownloader.m in Sources */,
 				8BA8793319674E6A00A43819 /* MWTapDetectingView.m in Sources */,
@@ -825,6 +844,7 @@
 				8BA8798519675FF400A43819 /* UIImage+MultiFormat.m in Sources */,
 				8BA8793B19674E6A00A43819 /* PSTCollectionViewController.m in Sources */,
 				8B12265319B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m in Sources */,
+				8BAC031A19BB7C0F00451615 /* FTFPhotoCollectionGridViewController.m in Sources */,
 				8BA8792D19674E6A00A43819 /* MWCaptionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

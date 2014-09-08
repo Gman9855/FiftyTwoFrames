@@ -11,6 +11,6 @@
 
 @interface FTFImage (MWPhotoAdditions)
 
-@property (nonatomic, strong, readonly) MWPhoto *browserPhoto;
+- (MWPhoto *)browserPhotoWithSize:(FTFImageSize)size;
 
 @end

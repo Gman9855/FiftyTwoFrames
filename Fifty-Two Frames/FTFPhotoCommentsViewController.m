@@ -25,11 +25,18 @@ CGRect tableViewFrame;
 - (void)setPhotoComments:(NSArray *)photoComments {
     _photoComments = photoComments;
     [self.tableView reloadData];
+    if (_photoComments.count) {
+        NSIndexPath *firstIndexInTableView = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self.tableView scrollToRowAtIndexPath:firstIndexInTableView
+                              atScrollPosition:UITableViewScrollPositionBottom
+                                      animated:NO];
+    }
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
     self.navigationController.view.layer.cornerRadius = 10;
     self.navigationController.view.layer.masksToBounds = YES;
     self.tableView.delegate = self;
@@ -49,6 +56,11 @@ CGRect tableViewFrame;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    [self animateTextField:textField up:YES];
+    CGRect frame = CGRectMake(0, 205, self.tableView.frame.size.width, self.tableView.frame.size.height - 205);
+    self.tableView.frame = frame;
+    self.view.layer.cornerRadius = 10;
+    self.view.layer.masksToBounds = YES;
     NSArray *visibleCells = [self.tableView visibleCells];
     FTFPhotoCommentTableViewCell *bottomCell = [visibleCells lastObject];
     FTFPhotoComment *bottomComment = [self.photoComments lastObject];
@@ -56,11 +68,6 @@ CGRect tableViewFrame;
         NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:[self.photoComments count] - 1];
         [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
-    CGRect frame = CGRectMake(0, 205, self.tableView.frame.size.width, self.tableView.frame.size.height - 205);
-    self.tableView.frame = frame;
-    [self animateTextField:textField up:YES];
-    self.view.layer.cornerRadius = 10;
-    self.view.layer.masksToBounds = YES;
 }
 
 
@@ -101,6 +108,11 @@ CGRect tableViewFrame;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
 }
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return 50; // you can have your own choice, of course
+//}
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {

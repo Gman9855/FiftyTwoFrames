@@ -91,7 +91,6 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 
 - (IBAction)dismissButtonTapped:(UIBarButtonItem *)sender {
     [self.delegate albumSelectionMenuViewControllerdidTapDismissButton];
-//    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)segmentedControlTapped:(UISegmentedControl *)sender {
@@ -144,8 +143,9 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     FTFAlbum *album = self.selectedAlbumCollection[indexPath.row];
     NSDictionary *selectedAlbum = [NSDictionary dictionaryWithObjectsAndKeys:album, @"selectedAlbum", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"albumSelectedNotification"
-                      object:self
-                    userInfo:selectedAlbum];
+                                                        object:self
+                                                      userInfo:selectedAlbum];
+    [self dismissButtonTapped:nil];
 }
 
 #pragma Year Popover

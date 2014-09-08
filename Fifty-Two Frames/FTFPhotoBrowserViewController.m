@@ -49,9 +49,7 @@
         self.zoomPhotosToFill = NO;
         self.displayNavArrows = YES;
         self.hideControlsWhenDragging = NO;
-        self.enableGrid = YES;
-        
-        //    UIBarButtonItem *fbLikeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Facebook_like_button_thumb.png"] style:UIBarButtonItemStylePlain target:self action:@selector(fbLikeButtonTapped)];
+
         UIBarButtonItem *fbCommentsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"messageIcon.png"] style:UIBarButtonItemStylePlain target:self action:@selector(fbCommentsButtonTapped)];
         
         self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Facebook_like_button_thumb.png"]];
@@ -148,8 +146,8 @@
           initialSpringVelocity:0.1
                         options:0
                      animations:^{
-                         CGPoint newCenter = CGPointMake(0, 1000);
-                         self.hostingView.center = newCenter;
+                         CGRect newRectLocation = CGRectMake(self.hostingView.frame.origin.x, 1000, self.hostingView.frame.size.width, self.hostingView.frame.size.height);
+                         self.hostingView.frame = newRectLocation;
                    } completion:nil];
 }
 

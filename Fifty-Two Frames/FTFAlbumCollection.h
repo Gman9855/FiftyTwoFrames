@@ -20,6 +20,7 @@ typedef enum {
 - (instancetype)initWithAlbums:(NSArray *)albums;  // initializes with FTFAlbum's
 
 - (NSArray *)albumsForCategory:(FTFAlbumCollectionCategory)collectionCategory;
-- (NSArray *)retrieveAllPhotoAlbums;
+
+@property (nonatomic, readonly, strong) NSArray *albums;
 
 @end

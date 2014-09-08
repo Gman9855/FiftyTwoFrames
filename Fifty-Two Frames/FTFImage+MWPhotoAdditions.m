@@ -10,9 +10,9 @@
 
 @implementation FTFImage (MWPhotoAdditions)
 
-- (MWPhoto *)browserPhoto {
-    NSURL *largePhotoURL = self.largePhotoURL;
-    MWPhoto *photo = [MWPhoto photoWithURL:largePhotoURL];
+- (MWPhoto *)browserPhotoWithSize:(FTFImageSize)size {
+    NSArray *largeAndSmallURLs = @[self.largePhotoURL, self.smallPhotoURL];
+    MWPhoto *photo = [MWPhoto photoWithURL:largeAndSmallURLs[size]];
     if (![self.photoDescription isEqual:[NSNull null]]) {
         photo.caption = self.photoDescription;
     }

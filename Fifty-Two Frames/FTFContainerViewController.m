@@ -9,7 +9,6 @@
 #import "FTFContainerViewController.h"
 #import "FTFContentTableViewController.h"
 #import "FTFFacebookLoginViewController.h"
-#import <FacebookSDK/FacebookSDK.h>
 
 @interface FTFContainerViewController ()
 
@@ -102,23 +101,6 @@
             [self.view addSubview:newViewController.view];
         }
     }
-    [self requestAlbumDataFromFacebook];
-}
-
-- (void)requestAlbumDataFromFacebook {
-    [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(10000).fields(name)"
-                                 parameters:nil
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              /* handle the result */
-                              [[NSNotificationCenter defaultCenter] postNotificationName:@"albumDataReceivedFromFacebookNotification"
-                                                                                  object:self
-                                                                                userInfo:result];
-                          }];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;

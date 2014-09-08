@@ -31,7 +31,7 @@
 //        _photoBrowserViewController = [[FTFPhotoBrowserViewController alloc] initWithDelegate:self];
         _photosForUseInBrowser = [NSMutableArray new];
         for (FTFImage *image in albumPhotos) {
-            [_photosForUseInBrowser addObject:image.browserPhoto];
+            [_photosForUseInBrowser addObject:[image browserPhotoWithSize:FTFImageSizeLarge]];
         }
         [_photoBrowserViewController setCurrentPhotoIndex:index];
     }
