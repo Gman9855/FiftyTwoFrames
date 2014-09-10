@@ -15,6 +15,7 @@
 #import "FiftyTwoFrames.h"
 #import "UIImageView+WebCache.h"
 #import "FTFAlbumSelectionMenuTableViewCell.h"
+#import "FTFAlbumCollection.h"
 
 
 @interface FTFAlbumSelectionMenuViewController ()
@@ -48,7 +49,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     return self;
 }
 
-- (void)setSelectedAlbumCollection:(NSArray *)selectedAlbumCollection {
+- (void)setSelectedAlbumCollection:(FTFAlbumCollection *)selectedAlbumCollection {
     _selectedAlbumCollection = selectedAlbumCollection;
     
     [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -63,7 +64,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     self.noAlbumslabel.hidden = YES;
     [self.tableView reloadData];
 
-    if (![_selectedAlbumCollection count]) {
+    if (!_selectedAlbumCollection.albums.count) {
         self.noAlbumslabel.center = [self.view convertPoint:self.view.center fromView:self.view.superview];
         self.noAlbumslabel.alpha = 0.0;
         self.noAlbumslabel.hidden = NO;
@@ -72,7 +73,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
         }];
     } else {
         NSIndexPath *topRowOfTableView = [NSIndexPath indexPathForRow:0 inSection:0];
-        if (_selectedAlbumCollection.count) {
+        if (_selectedAlbumCollection.albums.count) {
             [self.tableView scrollToRowAtIndexPath:topRowOfTableView
                                   atScrollPosition:UITableViewScrollPositionTop
                                           animated:YES];
@@ -104,7 +105,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
                                             selector:@selector(yearChanged:)
                                                 name:@"yearSelectedNotification"
                                               object:nil];
-    if (![self.weeklySubmissions count]) {
+    if (!self.weeklySubmissions.albums.count) {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     }
 }
@@ -125,9 +126,11 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
                                         fromAlbumCollection:allAlbumCollections[sender.selectedSegmentIndex]];
 }
 
-- (NSArray *)albumsForGivenYear:(NSString *)year fromAlbumCollection:(NSArray *)albumCollection {
+- (FTFAlbumCollection *)albumsForGivenYear:(NSString *)year fromAlbumCollection:(FTFAlbumCollection *)albumCollection {
     NSPredicate *yearPredicate = [NSPredicate predicateWithFormat:@"(yearCreated = %@)", year];
-    return [albumCollection filteredArrayUsingPredicate:yearPredicate];
+    NSArray *filteredAlbums = [albumCollection.albums filteredArrayUsingPredicate:yearPredicate];
+    FTFAlbumCollection *filteredCollection = [[FTFAlbumCollection alloc] initWithAlbums:filteredAlbums andCollectionCategory:FTFAlbumCollectionCategoryCustom];
+    return filteredCollection;
 }
 
 - (void)yearChanged:(NSNotification *)notification {
@@ -150,13 +153,13 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.selectedAlbumCollection count];
+    return self.selectedAlbumCollection.albums.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     FTFAlbumSelectionMenuTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-    FTFAlbum *album = self.selectedAlbumCollection[indexPath.row];
+    FTFAlbum *album = self.selectedAlbumCollection.albums[indexPath.row];
     cell.albumName.text = album.name;
     [cell.albumThumbnail setImageWithURL:album.coverPhotoURL
                         placeholderImage:[UIImage imageNamed:@"placeholder"]];
@@ -165,7 +168,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    FTFAlbum *album = self.selectedAlbumCollection[indexPath.row];
+    FTFAlbum *album = self.selectedAlbumCollection.albums[indexPath.row];
     NSDictionary *selectedAlbum = [NSDictionary dictionaryWithObjectsAndKeys:album, @"selectedAlbum", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"albumSelectedNotification"
                                                         object:self
@@ -190,9 +193,9 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
                                           options:WYPopoverAnimationOptionFadeWithScale];
 }
 
-- (NSArray *)allYearsFromAlbumCollection:(NSArray *)albumCollection {
+- (NSArray *)allYearsFromAlbumCollection:(FTFAlbumCollection *)albumCollection {
     NSMutableArray *years = [NSMutableArray new];
-    for (FTFAlbum *album in albumCollection) {
+    for (FTFAlbum *album in albumCollection.albums) {
         [years addObject:album.yearCreated];
     }
     NSOrderedSet *yearsSet = [NSOrderedSet orderedSetWithArray:years];

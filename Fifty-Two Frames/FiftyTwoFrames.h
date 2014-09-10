@@ -9,13 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "FTFImage.h"
 
-@class FTFAlbumCollection;
+@class FTFAlbumCategoryCollection;
 
 @interface FiftyTwoFrames : NSObject
 
 + (instancetype)sharedInstance;
 
-- (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCollection *, NSError *))block;
+- (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCategoryCollection *, NSError *))block;
 
 - (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID
                                         limit:(NSInteger)limit

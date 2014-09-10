@@ -12,15 +12,14 @@ typedef enum {
     FTFAlbumCollectionCategoryWeeklyThemes,
     FTFAlbumCollectionCategoryPhotoWalks,
     FTFAlbumCollectionCategoryMiscellaneous,
-    FTFAlbumCollectionCategoryAll
+    FTFAlbumCollectionCategoryCustom
 } FTFAlbumCollectionCategory;
 
 @interface FTFAlbumCollection : NSObject
 
-- (instancetype)initWithAlbums:(NSArray *)albums;  // initializes with FTFAlbum's
+- (instancetype)initWithAlbums:(NSArray *)albums andCollectionCategory:(FTFAlbumCollectionCategory)collectionCategory;  // initializes with FTFAlbum's
 
-- (NSArray *)albumsForCategory:(FTFAlbumCollectionCategory)collectionCategory;
-
+@property (nonatomic, readonly) FTFAlbumCollectionCategory collectionCategory;
 @property (nonatomic, readonly, strong) NSArray *albums;
 
 @end

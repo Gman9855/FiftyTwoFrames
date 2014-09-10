@@ -21,6 +21,7 @@
 #import "FTFImage+MWPhotoAdditions.h"
 #import "FTFPhotoCollectionGridViewController.h"
 #import "FiftyTwoFrames.h"
+#import "FTFAlbumCategoryCollection.h"
 
 @interface FTFContentTableViewController () <UINavigationControllerDelegate, MWPhotoBrowserDelegate, FTFAlbumSelectionMenuViewControllerDelegate, FTFPhotoCollectionGridViewControllerDelegate>
 
@@ -28,11 +29,11 @@
 @property (nonatomic, strong) UINavigationController *albumSelectionMenuNavigationController;
 @property (nonatomic, strong) FTFPhotoBrowserViewController *photoBrowser;
 @property (nonatomic, strong) FTFPhotoCollectionGridViewController *photoGrid;
-@property (nonatomic, strong) FTFAlbumCollection *photoAlbumCollection;
+@property (nonatomic, strong) FTFAlbumCategoryCollection *photoAlbumCollection;
 @property (nonatomic, strong) FTFAlbum *albumToDisplay;
-@property (nonatomic, strong) NSArray *weeklyThemeAlbums;
-@property (nonatomic, strong) NSArray *photoWalksAlbums;
-@property (nonatomic, strong) NSArray *miscellaneousSubmissionsAlbums;
+@property (nonatomic, strong) FTFAlbumCollection *weeklyThemeAlbums;
+@property (nonatomic, strong) FTFAlbumCollection *photoWalksAlbums;
+@property (nonatomic, strong) FTFAlbumCollection *miscellaneousSubmissionsAlbums;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, strong) NSArray *browserPhotos;
 @property (nonatomic, strong) UILabel *navBarTitle;
@@ -101,7 +102,7 @@ BOOL albumSelectionChanged = NO;
     
     [self setUpActivityIndicator];
 
-    [[FiftyTwoFrames sharedInstance] requestAlbumCollectionWithCompletionBlock:^(FTFAlbumCollection *albumCollection,
+    [[FiftyTwoFrames sharedInstance] requestAlbumCollectionWithCompletionBlock:^(FTFAlbumCategoryCollection *albumCollection,
                                                                                  NSError *error) {
         if (error) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"There was an error loading this week's photos" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
@@ -146,19 +147,19 @@ BOOL albumSelectionChanged = NO;
 }
 
 - (void)retrievedAlbumCollection {
-    self.weeklyThemeAlbums = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
+    self.weeklyThemeAlbums = [self.photoAlbumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
     
     FTFAlbumSelectionMenuViewController *albumSelectionMenuVC = (FTFAlbumSelectionMenuViewController *)[self.albumSelectionMenuNavigationController topViewController];
-    albumSelectionMenuVC.weeklySubmissions = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
-    albumSelectionMenuVC.photoWalks = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryPhotoWalks];
-    albumSelectionMenuVC.miscellaneousAlbums = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryMiscellaneous];
+    albumSelectionMenuVC.weeklySubmissions = [self.photoAlbumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
+    albumSelectionMenuVC.photoWalks = [self.photoAlbumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryPhotoWalks];
+    albumSelectionMenuVC.miscellaneousAlbums = [self.photoAlbumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryMiscellaneous];
     
-    FTFAlbum *album = [self.weeklyThemeAlbums firstObject];
+    FTFAlbum *album = self.weeklyThemeAlbums.albums.firstObject;
     albumSelectionMenuVC.selectedAlbumCollection = [albumSelectionMenuVC albumsForGivenYear:album.yearCreated
                                           fromAlbumCollection:self.weeklyThemeAlbums];
     albumSelectionMenuVC.selectedAlbumYear = album.yearCreated;
     albumSelectionMenuVC.yearButton.title = album.yearCreated;
-    self.albumToDisplay = [self.weeklyThemeAlbums firstObject];
+    self.albumToDisplay = self.weeklyThemeAlbums.albums.firstObject;
     
     [[FiftyTwoFrames sharedInstance]requestAlbumPhotosForAlbumWithAlbumID:self.albumToDisplay.albumID
                                                                     limit:200
@@ -166,7 +167,6 @@ BOOL albumSelectionChanged = NO;
                                                               
             [self populateAlbumPhotosResultsWithPhotos:photos error:error];
     }];
-
 }
 
 - (void)albumSelectionChanged:(NSNotification *)notification {
@@ -409,12 +409,6 @@ BOOL albumSelectionChanged = NO;
 }
 
 - (IBAction)gridButtonTapped:(UIBarButtonItem *)sender {
-//    CATransition *transition = [CATransition animation];
-//    transition.duration = 0.5;
-//    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-//    transition.type = kCATransitionFade;
-//    transition.subtype = kCATransitionFade;
-//    [self.navigationController.view.layer addAnimation:transition forKey:nil];
     [self.navigationController pushViewController:self.photoGrid animated:YES];
 }
 

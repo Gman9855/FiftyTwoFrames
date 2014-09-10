@@ -10,6 +10,7 @@
 
 #import "FiftyTwoFrames.h"
 
+#import "FTFAlbumCategoryCollection.h"
 #import "FTFAlbumCollection.h"
 #import "FTFAlbum.h"
 #import "FTFPhotoComment.h"
@@ -29,11 +30,8 @@
 
 #pragma mark - Public Methods
 
-- (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCollection *, NSError *))block;
+- (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCategoryCollection *, NSError *))block;
 {
-//    "/180889155269546?fields=albums.limit(10000).fields(name,cover_photo)"
-    NSString *requestString = @"/180889155269546?fields=albums.limit(100){name,photos.limit(1)}";
-//    NSString *oldRequestString = @"/180889155269546?fields=albums.limit(10000).fields(name,cover_photo)";
     [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(10000).fields(name,photos.limit(1).fields(picture))"
                                  parameters:nil
                                  HTTPMethod:@"GET"
@@ -44,13 +42,13 @@
                                               ) {
                               /* handle the result */
                               if (block) {
-                                  FTFAlbumCollection *albumCollection = nil;
+                                  FTFAlbumCategoryCollection *albumCategoryCollection = nil;
                                   if (!error) {
                                       NSArray *albums = [self albumsWithAlbumResponseData:result];
-                                      albumCollection = [[FTFAlbumCollection alloc] initWithAlbums:albums];
+                                      albumCategoryCollection = [[FTFAlbumCategoryCollection alloc] initWithAlbumCollections:albums];
                                   }
                                   
-                                  block(albumCollection, error);
+                                  block(albumCategoryCollection, error);
                               } else {
                                   return;
                               }
@@ -164,7 +162,11 @@
         }
     }
     
-    return @[weeklyThemeAlbums, photoWalkAlbums, miscellaneousAlbums];
+    FTFAlbumCollection *weeklyThemeCollection = [[FTFAlbumCollection alloc] initWithAlbums:weeklyThemeAlbums andCollectionCategory:FTFAlbumCollectionCategoryWeeklyThemes];
+    FTFAlbumCollection *photoWalkCollection = [[FTFAlbumCollection alloc] initWithAlbums:photoWalkAlbums andCollectionCategory:FTFAlbumCollectionCategoryPhotoWalks];
+    FTFAlbumCollection *miscellaneousCollection = [[FTFAlbumCollection alloc] initWithAlbums:miscellaneousAlbums andCollectionCategory:FTFAlbumCollectionCategoryMiscellaneous];
+    
+    return @[weeklyThemeCollection, photoWalkCollection, miscellaneousCollection];
 }
 
 - (NSArray *)albumPhotosWithAlbumPhotoResponseData:(NSDictionary *)response {

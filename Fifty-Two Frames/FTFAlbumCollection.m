@@ -18,19 +18,12 @@
 
 @implementation FTFAlbumCollection
 
-- (instancetype)initWithAlbums:(NSArray *)albums {
+- (instancetype)initWithAlbums:(NSArray *)albums andCollectionCategory:(FTFAlbumCollectionCategory)collectionCategory{
     if (self = [super init]) {
         _albums = albums;
+        _collectionCategory = collectionCategory;
     }
     return self;
-}
-
-- (NSArray *)albumsForCategory:(FTFAlbumCollectionCategory)collectionCategory {
-    if (collectionCategory == FTFAlbumCollectionCategoryAll) {
-        return self.albums;
-    } else {
-        return self.albums[collectionCategory];
-    }
 }
 
 @end

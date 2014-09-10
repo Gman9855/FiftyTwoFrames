@@ -21,6 +21,7 @@
 		8B645885194CD64D006D4B75 /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B645884194CD64D006D4B75 /* gear.png */; };
 		8B6458BF194CFADC006D4B75 /* NSArray+FTFAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6458BE194CFADC006D4B75 /* NSArray+FTFAdditions.m */; };
 		8B6458C2194D0BE6006D4B75 /* FTFImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6458C1194D0BE6006D4B75 /* FTFImage.m */; };
+		8B7D033B19C0DF4D006839BF /* FTFAlbumCategoryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7D033A19C0DF4D006839BF /* FTFAlbumCategoryCollection.m */; };
 		8B855F48194BA6F0008D06CE /* Facebook_like_button_thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B855F47194BA6F0008D06CE /* Facebook_like_button_thumb.png */; };
 		8B855F4A194BB18D008D06CE /* messageIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B855F49194BB18D008D06CE /* messageIcon.png */; };
 		8BA2A6ED194E12E600341260 /* WYPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA2A6EA194E12E600341260 /* WYPopoverController.m */; };
@@ -137,6 +138,8 @@
 		8B6458BE194CFADC006D4B75 /* NSArray+FTFAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+FTFAdditions.m"; sourceTree = "<group>"; };
 		8B6458C0194D0BE6006D4B75 /* FTFImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFImage.h; sourceTree = "<group>"; };
 		8B6458C1194D0BE6006D4B75 /* FTFImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFImage.m; sourceTree = "<group>"; };
+		8B7D033919C0DF4D006839BF /* FTFAlbumCategoryCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbumCategoryCollection.h; sourceTree = "<group>"; };
+		8B7D033A19C0DF4D006839BF /* FTFAlbumCategoryCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbumCategoryCollection.m; sourceTree = "<group>"; };
 		8B855F47194BA6F0008D06CE /* Facebook_like_button_thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Facebook_like_button_thumb.png; sourceTree = "<group>"; };
 		8B855F49194BB18D008D06CE /* messageIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = messageIcon.png; sourceTree = "<group>"; };
 		8BA2A6E9194E12E600341260 /* WYPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPopoverController.h; sourceTree = "<group>"; };
@@ -318,6 +321,8 @@
 			children = (
 				8BAC031119B83CF400451615 /* FiftyTwoFrames.h */,
 				8BAC031219B83CF400451615 /* FiftyTwoFrames.m */,
+				8B7D033919C0DF4D006839BF /* FTFAlbumCategoryCollection.h */,
+				8B7D033A19C0DF4D006839BF /* FTFAlbumCategoryCollection.m */,
 				8B451D541981C046005D7159 /* FTFAlbumCollection.h */,
 				8B451D551981C046005D7159 /* FTFAlbumCollection.m */,
 				8B451D511981B9B4005D7159 /* FTFAlbum.h */,
@@ -826,6 +831,7 @@
 				8BC32592197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m in Sources */,
 				8B3994DE19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m in Sources */,
 				8BA8793D19674E6A00A43819 /* PSTCollectionViewFlowLayout.m in Sources */,
+				8B7D033B19C0DF4D006839BF /* FTFAlbumCategoryCollection.m in Sources */,
 				8BA8792E19674E6A00A43819 /* MWGridCell.m in Sources */,
 				8BA8793E19674E6A00A43819 /* PSTCollectionViewItemKey.m in Sources */,
 				8BA8798819675FF400A43819 /* UIImageView+WebCache.m in Sources */,
