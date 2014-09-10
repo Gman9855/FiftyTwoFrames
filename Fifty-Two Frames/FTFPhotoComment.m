@@ -44,7 +44,6 @@
                                   self.commenterProfilePictureURL = [[NSURL alloc] initWithString:[result valueForKeyPath:@"data.url"]];
                               }
                           }];
-    
 }
 
 - (void)requestCommenterProfilePictureWithCompletionBlock:(void(^)(UIImage *image, NSError *error))block
@@ -58,7 +57,10 @@
         return;
     }
     
-    [manager downloadWithURL:self.commenterProfilePictureURL options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+    [manager downloadWithURL:self.commenterProfilePictureURL
+                     options:0
+                    progress:nil
+                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
         if (finished && self.commenterProfilePictureURL) {
             [manager saveImageToCache:image forURL:self.commenterProfilePictureURL];
         }

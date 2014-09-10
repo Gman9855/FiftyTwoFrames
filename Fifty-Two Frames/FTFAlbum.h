@@ -13,6 +13,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *albumID;
 @property (nonatomic, strong) NSString *yearCreated;
+@property (nonatomic, strong) NSURL *coverPhotoURL;
 @property (nonatomic, strong) NSArray *photos;
 
 - (void)retrieveAlbumPhotos:(void(^)(NSArray *photos, NSError *error))block;

@@ -18,10 +18,14 @@
 - (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCollection *, NSError *))block;
 
 - (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID
+                                        limit:(NSInteger)limit
                                  completionBlock:(void(^)(NSArray *photos, NSError *error))block;
 
 - (void)requestPhotoWithPhotoURL:(NSURL *)photoURL
                 completionBlock:(void (^)(UIImage *image, NSError *error, BOOL isCached))block;
+
+- (void)requestAlbumCoverPhotoForAlbumCollection:(NSArray *)collection
+                                 completionBlock:(void (^)(NSArray *coverPhotos, NSError *error))block;
 
 - (void)publishPhotoLikeWithPhotoID:(NSString *)photoID
                     completionBlock:(void (^)(NSError *error))block;

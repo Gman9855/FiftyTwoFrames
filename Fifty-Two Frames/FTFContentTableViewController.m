@@ -25,6 +25,7 @@
 @interface FTFContentTableViewController () <UINavigationControllerDelegate, MWPhotoBrowserDelegate, FTFAlbumSelectionMenuViewControllerDelegate, FTFPhotoCollectionGridViewControllerDelegate>
 
 @property (nonatomic, strong) FTFAlbumSelectionMenuViewController *albumSelectionMenuViewController;
+@property (nonatomic, strong) UINavigationController *albumSelectionMenuNavigationController;
 @property (nonatomic, strong) FTFPhotoBrowserViewController *photoBrowser;
 @property (nonatomic, strong) FTFPhotoCollectionGridViewController *photoGrid;
 @property (nonatomic, strong) FTFAlbumCollection *photoAlbumCollection;
@@ -32,10 +33,8 @@
 @property (nonatomic, strong) NSArray *weeklyThemeAlbums;
 @property (nonatomic, strong) NSArray *photoWalksAlbums;
 @property (nonatomic, strong) NSArray *miscellaneousSubmissionsAlbums;
-@property (nonatomic, strong) UINavigationController *albumSelectionMenuNavigationController;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, strong) NSArray *browserPhotos;
-@property (nonatomic, assign) NSUInteger indexOfPhoto;
 @property (nonatomic, strong) UILabel *navBarTitle;
 @property (nonatomic, strong) NSArray *albumPhotos;
 @property (nonatomic, strong) UIImageView *imageView;
@@ -105,7 +104,10 @@ BOOL albumSelectionChanged = NO;
     [[FiftyTwoFrames sharedInstance] requestAlbumCollectionWithCompletionBlock:^(FTFAlbumCollection *albumCollection,
                                                                                  NSError *error) {
         if (error) {
-            // Present alert
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"There was an error loading this week's photos" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alert show];
+            [MBProgressHUD hideHUDForView:self.tableView animated:YES];
+            NSLog(@"%@", error);
         } else {
             self.photoAlbumCollection = albumCollection;
             [self retrievedAlbumCollection];
@@ -127,10 +129,6 @@ BOOL albumSelectionChanged = NO;
     self.navigationController.toolbarHidden = NO;
 }
 
-- (IBAction)infoButtonTapped:(UIBarButtonItem *)sender {
-
-}
-
 - (void)setUpNavigationBarTitle {
     self.navBarTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 85)];
     self.navBarTitle.textAlignment = NSTextAlignmentCenter;
@@ -147,37 +145,23 @@ BOOL albumSelectionChanged = NO;
     hud.yOffset = -60;
 }
 
-- (IBAction)likeIconTapped:(UIButton *)sender {
-    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
-    anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    anim.duration = 0.2;
-    anim.repeatCount = 1;
-    anim.autoreverses = YES;
-    anim.removedOnCompletion = YES;
-    anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)];
-    [sender.layer addAnimation:anim forKey:nil];
-    
-    
-}
-
 - (void)retrievedAlbumCollection {
     self.weeklyThemeAlbums = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
     
-    FTFAlbumSelectionMenuViewController *pocvc = (FTFAlbumSelectionMenuViewController *)[self.albumSelectionMenuNavigationController topViewController];
-    pocvc.weeklySubmissions = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
-    pocvc.photoWalks = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryPhotoWalks];
-    pocvc.miscellaneousAlbums = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryMiscellaneous];
+    FTFAlbumSelectionMenuViewController *albumSelectionMenuVC = (FTFAlbumSelectionMenuViewController *)[self.albumSelectionMenuNavigationController topViewController];
+    albumSelectionMenuVC.weeklySubmissions = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
+    albumSelectionMenuVC.photoWalks = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryPhotoWalks];
+    albumSelectionMenuVC.miscellaneousAlbums = [self.photoAlbumCollection albumsForCategory:FTFAlbumCollectionCategoryMiscellaneous];
     
     FTFAlbum *album = [self.weeklyThemeAlbums firstObject];
-    pocvc.selectedAlbumCollection = [pocvc albumsForGivenYear:album.yearCreated
+    albumSelectionMenuVC.selectedAlbumCollection = [albumSelectionMenuVC albumsForGivenYear:album.yearCreated
                                           fromAlbumCollection:self.weeklyThemeAlbums];
-    pocvc.selectedAlbumYear = album.yearCreated;
-    pocvc.yearButton.title = album.yearCreated;
-    [pocvc.tableView reloadData];
-    [MBProgressHUD hideHUDForView:pocvc.tableView animated:YES];
+    albumSelectionMenuVC.selectedAlbumYear = album.yearCreated;
+    albumSelectionMenuVC.yearButton.title = album.yearCreated;
     self.albumToDisplay = [self.weeklyThemeAlbums firstObject];
     
     [[FiftyTwoFrames sharedInstance]requestAlbumPhotosForAlbumWithAlbumID:self.albumToDisplay.albumID
+                                                                    limit:200
                                                           completionBlock:^(NSArray *photos, NSError *error) {
                                                               
             [self populateAlbumPhotosResultsWithPhotos:photos error:error];
@@ -192,6 +176,7 @@ BOOL albumSelectionChanged = NO;
     
     self.albumToDisplay = [notification.userInfo objectForKey:@"selectedAlbum"];
     [[FiftyTwoFrames sharedInstance]requestAlbumPhotosForAlbumWithAlbumID:self.albumToDisplay.albumID
+                                                                    limit:200
                                                           completionBlock:^(NSArray *photos, NSError *error) {
                                                               
             [self populateAlbumPhotosResultsWithPhotos:photos error:error];
@@ -242,7 +227,7 @@ BOOL albumSelectionChanged = NO;
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
+#pragma mark - UITableView Delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -269,7 +254,7 @@ BOOL albumSelectionChanged = NO;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-        [photo requestImageWithSize:FTFImageSizeSmall
+        [photo requestImageWithSize:FTFImageSizeLarge
                     completionBlock:^(UIImage *image, NSError *error, BOOL isCached) {
             if (error) return;
             
@@ -327,7 +312,7 @@ BOOL albumSelectionChanged = NO;
     self.photoBrowser.albumPhotos = self.albumPhotos;
 }
 
-#pragma mark - MWPhotoBrowser Delegate
+#pragma mark - MWPhotoBrowser
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
     return self.browserPhotos.count;
@@ -348,7 +333,13 @@ BOOL albumSelectionChanged = NO;
     return [photos copy];
 }
 
-#pragma mark - Album Selection Menu VC Delegate
+- (void)pushPhotoBrowserAtPhotoIndex:(NSInteger)index {
+    [self setUpPhotoBrowserForTappedPhotoAtRow];
+    [self.photoBrowser setCurrentPhotoIndex:index];
+    [self.navigationController pushViewController:self.photoBrowser animated:YES];
+}
+
+#pragma mark - FTFAlbumSelectionMenuViewController Delegate
 
 - (void)albumSelectionMenuViewControllerdidTapDismissButton {
     [UIView animateWithDuration:0.7
@@ -362,13 +353,13 @@ BOOL albumSelectionChanged = NO;
                      } completion:nil];
 }
 
-#pragma mark - Photo Collection Grid VC Delegate
+#pragma mark - FTFPhotoCollectionGridViewController Delegate
 
 - (void)photoCollectionGridDidSelectPhotoAtIndex:(NSInteger)index {
     [self pushPhotoBrowserAtPhotoIndex:index];
 }
 
-#pragma mark - Navigation
+#pragma mark - Actions
 
 - (IBAction)settingsButtonTapped:(UIBarButtonItem *)sender;
 {
@@ -400,6 +391,23 @@ BOOL albumSelectionChanged = NO;
     
 }
 
+- (IBAction)likeIconTapped:(UIButton *)sender {
+    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
+    anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    anim.duration = 0.2;
+    anim.repeatCount = 1;
+    anim.autoreverses = YES;
+    anim.removedOnCompletion = YES;
+    anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)];
+    [sender.layer addAnimation:anim forKey:nil];
+    
+    
+}
+
+- (IBAction)infoButtonTapped:(UIBarButtonItem *)sender {
+    
+}
+
 - (IBAction)gridButtonTapped:(UIBarButtonItem *)sender {
 //    CATransition *transition = [CATransition animation];
 //    transition.duration = 0.5;
@@ -410,11 +418,7 @@ BOOL albumSelectionChanged = NO;
     [self.navigationController pushViewController:self.photoGrid animated:YES];
 }
 
-- (void)pushPhotoBrowserAtPhotoIndex:(NSInteger)index {
-    [self setUpPhotoBrowserForTappedPhotoAtRow];
-    [self.photoBrowser setCurrentPhotoIndex:index];
-    [self.navigationController pushViewController:self.photoBrowser animated:YES];
-}
+#pragma mark - UINavigationController Delegate
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
 {

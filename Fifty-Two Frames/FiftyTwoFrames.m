@@ -31,7 +31,10 @@
 
 - (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCollection *, NSError *))block;
 {
-    [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(10000).fields(name)"
+//    "/180889155269546?fields=albums.limit(10000).fields(name,cover_photo)"
+    NSString *requestString = @"/180889155269546?fields=albums.limit(100){name,photos.limit(1)}";
+//    NSString *oldRequestString = @"/180889155269546?fields=albums.limit(10000).fields(name,cover_photo)";
+    [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(10000).fields(name,photos.limit(1).fields(picture))"
                                  parameters:nil
                                  HTTPMethod:@"GET"
                           completionHandler:^(
@@ -55,9 +58,10 @@
 }
 
 - (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID
+                                        limit:(NSInteger)limit
                                  completionBlock:(void (^)(NSArray *, NSError *))block
 {
-    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@?fields=photos.limit(200)", albumID]
+    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@?fields=photos.limit(%ld)", albumID, (long)limit]
                                  parameters:nil
                                  HTTPMethod:@"GET"
                           completionHandler:^(
@@ -151,8 +155,12 @@
             FTFAlbum *album = [FTFAlbum new];
             album.name = [dict valueForKey:@"name"];
             album.albumID = [dict valueForKey:@"id"];
-            album.yearCreated = [[dict valueForKey:@"created_time"]substringToIndex:4];
-            [destination addObject:album];
+            NSArray *pictureURLstring = [dict valueForKeyPath:@"photos.data.picture"];
+            album.coverPhotoURL = [NSURL URLWithString:[pictureURLstring firstObject]];
+            album.yearCreated = [[dict valueForKeyPath:@"created_time"]substringToIndex:4];
+            if (album.coverPhotoURL) {
+                [destination addObject:album];
+            }
         }
     }
     
@@ -193,6 +201,13 @@
     }
     return objects;
 }
+
+//- (NSArray *)albumCoverPhotoURLsFromAlbumCoverPhotoResponseData:(NSDictionary *)response {
+//    NSArray *coverPhotoURLs = [response valueForKeyPath:@"data.url"];
+//    for (NSString *url in coverPhotoURLs) {
+//        
+//    }
+//}
 
 - (NSDate *)formattedDateFromFacebookDate:(NSString *)fbDate {
     NSDateFormatter *parser = [[NSDateFormatter alloc] init];

@@ -12,6 +12,9 @@
 #import "MBProgressHUD.h"
 #import "FTFAlbum.h"
 #import "FTFYearPopoverTableViewController.h"
+#import "FiftyTwoFrames.h"
+#import "UIImageView+WebCache.h"
+#import "FTFAlbumSelectionMenuTableViewCell.h"
 
 
 @interface FTFAlbumSelectionMenuViewController ()
@@ -20,7 +23,8 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) FTFYearPopoverTableViewController *yearPopoverTableViewController;
 @property (nonatomic, strong) WYPopoverController *popover;
-@property (nonatomic, strong) UILabel *noAlbumsForYearlabel;
+@property (nonatomic, strong) UILabel *noAlbumslabel;
+@property (nonatomic, strong) NSArray *albumThumbnailPhotos;
 
 @end
 
@@ -46,34 +50,56 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 
 - (void)setSelectedAlbumCollection:(NSArray *)selectedAlbumCollection {
     _selectedAlbumCollection = selectedAlbumCollection;
-    self.noAlbumsForYearlabel.hidden = YES;
-    if (![_selectedAlbumCollection count]) {
-        self.noAlbumsForYearlabel.alpha = 0.0;
-        self.noAlbumsForYearlabel.hidden = NO;
-        [UIView animateWithDuration:0.8 animations:^{
-            self.noAlbumsForYearlabel.alpha = 1.0;
+    
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
+    if (self.navigationController.toolbarHidden && self.segmentedControl.hidden) {
+        [UIView animateWithDuration:0.4 animations:^{
+            self.navigationController.toolbarHidden = NO;
+            self.segmentedControl.hidden = NO;
         }];
+    }
+    
+    self.noAlbumslabel.hidden = YES;
+    [self.tableView reloadData];
+
+    if (![_selectedAlbumCollection count]) {
+        self.noAlbumslabel.center = [self.view convertPoint:self.view.center fromView:self.view.superview];
+        self.noAlbumslabel.alpha = 0.0;
+        self.noAlbumslabel.hidden = NO;
+        [UIView animateWithDuration:0.8 animations:^{
+            self.noAlbumslabel.alpha = 1.0;
+        }];
+    } else {
+        NSIndexPath *topRowOfTableView = [NSIndexPath indexPathForRow:0 inSection:0];
+        if (_selectedAlbumCollection.count) {
+            [self.tableView scrollToRowAtIndexPath:topRowOfTableView
+                                  atScrollPosition:UITableViewScrollPositionTop
+                                          animated:YES];
+        }
     }
 }
 
-- (void)setUpNoAlbumsForYearLabel {
-    self.noAlbumsForYearlabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 200, 320, 21)];
-    self.noAlbumsForYearlabel.text = @"No albums";
-    self.noAlbumsForYearlabel.textColor = [UIColor whiteColor];
-    self.noAlbumsForYearlabel.textAlignment = NSTextAlignmentCenter;
-    [self.tableView addSubview:self.noAlbumsForYearlabel];
-    self.noAlbumsForYearlabel.hidden = YES;
+- (void)setUpNoAlbumsLabelAppearance {
+    self.noAlbumslabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 50)];
+    self.noAlbumslabel.text = @"No albums";
+    self.noAlbumslabel.textColor = [UIColor whiteColor];
+    self.noAlbumslabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:self.noAlbumslabel];
+    self.noAlbumslabel.hidden = YES;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationController.toolbarHidden = YES;
+    self.segmentedControl.hidden = YES;
     self.navigationController.view.layer.cornerRadius = 10;
     self.navigationController.view.layer.masksToBounds = YES;
-    [self setUpNoAlbumsForYearLabel];
+    
+    [self setUpNoAlbumsLabelAppearance];
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    UIImageView *tempImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pic.jpg"]];
-//    self.tableView.backgroundView = tempImageView;
     [[NSNotificationCenter defaultCenter]addObserver:self
                                             selector:@selector(yearChanged:)
                                                 name:@"yearSelectedNotification"
@@ -97,8 +123,6 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     NSArray *allAlbumCollections = @[self.weeklySubmissions, self.photoWalks, self.miscellaneousAlbums];
     self.selectedAlbumCollection = [self albumsForGivenYear:self.selectedAlbumYear
                                         fromAlbumCollection:allAlbumCollections[sender.selectedSegmentIndex]];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0]
-                  withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (NSArray *)albumsForGivenYear:(NSString *)year fromAlbumCollection:(NSArray *)albumCollection {
@@ -113,8 +137,6 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     NSArray *allAlbumCollections = @[self.weeklySubmissions, self.photoWalks, self.miscellaneousAlbums];
     self.selectedAlbumCollection = [self albumsForGivenYear:self.selectedAlbumYear
                                         fromAlbumCollection:allAlbumCollections[self.segmentedControl.selectedSegmentIndex]];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0]
-                  withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - Table view data source
@@ -133,9 +155,12 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
+    FTFAlbumSelectionMenuTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     FTFAlbum *album = self.selectedAlbumCollection[indexPath.row];
-    cell.textLabel.text = album.name;
+    cell.albumName.text = album.name;
+    [cell.albumThumbnail setImageWithURL:album.coverPhotoURL
+                        placeholderImage:[UIImage imageNamed:@"placeholder"]];
+
     return cell;
 }
 
@@ -157,7 +182,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     self.popover.theme = [WYPopoverTheme themeForIOS7];
     CGSize size = self.popover.popoverContentSize;
     size.height = size.height / 3;
-    size.width = size.width / 4;
+    size.width = size.width / 4.5;
     self.popover.popoverContentSize = size;
     [self.popover presentPopoverFromBarButtonItem:self.yearButton
                          permittedArrowDirections:WYPopoverArrowDirectionDown
