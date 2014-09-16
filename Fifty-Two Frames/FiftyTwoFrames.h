@@ -9,11 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "FTFImage.h"
 
+@class FTFUser;
 @class FTFAlbumCategoryCollection;
 
 @interface FiftyTwoFrames : NSObject
 
 + (instancetype)sharedInstance;
+
+@property (nonatomic, strong) FTFUser *user;
+
 
 - (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCategoryCollection *, NSError *))block;
 
@@ -24,13 +28,13 @@
 - (void)requestPhotoWithPhotoURL:(NSURL *)photoURL
                 completionBlock:(void (^)(UIImage *image, NSError *error, BOOL isCached))block;
 
-- (void)requestAlbumCoverPhotoForAlbumCollection:(NSArray *)collection
-                                 completionBlock:(void (^)(NSArray *coverPhotos, NSError *error))block;
-
 - (void)publishPhotoLikeWithPhotoID:(NSString *)photoID
                     completionBlock:(void (^)(NSError *error))block;
 
 - (void)publishPhotoCommentWithPhotoID:(NSString *)photoID
-                   completionBlock:(void (^)(NSError *error))block;
+                               comment:(NSString *)comment
+                       completionBlock:(void (^)(NSError *error))block;
+
+- (void)requestUserWithCompletionBlock:(void (^)(FTFUser *user))block;
 
 @end

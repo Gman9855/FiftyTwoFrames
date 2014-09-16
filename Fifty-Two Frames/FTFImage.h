@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Gershy Lev. All rights reserved.
 //
 
+@class FTFPhotoComment;
+
 #import <Foundation/Foundation.h>
 
 typedef enum {
@@ -16,7 +18,7 @@ typedef enum {
 @interface FTFImage : NSObject
 
 @property (nonatomic, strong) NSString *photoDescription;
-@property (nonatomic, strong) NSArray *photoLikes;
+@property (nonatomic, assign) NSInteger photoLikesCount;
 @property (nonatomic, strong) NSArray *photoComments;
 @property (nonatomic, strong) NSString *photoID;
 @property (nonatomic, strong, readonly) NSURL *largePhotoURL;
@@ -26,5 +28,8 @@ typedef enum {
 - (void)requestImageWithSize:(FTFImageSize)size completionBlock:(void(^)(UIImage *image, NSError *error, BOOL isCached))block;
 - (void)cancel;
 - (NSArray *)imageURLs;
+
+- (void)addPhotoComment:(FTFPhotoComment *)photoComment;
+
 
 @end

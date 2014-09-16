@@ -13,6 +13,7 @@
 @interface FTFAlbumCollection ()
 
 @property (nonatomic, readwrite, strong) NSArray *albums;
+@property (nonatomic, readwrite) FTFAlbumCollectionCategory collectionCategory;
 
 @end
 

@@ -9,41 +9,54 @@
 #import "FTFPhotoCommentsViewController.h"
 #import "FTFPhotoCommentTableViewCell.h"
 #import "FTFPhotoComment.h"
+#import "FTFUser.h"
+#import "UIImageView+WebCache.h"
+#import "TTTTimeIntervalFormatter.h"
+
+#import "FiftyTwoFrames.h"
 
 @interface FTFPhotoCommentsViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *inputViewBottomConstraint;
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (weak, nonatomic) IBOutlet UIButton *postCommentButton;
+@property (nonatomic, assign) NSInteger keyboardHeight;
 
 @end
 
 static NSString * const reuseIdentifier = @"commentCell";
-CGRect tableViewFrame;
 
-@implementation FTFPhotoCommentsViewController
-
-- (void)setPhotoComments:(NSArray *)photoComments {
-    _photoComments = photoComments;
-    [self.tableView reloadData];
-    if (_photoComments.count) {
-        NSIndexPath *firstIndexInTableView = [NSIndexPath indexPathForRow:0 inSection:0];
-        [self.tableView scrollToRowAtIndexPath:firstIndexInTableView
-                              atScrollPosition:UITableViewScrollPositionBottom
-                                      animated:NO];
-    }
+@implementation FTFPhotoCommentsViewController {
+    BOOL shouldIgnoreKeyboardEvents;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
     self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
     self.navigationController.view.layer.cornerRadius = 10;
     self.navigationController.view.layer.masksToBounds = YES;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.textField.delegate = self;
-    tableViewFrame = self.tableView.frame;
-    // Do any additional setup after loading the view.
+    [NSTimer scheduledTimerWithTimeInterval:(arc4random() % 6) + 6
+                                     target:self
+                                   selector:@selector(updateVisibleCells:)
+                                   userInfo:nil
+                                    repeats:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -52,46 +65,67 @@ CGRect tableViewFrame;
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Text Field Delegate
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField
+- (CGRect)convertedRectFromKeyboardNotification:(NSNotification *)notification;
 {
-    [self animateTextField:textField up:YES];
-    CGRect frame = CGRectMake(0, 205, self.tableView.frame.size.width, self.tableView.frame.size.height - 205);
-    self.tableView.frame = frame;
-    self.view.layer.cornerRadius = 10;
-    self.view.layer.masksToBounds = YES;
-    NSArray *visibleCells = [self.tableView visibleCells];
-    FTFPhotoCommentTableViewCell *bottomCell = [visibleCells lastObject];
-    FTFPhotoComment *bottomComment = [self.photoComments lastObject];
-    if (![bottomCell.commentBody.text isEqualToString:bottomComment.comment]) {
-        NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:[self.photoComments count] - 1];
-        [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    CGRect keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    return [self.view convertRect:keyboardRect fromView:nil];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    if (!shouldIgnoreKeyboardEvents) {
+        CGSize keyboardSize = [self convertedRectFromKeyboardNotification:notification].size;
+        
+        //Given size may not account for screen rotation
+        self.keyboardHeight = MIN(keyboardSize.height,keyboardSize.width);
+     
+        [self animateUsingKeyboardUserInfo:notification.userInfo animations:^{
+            [self updateInputView];
+        }];
     }
 }
 
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
+- (void)keyboardWillHide:(NSNotification *)notification;
 {
-    [self animateTextField:textField up:NO];
-    self.tableView.frame = tableViewFrame;
-    self.view.layer.cornerRadius = 0;
-    self.view.layer.masksToBounds = YES;
+    if (!shouldIgnoreKeyboardEvents) {
+        self.keyboardHeight = 0;
+        
+        [self animateUsingKeyboardUserInfo:notification.userInfo animations:^{
+            [self updateInputView];
+        }];
+    }
 }
 
-- (void) animateTextField: (UITextField*) textField up: (BOOL) up
+- (void)animateUsingKeyboardUserInfo:(NSDictionary *)userInfo animations:(dispatch_block_t)animations;
 {
-    const int movementDistance = 205;
-    int movement = (up ? -movementDistance : movementDistance);
+    BOOL showingLastIndexPath = [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:self.photo.photoComments.count - 1]];
     
-    [UIView animateWithDuration:0.3 animations:^{
-        self.view.frame = CGRectOffset(self.view.frame, 0, movement);
-    }];
+    [UIView beginAnimations:nil context:NULL];
+    
+    if (!showingLastIndexPath) {
+        [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
+        [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue]];
+    }
+    
+    animations();
+    
+    [UIView commitAnimations];
+}
+
+#pragma mark - Text Field Delegate
+
+- (void)updateInputView;
+{
+    self.inputViewBottomConstraint.constant = self.keyboardHeight;
+
+    if (self.keyboardHeight) {
+        [self.tableView setContentOffset:CGPointMake(self.tableView.contentOffset.x, CGFLOAT_MAX) animated:NO];
+    }
 }
 
 #pragma mark - Actions
 
-- (IBAction)doneButtonPressed:(UIBarButtonItem *)sender {
+- (IBAction)doneButtonTapped:(UIBarButtonItem *)sender {
     if ([self.textField isFirstResponder]) {
         [self.view endEditing:YES];
     } else {
@@ -99,20 +133,56 @@ CGRect tableViewFrame;
     }
 }
 
+- (IBAction)postButtonTapped:(UIButton *)sender {
+    FTFUser *user = [FiftyTwoFrames sharedInstance].user;
+    FTFPhotoComment *postedComment = [[FTFPhotoComment alloc] init];
+    postedComment.commenterName = user.name;
+    postedComment.commenterID = user.userID;
+    postedComment.commenterProfilePictureURL = user.profilePictureURL;
+    postedComment.createdTime = [NSDate date];
+    shouldIgnoreKeyboardEvents = YES;
+    [self.textField resignFirstResponder];
+    [self.textField becomeFirstResponder];
+    shouldIgnoreKeyboardEvents = NO;
+    postedComment.comment = self.textField.text;
+    
+//    [[FiftyTwoFrames sharedInstance] publishPhotoCommentWithPhotoID:self.photo.photoID
+//                                                            comment:postedComment.comment
+//                                                    completionBlock:^(NSError *error) {
+//        if (error) {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+//                                                            message:@"Something went wrong trying to post your comment"
+//                                                           delegate:self
+//                                                  cancelButtonTitle:@"Okay"
+//                                                  otherButtonTitles:nil];
+//            [alert show];
+//            return;
+//        }
+//    }];
+    
+    [self.tableView beginUpdates];
+    [self.photo addPhotoComment:postedComment];
+    
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:self.photo.photoComments.count - 1];
+    [self.tableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+
+    [self.tableView endUpdates];
+    
+    NSIndexPath *idx = [NSIndexPath indexPathForRow:0 inSection:self.photo.photoComments.count - 1];
+    [self.tableView scrollToRowAtIndexPath:idx atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    
+    self.textField.text = nil;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self.photoComments count];
+    return [self.photo.photoComments count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
 }
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    return 50; // you can have your own choice, of course
-//}
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -139,18 +209,14 @@ CGRect tableViewFrame;
 }
 
 - (void)configureCommentCell:(FTFPhotoCommentTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    FTFPhotoComment *photoComment = self.photoComments[indexPath.section];
+    FTFPhotoComment *photoComment = self.photo.photoComments[indexPath.section];
+    
+    [cell.commenterProfilePicture setImageWithURL:photoComment.commenterProfilePictureURL];
+    
     cell.commenterName.text = photoComment.commenterName;
     cell.commentBody.text = photoComment.comment;
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"MM-dd-yyyy"];
-    NSString *strDate = [dateFormatter stringFromDate:photoComment.createdTime];
-    cell.commentDate.text = strDate;
     
-    [photoComment requestCommenterProfilePictureWithCompletionBlock:^(UIImage *image, NSError *error) {
-        if (image) cell.commenterProfilePicture.image = image;
-    }];
-
+    cell.commentDate.text = [self timeIntervalformattedDateStringFromFacebookDate:photoComment.createdTime];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -174,6 +240,22 @@ CGRect tableViewFrame;
     
     CGSize size = [sizingCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     return size.height;
+}
+
+#pragma mark - Helper methods
+
+- (NSString *)timeIntervalformattedDateStringFromFacebookDate:(NSDate *)date {
+    
+    static TTTTimeIntervalFormatter *intervalFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        intervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
+    });
+    return [intervalFormatter stringForTimeInterval:[date timeIntervalSinceDate:[NSDate date]]];
+}
+
+- (void)updateVisibleCells:(NSTimer *)timer {
+    [self.tableView reloadData];
 }
 
 /*

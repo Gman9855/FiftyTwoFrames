@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class FTFImage;
+
 @protocol FTFPhotoCommentsViewControllerDelegate <NSObject>
 
 - (void)photoCommentsViewControllerDidTapDoneButton;
@@ -17,6 +19,6 @@
 @interface FTFPhotoCommentsViewController : UIViewController
 
 @property (nonatomic, weak) id <FTFPhotoCommentsViewControllerDelegate> delegate;
-@property (nonatomic, strong) NSArray *photoComments;
+@property (nonatomic, strong) FTFImage *photo;
 
 @end

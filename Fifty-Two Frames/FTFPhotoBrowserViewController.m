@@ -10,14 +10,15 @@
 #import "FTFImage.h"
 #import "WYPopoverController.h"
 #import "FTFPhotoCommentsViewController.h"
+#import "FiftyTwoFrames.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface FTFPhotoBrowserViewController () <FTFPhotoCommentsViewControllerDelegate>
 
 @property (nonatomic, strong) WYPopoverController *photoCommentsPopoverController;
 @property (nonatomic, strong) UINavigationController *photoCommentsNavigationController;
-@property (nonatomic, strong) UIView *hostingView;
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIView *hostingViewForCommentView;
+@property (nonatomic, strong) UIImageView *imageViewForButton;
 
 @end
 
@@ -35,11 +36,11 @@
     return (FTFPhotoCommentsViewController *)[self.photoCommentsNavigationController topViewController];
 }
 
-- (UIView *)hostingView {
-    if (!_hostingView) {
-        _hostingView = [[UIView alloc] init];
+- (UIView *)hostingViewForCommentView {
+    if (!_hostingViewForCommentView) {
+        _hostingViewForCommentView = [[UIView alloc] init];
     }
-    return _hostingView;
+    return _hostingViewForCommentView;
 }
 
 - (id)initWithDelegate:(id<MWPhotoBrowserDelegate>)delegate {
@@ -52,17 +53,17 @@
 
         UIBarButtonItem *fbCommentsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"messageIcon.png"] style:UIBarButtonItemStylePlain target:self action:@selector(fbCommentsButtonTapped)];
         
-        self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Facebook_like_button_thumb.png"]];
-        self.imageView.autoresizingMask = UIViewAutoresizingNone;
-        self.imageView.contentMode = UIViewContentModeCenter;
+        self.imageViewForButton = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Facebook_like_button_thumb.png"]];
+        self.imageViewForButton.autoresizingMask = UIViewAutoresizingNone;
+        self.imageViewForButton.contentMode = UIViewContentModeCenter;
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.adjustsImageWhenHighlighted = YES;
         button.frame = CGRectMake(0, 0, 40, 40);
         
-        [button addSubview:self.imageView];
+        [button addSubview:self.imageViewForButton];
         [button addTarget:self action:@selector(fbLikeButtonTapped)
          forControlEvents:UIControlEventTouchUpInside];
-        self.imageView.center = button.center;
+        self.imageViewForButton.center = button.center;
         UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:button];
         
         self.rightToolbarButtons = @[barItem];
@@ -76,13 +77,6 @@
 {
     [super viewDidLoad];
     [self photoCommentsVC].delegate = self;
-        // Do any additional setup after loading the view.
-}
-
-- (void)passPhotoCommentsToPhotoCommentsViewController {
-    NSInteger indexOfPhoto = self.currentIndex;
-    FTFImage *photoAtIndex = self.albumPhotos[indexOfPhoto];
-    self.photoCommentsVC.photoComments = photoAtIndex.photoComments;
 }
 
 #pragma mark - Action Methods
@@ -96,44 +90,56 @@
     anim.autoreverses = YES;
     anim.removedOnCompletion = YES;
     anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)];
-    [self.imageView.layer addAnimation:anim forKey:nil];
+    [self.imageViewForButton.layer addAnimation:anim forKey:nil];
     
     NSInteger indexOfPhoto = self.currentIndex;
     FTFImage *photoAtIndex = self.albumPhotos[indexOfPhoto];
     
-    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoAtIndex.photoID]
-                                 parameters:nil
-                                 HTTPMethod:@"POST"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              NSLog(@"Result: %@, Error: %@", result, error);
-                          }];
+//    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoAtIndex.photoID]
+//                                 parameters:nil
+//                                 HTTPMethod:@"POST"
+//                          completionHandler:^(
+//                                              FBRequestConnection *connection,
+//                                              id result,
+//                                              NSError *error
+//                                              ) {
+//                              
+//                          }];
+    
+    [[FiftyTwoFrames sharedInstance] publishPhotoLikeWithPhotoID:photoAtIndex.photoID completionBlock:^(NSError *error) {
+        NSLog(@"Error: %@", error);
+        if (error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"Couldn't like this photo, sorry!"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Okay"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+    }];
 }
 
 - (void)fbCommentsButtonTapped {
-    [self passPhotoCommentsToPhotoCommentsViewController];
+    [self photoCommentsVC].photo = self.albumPhotos[self.currentIndex];
+
     UIView *navigationView = self.navigationController.view;
-    self.hostingView.frame = navigationView.bounds;
-    self.hostingView.bounds = self.view.bounds;
+    self.hostingViewForCommentView.frame = navigationView.bounds;
+    self.hostingViewForCommentView.bounds = self.view.bounds;
     
-    self.photoCommentsNavigationController.view.frame = CGRectInset(self.hostingView.bounds, 15, 15);
-    [self.hostingView addSubview:self.photoCommentsNavigationController.view];
-    [navigationView addSubview:self.hostingView];
-    self.hostingView.frame = (CGRect) {
+    [self.hostingViewForCommentView addSubview:self.photoCommentsNavigationController.view];
+    [navigationView addSubview:self.hostingViewForCommentView];
+    self.hostingViewForCommentView.frame = (CGRect) {
         CGPointMake(0, navigationView.frame.size.height),
-        self.hostingView.frame.size
+        self.hostingViewForCommentView.frame.size
     };
-    self.hostingView.center = CGPointMake(navigationView.center.x, self.hostingView.center.y);
+    self.hostingViewForCommentView.center = CGPointMake(navigationView.center.x, self.hostingViewForCommentView.center.y);
     [UIView animateWithDuration:0.5
                            delay:0.1
           usingSpringWithDamping:0.8
            initialSpringVelocity:0.1
                          options:0
                       animations:^{
-                          self.hostingView.center = self.view.center;
+                          self.hostingViewForCommentView.center = self.view.center;
                     } completion:nil];
 }
 
@@ -146,8 +152,8 @@
           initialSpringVelocity:0.1
                         options:0
                      animations:^{
-                         CGRect newRectLocation = CGRectMake(self.hostingView.frame.origin.x, 1000, self.hostingView.frame.size.width, self.hostingView.frame.size.height);
-                         self.hostingView.frame = newRectLocation;
+                         CGRect newRectLocation = CGRectMake(self.hostingViewForCommentView.frame.origin.x, 1000, self.hostingViewForCommentView.frame.size.width, self.hostingViewForCommentView.frame.size.height);
+                         self.hostingViewForCommentView.frame = newRectLocation;
                    } completion:nil];
 }
 

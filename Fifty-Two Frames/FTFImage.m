@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Gershy Lev. All rights reserved.
 //
 
+@class FTFPhotoComment;
+
 #import "FTFImage.h"
 #import "SDWebImageManager.h"
 
@@ -81,5 +83,12 @@
 - (NSArray *)imageURLs {
     return _imageURLs;
 }
+
+- (void)addPhotoComment:(FTFPhotoComment *)photoComment {
+    NSMutableArray *mutableArray = [self.photoComments mutableCopy];
+    [mutableArray addObject:photoComment];
+    self.photoComments = [mutableArray copy];
+}
+
 
 @end

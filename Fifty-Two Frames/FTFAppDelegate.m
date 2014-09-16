@@ -17,7 +17,7 @@
 
 @implementation FTFAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptionsr
 {
 
     [@[@"foo", @"bar", @"baz", @"faz"] map:^id(id object, NSUInteger index) {

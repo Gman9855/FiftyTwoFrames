@@ -12,8 +12,6 @@
 
 @interface FTFPhotoComment()
 
-@property (nonatomic, strong) NSURL *commenterProfilePictureURL;
-
 @end
 
 @implementation FTFPhotoComment

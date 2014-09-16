@@ -121,11 +121,6 @@ BOOL albumSelectionChanged = NO;
                                                object:nil];
 }
 
-- (IBAction)refreshTableView:(id)sender {
-    [self.tableView reloadData];
-    [self.refreshControl endRefreshing];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     self.navigationController.toolbarHidden = NO;
 }
@@ -160,18 +155,21 @@ BOOL albumSelectionChanged = NO;
     albumSelectionMenuVC.selectedAlbumYear = album.yearCreated;
     albumSelectionMenuVC.yearButton.title = album.yearCreated;
     self.albumToDisplay = self.weeklyThemeAlbums.albums.firstObject;
-    
-    [[FiftyTwoFrames sharedInstance]requestAlbumPhotosForAlbumWithAlbumID:self.albumToDisplay.albumID
-                                                                    limit:200
-                                                          completionBlock:^(NSArray *photos, NSError *error) {
-                                                              
-            [self populateAlbumPhotosResultsWithPhotos:photos error:error];
+    [[FiftyTwoFrames sharedInstance] requestUserWithCompletionBlock:^(FTFUser *user) {
+        [[FiftyTwoFrames sharedInstance] requestAlbumPhotosForAlbumWithAlbumID:self.albumToDisplay.albumID
+                                                                         limit:200
+                                                               completionBlock:^(NSArray *photos, NSError *error) {
+                                                                   
+                                                                   [self populateAlbumPhotosResultsWithPhotos:photos error:error];
+                                                               }];
     }];
+    
 }
 
 - (void)albumSelectionChanged:(NSNotification *)notification {
     albumSelectionChanged = YES;
-    [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [self.photoBrowser setCurrentPhotoIndex:0];
     self.photoGrid.gridPhotos = nil;
     
     self.albumToDisplay = [notification.userInfo objectForKey:@"selectedAlbum"];
@@ -184,21 +182,25 @@ BOOL albumSelectionChanged = NO;
 }
 
 - (void)populateAlbumPhotosResultsWithPhotos:(NSArray *)photos error:(NSError *)error {
+    [MBProgressHUD hideHUDForView:self.view animated:NO];
     if (error) {
-        [MBProgressHUD hideHUDForView:self.tableView animated:NO];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:@"An error occured trying to grab this album's photos"
-                                                       delegate:self
-                                              cancelButtonTitle:@"Okay"
-                                              otherButtonTitles:nil];
-        [alert show];
-        return;
+        if (error.code != 1) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"An error occured trying to grab this album's photos"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Okay"
+                                                  otherButtonTitles:nil];
+            [alert show];
+            return;
+        }
     }
     
     if ([photos count]) {
         self.albumPhotos = photos;
         self.photoGrid.gridPhotos = photos;
         [self.tableView reloadData];
+        NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
         
         [UIView animateWithDuration:1.5 animations:^{
             self.navigationItem.titleView.alpha = 0.0;
@@ -206,18 +208,17 @@ BOOL albumSelectionChanged = NO;
             self.navigationItem.titleView.alpha = 1.0;
         }];
         
-        NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
-        [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    } else {
-        [MBProgressHUD hideHUDForView:self.tableView animated:NO];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:@"Sorry, no photos found for this album"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Okay"
-                                                  otherButtonTitles:nil];
-            [alert show];
-        });
+
+//    } else {
+//        [MBProgressHUD hideHUDForView:self.view animated:NO];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+//                                                            message:@"Sorry, no photos found for this album"
+//                                                           delegate:self
+//                                                  cancelButtonTitle:@"Okay"
+//                                                  otherButtonTitles:nil];
+//            [alert show];
+//        });
     }
 }
 
@@ -243,9 +244,9 @@ BOOL albumSelectionChanged = NO;
     if (![photo.photoComments isEqual:[NSNull null]]) {
         ftfCell.commentsCountLabel.text = [NSString stringWithFormat:@"%d", [photo.photoComments count]];
     }
-    if (![photo.photoLikes isEqual:[NSNull null]]) {
-        ftfCell.likesCountLabel.text = [NSString stringWithFormat:@"%d", [photo.photoLikes count]];
-    }
+    
+    ftfCell.likesCountLabel.text = [NSString stringWithFormat:@"%ld", (long)photo.photoLikesCount];
+    
     if (![photo.photoDescription isEqual:[NSNull null]]) {
         ftfCell.descriptionLabel.text = photo.photoDescription;
     } else {
@@ -286,7 +287,6 @@ BOOL albumSelectionChanged = NO;
 {
     return [self.albumPhotos count];
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -367,7 +367,8 @@ BOOL albumSelectionChanged = NO;
     self.hostingView.frame = navigationView.bounds;
     self.hostingView.bounds = self.view.bounds;
     
-    self.albumSelectionMenuNavigationController.view.frame = CGRectInset(self.hostingView.bounds, 15, 15);
+//    self.albumSelectionMenuNavigationController.view.frame = CGRectInset(self.hostingView.bounds, 15, 15);
+    self.albumSelectionMenuNavigationController.view.frame = self.hostingView.bounds;
     [self.hostingView addSubview:self.albumSelectionMenuNavigationController.view];
     [navigationView addSubview:self.hostingView];
     self.hostingView.frame = (CGRect) {

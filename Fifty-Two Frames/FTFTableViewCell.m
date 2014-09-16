@@ -19,16 +19,6 @@
     return self;
 }
 
-- (void)setPhoto:(UIImageView *)photo {
-    _photo = photo;
-    _photo.contentMode = UIViewContentModeScaleAspectFit;
-}
-
-- (void)awakeFromNib
-{
-    // Initialization code
-}
-
 - (void)prepareForReuse;
 {
     [super prepareForReuse];

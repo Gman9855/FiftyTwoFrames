@@ -47,9 +47,7 @@
         self.loginButton.alpha = 1.0;
         self.loginButton.frame = endView;
 
-    } completion:^(BOOL finished) {
-    }];
-    
+    } completion:nil];
 }
 
 - (void)didReceiveMemoryWarning

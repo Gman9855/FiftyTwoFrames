@@ -102,5 +102,4 @@ static const CGFloat labelPadding = 10;
     [self addSubview:_label];
 }
 
-
 @end

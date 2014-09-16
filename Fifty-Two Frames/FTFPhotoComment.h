@@ -15,8 +15,8 @@
 @property (nonatomic, strong) NSDate *createdTime;
 @property (nonatomic, strong) NSNumber *likeCount;
 @property (nonatomic, strong) NSString *comment;
+@property (nonatomic, strong) NSURL *commenterProfilePictureURL;
 
-
-- (void)requestCommenterProfilePictureWithCompletionBlock:(void(^)(UIImage *image, NSError *error))block;
+//- (void)requestCommenterProfilePictureWithCompletionBlock:(void(^)(UIImage *image, NSError *error))block;
 
 @end

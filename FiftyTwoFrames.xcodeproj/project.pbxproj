@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1AA2BAC519C642E90069A92F /* TTTTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AA2BAC419C642E90069A92F /* TTTTimeIntervalFormatter.m */; };
+		1AEB1B3B19C5725100EB67D2 /* FTFUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AEB1B3A19C5725100EB67D2 /* FTFUser.m */; };
 		8B12265019B2DE9700FBFE4E /* FTFPhotoContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */; };
 		8B12265319B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */; };
 		8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */; };
@@ -116,6 +118,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1AA2BAC319C642E90069A92F /* TTTTimeIntervalFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTTimeIntervalFormatter.h; sourceTree = "<group>"; };
+		1AA2BAC419C642E90069A92F /* TTTTimeIntervalFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTTimeIntervalFormatter.m; sourceTree = "<group>"; };
+		1AEB1B3919C5725100EB67D2 /* FTFUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFUser.h; sourceTree = "<group>"; };
+		1AEB1B3A19C5725100EB67D2 /* FTFUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFUser.m; sourceTree = "<group>"; };
 		8B12264E19B2DE9700FBFE4E /* FTFPhotoContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoContainerViewController.h; sourceTree = "<group>"; };
 		8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoContainerViewController.m; sourceTree = "<group>"; };
 		8B12265119B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FTFImage+MWPhotoAdditions.h"; sourceTree = "<group>"; };
@@ -316,11 +322,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1AA2BAC219C642CD0069A92F /* DateFormatter */ = {
+			isa = PBXGroup;
+			children = (
+				1AA2BAC319C642E90069A92F /* TTTTimeIntervalFormatter.h */,
+				1AA2BAC419C642E90069A92F /* TTTTimeIntervalFormatter.m */,
+			);
+			name = DateFormatter;
+			sourceTree = "<group>";
+		};
 		8B451D50198178C0005D7159 /* Model Objects */ = {
 			isa = PBXGroup;
 			children = (
 				8BAC031119B83CF400451615 /* FiftyTwoFrames.h */,
 				8BAC031219B83CF400451615 /* FiftyTwoFrames.m */,
+				1AEB1B3919C5725100EB67D2 /* FTFUser.h */,
+				1AEB1B3A19C5725100EB67D2 /* FTFUser.m */,
 				8B7D033919C0DF4D006839BF /* FTFAlbumCategoryCollection.h */,
 				8B7D033A19C0DF4D006839BF /* FTFAlbumCategoryCollection.m */,
 				8B451D541981C046005D7159 /* FTFAlbumCollection.h */,
@@ -356,6 +373,41 @@
 				8BD200201974B40200F9F347 /* info-3.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		8B7D033D19C216C0006839BF /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8BD200281975018A00F9F347 /* Album List VC */,
+				8BAC031819BB7C0F00451615 /* FTFPhotoCollectionGridViewController.h */,
+				8BAC031919BB7C0F00451615 /* FTFPhotoCollectionGridViewController.m */,
+				8BC938DA194529EB00418F32 /* FTFContainerViewController.h */,
+				8BC938DB194529EB00418F32 /* FTFContainerViewController.m */,
+				8BC938CD193CE3EF00418F32 /* FTFContentTableViewController.h */,
+				8BA2A6F4194E226D00341260 /* FTFContentTableViewController.m */,
+				8B12264E19B2DE9700FBFE4E /* FTFPhotoContainerViewController.h */,
+				8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */,
+				8BCB4C001993F31700B9C751 /* FTFPhotoBrowserViewController.h */,
+				8BCB4C011993F31700B9C751 /* FTFPhotoBrowserViewController.m */,
+				8BCB4C031994692F00B9C751 /* FTFPhotoCommentsViewController.h */,
+				8BCB4C041994692F00B9C751 /* FTFPhotoCommentsViewController.m */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		8B7D033E19C2179B006839BF /* Custom Table View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				8B3994DC19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.h */,
+				8B3994DD19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m */,
+				8BC938D019400B5A00418F32 /* FTFTableViewCell.h */,
+				8BC938D119400B5A00418F32 /* FTFTableViewCell.m */,
+				8BAC031B19BBD3F700451615 /* FTFCollectionViewCell.h */,
+				8BAC031C19BBD3F700451615 /* FTFCollectionViewCell.m */,
+				8BCB4C061995777000B9C751 /* FTFPhotoCommentTableViewCell.h */,
+				8BCB4C071995777000B9C751 /* FTFPhotoCommentTableViewCell.m */,
+			);
+			name = "Custom Table View Cells";
 			sourceTree = "<group>";
 		};
 		8BA2A6E8194E12D900341260 /* WYPopoverController */ = {
@@ -566,26 +618,11 @@
 			isa = PBXGroup;
 			children = (
 				8B451D50198178C0005D7159 /* Model Objects */,
+				8B7D033D19C216C0006839BF /* View Controllers */,
+				8B7D033E19C2179B006839BF /* Custom Table View Cells */,
 				8BC93898193C1C8300418F32 /* FTFAppDelegate.h */,
 				8BC93899193C1C8300418F32 /* FTFAppDelegate.m */,
 				8BC9389B193C1C8300418F32 /* Main.storyboard */,
-				8BAC031819BB7C0F00451615 /* FTFPhotoCollectionGridViewController.h */,
-				8BAC031919BB7C0F00451615 /* FTFPhotoCollectionGridViewController.m */,
-				8BAC031B19BBD3F700451615 /* FTFCollectionViewCell.h */,
-				8BAC031C19BBD3F700451615 /* FTFCollectionViewCell.m */,
-				8BC938DA194529EB00418F32 /* FTFContainerViewController.h */,
-				8BC938DB194529EB00418F32 /* FTFContainerViewController.m */,
-				8BC938CD193CE3EF00418F32 /* FTFContentTableViewController.h */,
-				8BA2A6F4194E226D00341260 /* FTFContentTableViewController.m */,
-				8B12264E19B2DE9700FBFE4E /* FTFPhotoContainerViewController.h */,
-				8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */,
-				8BCB4C001993F31700B9C751 /* FTFPhotoBrowserViewController.h */,
-				8BCB4C011993F31700B9C751 /* FTFPhotoBrowserViewController.m */,
-				8BCB4C061995777000B9C751 /* FTFPhotoCommentTableViewCell.h */,
-				8BCB4C071995777000B9C751 /* FTFPhotoCommentTableViewCell.m */,
-				8BCB4C031994692F00B9C751 /* FTFPhotoCommentsViewController.h */,
-				8BCB4C041994692F00B9C751 /* FTFPhotoCommentsViewController.m */,
-				8BD200281975018A00F9F347 /* Album List VC */,
 				8BC938D71940593400418F32 /* FTFFacebookLoginViewController.h */,
 				8BC938D81940593400418F32 /* FTFFacebookLoginViewController.m */,
 				8BC938A1193C1C8300418F32 /* Images.xcassets */,
@@ -599,12 +636,11 @@
 		8BC93890193C1C8300418F32 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1AA2BAC219C642CD0069A92F /* DateFormatter */,
 				8BC3258F1979D5DC002A17AC /* MBProgressHUD */,
 				8BA878CF19674E2700A43819 /* MWPhotoBrowser */,
 				8BA2A6E8194E12D900341260 /* WYPopoverController */,
 				8B6458B9194CDE88006D4B75 /* Images */,
-				8BC938D019400B5A00418F32 /* FTFTableViewCell.h */,
-				8BC938D119400B5A00418F32 /* FTFTableViewCell.m */,
 				8BC93891193C1C8300418F32 /* FiftyTwoFrames-Info.plist */,
 				8BC93892193C1C8300418F32 /* InfoPlist.strings */,
 				8BC93895193C1C8300418F32 /* main.m */,
@@ -636,8 +672,6 @@
 			children = (
 				8BC32591197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.h */,
 				8BC32590197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m */,
-				8B3994DC19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.h */,
-				8B3994DD19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m */,
 				8B20E98B198CA1920074E66B /* FTFYearPopoverTableViewController.h */,
 				8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */,
 			);
@@ -830,6 +864,7 @@
 				8B6458C2194D0BE6006D4B75 /* FTFImage.m in Sources */,
 				8BC32592197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m in Sources */,
 				8B3994DE19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m in Sources */,
+				1AEB1B3B19C5725100EB67D2 /* FTFUser.m in Sources */,
 				8BA8793D19674E6A00A43819 /* PSTCollectionViewFlowLayout.m in Sources */,
 				8B7D033B19C0DF4D006839BF /* FTFAlbumCategoryCollection.m in Sources */,
 				8BA8792E19674E6A00A43819 /* MWGridCell.m in Sources */,
@@ -846,6 +881,7 @@
 				8BA2A6F5194E226D00341260 /* FTFContentTableViewController.m in Sources */,
 				8BA8797F19675FF400A43819 /* SDWebImageDownloader.m in Sources */,
 				8BA8793319674E6A00A43819 /* MWTapDetectingView.m in Sources */,
+				1AA2BAC519C642E90069A92F /* TTTTimeIntervalFormatter.m in Sources */,
 				8B451D561981C046005D7159 /* FTFAlbumCollection.m in Sources */,
 				8BA8798419675FF400A43819 /* UIImage+GIF.m in Sources */,
 				8B451D531981B9B4005D7159 /* FTFAlbum.m in Sources */,

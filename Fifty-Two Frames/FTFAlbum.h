@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSURL *coverPhotoURL;
 @property (nonatomic, strong) NSArray *photos;
 
-- (void)retrieveAlbumPhotos:(void(^)(NSArray *photos, NSError *error))block;
+//- (void)retrieveAlbumPhotos:(void(^)(NSArray *photos, NSError *error))block;
  // of FTFImage's
 
 @end
