@@ -115,11 +115,10 @@ static const CGFloat labelPadding = 10;
 - (IBAction)tapped:(UITapGestureRecognizer *)recognizer {
     if (maxHeight == 75) {
         maxHeight = 9999;
+        [self sizeToFit];
     } else {
         maxHeight = 75;
     }
-    
-    [self sizeToFit];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"tappedCaptionNotification" object:nil];
 }
 
