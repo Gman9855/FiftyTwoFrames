@@ -179,11 +179,11 @@ static NSString * const reuseIdentifier = @"commentCell";
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self.photo.photoComments count];
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return [self.photo.photoComments count];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -196,7 +196,7 @@ static NSString * const reuseIdentifier = @"commentCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FTFPhotoCommentTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reuseIdentifier
                                                                               forIndexPath:indexPath];
-    FTFPhotoComment *photoComment = self.photo.photoComments[indexPath.section];
+    FTFPhotoComment *photoComment = self.photo.photoComments[indexPath.row];
     
     [cell.commenterProfilePicture setImageWithURL:photoComment.commenterProfilePictureURL];
     
@@ -205,6 +205,14 @@ static NSString * const reuseIdentifier = @"commentCell";
     
     cell.commentDate.text = [self timeIntervalformattedDateStringFromFacebookDate:photoComment.createdTime];
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"commentCell"];
+    CGFloat height = cell.bounds.size.height;
+    
+    return height + 10;
 }
 
 //- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
