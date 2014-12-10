@@ -18,6 +18,8 @@
 
 @interface FTFPhotoCommentsViewController : UIViewController
 
+@property (weak, nonatomic, readonly) IBOutlet UITableView *tableView;
+
 @property (nonatomic, weak) id <FTFPhotoCommentsViewControllerDelegate> delegate;
 @property (nonatomic, strong) FTFImage *photo;
 

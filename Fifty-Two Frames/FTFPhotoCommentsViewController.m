@@ -19,7 +19,7 @@
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *inputViewBottomConstraint;
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic, readwrite) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UIButton *postCommentButton;
 @property (nonatomic, assign) NSInteger keyboardHeight;
@@ -61,11 +61,6 @@ static NSString * const reuseIdentifier = @"commentCell";
                                     repeats:YES];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 - (CGRect)convertedRectFromKeyboardNotification:(NSNotification *)notification;
 {

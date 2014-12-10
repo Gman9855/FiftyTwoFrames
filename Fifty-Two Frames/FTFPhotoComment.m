@@ -16,6 +16,10 @@
 
 @implementation FTFPhotoComment
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"Comment: %@, Commenter name: %@", self.comment, self.commenterName];
+}
+
 - (NSURL *)commenterProfilePictureURL {
     if (!_commenterProfilePictureURL) {
         _commenterProfilePictureURL = [NSURL new];
