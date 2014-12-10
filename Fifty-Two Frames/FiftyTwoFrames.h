@@ -25,11 +25,16 @@
                                         limit:(NSInteger)limit
                                  completionBlock:(void(^)(NSArray *photos, NSError *error))block;
 
+- (void)requestNextPageOfAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error))block;
+
 - (void)requestPhotoWithPhotoURL:(NSURL *)photoURL
                 completionBlock:(void (^)(UIImage *image, NSError *error, BOOL isCached))block;
 
 - (void)publishPhotoLikeWithPhotoID:(NSString *)photoID
                     completionBlock:(void (^)(NSError *error))block;
+
+- (void)deletePhotoLikeWithPhotoID:(NSString *)photoID
+                   completionBlock:(void (^)(NSError *error))block;
 
 - (void)publishPhotoCommentWithPhotoID:(NSString *)photoID
                                comment:(NSString *)comment

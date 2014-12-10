@@ -21,7 +21,7 @@
 {
 
     [@[@"foo", @"bar", @"baz", @"faz"] map:^id(id object, NSUInteger index) {
-        NSLog(@"object: %@, index %u", object, index);
+        NSLog(@"object: %@, index %lu", object, (unsigned long)index);
         return object;
     }];
 

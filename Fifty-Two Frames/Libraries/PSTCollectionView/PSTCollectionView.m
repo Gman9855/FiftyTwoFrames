@@ -11,6 +11,7 @@
 #import "PSTCollectionViewItemKey.h"
 
 #import <objc/runtime.h>
+#import <dlfcn.h>
 
 @interface PSTCollectionViewLayout (Internal)
 @property (nonatomic, unsafe_unretained) PSTCollectionView *collectionView;
@@ -2283,7 +2284,7 @@ __attribute__((constructor)) static void PSTCreateUICollectionViewClasses(void) 
 CGFloat PSTSimulatorAnimationDragCoefficient(void) {
     static CGFloat (*UIAnimationDragCoefficient)(void) = NULL;
 #if TARGET_IPHONE_SIMULATOR
-#import <dlfcn.h>
+//#import <dlfcn.h>
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         UIAnimationDragCoefficient = (CGFloat (*)(void))dlsym(RTLD_DEFAULT, "UIAnimationDragCoefficient");

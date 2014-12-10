@@ -22,6 +22,7 @@
 @interface FiftyTwoFrames ()
 
 @property (nonatomic, strong) FBRequestConnection *requestConnection;
+@property (nonatomic, strong) NSString *nextPageOfALbumPhotoResultsURLString;
 
 @end
 
@@ -97,11 +98,11 @@
 
 - (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID
                                         limit:(NSInteger)limit
-                                 completionBlock:(void (^)(NSArray *, NSError *))block
+                                 completionBlock:(void (^)(NSArray *photos, NSError *error))block
 {
     [self.requestConnection cancel];
  //   833602159998239/photos?fields=comments.fields(from.fields(picture,id,name))
-    self.requestConnection = [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/photos?limit=50&fields=images,id,name,likes.limit(1).summary(true),comments.fields(from.fields(picture,id,name),created_time,message)", albumID]
+    self.requestConnection = [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/photos?limit=50&fields=images,id,name,likes.limit(1).summary(true),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", albumID]
                                  parameters:nil
                                  HTTPMethod:@"GET"
                           completionHandler:^(
@@ -113,6 +114,7 @@
                               if (block) {
                                   if (!error) {
                                       NSArray *albumPhotos = [self albumPhotosWithAlbumPhotoResponseData:result];
+                                      self.nextPageOfALbumPhotoResultsURLString = [result valueForKeyPath:@"paging.next"];
                                       block(albumPhotos, nil);
                                   } else {
                                       block(nil, error);
@@ -121,6 +123,31 @@
                                   return;
                               }
                           }];
+}
+
+- (void)requestNextPageOfAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error))block {
+    FBRequest *request = [[FBRequest alloc] initWithSession:FBSession.activeSession graphPath:nil];
+    FBRequestConnection *connection = [[FBRequestConnection alloc] init];
+    [connection addRequest:request completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (block) {
+            if (!error) {
+                NSArray *albumPhotos = [self albumPhotosWithAlbumPhotoResponseData:result];
+                self.nextPageOfALbumPhotoResultsURLString = [result valueForKeyPath:@"paging.next"];
+                NSLog(@"%@", self.nextPageOfALbumPhotoResultsURLString);
+                block(albumPhotos, nil);
+            } else {
+                block(nil, error);
+            }
+        } else {
+            return;
+        }
+    }];
+    
+    // Override the URL using the one passed back in 'next|previous'.
+    NSURL *url = [NSURL URLWithString:self.nextPageOfALbumPhotoResultsURLString];
+    NSMutableURLRequest* urlRequest = [NSMutableURLRequest requestWithURL:url];
+    connection.urlRequest = urlRequest;
+    [connection start];
 }
 
 - (void)requestPhotoWithPhotoURL:(NSURL *)photoURL
@@ -172,6 +199,21 @@
     [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoID]
                                  parameters:nil
                                  HTTPMethod:@"POST"
+                          completionHandler:^(
+                                              FBRequestConnection *connection,
+                                              id result,
+                                              NSError *error
+                                              ) {
+                              if(block) block(error);
+                          }];
+}
+
+- (void)deletePhotoLikeWithPhotoID:(NSString *)photoID
+                   completionBlock:(void (^)(NSError *error))block
+{
+    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoID]
+                                 parameters:nil
+                                 HTTPMethod:@"DELETE"
                           completionHandler:^(
                                               FBRequestConnection *connection,
                                               id result,

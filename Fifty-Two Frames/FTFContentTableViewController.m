@@ -8,6 +8,7 @@
 
 #import "FTFContentTableViewController.h"
 #import "FTFTableViewCell.h"
+#import "FTFActivityIndicatorCell.h"
 #import "UIImageView+WebCache.h"
 #import "FTFImage.h"
 #import "FTFAlbumSelectionMenuViewController.h"
@@ -35,19 +36,23 @@
 @property (nonatomic, strong) FTFAlbumCollection *photoWalksAlbums;
 @property (nonatomic, strong) FTFAlbumCollection *miscellaneousSubmissionsAlbums;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
+@property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
 @property (nonatomic, strong) NSArray *browserPhotos;
 @property (nonatomic, strong) UILabel *navBarTitle;
 @property (nonatomic, strong) NSArray *albumPhotos;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIView *hostingView;
 @property (nonatomic, strong) NSArray *thumbnailPhotosForGrid;
+@property (nonatomic, strong) UIActivityIndicatorView *spinner;
 
 @end
 
 static NSString * const reuseIdentifier = @"photo";
 BOOL albumSelectionChanged = NO;
 
-@implementation FTFContentTableViewController
+@implementation FTFContentTableViewController {
+    BOOL _shouldLoadMorePhotos;
+}
 
 #pragma mark - Lazy Load
 
@@ -91,15 +96,20 @@ BOOL albumSelectionChanged = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.spinner.frame = CGRectMake(0, 0, 320, 44);
+    self.spinner.hidden = YES;
+    self.tableView.tableFooterView = self.spinner;
+
     self.albumSelectionMenuViewController.delegate = self;
     
     self.navigationController.toolbarHidden = YES;
-    
     [self setUpNavigationBarTitle];
 
     self.navigationController.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+
     [self setUpActivityIndicator];
 
     [[FiftyTwoFrames sharedInstance] requestAlbumCollectionWithCompletionBlock:^(FTFAlbumCategoryCollection *albumCollection,
@@ -159,7 +169,6 @@ BOOL albumSelectionChanged = NO;
         [[FiftyTwoFrames sharedInstance] requestAlbumPhotosForAlbumWithAlbumID:self.albumToDisplay.albumID
                                                                          limit:200
                                                                completionBlock:^(NSArray *photos, NSError *error) {
-                                                                   
                                                                    [self populateAlbumPhotosResultsWithPhotos:photos error:error];
                                                                }];
     }];
@@ -208,7 +217,6 @@ BOOL albumSelectionChanged = NO;
             self.navigationItem.titleView.alpha = 1.0;
         }];
         
-
 //    } else {
 //        [MBProgressHUD hideHUDForView:self.view animated:NO];
 //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -238,39 +246,42 @@ BOOL albumSelectionChanged = NO;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    FTFImage *photo = self.albumPhotos[indexPath.row];
-    FTFTableViewCell *ftfCell = (FTFTableViewCell *)cell;
+    if ([cell isKindOfClass:[FTFTableViewCell class]]) {
+        FTFImage *photo = self.albumPhotos[indexPath.row];
+        FTFTableViewCell *ftfCell = (FTFTableViewCell *)cell;
+        
+        if (![photo.photoComments isEqual:[NSNull null]]) {
+            ftfCell.commentsCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)[photo.photoComments count]];
+        }
+        
+        ftfCell.likesCountLabel.text = [NSString stringWithFormat:@"%ld", (long)photo.photoLikesCount];
+        
+        if (![photo.photoDescription isEqual:[NSNull null]]) {
+            ftfCell.descriptionLabel.text = photo.photoDescription;
+        } else {
+            ftfCell.descriptionLabel.text = @"";
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [photo requestImageWithSize:FTFImageSizeLarge
+                        completionBlock:^(UIImage *image, NSError *error, BOOL isCached) {
+                            if (error) return;
+                            
+                            FTFTableViewCell *cell = (FTFTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+                            
+                            if (!isCached) {
+                                CATransition *t = [CATransition animation];
+                                t.duration = 0.30;
+                                t.type = kCATransitionFade;
+                                [cell.photo.layer addAnimation:t forKey:nil];
+                            }
+                            cell.photo.image = image;
+                            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        }];
+        });
 
-    if (![photo.photoComments isEqual:[NSNull null]]) {
-        ftfCell.commentsCountLabel.text = [NSString stringWithFormat:@"%d", [photo.photoComments count]];
     }
-    
-    ftfCell.likesCountLabel.text = [NSString stringWithFormat:@"%ld", (long)photo.photoLikesCount];
-    
-    if (![photo.photoDescription isEqual:[NSNull null]]) {
-        ftfCell.descriptionLabel.text = photo.photoDescription;
-    } else {
-        ftfCell.descriptionLabel.text = @"";
-    }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        [photo requestImageWithSize:FTFImageSizeLarge
-                    completionBlock:^(UIImage *image, NSError *error, BOOL isCached) {
-            if (error) return;
-            
-            FTFTableViewCell *cell = (FTFTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-            
-            if (!isCached) {
-                CATransition *t = [CATransition animation];
-                t.duration = 0.30;
-                t.type = kCATransitionFade;
-                [cell.photo.layer addAnimation:t forKey:nil];
-            }
-            cell.photo.image = image;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }];
-    });
 }
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -288,14 +299,21 @@ BOOL albumSelectionChanged = NO;
     return [self.albumPhotos count];
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    return self.spinner;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FTFTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-    return cell;
+    FTFTableViewCell *photoCell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
+    if (indexPath.row == self.albumPhotos.count - 1) {
+        self.spinner.hidden = NO;
+        [self.spinner startAnimating];
+    }
+    return photoCell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {    
-    
     [self setUpPhotoBrowserForTappedPhotoAtRow];
     [self.photoBrowser setCurrentPhotoIndex:indexPath.row];
     [self.navigationController pushViewController:self.photoBrowser animated:YES];
@@ -367,7 +385,6 @@ BOOL albumSelectionChanged = NO;
     self.hostingView.frame = navigationView.bounds;
     self.hostingView.bounds = self.view.bounds;
     
-//    self.albumSelectionMenuNavigationController.view.frame = CGRectInset(self.hostingView.bounds, 15, 15);
     self.albumSelectionMenuNavigationController.view.frame = self.hostingView.bounds;
     [self.hostingView addSubview:self.albumSelectionMenuNavigationController.view];
     [navigationView addSubview:self.hostingView];
@@ -402,7 +419,47 @@ BOOL albumSelectionChanged = NO;
     anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)];
     [sender.layer addAnimation:anim forKey:nil];
     
+    CGPoint center = sender.center;
+    CGPoint rootViewPoint = [sender.superview convertPoint:center toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:rootViewPoint];
     
+    FTFImage *photo = self.albumPhotos[indexPath.row];
+    FTFTableViewCell *cell = (FTFTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    NSLog(@"%@", cell.descriptionLabel.text);
+    NSLog(@"%ld", (long)indexPath.row);
+    if (!cell.isLiked) {
+        [[FiftyTwoFrames sharedInstance] publishPhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
+            if (error) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:@"Something went wrong connecting to Facebook."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Okay"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            } else {
+                NSInteger likeCount = [cell.likesCountLabel.text intValue];
+                likeCount++;
+                cell.isLiked = YES;
+                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)likeCount];
+            }
+        }];
+    } else {
+        [[FiftyTwoFrames sharedInstance] deletePhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
+            if (error) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:@"Something went wrong connecting to Facebook."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Okay"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            } else {
+                NSInteger likeCount = [cell.likesCountLabel.text intValue];
+                likeCount--;
+                cell.isLiked = NO;
+                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)likeCount];
+            }
+        }];
+    }
 }
 
 - (IBAction)infoButtonTapped:(UIBarButtonItem *)sender {
@@ -422,6 +479,38 @@ BOOL albumSelectionChanged = NO;
         NSIndexPath *ip = [NSIndexPath indexPathForRow:currentIndex inSection:0];
         [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionNone animated:YES];
     }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)aScrollView {
+    CGPoint offset = aScrollView.contentOffset;
+    CGRect bounds = aScrollView.bounds;
+    CGSize size = aScrollView.contentSize;
+    UIEdgeInsets inset = aScrollView.contentInset;
+    float y = offset.y + bounds.size.height - inset.bottom;
+    float h = size.height;
+//    NSLog(@"offset: %f", offset.y);
+//    NSLog(@"content.height: %f", size.height);
+//    NSLog(@"bounds.height: %f", bounds.size.height);
+//    NSLog(@"inset.top: %f", inset.top);
+//    NSLog(@"inset.bottom: %f", inset.bottom);
+//    NSLog(@"pos: %f of %f", y, h);
+    float reload_distance = 37;
+    if(y >= h - reload_distance && !_shouldLoadMorePhotos && self.albumPhotos) {
+        _shouldLoadMorePhotos = YES;
+        if (self.albumPhotos) {
+            NSLog(@"load more rows");
+//            [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosWithCompletionBlock:^(NSArray *photos, NSError *error) {
+//                NSMutableArray *albumPhotos = [self.albumPhotos mutableCopy];
+//                for (FTFImage *photo in photos) {
+//                    [albumPhotos addObject:photo];
+//                }
+//                self.albumPhotos = [albumPhotos copy];
+//                [self.tableView reloadData];
+//                _shouldLoadMorePhotos = NO;
+//            }];
+        }
+    }
+    
 }
 
 @end

@@ -22,6 +22,7 @@
 - (id)init {
     if ((self = [super init])) {
         [self _initialisation];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideControls) name:@"tappedCaptionNotification" object:nil];
     }
     return self;
 }

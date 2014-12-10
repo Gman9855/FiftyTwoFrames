@@ -35,6 +35,8 @@ static NSString * const reuseIdentifier = @"commentCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 59;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -194,21 +196,6 @@ static NSString * const reuseIdentifier = @"commentCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FTFPhotoCommentTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reuseIdentifier
                                                                               forIndexPath:indexPath];
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self configureCommentCell:(FTFPhotoCommentTableViewCell *)cell atIndexPath:indexPath];
-}
-
-- (FTFPhotoCommentTableViewCell *)commentCellAtIndexPath:(NSIndexPath *)indexPath {
-    FTFPhotoCommentTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reuseIdentifier
-                                                                              forIndexPath:indexPath];
-    [self configureCommentCell:cell atIndexPath:indexPath];
-    return cell;
-}
-
-- (void)configureCommentCell:(FTFPhotoCommentTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     FTFPhotoComment *photoComment = self.photo.photoComments[indexPath.section];
     
     [cell.commenterProfilePicture setImageWithURL:photoComment.commenterProfilePictureURL];
@@ -217,30 +204,53 @@ static NSString * const reuseIdentifier = @"commentCell";
     cell.commentBody.text = photoComment.comment;
     
     cell.commentDate.text = [self timeIntervalformattedDateStringFromFacebookDate:photoComment.createdTime];
+    return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [self heightForCommentCellAtIndexPath:indexPath];
+//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    [self configureCommentCell:(FTFPhotoCommentTableViewCell *)cell atIndexPath:indexPath];
+//}
+//
+//- (FTFPhotoCommentTableViewCell *)commentCellAtIndexPath:(NSIndexPath *)indexPath {
+//    FTFPhotoCommentTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reuseIdentifier
+//                                                                              forIndexPath:indexPath];
+//    [self configureCommentCell:cell atIndexPath:indexPath];
+//    return cell;
+//}
+
+- (void)configureCommentCell:(FTFPhotoCommentTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+//    FTFPhotoComment *photoComment = self.photo.photoComments[indexPath.section];
+//    
+//    [cell.commenterProfilePicture setImageWithURL:photoComment.commenterProfilePictureURL];
+//    
+//    cell.commenterName.text = photoComment.commenterName;
+//    cell.commentBody.text = photoComment.comment;
+//    
+//    cell.commentDate.text = [self timeIntervalformattedDateStringFromFacebookDate:photoComment.createdTime];
 }
 
-- (CGFloat)heightForCommentCellAtIndexPath:(NSIndexPath *)indexPath {
-    static FTFPhotoCommentTableViewCell *sizingCell = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sizingCell = [self.tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
-    });
-    
-    [self configureCommentCell:sizingCell atIndexPath:indexPath];
-    return [self calculateHeightForConfiguredSizingCell:sizingCell];
-}
-
-- (CGFloat)calculateHeightForConfiguredSizingCell:(UITableViewCell *)sizingCell {
-    [sizingCell setNeedsLayout];
-    [sizingCell layoutIfNeeded];
-    
-    CGSize size = [sizingCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    return size.height;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return [self heightForCommentCellAtIndexPath:indexPath];
+//}
+//
+//- (CGFloat)heightForCommentCellAtIndexPath:(NSIndexPath *)indexPath {
+//    static FTFPhotoCommentTableViewCell *sizingCell = nil;
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        sizingCell = [self.tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+//    });
+//    
+//    [self configureCommentCell:sizingCell atIndexPath:indexPath];
+//    return [self calculateHeightForConfiguredSizingCell:sizingCell];
+//}
+//
+//- (CGFloat)calculateHeightForConfiguredSizingCell:(UITableViewCell *)sizingCell {
+//    [sizingCell setNeedsLayout];
+//    [sizingCell layoutIfNeeded];
+//    
+//    CGSize size = [sizingCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+//    return size.height;
+//}
 
 #pragma mark - Helper methods
 
@@ -255,7 +265,7 @@ static NSString * const reuseIdentifier = @"commentCell";
 }
 
 - (void)updateVisibleCells:(NSTimer *)timer {
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
 }
 
 /*

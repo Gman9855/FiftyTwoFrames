@@ -1,28 +1,27 @@
 //
-//  FTFTableViewCell.m
-//  Fifty-Two Frames
+//  FTFActivityIndicatorCell.m
+//  FiftyTwoFrames
 //
-//  Created by Gershy Lev on 6/4/14.
+//  Created by Gershon Lev on 9/21/14.
 //  Copyright (c) 2014 Gershy Lev. All rights reserved.
 //
 
-#import "FTFTableViewCell.h"
+#import "FTFActivityIndicatorCell.h"
 
-@implementation FTFTableViewCell
+@implementation FTFActivityIndicatorCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        // Initialization code
     }
     return self;
 }
 
-- (void)prepareForReuse;
+- (void)awakeFromNib
 {
-    [super prepareForReuse];
-    
-    self.photo.image = nil;
+    // Initialization code
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
