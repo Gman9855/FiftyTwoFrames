@@ -156,16 +156,15 @@ static NSString * const reuseIdentifier = @"commentCell";
 //            return;
 //        }
 //    }];
-    
-    [self.tableView beginUpdates];
     [self.photo addPhotoComment:postedComment];
+    [self.tableView beginUpdates];
     
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:self.photo.photoComments.count - 1];
-    [self.tableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+    NSIndexPath *i = [NSIndexPath indexPathForRow:self.photo.photoComments.count - 1 inSection:0];
+    [self.tableView insertRowsAtIndexPaths:@[i] withRowAnimation:UITableViewRowAnimationAutomatic];
 
     [self.tableView endUpdates];
     
-    NSIndexPath *idx = [NSIndexPath indexPathForRow:0 inSection:self.photo.photoComments.count - 1];
+    NSIndexPath *idx = [NSIndexPath indexPathForRow:self.photo.photoComments.count - 1 inSection:0];
     [self.tableView scrollToRowAtIndexPath:idx atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     
     self.textField.text = nil;
