@@ -15,6 +15,10 @@
 
 #import "FiftyTwoFrames.h"
 
+
+static NSAttributedString *bluePostString = nil;
+static NSAttributedString *lightGrayPostString = nil;
+
 @interface FTFPhotoCommentsViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *inputViewBottomConstraint;
@@ -38,6 +42,10 @@ static NSString * const reuseIdentifier = @"commentCell";
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 59;
 
+    [self.textField addTarget:self
+                  action:@selector(textFieldDidChange:)
+        forControlEvents:UIControlEventEditingChanged];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
@@ -110,6 +118,20 @@ static NSString * const reuseIdentifier = @"commentCell";
 }
 
 #pragma mark - Text Field Delegate
+
+- (void)textFieldDidChange:(NSNotification *)notification {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        bluePostString = [[NSAttributedString alloc]initWithString:self.postCommentButton.titleLabel.text attributes:@{NSForegroundColorAttributeName : self.postCommentButton.tintColor}];
+        lightGrayPostString = [[NSAttributedString alloc]initWithString:self.postCommentButton.titleLabel.text attributes:@{NSForegroundColorAttributeName : [UIColor lightGrayColor]}];
+    });
+    
+    if (![self.textField.text isEqualToString:@""]) {
+        [self.postCommentButton setAttributedTitle:bluePostString forState:UIControlStateNormal];
+    } else {
+        [self.postCommentButton setAttributedTitle:lightGrayPostString forState:UIControlStateNormal];
+    }
+}
 
 - (void)updateInputView;
 {
