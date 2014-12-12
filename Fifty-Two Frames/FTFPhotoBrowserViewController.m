@@ -141,6 +141,7 @@
                       animations:^{
                           self.hostingViewForCommentView.center = self.view.center;
                     } completion:nil];
+    
     [[self photoCommentsVC].tableView reloadData];
 }
 

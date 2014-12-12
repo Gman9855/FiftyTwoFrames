@@ -1039,6 +1039,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Fifty-Two Frames/FiftyTwoFrames-Prefix.pch";
 				INFOPLIST_FILE = "Fifty-Two Frames/FiftyTwoFrames-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FiftyTwoFrames;
 				WRAPPER_EXTENSION = app;
@@ -1059,6 +1060,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Fifty-Two Frames/FiftyTwoFrames-Prefix.pch";
 				INFOPLIST_FILE = "Fifty-Two Frames/FiftyTwoFrames-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FiftyTwoFrames;
 				WRAPPER_EXTENSION = app;

@@ -31,7 +31,7 @@
     _commenterID = commenterID;
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            NO, @"redirect",
+                            @"false", @"redirect",
                             @"200", @"height",
                             @"normal", @"type",
                             @"200", @"width",
@@ -70,6 +70,5 @@
         block(image, error);
     }];
 }
-
 
 @end

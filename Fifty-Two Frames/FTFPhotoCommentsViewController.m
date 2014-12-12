@@ -15,7 +15,6 @@
 
 #import "FiftyTwoFrames.h"
 
-
 static NSAttributedString *bluePostString = nil;
 static NSAttributedString *lightGrayPostString = nil;
 
@@ -39,8 +38,9 @@ static NSString * const reuseIdentifier = @"commentCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tableView.estimatedRowHeight = 75;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    self.tableView.estimatedRowHeight = 59;
 
     [self.textField addTarget:self
                   action:@selector(textFieldDidChange:)
@@ -56,6 +56,10 @@ static NSString * const reuseIdentifier = @"commentCell";
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(keyboardFrameDidChange:)
+//                                                 name:UIKeyboardDidChangeFrameNotification object:nil];
+//    
     self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
     self.navigationController.view.layer.cornerRadius = 10;
     self.navigationController.view.layer.masksToBounds = YES;
@@ -68,7 +72,6 @@ static NSString * const reuseIdentifier = @"commentCell";
                                    userInfo:nil
                                     repeats:YES];
 }
-
 
 - (CGRect)convertedRectFromKeyboardNotification:(NSNotification *)notification;
 {
@@ -103,18 +106,28 @@ static NSString * const reuseIdentifier = @"commentCell";
 
 - (void)animateUsingKeyboardUserInfo:(NSDictionary *)userInfo animations:(dispatch_block_t)animations;
 {
-    BOOL showingLastIndexPath = [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:self.photo.photoComments.count - 1]];
+//    BOOL showingLastIndexPath = [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:self.photo.photoComments.count - 1]];
     
     [UIView beginAnimations:nil context:NULL];
     
-    if (!showingLastIndexPath) {
-        [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-        [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue]];
-    }
+//    if (!showingLastIndexPath) {
+//        [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
+    [UIView setAnimationCurve:1.0];
+    [UIView setAnimationDuration:0.0];
+
+//        [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue]];
+//    }
     
     animations();
     
     [UIView commitAnimations];
+}
+
+-(void)keyboardFrameDidChange:(NSNotification*)notification{
+    NSDictionary* info = [notification userInfo];
+    
+    CGRect kKeyBoardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    [self.view setFrame:CGRectMake(0, kKeyBoardFrame.origin.y-self.view.frame.size.height, 320, self.view.frame.size.height)];
 }
 
 #pragma mark - Text Field Delegate
@@ -223,14 +236,6 @@ static NSString * const reuseIdentifier = @"commentCell";
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"commentCell"];
-    CGFloat height = cell.bounds.size.height;
-    
-    return height + 10;
-}
-
 //- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 //    [self configureCommentCell:(FTFPhotoCommentTableViewCell *)cell atIndexPath:indexPath];
 //}
@@ -291,16 +296,5 @@ static NSString * const reuseIdentifier = @"commentCell";
 - (void)updateVisibleCells:(NSTimer *)timer {
     //[self.tableView reloadData];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
