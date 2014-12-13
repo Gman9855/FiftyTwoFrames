@@ -435,12 +435,7 @@ BOOL albumSelectionChanged = NO;
     if (!cell.isLiked) {
         [[FiftyTwoFrames sharedInstance] publishPhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
             if (error) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:@"Something went wrong connecting to Facebook."
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Okay"
-                                                      otherButtonTitles:nil];
-                [alert show];
+                return;
             } else {
                 photo.photoLikesCount++;
                 cell.isLiked = YES;
@@ -450,12 +445,7 @@ BOOL albumSelectionChanged = NO;
     } else {
         [[FiftyTwoFrames sharedInstance] deletePhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
             if (error) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:@"Something went wrong connecting to Facebook."
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Okay"
-                                                      otherButtonTitles:nil];
-                [alert show];
+                return;
             } else {
                 photo.photoLikesCount--;
                 cell.isLiked = NO;

@@ -197,7 +197,7 @@
                     completionBlock:(void (^)(NSError *))block
 {
     [self.requestConnection cancel];
-    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoID]
+    self.requestConnection = [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoID]
                                  parameters:nil
                                  HTTPMethod:@"POST"
                           completionHandler:^(
@@ -213,7 +213,7 @@
                    completionBlock:(void (^)(NSError *error))block
 {
     [self.requestConnection cancel];
-    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoID]
+    self.requestConnection = [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoID]
                                  parameters:nil
                                  HTTPMethod:@"DELETE"
                           completionHandler:^(
