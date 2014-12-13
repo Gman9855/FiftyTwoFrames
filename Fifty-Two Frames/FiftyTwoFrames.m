@@ -196,6 +196,7 @@
 - (void)publishPhotoLikeWithPhotoID:(NSString *)photoID
                     completionBlock:(void (^)(NSError *))block
 {
+    [self.requestConnection cancel];
     [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoID]
                                  parameters:nil
                                  HTTPMethod:@"POST"
@@ -211,6 +212,7 @@
 - (void)deletePhotoLikeWithPhotoID:(NSString *)photoID
                    completionBlock:(void (^)(NSError *error))block
 {
+    [self.requestConnection cancel];
     [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoID]
                                  parameters:nil
                                  HTTPMethod:@"DELETE"

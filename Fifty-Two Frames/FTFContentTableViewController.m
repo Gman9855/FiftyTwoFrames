@@ -427,6 +427,11 @@ BOOL albumSelectionChanged = NO;
     FTFTableViewCell *cell = (FTFTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     NSLog(@"%@", cell.descriptionLabel.text);
     NSLog(@"%ld", (long)indexPath.row);
+    
+    [self handlePhotoLikeWithCell:cell andPhoto:photo];
+}
+
+- (void)handlePhotoLikeWithCell:(FTFTableViewCell *)cell andPhoto:(FTFImage *)photo {
     if (!cell.isLiked) {
         [[FiftyTwoFrames sharedInstance] publishPhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
             if (error) {
@@ -437,10 +442,9 @@ BOOL albumSelectionChanged = NO;
                                                       otherButtonTitles:nil];
                 [alert show];
             } else {
-                NSInteger likeCount = [cell.likesCountLabel.text intValue];
-                likeCount++;
+                photo.photoLikesCount++;
                 cell.isLiked = YES;
-                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)likeCount];
+                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.photoLikesCount];
             }
         }];
     } else {
@@ -453,14 +457,30 @@ BOOL albumSelectionChanged = NO;
                                                       otherButtonTitles:nil];
                 [alert show];
             } else {
-                NSInteger likeCount = [cell.likesCountLabel.text intValue];
-                likeCount--;
+                photo.photoLikesCount--;
                 cell.isLiked = NO;
-                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)likeCount];
+                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.photoLikesCount];
             }
         }];
     }
 }
+
+/*
+IDEA 1:
+ - void checkLikeWithCell:(UITableViewCell)cell AndTime:(NSDate *)timeOfLike {
+        if(timeOfLike > 5 seconds) {    //checking if 5 seconds has gone by since first like
+            if(cell.isLiked) {
+                publishLike
+            } else {
+                deleteLike
+            }
+ 
+ 
+ 
+  >delay of a few seconds to register if a photo is actually liked
+ 
+ 
+*/
 
 - (IBAction)infoButtonTapped:(UIBarButtonItem *)sender {
     
