@@ -8,6 +8,8 @@
 
 #import "MWPhotoBrowser.h"
 
+extern NSString *const didPressLikeNotification;
+
 @interface FTFPhotoBrowserViewController : MWPhotoBrowser
 
 @property (nonatomic, assign) NSInteger selectedPhotoIndex;

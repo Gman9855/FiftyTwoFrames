@@ -45,13 +45,20 @@
 @property (nonatomic, strong) NSArray *thumbnailPhotosForGrid;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
 
+@property (nonatomic, assign) BOOL isLoading;
+@property (assign, nonatomic) BOOL hasNextPage;
+@property (assign, nonatomic) int currentPage;
+
 @end
 
 static NSString * const reuseIdentifier = @"photo";
 BOOL albumSelectionChanged = NO;
+BOOL _morePhotosToLoad = NO;
+BOOL _albumWasJustChanged = NO;
 
 @implementation FTFContentTableViewController {
-    BOOL _shouldLoadMorePhotos;
+    BOOL _didPageNextBatchOfPhotos;
+    BOOL _finishedPaging;
 }
 
 #pragma mark - Lazy Load
@@ -97,8 +104,8 @@ BOOL albumSelectionChanged = NO;
 {
     [super viewDidLoad];
     
-    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    self.spinner.frame = CGRectMake(0, 0, 320, 44);
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.spinner.frame = CGRectMake(0, 0, 320, 12);
     self.spinner.hidden = YES;
     self.tableView.tableFooterView = self.spinner;
 
@@ -129,6 +136,15 @@ BOOL albumSelectionChanged = NO;
                                              selector:@selector(albumSelectionChanged:)
                                                  name:@"albumSelectedNotification"
                                                object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateLikeCountLabel:) name:didPressLikeNotification object:nil];
+}
+
+- (void)updateLikeCountLabel:(NSNotification *)notification {
+    int indexOfPhoto = [notification.object intValue];
+    NSIndexPath *ip = [NSIndexPath indexPathForRow:indexOfPhoto inSection:0];
+    FTFImage *photoAtIndex = self.albumPhotos[indexOfPhoto];
+    FTFTableViewCell *cell = (FTFTableViewCell *)[self.tableView cellForRowAtIndexPath:ip];
+    [self handlePhotoLikeWithCell:cell andPhoto:photoAtIndex];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -177,6 +193,7 @@ BOOL albumSelectionChanged = NO;
 
 - (void)albumSelectionChanged:(NSNotification *)notification {
     albumSelectionChanged = YES;
+    _morePhotosToLoad = NO;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [self.photoBrowser setCurrentPhotoIndex:0];
     self.photoGrid.gridPhotos = nil;
@@ -216,6 +233,8 @@ BOOL albumSelectionChanged = NO;
             self.navBarTitle.text = self.albumToDisplay.name;
             self.navigationItem.titleView.alpha = 1.0;
         }];
+        
+        _morePhotosToLoad = YES;
         
 //    } else {
 //        [MBProgressHUD hideHUDForView:self.view animated:NO];
@@ -284,15 +303,15 @@ BOOL albumSelectionChanged = NO;
     }
 }
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
-{
-    if ([self.albumPhotos count]) {
-        FTFImage *image = self.albumPhotos[indexPath.row];
-        [image cancel];
-    } else {
-        return;
-    }
-}
+//- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+//{
+//    if ([self.albumPhotos count]) {
+//        FTFImage *image = self.albumPhotos[indexPath.row];
+//        [image cancel];
+//    } else {
+//        return;
+//    }
+//}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -306,10 +325,6 @@ BOOL albumSelectionChanged = NO;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     FTFTableViewCell *photoCell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-    if (indexPath.row == self.albumPhotos.count - 1) {
-        self.spinner.hidden = NO;
-        [self.spinner startAnimating];
-    }
     return photoCell;
 }
 
@@ -317,17 +332,6 @@ BOOL albumSelectionChanged = NO;
     [self setUpPhotoBrowserForTappedPhotoAtRow];
     [self.photoBrowser setCurrentPhotoIndex:indexPath.row];
     [self.navigationController pushViewController:self.photoBrowser animated:YES];
-}
-
-- (void)setUpPhotoBrowserForTappedPhotoAtRow {
-    self.photoBrowser = [[FTFPhotoBrowserViewController alloc]
-                                       initWithDelegate:self];
-    if (albumSelectionChanged || ![self.browserPhotos count]) {
-        self.browserPhotos = [self photosCompatibleForUseInPhotoBrowserWithSize:FTFImageSizeLarge];
-        //repopulate browserPhotos with newly selected album
-        albumSelectionChanged = NO;
-    }
-    self.photoBrowser.albumPhotos = self.albumPhotos;
 }
 
 #pragma mark - MWPhotoBrowser
@@ -343,18 +347,29 @@ BOOL albumSelectionChanged = NO;
     return nil;
 }
 
+- (void)pushPhotoBrowserAtPhotoIndex:(NSInteger)index {
+    [self setUpPhotoBrowserForTappedPhotoAtRow];
+    [self.photoBrowser setCurrentPhotoIndex:index];
+    [self.navigationController pushViewController:self.photoBrowser animated:YES];
+}
+
+- (void)setUpPhotoBrowserForTappedPhotoAtRow {
+    self.photoBrowser = [[FTFPhotoBrowserViewController alloc]
+                         initWithDelegate:self];
+    if (albumSelectionChanged || ![self.browserPhotos count] || _didPageNextBatchOfPhotos) {
+        self.browserPhotos = [self photosCompatibleForUseInPhotoBrowserWithSize:FTFImageSizeLarge];
+        //repopulate browserPhotos with newly selected album
+        albumSelectionChanged = NO;
+    }
+    self.photoBrowser.albumPhotos = self.albumPhotos;
+}
+
 - (NSArray *)photosCompatibleForUseInPhotoBrowserWithSize:(FTFImageSize)size {
     NSMutableArray *photos = [NSMutableArray new];
     for (FTFImage *image in self.albumPhotos) {
         [photos addObject:[image browserPhotoWithSize:size]];
     }
     return [photos copy];
-}
-
-- (void)pushPhotoBrowserAtPhotoIndex:(NSInteger)index {
-    [self setUpPhotoBrowserForTappedPhotoAtRow];
-    [self.photoBrowser setCurrentPhotoIndex:index];
-    [self.navigationController pushViewController:self.photoBrowser animated:YES];
 }
 
 #pragma mark - FTFAlbumSelectionMenuViewController Delegate
@@ -432,13 +447,13 @@ BOOL albumSelectionChanged = NO;
 }
 
 - (void)handlePhotoLikeWithCell:(FTFTableViewCell *)cell andPhoto:(FTFImage *)photo {
-    if (!cell.isLiked) {
+    if (!photo.isLiked) {
         [[FiftyTwoFrames sharedInstance] publishPhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
             if (error) {
                 return;
             } else {
                 photo.photoLikesCount++;
-                cell.isLiked = YES;
+                photo.isLiked = YES;
                 cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.photoLikesCount];
             }
         }];
@@ -448,33 +463,17 @@ BOOL albumSelectionChanged = NO;
                 return;
             } else {
                 photo.photoLikesCount--;
-                cell.isLiked = NO;
+                photo.isLiked = NO;
                 cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.photoLikesCount];
             }
         }];
     }
 }
 
-/*
-IDEA 1:
- - void checkLikeWithCell:(UITableViewCell)cell AndTime:(NSDate *)timeOfLike {
-        if(timeOfLike > 5 seconds) {    //checking if 5 seconds has gone by since first like
-            if(cell.isLiked) {
-                publishLike
-            } else {
-                deleteLike
-            }
- 
- 
- 
-  >delay of a few seconds to register if a photo is actually liked
- 
- 
-*/
-
 - (IBAction)infoButtonTapped:(UIBarButtonItem *)sender {
     
 }
+
 
 - (IBAction)gridButtonTapped:(UIBarButtonItem *)sender {
     [self.navigationController pushViewController:self.photoGrid animated:YES];
@@ -504,23 +503,26 @@ IDEA 1:
 //    NSLog(@"inset.top: %f", inset.top);
 //    NSLog(@"inset.bottom: %f", inset.bottom);
 //    NSLog(@"pos: %f of %f", y, h);
-    float reload_distance = 37;
-    if(y >= h - reload_distance && !_shouldLoadMorePhotos && self.albumPhotos) {
-        _shouldLoadMorePhotos = YES;
-        if (self.albumPhotos) {
-            NSLog(@"load more rows");
-//            [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosWithCompletionBlock:^(NSArray *photos, NSError *error) {
-//                NSMutableArray *albumPhotos = [self.albumPhotos mutableCopy];
-//                for (FTFImage *photo in photos) {
-//                    [albumPhotos addObject:photo];
-//                }
-//                self.albumPhotos = [albumPhotos copy];
-//                [self.tableView reloadData];
-//                _shouldLoadMorePhotos = NO;
-//            }];
-        }
+    float reload_distance = -10;
+    if(y > h + reload_distance && _morePhotosToLoad && self.albumPhotos) {
+        NSLog(@"load more rows");
+        _morePhotosToLoad = NO;
+        self.spinner.hidden = NO;
+        [self.spinner startAnimating];
+        [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosWithCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
+            if (!finishedPaging) {
+                NSMutableArray *albumPhotos = [self.albumPhotos mutableCopy];
+                [albumPhotos addObjectsFromArray:photos];
+                self.albumPhotos = [albumPhotos copy];
+                self.photoGrid.gridPhotos = self.albumPhotos;
+                [self.tableView reloadData];
+                _didPageNextBatchOfPhotos = YES;
+                _morePhotosToLoad = YES;
+            }
+            [self.spinner stopAnimating];
+            self.spinner.hidden = YES;
+        }];
     }
-    
 }
 
 @end

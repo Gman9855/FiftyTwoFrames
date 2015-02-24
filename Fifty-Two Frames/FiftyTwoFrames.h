@@ -25,7 +25,7 @@
                                         limit:(NSInteger)limit
                                  completionBlock:(void(^)(NSArray *photos, NSError *error))block;
 
-- (void)requestNextPageOfAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error))block;
+- (void)requestNextPageOfAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block;
 
 - (void)requestPhotoWithPhotoURL:(NSURL *)photoURL
                 completionBlock:(void (^)(UIImage *image, NSError *error, BOOL isCached))block;

@@ -93,8 +93,8 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationController.toolbarHidden = YES;
-    self.segmentedControl.hidden = YES;
+    self.navigationController.toolbarHidden = NO;
+    self.segmentedControl.hidden = NO;
     self.navigationController.view.layer.cornerRadius = 10;
     self.navigationController.view.layer.masksToBounds = YES;
     
@@ -196,13 +196,15 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 - (NSArray *)allYearsFromAlbumCollection:(FTFAlbumCollection *)albumCollection {
     NSMutableArray *years = [NSMutableArray new];
     for (FTFAlbum *album in albumCollection.albums) {
-        [years addObject:album.yearCreated];
+        if (![years containsObject:album.yearCreated]) {
+            [years addObject:album.yearCreated];
+        }
     }
-    NSOrderedSet *yearsSet = [NSOrderedSet orderedSetWithArray:years];
-    [years removeAllObjects];
-    for (NSString *year in yearsSet) {
-        [years addObject:year];
-    }
+//    NSOrderedSet *yearsSet = [NSOrderedSet orderedSetWithArray:years];
+//    [years removeAllObjects];
+//    for (NSString *year in yearsSet) {
+//        [years addObject:year];
+//    }
     return years;
 }
 

@@ -48,12 +48,12 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqual:@"gridPhotos"]) {
         [self.collectionView reloadData];
-        if (self.gridPhotos.count) {
-            NSIndexPath *firstIndexPathInCollectionView = [NSIndexPath indexPathForItem:0 inSection:0];
-            [self.collectionView scrollToItemAtIndexPath:firstIndexPathInCollectionView
-                                        atScrollPosition:UICollectionViewScrollPositionTop
-                                                animated:YES];
-        }
+//        if (self.gridPhotos.count) {
+//            NSIndexPath *firstIndexPathInCollectionView = [NSIndexPath indexPathForItem:0 inSection:0];
+//            [self.collectionView scrollToItemAtIndexPath:firstIndexPathInCollectionView
+//                                        atScrollPosition:UICollectionViewScrollPositionTop
+//                                                animated:YES];
+//        }
     }
 }
 

@@ -23,6 +23,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *photoID;
 @property (nonatomic, strong, readonly) NSURL *largePhotoURL;
 @property (nonatomic, strong, readonly) NSURL *smallPhotoURL;
+@property (nonatomic, assign) BOOL isLiked;
 
 - (instancetype)initWithImageURLs:(NSArray *)imageURLs;
 - (void)requestImageWithSize:(FTFImageSize)size completionBlock:(void(^)(UIImage *image, NSError *error, BOOL isCached))block;

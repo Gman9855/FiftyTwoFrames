@@ -86,11 +86,13 @@ static NSString * const reuseIdentifier = @"commentCell";
         
         //Given size may not account for screen rotation
         self.keyboardHeight = MIN(keyboardSize.height,keyboardSize.width);
-     
+        
         [self animateUsingKeyboardUserInfo:notification.userInfo animations:^{
             [self updateInputView];
         }];
     }
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.photo.photoComments.count - 1 inSection:0]atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification;
@@ -101,6 +103,7 @@ static NSString * const reuseIdentifier = @"commentCell";
         [self animateUsingKeyboardUserInfo:notification.userInfo animations:^{
             [self updateInputView];
         }];
+
     }
 }
 
@@ -117,14 +120,14 @@ static NSString * const reuseIdentifier = @"commentCell";
 
 //        [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue]];
 //    }
-    
+
     animations();
     
     [UIView commitAnimations];
 }
 
 -(void)keyboardFrameDidChange:(NSNotification*)notification{
-    NSDictionary* info = [notification userInfo];
+    NSDictionary *info = [notification userInfo];
     
     CGRect kKeyBoardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     [self.view setFrame:CGRectMake(0, kKeyBoardFrame.origin.y-self.view.frame.size.height, 320, self.view.frame.size.height)];
@@ -195,13 +198,12 @@ static NSString * const reuseIdentifier = @"commentCell";
     [self.tableView beginUpdates];
     
     NSIndexPath *i = [NSIndexPath indexPathForRow:self.photo.photoComments.count - 1 inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[i] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView insertRowsAtIndexPaths:@[i] withRowAnimation:UITableViewRowAnimationNone];
 
     [self.tableView endUpdates];
     
     NSIndexPath *idx = [NSIndexPath indexPathForRow:self.photo.photoComments.count - 1 inSection:0];
     [self.tableView scrollToRowAtIndexPath:idx atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    
     self.textField.text = nil;
 }
 

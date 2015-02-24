@@ -13,6 +13,8 @@
 #import "FiftyTwoFrames.h"
 #import <FacebookSDK/FacebookSDK.h>
 
+NSString *const didPressLikeNotification = @"didPressLikeNotification";
+
 @interface FTFPhotoBrowserViewController () <FTFPhotoCommentsViewControllerDelegate>
 
 @property (nonatomic, strong) WYPopoverController *photoCommentsPopoverController;
@@ -91,32 +93,14 @@
     anim.removedOnCompletion = YES;
     anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)];
     [self.imageViewForButton.layer addAnimation:anim forKey:nil];
-    
-    NSInteger indexOfPhoto = self.currentIndex;
-    FTFImage *photoAtIndex = self.albumPhotos[indexOfPhoto];
-    
-//    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoAtIndex.photoID]
-//                                 parameters:nil
-//                                 HTTPMethod:@"POST"
-//                          completionHandler:^(
-//                                              FBRequestConnection *connection,
-//                                              id result,
-//                                              NSError *error
-//                                              ) {
-//                              
-//                          }];
-    
-    [[FiftyTwoFrames sharedInstance] publishPhotoLikeWithPhotoID:photoAtIndex.photoID completionBlock:^(NSError *error) {
-        NSLog(@"Error: %@", error);
-        if (error) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:@"Couldn't like this photo, sorry!"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Okay"
-                                                  otherButtonTitles:nil];
-            [alert show];
-        }
-    }];
+
+    [self postLikeButtonTappedNotificationWithCurrentPhotoIndex];
+}
+
+- (void)postLikeButtonTappedNotificationWithCurrentPhotoIndex {
+    NSNotification *didPressLike = [NSNotification notificationWithName:didPressLikeNotification object:@(self.currentIndex)];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center postNotification:didPressLike];
 }
 
 - (void)fbCommentsButtonTapped {

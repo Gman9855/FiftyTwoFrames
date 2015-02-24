@@ -15,6 +15,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *commentsCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *likesCountLabel;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
-@property (assign) BOOL isLiked;
 
 @end
