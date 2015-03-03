@@ -7,7 +7,7 @@
 //
 
 #import "FTFPhotoComment.h"
-#import "SDWebImageManager.h"
+#import "FiftyTwoFrames.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface FTFPhotoComment()
@@ -52,21 +52,7 @@
 {
     NSParameterAssert(block);
     
-    SDWebImageManager *manager = [SDWebImageManager sharedManager];
-    UIImage *cachedImage = [manager.imageCache imageFromMemoryCacheForKey:self.commenterProfilePictureURL.absoluteString];
-    if (cachedImage) {
-        block(cachedImage, nil);
-        return;
-    }
-    
-    [manager downloadWithURL:self.commenterProfilePictureURL
-                     options:0
-                    progress:nil
-                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-        if (finished && self.commenterProfilePictureURL) {
-            [manager saveImageToCache:image forURL:self.commenterProfilePictureURL];
-        }
-        
+    [[FiftyTwoFrames sharedInstance] requestPhotoWithPhotoURL:self.commenterProfilePictureURL completionBlock:^(UIImage *image, NSError *error, BOOL isCached) {
         block(image, error);
     }];
 }

@@ -104,6 +104,7 @@
 		8BCB4C021993F31700B9C751 /* FTFPhotoBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCB4C011993F31700B9C751 /* FTFPhotoBrowserViewController.m */; };
 		8BCB4C051994692F00B9C751 /* FTFPhotoCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCB4C041994692F00B9C751 /* FTFPhotoCommentsViewController.m */; };
 		8BCB4C081995777000B9C751 /* FTFPhotoCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCB4C071995777000B9C751 /* FTFPhotoCommentTableViewCell.m */; };
+		8BD040911AA502EA00700F4C /* FTFCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD040901AA502EA00700F4C /* FTFCollectionReusableView.m */; };
 		8BD2001F1974B3B700F9F347 /* info-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2001E1974B3B700F9F347 /* info-2.png */; };
 		8BD200211974B40200F9F347 /* info-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD200201974B40200F9F347 /* info-3.png */; };
 		E96395B3DFD043DDB4965E32 /* libPods-FiftyTwoFrames.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A678DE796649F1B681F522 /* libPods-FiftyTwoFrames.a */; };
@@ -294,6 +295,8 @@
 		8BCB4C041994692F00B9C751 /* FTFPhotoCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoCommentsViewController.m; sourceTree = "<group>"; };
 		8BCB4C061995777000B9C751 /* FTFPhotoCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoCommentTableViewCell.h; sourceTree = "<group>"; };
 		8BCB4C071995777000B9C751 /* FTFPhotoCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoCommentTableViewCell.m; sourceTree = "<group>"; };
+		8BD0408F1AA502EA00700F4C /* FTFCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFCollectionReusableView.h; sourceTree = "<group>"; };
+		8BD040901AA502EA00700F4C /* FTFCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFCollectionReusableView.m; sourceTree = "<group>"; };
 		8BD2001E1974B3B700F9F347 /* info-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-2.png"; sourceTree = "<group>"; };
 		8BD200201974B40200F9F347 /* info-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-3.png"; sourceTree = "<group>"; };
 		D3A678DE796649F1B681F522 /* libPods-FiftyTwoFrames.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FiftyTwoFrames.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -633,6 +636,8 @@
 				8BC93898193C1C8300418F32 /* FTFAppDelegate.h */,
 				8BC93899193C1C8300418F32 /* FTFAppDelegate.m */,
 				8BC9389B193C1C8300418F32 /* Main.storyboard */,
+				8BD0408F1AA502EA00700F4C /* FTFCollectionReusableView.h */,
+				8BD040901AA502EA00700F4C /* FTFCollectionReusableView.m */,
 				8BC938D71940593400418F32 /* FTFFacebookLoginViewController.h */,
 				8BC938D81940593400418F32 /* FTFFacebookLoginViewController.m */,
 				8BC938A1193C1C8300418F32 /* Images.xcassets */,
@@ -899,6 +904,7 @@
 				8B451D531981B9B4005D7159 /* FTFAlbum.m in Sources */,
 				8BA8793919674E6A00A43819 /* PSTCollectionView.m in Sources */,
 				8BA8797C19675FF400A43819 /* SDImageCache.m in Sources */,
+				8BD040911AA502EA00700F4C /* FTFCollectionReusableView.m in Sources */,
 				8BA8797B19675FF400A43819 /* NSData+ImageContentType.m in Sources */,
 				8BA8798219675FF400A43819 /* SDWebImagePrefetcher.m in Sources */,
 				8BA8798519675FF400A43819 /* UIImage+MultiFormat.m in Sources */,

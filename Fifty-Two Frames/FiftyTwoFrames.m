@@ -29,6 +29,7 @@
 @property (nonatomic, strong) NSMutableArray *albums;
 @property (nonatomic, strong) NSMutableDictionary *albumResultsFromFacebook;
 @property (nonatomic, strong) NSMutableArray *albumDicts;
+@property (nonatomic, strong) NSMutableArray *albumPhotoDicts;
 
 @property (nonatomic, strong) NSMutableArray *weeklyThemeAlbums;
 @property (nonatomic, strong) NSMutableArray *photoWalkAlbums;
@@ -99,7 +100,7 @@
                                       [self.albumDicts addObject:result];
                                       NSString *nextPage = [result valueForKeyPath:@"albums.paging.next"];
                                       self.nextPageOfAlbumsURL = [nextPage substringFromIndex:31];
-                                      [self requestNextPageOfAlbumsWithCompletionBlock:^(NSArray *albums, NSError *error) {
+                                      [self requestRemainingAlbumsWithCompletionBlock:^(NSArray *albums, NSError *error) {
                                           albumCategoryCollection = [[FTFAlbumCategoryCollection alloc] initWithAlbumCollections:albums];
                                           block(albumCategoryCollection, error);
                                       }];
@@ -112,9 +113,7 @@
                           }];
 }
 
-- (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID
-                                        limit:(NSInteger)limit
-                                 completionBlock:(void (^)(NSArray *photos, NSError *error))block
+- (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID completionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block
 {
     [self.requestConnection cancel];
  //   833602159998239/photos?fields=comments.fields(from.fields(picture,id,name))
@@ -131,10 +130,14 @@
                                   if (!error) {
                                       NSArray *albumPhotos = [self albumPhotosWithAlbumPhotoResponseData:result];
                                       NSString *nextPage = [result valueForKeyPath:@"paging.next"];
-                                      self.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
-                                      block(albumPhotos, nil);
+                                      if (nextPage == NULL) {
+                                          block(albumPhotos, nil, YES);
+                                      } else {
+                                          self.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
+                                          block(albumPhotos, nil, NO);
+                                      }
                                   } else {
-                                      block(nil, error);
+                                      block(nil, error, YES);
                                   }
                               } else {
                                   return;
@@ -142,7 +145,7 @@
                           }];
 }
 
-- (void)requestNextPageOfAlbumsWithCompletionBlock:(void (^)(NSArray *albums, NSError *error))block {
+- (void)requestRemainingAlbumsWithCompletionBlock:(void (^)(NSArray *albums, NSError *error))block {
     [FBRequestConnection startWithGraphPath:self.nextPageOfAlbumsURL
                           completionHandler:^(FBRequestConnection *connection,
                                               id result,
@@ -152,7 +155,7 @@
         self.nextPageOfAlbumsURL = [nextPage substringFromIndex:31];
         [self.albumDicts addObject:result];
         if (self.nextPageOfAlbumsURL.length > 0) {
-            [self requestNextPageOfAlbumsWithCompletionBlock:block];
+            [self requestRemainingAlbumsWithCompletionBlock:block];
         } else {
            NSArray *allAlbums = [self albumsWithAlbumResponseData:self.albumDicts];
             block(allAlbums, nil);
@@ -161,46 +164,76 @@
 }
 
 - (void)requestNextPageOfAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block {
-    if (self.nextPageOfAlbumPhotoResultsURL == NULL) {
-        block(nil, nil, YES);
-    } else {
-        [FBRequestConnection startWithGraphPath:self.nextPageOfAlbumPhotoResultsURL
-                              completionHandler:^(FBRequestConnection *connection,
-                                                  id result,
-                                                  NSError *error) {
-                                  NSString *nextPage = [result valueForKeyPath:@"paging.next"];
+//    if (self.nextPageOfAlbumPhotoResultsURL == NULL) {
+//        block(nil, nil, YES);
+//    } else {
+    [self.requestConnection cancel];
+    self.requestConnection = [FBRequestConnection startWithGraphPath:self.nextPageOfAlbumPhotoResultsURL
+                          completionHandler:^(FBRequestConnection *connection,
+                                              id result,
+                                              NSError *error) {
+                              NSString *nextPage = [result valueForKeyPath:@"paging.next"];
+                              NSArray *nextBatchOfAlbumPhotos = [self albumPhotosWithAlbumPhotoResponseData:result];
+                              if (nextPage == NULL) {
+                                  block(nextBatchOfAlbumPhotos, nil, YES);
+                              } else {
                                   self.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
-                                  NSArray *nextBatchOfalbumPhotos = [self albumPhotosWithAlbumPhotoResponseData:result];
-                                  block(nextBatchOfalbumPhotos, nil, NO);
-                              }];
-    }
-    
+                                  block(nextBatchOfAlbumPhotos, nil, NO);
+                              }
+    }];
 }
+
+//- (void)requestRemainingAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error))block {
+//    [FBRequestConnection startWithGraphPath:self.nextPageOfAlbumPhotoResultsURL
+//                          completionHandler:^(FBRequestConnection *connection,
+//                                              id result,
+//                                              NSError *error) {
+//                              NSString *nextPage = [result valueForKeyPath:@"paging.next"];
+//                              self.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
+//                              [self.albumPhotoDicts addObject:result];
+//                              if (self.nextPageOfAlbumPhotoResultsURL.length > 0) {
+//                                  [self requestRemainingAlbumPhotosWithCompletionBlock:block];
+//                              } else {
+//                                  NSArray *allAlbumPhotos = [self albumPhotosWithAlbumPhotoResponseData:self.albumPhotoDicts];
+//                                  block(allAlbumPhotos, nil);
+//                              }
+//                          }];
+//}
 
 - (void)requestPhotoWithPhotoURL:(NSURL *)photoURL
                 completionBlock:(void (^)(UIImage *, NSError *, BOOL))block
 {
     NSParameterAssert(block);
     
+    block = ^(UIImage *image, NSError *error, BOOL isCached) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(image, error, isCached);
+        });
+    };
+    
     if (!photoURL) {
         block(nil, nil, NO);
         return;
     }
     
-    SDWebImageManager *manager = [SDWebImageManager sharedManager];
-    UIImage *cachedImage = [manager.imageCache imageFromMemoryCacheForKey:photoURL.absoluteString];
-    if (cachedImage) {
-        block(cachedImage, nil, YES);
-        return;
-    }
-    
-    [manager downloadWithURL:photoURL options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-        if (finished && photoURL) {
-            [manager saveImageToCache:image forURL:photoURL];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        SDWebImageManager *manager = [SDWebImageManager sharedManager];
+        UIImage *cachedImage = [manager.imageCache imageFromMemoryCacheForKey:photoURL.absoluteString];
+        if (cachedImage) {
+            block(cachedImage, nil, YES);
+            return;
         }
         
-        block(image, error, NO);
-    }];
+        [manager downloadWithURL:photoURL options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (finished && photoURL && cacheType == SDImageCacheTypeNone) {
+                    [manager saveImageToCache:image forURL:photoURL];
+                }
+            });
+            
+            block(image, error, NO);
+        }];
+    });
 }
 
 - (void)publishPhotoCommentWithPhotoID:(NSString *)photoID comment:(NSString *)comment completionBlock:(void (^)(NSError *error))block
@@ -313,12 +346,12 @@
     return @[weeklyThemeCollection, photoWalkCollection, miscellaneousCollection];
 }
 
-- (NSArray *)albumPhotosWithAlbumPhotoResponseData:(NSDictionary *)response {
-    NSArray *photoIDs = [response valueForKeyPath:@"data.id"];
-    NSArray *photoCollections = [response valueForKeyPath:@"data.images"];
-    NSArray *photoDescriptionCollection = [response valueForKeyPath:@"data.name"];
-    NSArray *likesCountCollection = [response valueForKeyPath:@"data.likes.summary.total_count"];
-    NSArray *commentsCollection = [response valueForKeyPath:@"data.comments.data"];
+- (NSArray *)albumPhotosWithAlbumPhotoResponseData:(NSDictionary *)dict {
+    NSArray *photoIDs = [dict valueForKeyPath:@"data.id"];
+    NSArray *photoCollections = [dict valueForKeyPath:@"data.images"];
+    NSArray *photoDescriptionCollection = [dict valueForKeyPath:@"data.name"];
+    NSArray *likesCountCollection = [dict valueForKeyPath:@"data.likes.summary.total_count"];
+    NSArray *commentsCollection = [dict valueForKeyPath:@"data.comments.data"];
     
     NSMutableArray *objects = [NSMutableArray new];
     

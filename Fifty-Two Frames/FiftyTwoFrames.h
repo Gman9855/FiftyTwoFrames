@@ -21,9 +21,7 @@
 
 - (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCategoryCollection *, NSError *))block;
 
-- (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID
-                                        limit:(NSInteger)limit
-                                 completionBlock:(void(^)(NSArray *photos, NSError *error))block;
+- (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID completionBlock:(void(^)(NSArray *photos, NSError *error, BOOL finishedPaging))block;
 
 - (void)requestNextPageOfAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block;
 

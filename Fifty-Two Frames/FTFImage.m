@@ -31,20 +31,28 @@
 }
 
 - (NSURL *)largePhotoURL {
+    if (self.imageURLs.count <= FTFImageSizeLarge) {
+        return nil;
+    }
+    
     return self.imageURLs[FTFImageSizeLarge];
 }
 
 - (NSURL *)smallPhotoURL {
+    if (self.imageURLs.count < FTFImageSizeSmall) {
+        return nil;
+    }
+    
     return self.imageURLs[FTFImageSizeSmall];
 }
 
 - (NSURL *)imageURLWithSize:(FTFImageSize)size;
 {
-    if(size >= self.imageURLs.count) {
-        return nil;
+    if (FTFImageSizeLarge == size) {
+        return self.largePhotoURL;
     }
     
-    return self.imageURLs[size];
+    return self.smallPhotoURL;
 }
 
 - (void)cancel;
@@ -58,30 +66,37 @@
 {
     NSParameterAssert(block);
     
+    block = ^(UIImage *image, NSError *error, BOOL isCached) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(image, error, isCached);
+        });
+    };
+    
     NSURL *URL = [self imageURLWithSize:size];
     if (!URL) {
         block(nil, nil, NO);
         return;
     }
-    
-    SDWebImageManager *manager = [SDWebImageManager sharedManager];
-    UIImage *cachedImage = [manager.imageCache imageFromMemoryCacheForKey:URL.absoluteString];
-    if (cachedImage) {
-        block(cachedImage, nil, YES);
-        return;
-    }
-    
-    self.runningDownloadOperationsKeyedByURL[URL] = [manager downloadWithURL:URL options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-        if (finished && URL) {
-            [manager saveImageToCache:image forURL:URL];
-        }
-        
-        block(image, error, NO);
-    }];
-}
 
-- (NSArray *)imageURLs {
-    return _imageURLs;
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        SDWebImageManager *manager = [SDWebImageManager sharedManager];
+        UIImage *cachedImage = [manager.imageCache imageFromDiskCacheForKey:URL.absoluteString];
+        if (cachedImage) {
+            block(cachedImage, nil, YES);
+            return;
+        }
+    
+        SDWebImageOptions options = SDWebImageRetryFailed;
+        self.runningDownloadOperationsKeyedByURL[URL] = [manager downloadWithURL:URL options:options progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+            if (finished) {
+                dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                    [manager saveImageToCache:image forURL:URL];
+                    [self.runningDownloadOperationsKeyedByURL removeObjectForKey:URL];
+                    block(image, error, NO);
+                });
+            }
+        }];
+    });
 }
 
 - (void)addPhotoComment:(FTFPhotoComment *)photoComment {

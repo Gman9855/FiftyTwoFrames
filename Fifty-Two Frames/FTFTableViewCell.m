@@ -22,7 +22,7 @@
 {
     [super prepareForReuse];
     
-    self.photo.image = nil;
+//    self.photo.image = nil;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

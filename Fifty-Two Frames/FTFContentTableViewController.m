@@ -45,6 +45,8 @@
 @property (nonatomic, strong) NSArray *thumbnailPhotosForGrid;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
 
+@property (nonatomic, strong) FTFActivityIndicatorCell *spinnerCell;
+
 @property (nonatomic, assign) BOOL isLoading;
 @property (assign, nonatomic) BOOL hasNextPage;
 @property (assign, nonatomic) int currentPage;
@@ -81,12 +83,19 @@ BOOL _albumWasJustChanged = NO;
     return (FTFAlbumSelectionMenuViewController *)[self.albumSelectionMenuNavigationController topViewController];
 }
 
-- (FTFPhotoCollectionGridViewController *)photoGrid {
-    if (!_photoGrid) {
-        _photoGrid = [self.storyboard instantiateViewControllerWithIdentifier:@"grid"];
-        _photoGrid.delegate = self;
+//- (FTFPhotoCollectionGridViewController *)photoGrid {
+//    if (!_photoGrid) {
+//        _photoGrid = [self.storyboard instantiateViewControllerWithIdentifier:@"grid"];
+//        _photoGrid.delegate = self;
+//    }
+//    return _photoGrid;
+//}
+
+- (FTFActivityIndicatorCell *)spinnerCell {
+    if (!_spinnerCell) {
+        _spinnerCell = [FTFActivityIndicatorCell new];
     }
-    return _photoGrid;
+    return _spinnerCell;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -103,6 +112,9 @@ BOOL _albumWasJustChanged = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.photoGrid = [self.storyboard instantiateViewControllerWithIdentifier:@"grid"];
+    self.photoGrid.delegate = self;
     
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     self.spinner.frame = CGRectMake(0, 0, 320, 12);
@@ -136,7 +148,15 @@ BOOL _albumWasJustChanged = NO;
                                              selector:@selector(albumSelectionChanged:)
                                                  name:@"albumSelectedNotification"
                                                object:nil];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateLikeCountLabel:) name:didPressLikeNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(updateLikeCountLabel:)
+                                                name:didPressLikeNotification
+                                              object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateAlbumPhotosWithPagedPhotosFromPhotoGrid:) name:@"photoGridDidPageMorePhotosNotification"
+                                               object:nil];
 }
 
 - (void)updateLikeCountLabel:(NSNotification *)notification {
@@ -183,12 +203,12 @@ BOOL _albumWasJustChanged = NO;
     self.albumToDisplay = self.weeklyThemeAlbums.albums.firstObject;
     [[FiftyTwoFrames sharedInstance] requestUserWithCompletionBlock:^(FTFUser *user) {
         [[FiftyTwoFrames sharedInstance] requestAlbumPhotosForAlbumWithAlbumID:self.albumToDisplay.albumID
-                                                                         limit:200
-                                                               completionBlock:^(NSArray *photos, NSError *error) {
+                                                               completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
+                                                                   
+                                                                   _finishedPaging = finishedPaging;
                                                                    [self populateAlbumPhotosResultsWithPhotos:photos error:error];
                                                                }];
     }];
-    
 }
 
 - (void)albumSelectionChanged:(NSNotification *)notification {
@@ -196,15 +216,25 @@ BOOL _albumWasJustChanged = NO;
     _morePhotosToLoad = NO;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [self.photoBrowser setCurrentPhotoIndex:0];
-    self.photoGrid.gridPhotos = nil;
     
     self.albumToDisplay = [notification.userInfo objectForKey:@"selectedAlbum"];
     [[FiftyTwoFrames sharedInstance]requestAlbumPhotosForAlbumWithAlbumID:self.albumToDisplay.albumID
-                                                                    limit:200
-                                                          completionBlock:^(NSArray *photos, NSError *error) {
+                                                          completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
                                                               
-            [self populateAlbumPhotosResultsWithPhotos:photos error:error];
+                                                              _finishedPaging = finishedPaging;
+                                                              [self populateAlbumPhotosResultsWithPhotos:photos error:error];
     }];
+}
+
+- (void)updateAlbumPhotosWithPagedPhotosFromPhotoGrid:(NSNotification *)notification {
+    self.albumPhotos = [notification.userInfo objectForKey:@"albumPhotos"];
+    NSNumber *finishedPaging = [notification.userInfo objectForKey:@"finishedPaging"];
+    NSInteger num = [finishedPaging integerValue];
+    if (num == 1) {
+        _finishedPaging = YES;
+    }
+    _didPageNextBatchOfPhotos = YES;
+    [self.tableView reloadData];
 }
 
 - (void)populateAlbumPhotosResultsWithPhotos:(NSArray *)photos error:(NSError *)error {
@@ -224,6 +254,9 @@ BOOL _albumWasJustChanged = NO;
     if ([photos count]) {
         self.albumPhotos = photos;
         self.photoGrid.gridPhotos = photos;
+        if (_finishedPaging) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"albumDoesNotNeedToBePagedNotification" object:nil];
+        }
         [self.tableView reloadData];
         NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
         [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
@@ -259,7 +292,6 @@ BOOL _albumWasJustChanged = NO;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 1;
 }
 
@@ -281,37 +313,28 @@ BOOL _albumWasJustChanged = NO;
             ftfCell.descriptionLabel.text = @"";
         }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            [photo requestImageWithSize:FTFImageSizeLarge
-                        completionBlock:^(UIImage *image, NSError *error, BOOL isCached) {
-                            if (error) return;
-                            
-                            FTFTableViewCell *cell = (FTFTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-                            
-                            if (!isCached) {
-                                CATransition *t = [CATransition animation];
-                                t.duration = 0.30;
-                                t.type = kCATransitionFade;
-                                [cell.photo.layer addAnimation:t forKey:nil];
-                            }
-                            cell.photo.image = image;
-                            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                        }];
-        });
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+        
+//        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//            [photo requestImageWithSize:FTFImageSizeLarge
+//                        completionBlock:^(UIImage *image, NSError *error, BOOL isCached) {
+//                            FTFTableViewCell *cell = (FTFTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+//                            
+//                            if (!isCached) {
+//                                CATransition *t = [CATransition animation];
+//                                t.duration = 0.30;
+//                                t.type = kCATransitionFade;
+//                                [cell.photo.layer addAnimation:t forKey:@"ftf"];
+//                            }
+//                            
+//                            cell.photo.image = image;
+//                            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//                        }];
+//        });
 
     }
 }
-
-//- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
-//{
-//    if ([self.albumPhotos count]) {
-//        FTFImage *image = self.albumPhotos[indexPath.row];
-//        [image cancel];
-//    } else {
-//        return;
-//    }
-//}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -324,11 +347,28 @@ BOOL _albumWasJustChanged = NO;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FTFTableViewCell *photoCell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-    return photoCell;
+    FTFTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
+    FTFImage *photo = self.albumPhotos[indexPath.row];
+    
+    if ([cell isKindOfClass:[FTFTableViewCell class]]) {
+        [cell.photo setImageWithURL:photo.largePhotoURL placeholderImage:nil
+                            options:SDWebImageRetryFailed
+                           progress:nil
+                          completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                if (cacheType == SDImageCacheTypeNone) {
+                                    CATransition *t = [CATransition animation];
+                                    t.duration = 0.30;
+                                    t.type = kCATransitionFade;
+                                    [cell.photo.layer addAnimation:t forKey:@"ftf"];
+                                }
+                                cell.photo.image = image;
+                                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }];
+    }
+    return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {    
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self setUpPhotoBrowserForTappedPhotoAtRow];
     [self.photoBrowser setCurrentPhotoIndex:indexPath.row];
     [self.navigationController pushViewController:self.photoBrowser animated:YES];
@@ -440,7 +480,6 @@ BOOL _albumWasJustChanged = NO;
     
     FTFImage *photo = self.albumPhotos[indexPath.row];
     FTFTableViewCell *cell = (FTFTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    NSLog(@"%@", cell.descriptionLabel.text);
     NSLog(@"%ld", (long)indexPath.row);
     
     [self handlePhotoLikeWithCell:cell andPhoto:photo];
@@ -474,7 +513,6 @@ BOOL _albumWasJustChanged = NO;
     
 }
 
-
 - (IBAction)gridButtonTapped:(UIBarButtonItem *)sender {
     [self.navigationController pushViewController:self.photoGrid animated:YES];
 }
@@ -505,23 +543,26 @@ BOOL _albumWasJustChanged = NO;
 //    NSLog(@"pos: %f of %f", y, h);
     float reload_distance = -10;
     if(y > h + reload_distance && _morePhotosToLoad && self.albumPhotos) {
-        NSLog(@"load more rows");
+        NSLog(@"hit bottom of tableView");
         _morePhotosToLoad = NO;
-        self.spinner.hidden = NO;
-        [self.spinner startAnimating];
-        [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosWithCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
-            if (!finishedPaging) {
+        if (!_finishedPaging) {
+            self.spinner.hidden = NO;
+            [self.spinner startAnimating];
+            [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosWithCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
+                _finishedPaging = finishedPaging;
                 NSMutableArray *albumPhotos = [self.albumPhotos mutableCopy];
                 [albumPhotos addObjectsFromArray:photos];
                 self.albumPhotos = [albumPhotos copy];
                 self.photoGrid.gridPhotos = self.albumPhotos;
                 [self.tableView reloadData];
+                
+                [self.spinner stopAnimating];
+                self.spinner.hidden = YES;
+                
                 _didPageNextBatchOfPhotos = YES;
                 _morePhotosToLoad = YES;
-            }
-            [self.spinner stopAnimating];
-            self.spinner.hidden = YES;
-        }];
+            }];
+        }
     }
 }
 
