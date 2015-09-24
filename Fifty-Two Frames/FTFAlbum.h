@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *albumID;
+@property (nonatomic, strong) NSString *info;
 @property (nonatomic, strong) NSString *yearCreated;
 @property (nonatomic, strong) NSURL *coverPhotoURL;
 @property (nonatomic, strong) NSArray *photos;

@@ -17,9 +17,9 @@
 
 @implementation FTFAlbum
 
-- (NSString *)description {
-    return [NSString stringWithFormat:@"Year : %@" , self.yearCreated];
-}
+//- (NSString *)description {
+//    return [NSString stringWithFormat:@"Year : %@" , self.yearCreated];
+//}
 
 //- (void)retrieveAlbumPhotos:(void(^)(NSArray *photos, NSError *error))block;
 //{

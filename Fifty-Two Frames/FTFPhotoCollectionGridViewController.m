@@ -25,7 +25,6 @@
     BOOL _albumSelectionChanged;
     BOOL _morePhotosToLoad;
     BOOL _finishedPaging;
-    int counter;
 }
 
 #pragma mark - View controller
@@ -150,18 +149,10 @@
     UIEdgeInsets inset = aScrollView.contentInset;
     float y = offset.y + bounds.size.height - inset.bottom;
     float h = size.height;
-    //    NSLog(@"offset: %f", offset.y);
-    //    NSLog(@"content.height: %f", size.height);
-    //    NSLog(@"bounds.height: %f", bounds.size.height);
-    //    NSLog(@"inset.top: %f", inset.top);
-    //    NSLog(@"inset.bottom: %f", inset.bottom);
-    //    NSLog(@"pos: %f of %f", y, h);
     float reload_distance = -150;
     if(y > h + reload_distance && self.gridPhotos && _morePhotosToLoad) {
         _morePhotosToLoad = NO;
         NSLog(@"Grid hit the bottom");
-        counter++;
-        NSLog(@"%d", counter);
         if (!_finishedPaging) {
             [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosWithCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
                 _finishedPaging = finishedPaging;

@@ -84,7 +84,7 @@
 
 - (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCategoryCollection *, NSError *))block;
 {
-    [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(50).fields(name,photos.limit(1).fields(picture))"
+    [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(50).fields(name,description,photos.limit(1).fields(picture))"
                                  parameters:nil
                                  HTTPMethod:@"GET"
                           completionHandler:^(
@@ -329,6 +329,7 @@
                 FTFAlbum *album = [FTFAlbum new];
                 album.name = [dict valueForKey:@"name"];
                 album.albumID = [dict valueForKey:@"id"];
+                album.info = [dict valueForKey:@"description"];
                 NSArray *pictureURLstring = [dict valueForKeyPath:@"photos.data.picture"];
                 album.coverPhotoURL = [NSURL URLWithString:[pictureURLstring firstObject]];
                 album.yearCreated = [[dict valueForKeyPath:@"created_time"]substringToIndex:4];

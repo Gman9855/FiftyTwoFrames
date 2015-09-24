@@ -43,7 +43,7 @@
     self.loginButton.frame = buttonStartingPosition;
     CGRect endView = self.loginButton.frame;
     endView.origin.y = endY;
-    [UIView animateWithDuration:0.9 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.loginButton.alpha = 1.0;
         self.loginButton.frame = endView;
 

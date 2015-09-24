@@ -194,6 +194,7 @@ static NSString * const reuseIdentifier = @"commentCell";
 //            return;
 //        }
 //    }];
+    
     [self.photo addPhotoComment:postedComment];
     [self.tableView beginUpdates];
     

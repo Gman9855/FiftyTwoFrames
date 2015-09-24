@@ -23,6 +23,7 @@
 #import "FTFPhotoCollectionGridViewController.h"
 #import "FiftyTwoFrames.h"
 #import "FTFAlbumCategoryCollection.h"
+#import "FTFAlbumDescriptionViewController.h"
 
 @interface FTFContentTableViewController () <UINavigationControllerDelegate, MWPhotoBrowserDelegate, FTFAlbumSelectionMenuViewControllerDelegate, FTFPhotoCollectionGridViewControllerDelegate>
 
@@ -30,6 +31,7 @@
 @property (nonatomic, strong) UINavigationController *albumSelectionMenuNavigationController;
 @property (nonatomic, strong) FTFPhotoBrowserViewController *photoBrowser;
 @property (nonatomic, strong) FTFPhotoCollectionGridViewController *photoGrid;
+@property (nonatomic, strong) FTFAlbumDescriptionViewController *albumDescriptionViewController;
 @property (nonatomic, strong) FTFAlbumCategoryCollection *photoAlbumCollection;
 @property (nonatomic, strong) FTFAlbum *albumToDisplay;
 @property (nonatomic, strong) FTFAlbumCollection *weeklyThemeAlbums;
@@ -45,18 +47,11 @@
 @property (nonatomic, strong) NSArray *thumbnailPhotosForGrid;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
 
-@property (nonatomic, strong) FTFActivityIndicatorCell *spinnerCell;
-
-@property (nonatomic, assign) BOOL isLoading;
-@property (assign, nonatomic) BOOL hasNextPage;
-@property (assign, nonatomic) int currentPage;
-
 @end
 
 static NSString * const reuseIdentifier = @"photo";
 BOOL albumSelectionChanged = NO;
 BOOL _morePhotosToLoad = NO;
-BOOL _albumWasJustChanged = NO;
 
 @implementation FTFContentTableViewController {
     BOOL _didPageNextBatchOfPhotos;
@@ -83,28 +78,12 @@ BOOL _albumWasJustChanged = NO;
     return (FTFAlbumSelectionMenuViewController *)[self.albumSelectionMenuNavigationController topViewController];
 }
 
-//- (FTFPhotoCollectionGridViewController *)photoGrid {
-//    if (!_photoGrid) {
-//        _photoGrid = [self.storyboard instantiateViewControllerWithIdentifier:@"grid"];
-//        _photoGrid.delegate = self;
-//    }
-//    return _photoGrid;
-//}
 
-- (FTFActivityIndicatorCell *)spinnerCell {
-    if (!_spinnerCell) {
-        _spinnerCell = [FTFActivityIndicatorCell new];
+- (FTFAlbumDescriptionViewController *)albumDescriptionViewController {
+    if (!_albumDescriptionViewController) {
+        _albumDescriptionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"albumDescriptionVC"];
     }
-    return _spinnerCell;
-}
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+    return _albumDescriptionViewController;
 }
 
 #pragma mark - UIViewController
@@ -195,12 +174,14 @@ BOOL _albumWasJustChanged = NO;
     albumSelectionMenuVC.photoWalks = [self.photoAlbumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryPhotoWalks];
     albumSelectionMenuVC.miscellaneousAlbums = [self.photoAlbumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryMiscellaneous];
     
-    FTFAlbum *album = self.weeklyThemeAlbums.albums.firstObject;
-    albumSelectionMenuVC.selectedAlbumCollection = [albumSelectionMenuVC albumsForGivenYear:album.yearCreated
+    FTFAlbum *mostCurrentWeeklyAlbum = self.weeklyThemeAlbums.albums.firstObject;
+    albumSelectionMenuVC.selectedAlbumCollection = [albumSelectionMenuVC albumsForGivenYear:mostCurrentWeeklyAlbum.yearCreated
                                           fromAlbumCollection:self.weeklyThemeAlbums];
-    albumSelectionMenuVC.selectedAlbumYear = album.yearCreated;
-    albumSelectionMenuVC.yearButton.title = album.yearCreated;
-    self.albumToDisplay = self.weeklyThemeAlbums.albums.firstObject;
+    albumSelectionMenuVC.selectedAlbumYear = mostCurrentWeeklyAlbum.yearCreated;
+    albumSelectionMenuVC.yearButton.title = mostCurrentWeeklyAlbum.yearCreated;
+    
+    self.albumToDisplay = mostCurrentWeeklyAlbum;
+    
     [[FiftyTwoFrames sharedInstance] requestUserWithCompletionBlock:^(FTFUser *user) {
         [[FiftyTwoFrames sharedInstance] requestAlbumPhotosForAlbumWithAlbumID:self.albumToDisplay.albumID
                                                                completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
@@ -369,9 +350,7 @@ BOOL _albumWasJustChanged = NO;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self setUpPhotoBrowserForTappedPhotoAtRow];
-    [self.photoBrowser setCurrentPhotoIndex:indexPath.row];
-    [self.navigationController pushViewController:self.photoBrowser animated:YES];
+    [self pushPhotoBrowserAtPhotoIndex:indexPath.row];
 }
 
 #pragma mark - MWPhotoBrowser
@@ -509,12 +488,47 @@ BOOL _albumWasJustChanged = NO;
     }
 }
 
-- (IBAction)infoButtonTapped:(UIBarButtonItem *)sender {
+- (void)_dismissButtonTapped:(id)sender;
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)infoButtonTapped:(UIBarButtonItem *)sender;
+{
+    self.albumDescriptionViewController.album = self.albumToDisplay;
+    self.albumDescriptionViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Dismiss" style:UIBarButtonItemStyleDone target:self action:@selector(_dismissButtonTapped:)];
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.albumDescriptionViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    
+//    UIView *navigationView = self.navigationController.view;
+//    self.hostingView.frame = navigationView.bounds;
+//    self.hostingView.bounds = self.view.bounds;
+//    
+//    navigationController.view.frame = self.hostingView.bounds;
+//    [self.hostingView addSubview:navigationController.view];
+//    [navigationView addSubview:self.hostingView];
+//    self.hostingView.frame = (CGRect) {
+//        CGPointMake(0, navigationView.frame.size.height),
+//        self.hostingView.frame.size
+//    };
+//    self.hostingView.center = CGPointMake(navigationView.center.x, self.hostingView.center.y);
+//    
+//    [UIView animateWithDuration:0.5
+//                          delay:0.1
+//         usingSpringWithDamping:0.8
+//          initialSpringVelocity:0.1
+//                        options:0
+//                     animations:^{
+//                         self.hostingView.center = self.view.center;
+//                     } completion:nil];
 }
 
 - (IBAction)gridButtonTapped:(UIBarButtonItem *)sender {
     [self.navigationController pushViewController:self.photoGrid animated:YES];
+    
 }
 
 #pragma mark - UINavigationController Delegate
