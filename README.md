@@ -11,3 +11,4 @@ Grid view with paging
 
 Album selection by category and year
 ![ftfalbumselecting](https://cloud.githubusercontent.com/assets/5007053/10091176/93f6a468-62ec-11e5-8e1a-daf7b9a869c3.gif)
+
