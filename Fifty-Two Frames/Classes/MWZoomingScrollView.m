@@ -249,7 +249,7 @@
     CGFloat minScale = MIN(xScale, yScale);                 // use minimum of these to allow the image to become fully visible
 
     // Calculate Max
-	CGFloat maxScale = 3;
+	CGFloat maxScale = 1;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         // Let them go a bit bigger on a bigger screen!
         maxScale = 4;
@@ -344,6 +344,11 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
 	[_photoBrowser hideControlsAfterDelay];
+}
+
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 #pragma mark - Tap Detection
