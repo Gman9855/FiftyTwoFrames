@@ -110,8 +110,14 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
     anim.removedOnCompletion = YES;
     anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)];
     [self.imageViewForButton.layer addAnimation:anim forKey:nil];
-
-    [self postLikeButtonTappedNotificationWithCurrentPhotoIndex];
+    UIImage *thumbUnfilled = [UIImage imageNamed:@"ThumbUp"];
+    UIImage *thumbFilled = [UIImage imageNamed:@"ThumbUpFilled"];
+    [UIView transitionWithView:self.imageViewForButton
+                      duration:0.2f
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+                        self.imageViewForButton.image = !self.photo.isLiked ? thumbFilled : thumbUnfilled;
+                    } completion:NULL];
 }
 
 - (void)postLikeButtonTappedNotificationWithCurrentPhotoIndex {

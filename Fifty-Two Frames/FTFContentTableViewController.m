@@ -279,41 +279,10 @@ BOOL _morePhotosToLoad = NO;
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     if ([cell isKindOfClass:[FTFTableViewCell class]]) {
-        FTFImage *photo = self.albumPhotos[indexPath.row];
         FTFTableViewCell *ftfCell = (FTFTableViewCell *)cell;
-        
-        if (![photo.photoComments isEqual:[NSNull null]]) {
-            ftfCell.commentsCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)[photo.photoComments count]];
-        }
-        
-        ftfCell.likesCountLabel.text = [NSString stringWithFormat:@"%ld", (long)photo.photoLikesCount];
-        
-        if (![photo.photoDescription isEqual:[NSNull null]]) {
-            ftfCell.descriptionLabel.text = photo.photoDescription;
-        } else {
-            ftfCell.descriptionLabel.text = @"";
-        }
-        
+        FTFImage *photo = self.albumPhotos[indexPath.row];
+        [ftfCell configureWithPhoto:photo];
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-        
-        
-//        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-//            [photo requestImageWithSize:FTFImageSizeLarge
-//                        completionBlock:^(UIImage *image, NSError *error, BOOL isCached) {
-//                            FTFTableViewCell *cell = (FTFTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-//                            
-//                            if (!isCached) {
-//                                CATransition *t = [CATransition animation];
-//                                t.duration = 0.30;
-//                                t.type = kCATransitionFade;
-//                                [cell.photo.layer addAnimation:t forKey:@"ftf"];
-//                            }
-//                            
-//                            cell.photo.image = image;
-//                            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//                        }];
-//        });
-
     }
 }
 
