@@ -117,7 +117,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 }
 
 - (IBAction)dismissButtonTapped:(UIBarButtonItem *)sender {
-    [self.delegate albumSelectionMenuViewControllerdidTapDismissButton];
+    [self dismissViewControllerAnimated:true completion:nil];
 }
 
 - (IBAction)segmentedControlTapped:(UISegmentedControl *)sender {

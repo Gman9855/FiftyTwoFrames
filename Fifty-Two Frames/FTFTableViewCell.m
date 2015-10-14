@@ -7,6 +7,7 @@
 //
 
 #import "FTFTableViewCell.h"
+#import "FTFImage.h"
 
 @implementation FTFTableViewCell
 

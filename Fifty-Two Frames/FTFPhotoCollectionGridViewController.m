@@ -110,9 +110,9 @@
                        placeholderImage:[UIImage imageNamed:@"placeholder"]
                                 options:SDWebImageRetryFailed
                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                                    if (cacheType == SDImageCacheTypeNone) {
+                                    if (cacheType == SDImageCacheTypeNone || cacheType == SDImageCacheTypeDisk) {
                                         CATransition *t = [CATransition animation];
-                                        t.duration = 0.30;
+                                        t.duration = 0.15;
                                         t.type = kCATransitionFade;
                                         [cell.thumbnailView.layer addAnimation:t forKey:@"ftf"];
                                     }

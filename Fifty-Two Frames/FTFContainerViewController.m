@@ -40,14 +40,14 @@
     [self addObserverToActiveSession];
     [self updateChildViewControllerFromLoginState];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if ([[FBSession activeSession] isOpen]) {
-            [[FBSession activeSession] closeAndClearTokenInformation];
-            [self removeObserverFromActiveSession];
-            [FBSession setActiveSession:[FBSession new]];
-            [self addObserverToActiveSession];
-        }
-    });
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        if ([[FBSession activeSession] isOpen]) {
+//            [[FBSession activeSession] closeAndClearTokenInformation];
+//            [self removeObserverFromActiveSession];
+//            [FBSession setActiveSession:[FBSession new]];
+//            [self addObserverToActiveSession];
+//        }
+//    });
     
 }
 

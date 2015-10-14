@@ -336,9 +336,9 @@ BOOL _morePhotosToLoad = NO;
                             options:SDWebImageRetryFailed
                            progress:nil
                           completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                                if (cacheType == SDImageCacheTypeNone) {
+                                if (cacheType == SDImageCacheTypeNone || cacheType == SDImageCacheTypeDisk) {
                                     CATransition *t = [CATransition animation];
-                                    t.duration = 0.30;
+                                    t.duration = 0.15;
                                     t.type = kCATransitionFade;
                                     [cell.photo.layer addAnimation:t forKey:@"ftf"];
                                 }
@@ -415,27 +415,7 @@ BOOL _morePhotosToLoad = NO;
 
 - (IBAction)settingsButtonTapped:(UIBarButtonItem *)sender;
 {
-    UIView *navigationView = self.navigationController.view;
-    self.hostingView.frame = navigationView.bounds;
-    self.hostingView.bounds = self.view.bounds;
-    
-    self.albumSelectionMenuNavigationController.view.frame = self.hostingView.bounds;
-    [self.hostingView addSubview:self.albumSelectionMenuNavigationController.view];
-    [navigationView addSubview:self.hostingView];
-    self.hostingView.frame = (CGRect) {
-        CGPointMake(0, navigationView.frame.size.height),
-        self.hostingView.frame.size
-    };
-    self.hostingView.center = CGPointMake(navigationView.center.x, self.hostingView.center.y);
-
-    [UIView animateWithDuration:0.5
-                          delay:0.1
-         usingSpringWithDamping:0.8
-          initialSpringVelocity:0.1
-                        options:0
-                     animations:^{
-                         self.hostingView.center = self.view.center;
-                     } completion:nil];
+    [self presentViewController:self.albumSelectionMenuNavigationController animated:true completion:nil];
 }
 
 - (IBAction)menuButtonTapped:(UIBarButtonItem *)sender;
@@ -453,19 +433,21 @@ BOOL _morePhotosToLoad = NO;
     anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)];
     [sender.layer addAnimation:anim forKey:nil];
     
+    // Find which cell the like came from
     CGPoint center = sender.center;
     CGPoint rootViewPoint = [sender.superview convertPoint:center toView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:rootViewPoint];
     
     FTFImage *photo = self.albumPhotos[indexPath.row];
     FTFTableViewCell *cell = (FTFTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    NSLog(@"%ld", (long)indexPath.row);
     
     [self handlePhotoLikeWithCell:cell andPhoto:photo];
 }
 
 - (void)handlePhotoLikeWithCell:(FTFTableViewCell *)cell andPhoto:(FTFImage *)photo {
     if (!photo.isLiked) {
+        [cell.likeButton setImage:[UIImage imageNamed:@"ThumbUpFilled"] forState:UIControlStateNormal];
+        
         [[FiftyTwoFrames sharedInstance] publishPhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
             if (error) {
                 return;
@@ -476,6 +458,8 @@ BOOL _morePhotosToLoad = NO;
             }
         }];
     } else {
+        [cell.likeButton setImage:[UIImage imageNamed:@"ThumbUp"] forState:UIControlStateNormal];
+
         [[FiftyTwoFrames sharedInstance] deletePhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
             if (error) {
                 return;
@@ -549,12 +533,6 @@ BOOL _morePhotosToLoad = NO;
     UIEdgeInsets inset = aScrollView.contentInset;
     float y = offset.y + bounds.size.height - inset.bottom;
     float h = size.height;
-//    NSLog(@"offset: %f", offset.y);
-//    NSLog(@"content.height: %f", size.height);
-//    NSLog(@"bounds.height: %f", bounds.size.height);
-//    NSLog(@"inset.top: %f", inset.top);
-//    NSLog(@"inset.bottom: %f", inset.bottom);
-//    NSLog(@"pos: %f of %f", y, h);
     float reload_distance = -10;
     if(y > h + reload_distance && _morePhotosToLoad && self.albumPhotos) {
         NSLog(@"hit bottom of tableView");

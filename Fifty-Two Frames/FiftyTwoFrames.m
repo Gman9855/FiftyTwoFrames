@@ -116,8 +116,10 @@
 - (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID completionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block
 {
     [self.requestConnection cancel];
- //   833602159998239/photos?fields=comments.fields(from.fields(picture,id,name))
-    self.requestConnection = [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/photos?limit=50&fields=images,id,name,likes.limit(1).summary(true),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", albumID]
+//    NSString *graphPathQuery = [NSString stringWithFormat:@"/%@/photos?limit=50&fields=images,id,name,likes.limit(1).summary(true),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", albumID];
+    
+    NSString *graphPathQuery = [NSString stringWithFormat:@"/%@/photos?limit=50&fields=images,id,name,likes.limit(1).summary(true),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", albumID];
+    self.requestConnection = [FBRequestConnection startWithGraphPath: graphPathQuery
                                  parameters:nil
                                  HTTPMethod:@"GET"
                           completionHandler:^(
@@ -376,7 +378,8 @@
                 photoComment.commenterProfilePictureURL = [NSURL URLWithString:[comment valueForKeyPath:@"from.picture.data.url"]];
                 [arrayOfphotoCommentObjects addObject:photoComment];
             }
-            image.photoComments = [arrayOfphotoCommentObjects copy];
+            NSSortDescriptor *createdTimeSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdTime" ascending:YES];
+            image.photoComments = [[arrayOfphotoCommentObjects sortedArrayUsingDescriptors:@[createdTimeSortDescriptor]] copy];
         }
         [objects addObject:image];
     }

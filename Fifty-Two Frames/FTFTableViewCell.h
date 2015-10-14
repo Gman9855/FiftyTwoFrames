@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class FTFImage;
+
 @interface FTFTableViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *photo;

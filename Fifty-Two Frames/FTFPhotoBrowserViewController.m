@@ -45,6 +45,10 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
     return _hostingViewForCommentView;
 }
 
+- (FTFImage *)photo {
+    return self.albumPhotos[self.currentIndex];
+}
+
 - (id)initWithDelegate:(id<MWPhotoBrowserDelegate>)delegate {
     self = [super initWithDelegate:delegate];
     if (self) {
@@ -53,9 +57,9 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
         self.displayNavArrows = YES;
         self.hideControlsWhenDragging = NO;
 
-        UIBarButtonItem *fbCommentsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"messageIcon.png"] style:UIBarButtonItemStylePlain target:self action:@selector(fbCommentsButtonTapped)];
+        UIBarButtonItem *fbCommentsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Comment"] style:UIBarButtonItemStylePlain target:self action:@selector(fbCommentsButtonTapped)];
         
-        self.imageViewForButton = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Facebook_like_button_thumb.png"]];
+        self.imageViewForButton = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ThumbUp"]];
         self.imageViewForButton.autoresizingMask = UIViewAutoresizingNone;
         self.imageViewForButton.contentMode = UIViewContentModeCenter;
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -81,9 +85,22 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
     [self photoCommentsVC].delegate = self;
 }
 
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    // Need this dispatch_after because this method gets called before setCurrentPhotoIndex
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        self.imageViewForButton.image = [UIImage imageNamed:self.photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"];
+    });
+}
+
+- (void)setCurrentPhotoIndex:(NSUInteger)index {
+    [super setCurrentPhotoIndex:index];
+    self.imageViewForButton.image = [UIImage imageNamed:self.photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"];
+}
+
 #pragma mark - Action Methods
 
 - (void)fbLikeButtonTapped {
+    [self postLikeButtonTappedNotificationWithCurrentPhotoIndex];
 
     CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
     anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
