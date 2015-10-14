@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "09798B6D4EF81F71046AE2A7AC38E7452B9B7447",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "09798B6D4EF81F71046AE2A7AC38E7452B9B7447" : 0,
+    "4D095E73-7A02-4B08-9F7B-CAB5CE5EF269" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "467C7FF2-09D0-4991-8C82-CBDF485402BF",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "09798B6D4EF81F71046AE2A7AC38E7452B9B7447" : "Fifty-Two%20Frames",
+    "4D095E73-7A02-4B08-9F7B-CAB5CE5EF269" : "Fifty-Two Frames"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "FiftyTwoFrames",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "FiftyTwoFrames.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:Gman9855\/FiftyTwoFrames.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "09798B6D4EF81F71046AE2A7AC38E7452B9B7447"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "ssh:\/\/github.com\/Gman9855\/FiftyTwoFrames.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "4D095E73-7A02-4B08-9F7B-CAB5CE5EF269"
+    }
+  ]
+}

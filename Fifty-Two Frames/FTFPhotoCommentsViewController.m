@@ -81,57 +81,76 @@ static NSString * const reuseIdentifier = @"commentCell";
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    if (!shouldIgnoreKeyboardEvents) {
-        CGSize keyboardSize = [self convertedRectFromKeyboardNotification:notification].size;
-        
-        //Given size may not account for screen rotation
-        self.keyboardHeight = MIN(keyboardSize.height,keyboardSize.width);
-        
-        [self animateUsingKeyboardUserInfo:notification.userInfo animations:^{
-            [self updateInputView];
-        }];
-    }
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.photo.photoComments.count - 1 inSection:0]atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-
+//    if (!shouldIgnoreKeyboardEvents) {
+//        CGSize keyboardSize = [self convertedRectFromKeyboardNotification:notification].size;
+//        
+//        //Given size may not account for screen rotation
+//        self.keyboardHeight = MIN(keyboardSize.height,keyboardSize.width);
+//        
+//        [self animateUsingKeyboardUserInfo:notification.userInfo animations:^{
+//            [self updateInputView];
+//        }];
+//    }
+    
+    CGRect keyboardFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+//    [UIView animateWithDuration:0.1 animations:^{
+//        self.inputViewBottomConstraint.constant = keyboardFrame.size.height;
+//        
+//    }];
+    
+    [UIView animateWithDuration:0.1 animations:^{
+        self.inputViewBottomConstraint.constant = keyboardFrame.size.height;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.photo.photoComments.count - 1 inSection:0]atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+            });
+        }
+    }];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification;
 {
-    if (!shouldIgnoreKeyboardEvents) {
-        self.keyboardHeight = 0;
-        
-        [self animateUsingKeyboardUserInfo:notification.userInfo animations:^{
-            [self updateInputView];
-        }];
-
-    }
-}
-
-- (void)animateUsingKeyboardUserInfo:(NSDictionary *)userInfo animations:(dispatch_block_t)animations;
-{
-//    BOOL showingLastIndexPath = [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:self.photo.photoComments.count - 1]];
-    
-    [UIView beginAnimations:nil context:NULL];
-    
-//    if (!showingLastIndexPath) {
-//        [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-    [UIView setAnimationCurve:1.0];
-    [UIView setAnimationDuration:0.0];
-
-//        [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue]];
+//    if (!shouldIgnoreKeyboardEvents) {
+//        self.keyboardHeight = 0;
+//        
+//        [self animateUsingKeyboardUserInfo:notification.userInfo animations:^{
+//            [self updateInputView];
+//        }];
+//
 //    }
-
-    animations();
     
-    [UIView commitAnimations];
+    [UIView animateWithDuration:0.1 animations:^{
+        self.inputViewBottomConstraint.constant = 0;
+    }];
 }
 
--(void)keyboardFrameDidChange:(NSNotification*)notification{
-    NSDictionary *info = [notification userInfo];
-    
-    CGRect kKeyBoardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    [self.view setFrame:CGRectMake(0, kKeyBoardFrame.origin.y-self.view.frame.size.height, 320, self.view.frame.size.height)];
-}
+//- (void)animateUsingKeyboardUserInfo:(NSDictionary *)userInfo animations:(dispatch_block_t)animations;
+//{
+////    BOOL showingLastIndexPath = [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:self.photo.photoComments.count - 1]];
+//    
+//    [UIView beginAnimations:nil context:NULL];
+//    
+////    if (!showingLastIndexPath) {
+////        [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
+//    [UIView setAnimationCurve:1.0];
+//    [UIView setAnimationDuration:0.0];
+//
+////        [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue]];
+////    }
+//
+//    animations();
+//    
+//    [UIView commitAnimations];
+//}
+
+//-(void)keyboardFrameDidChange:(NSNotification*)notification{
+//    NSDictionary *info = [notification userInfo];
+//    
+//    CGRect kKeyBoardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+//    [self.view setFrame:CGRectMake(0, kKeyBoardFrame.origin.y-self.view.frame.size.height, 320, self.view.frame.size.height)];
+//}
 
 #pragma mark - Text Field Delegate
 
@@ -149,14 +168,14 @@ static NSString * const reuseIdentifier = @"commentCell";
     }
 }
 
-- (void)updateInputView;
-{
-    self.inputViewBottomConstraint.constant = self.keyboardHeight;
-
-    if (self.keyboardHeight) {
-        [self.tableView setContentOffset:CGPointMake(self.tableView.contentOffset.x, CGFLOAT_MAX) animated:NO];
-    }
-}
+//- (void)updateInputView;
+//{
+//    self.inputViewBottomConstraint.constant = self.keyboardHeight;
+//
+//    if (self.keyboardHeight) {
+//        [self.tableView setContentOffset:CGPointMake(self.tableView.contentOffset.x, CGFLOAT_MAX) animated:NO];
+//    }
+//}
 
 #pragma mark - Actions
 
