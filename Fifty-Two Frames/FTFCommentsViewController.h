@@ -6,7 +6,8 @@
 //  Copyright © 2015 Gershy Lev. All rights reserved.
 //
 
+#import <SlackTextViewController/Classes/SLKTextViewController.h>
 
-@interface FTFCommentsViewController : UITableViewController
+@interface FTFCommentsViewController : SLKTextViewController
 
 @end
