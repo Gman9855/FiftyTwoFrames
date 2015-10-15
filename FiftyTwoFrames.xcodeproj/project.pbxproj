@@ -1086,12 +1086,18 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Fifty-Two Frames/FiftyTwoFrames-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/SlackTextViewController\"/**",
+					"\"${PODS_ROOT}/Headers/Public/pop\"",
+				);
 				INFOPLIST_FILE = "Fifty-Two Frames/FiftyTwoFrames-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gershylev.Fifty-Two-Frames";
 				PRODUCT_NAME = FiftyTwoFrames;
-				USER_HEADER_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1110,12 +1116,18 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Fifty-Two Frames/FiftyTwoFrames-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/SlackTextViewController\"/**",
+					"\"${PODS_ROOT}/Headers/Public/pop\"",
+				);
 				INFOPLIST_FILE = "Fifty-Two Frames/FiftyTwoFrames-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gershylev.Fifty-Two-Frames";
 				PRODUCT_NAME = FiftyTwoFrames;
-				USER_HEADER_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
