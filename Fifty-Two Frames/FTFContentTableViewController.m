@@ -16,7 +16,6 @@
 #import "MWPhotoBrowser.h"
 #import "FTFAlbumCollection.h"
 #import "FTFAlbum.h"
-#import <POP/POP.h>
 #import "FTFPhotoBrowserViewController.h"
 #import "FTFPhotoContainerViewController.h"
 #import "FTFImage+MWPhotoAdditions.h"

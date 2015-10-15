@@ -1373,7 +1373,6 @@
             if (hidden) _toolbar.frame = CGRectOffset(_toolbar.frame, 0, animatonOffset);
         }
         _toolbar.alpha = alpha;
-
         // Captions
         for (MWZoomingScrollView *page in _visiblePages) {
             if (page.captionView) {

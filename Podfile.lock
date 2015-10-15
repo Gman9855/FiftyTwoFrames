@@ -1,10 +1,13 @@
 PODS:
-  - pop (1.0.6)
+  - pop (1.0.8)
+  - SlackTextViewController (1.7)
 
 DEPENDENCIES:
   - pop (~> 1.0)
+  - SlackTextViewController
 
 SPEC CHECKSUMS:
-  pop: e518794da38942c05255eb64b36d894e70cb4f00
+  pop: bb773ae2c791ca2629de13b347e7a8b450fa6a57
+  SlackTextViewController: 57e28248dd38b9753277733544449519842f1ea5
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.39.0

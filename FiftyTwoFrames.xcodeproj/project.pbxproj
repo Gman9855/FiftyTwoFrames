@@ -16,6 +16,7 @@
 		8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */; };
 		8B20E9E21992084C0074E66B /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B20E9E11992084C0074E66B /* libc++.1.dylib */; };
 		8B3994DE19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3994DD19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m */; };
+		8B41EC171BCF2AFF00E6D6D2 /* FTFCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B41EC161BCF2AFF00E6D6D2 /* FTFCommentsViewController.m */; settings = {ASSET_TAGS = (); }; };
 		8B451D4B197ECD55005D7159 /* calendar-128.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D4A197ECD55005D7159 /* calendar-128.png */; };
 		8B451D531981B9B4005D7159 /* FTFAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D521981B9B4005D7159 /* FTFAlbum.m */; };
 		8B451D561981C046005D7159 /* FTFAlbumCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D551981C046005D7159 /* FTFAlbumCollection.m */; };
@@ -130,6 +131,7 @@
 		1AD3044919CF748D0001823F /* FTFActivityIndicatorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFActivityIndicatorCell.m; sourceTree = "<group>"; };
 		1AEB1B3919C5725100EB67D2 /* FTFUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFUser.h; sourceTree = "<group>"; };
 		1AEB1B3A19C5725100EB67D2 /* FTFUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFUser.m; sourceTree = "<group>"; };
+		585C73FEB11132E90D8621EC /* Pods-FiftyTwoFrames.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiftyTwoFrames.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FiftyTwoFrames/Pods-FiftyTwoFrames.debug.xcconfig"; sourceTree = "<group>"; };
 		8B12264E19B2DE9700FBFE4E /* FTFPhotoContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoContainerViewController.h; sourceTree = "<group>"; };
 		8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoContainerViewController.m; sourceTree = "<group>"; };
 		8B12265119B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FTFImage+MWPhotoAdditions.h"; sourceTree = "<group>"; };
@@ -139,6 +141,8 @@
 		8B20E9E11992084C0074E66B /* libc++.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.1.dylib"; path = "usr/lib/libc++.1.dylib"; sourceTree = SDKROOT; };
 		8B3994DC19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbumSelectionMenuTableViewCell.h; sourceTree = "<group>"; };
 		8B3994DD19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbumSelectionMenuTableViewCell.m; sourceTree = "<group>"; };
+		8B41EC151BCF2AFF00E6D6D2 /* FTFCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFCommentsViewController.h; sourceTree = "<group>"; };
+		8B41EC161BCF2AFF00E6D6D2 /* FTFCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFCommentsViewController.m; sourceTree = "<group>"; };
 		8B451D4A197ECD55005D7159 /* calendar-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar-128.png"; sourceTree = "<group>"; };
 		8B451D511981B9B4005D7159 /* FTFAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbum.h; sourceTree = "<group>"; };
 		8B451D521981B9B4005D7159 /* FTFAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbum.m; sourceTree = "<group>"; };
@@ -303,7 +307,7 @@
 		8BD2001E1974B3B700F9F347 /* info-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-2.png"; sourceTree = "<group>"; };
 		8BD200201974B40200F9F347 /* info-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-3.png"; sourceTree = "<group>"; };
 		D3A678DE796649F1B681F522 /* libPods-FiftyTwoFrames.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FiftyTwoFrames.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E37038A709514EDEA37A695F /* Pods-FiftyTwoFrames.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiftyTwoFrames.xcconfig"; path = "Pods/Pods-FiftyTwoFrames.xcconfig"; sourceTree = "<group>"; };
+		E700BC2D724CD02007E8BAE6 /* Pods-FiftyTwoFrames.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiftyTwoFrames.release.xcconfig"; path = "Pods/Target Support Files/Pods-FiftyTwoFrames/Pods-FiftyTwoFrames.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -405,6 +409,8 @@
 				8BCB4C011993F31700B9C751 /* FTFPhotoBrowserViewController.m */,
 				8BCB4C031994692F00B9C751 /* FTFPhotoCommentsViewController.h */,
 				8BCB4C041994692F00B9C751 /* FTFPhotoCommentsViewController.m */,
+				8B41EC151BCF2AFF00E6D6D2 /* FTFCommentsViewController.h */,
+				8B41EC161BCF2AFF00E6D6D2 /* FTFCommentsViewController.m */,
 				1AA2BAC619C8BC650069A92F /* FTFCustomCaptionView.h */,
 				1AA2BAC719C8BC650069A92F /* FTFCustomCaptionView.m */,
 			);
@@ -604,7 +610,7 @@
 				8BC938AE193C1C8300418F32 /* Fifty-Two FramesTests */,
 				8BC93888193C1C8300418F32 /* Frameworks */,
 				8BC93887193C1C8300418F32 /* Products */,
-				E37038A709514EDEA37A695F /* Pods-FiftyTwoFrames.xcconfig */,
+				E3C93F864D2047804AC5531E /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -698,6 +704,15 @@
 			name = "Album List VC";
 			sourceTree = "<group>";
 		};
+		E3C93F864D2047804AC5531E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				585C73FEB11132E90D8621EC /* Pods-FiftyTwoFrames.debug.xcconfig */,
+				E700BC2D724CD02007E8BAE6 /* Pods-FiftyTwoFrames.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -710,6 +725,7 @@
 				8BC93883193C1C8200418F32 /* Frameworks */,
 				8BC93884193C1C8200418F32 /* Resources */,
 				4EF85EA888C740BC81C17585 /* Copy Pods Resources */,
+				9C3C1A9C6FAFFF6A1FE77BE9 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -745,7 +761,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = FTF;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Gershy Lev";
 				TargetAttributes = {
 					8BC938A6193C1C8300418F32 = {
@@ -824,7 +840,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-FiftyTwoFrames-resources.sh\"";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FiftyTwoFrames/Pods-FiftyTwoFrames-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9C3C1A9C6FAFFF6A1FE77BE9 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FiftyTwoFrames/Pods-FiftyTwoFrames-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FA330C16DDAF4D47B13A098F /* Check Pods Manifest.lock */ = {
@@ -888,6 +919,7 @@
 				1AEB1B3B19C5725100EB67D2 /* FTFUser.m in Sources */,
 				8BA8793D19674E6A00A43819 /* PSTCollectionViewFlowLayout.m in Sources */,
 				8B7D033B19C0DF4D006839BF /* FTFAlbumCategoryCollection.m in Sources */,
+				8B41EC171BCF2AFF00E6D6D2 /* FTFCommentsViewController.m in Sources */,
 				8BA8792E19674E6A00A43819 /* MWGridCell.m in Sources */,
 				8BA8793E19674E6A00A43819 /* PSTCollectionViewItemKey.m in Sources */,
 				8BA8798819675FF400A43819 /* UIImageView+WebCache.m in Sources */,
@@ -985,6 +1017,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -999,7 +1032,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "Fifty-Two Frames";
 				SDKROOT = iphoneos;
@@ -1032,7 +1065,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_NAME = "Fifty-Two Frames";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1041,7 +1074,7 @@
 		};
 		8BC938B9193C1C8300418F32 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E37038A709514EDEA37A695F /* Pods-FiftyTwoFrames.xcconfig */;
+			baseConfigurationReference = 585C73FEB11132E90D8621EC /* Pods-FiftyTwoFrames.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1058,13 +1091,14 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gershylev.Fifty-Two-Frames";
 				PRODUCT_NAME = FiftyTwoFrames;
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
 		8BC938BA193C1C8300418F32 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E37038A709514EDEA37A695F /* Pods-FiftyTwoFrames.xcconfig */;
+			baseConfigurationReference = E700BC2D724CD02007E8BAE6 /* Pods-FiftyTwoFrames.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1081,6 +1115,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gershylev.Fifty-Two-Frames";
 				PRODUCT_NAME = FiftyTwoFrames;
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1101,6 +1136,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Fifty-Two FramesTests/FiftyTwoFramesTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gershylev.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = FiftyTwoFramesTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -1119,6 +1155,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Fifty-Two Frames/Fifty-Two Frames-Prefix.pch";
 				INFOPLIST_FILE = "Fifty-Two FramesTests/FiftyTwoFramesTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gershylev.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = FiftyTwoFramesTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

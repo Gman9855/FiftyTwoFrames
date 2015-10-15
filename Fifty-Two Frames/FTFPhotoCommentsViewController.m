@@ -38,7 +38,7 @@ static NSString * const reuseIdentifier = @"commentCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.postCommentButton.enabled = NO;
     self.tableView.estimatedRowHeight = 75;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
 
@@ -161,11 +161,9 @@ static NSString * const reuseIdentifier = @"commentCell";
         lightGrayPostString = [[NSAttributedString alloc]initWithString:self.postCommentButton.titleLabel.text attributes:@{NSForegroundColorAttributeName : [UIColor lightGrayColor]}];
     });
     
-    if (![self.textField.text isEqualToString:@""]) {
-        [self.postCommentButton setAttributedTitle:bluePostString forState:UIControlStateNormal];
-    } else {
-        [self.postCommentButton setAttributedTitle:lightGrayPostString forState:UIControlStateNormal];
-    }
+    BOOL textFieldHasText = (![self.textField.text isEqualToString:@""]);
+    [self setPostButtonColorWithEnabledState:textFieldHasText];
+    
 }
 
 //- (void)updateInputView;
@@ -195,8 +193,8 @@ static NSString * const reuseIdentifier = @"commentCell";
     postedComment.commenterProfilePictureURL = user.profilePictureURL;
     postedComment.createdTime = [NSDate date];
     shouldIgnoreKeyboardEvents = YES;
-    [self.textField resignFirstResponder];
-    [self.textField becomeFirstResponder];
+//    [self.textField resignFirstResponder];
+//    [self.textField becomeFirstResponder];
     shouldIgnoreKeyboardEvents = NO;
     postedComment.comment = self.textField.text;
     
@@ -218,13 +216,21 @@ static NSString * const reuseIdentifier = @"commentCell";
     [self.tableView beginUpdates];
     
     NSIndexPath *i = [NSIndexPath indexPathForRow:self.photo.photoComments.count - 1 inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[i] withRowAnimation:UITableViewRowAnimationNone];
-
+    [self.tableView insertRowsAtIndexPaths:@[i] withRowAnimation:UITableViewRowAnimationBottom];
+    
     [self.tableView endUpdates];
     
-    NSIndexPath *idx = [NSIndexPath indexPathForRow:self.photo.photoComments.count - 1 inSection:0];
-    [self.tableView scrollToRowAtIndexPath:idx atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    BOOL isAtBottom = (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.frame.size.height));
+    NSLog(@"Is at bottom: %s", isAtBottom ? "Yes" : "No");
+    NSIndexPath *secondToLastCellIndex = [NSIndexPath indexPathForRow:self.photo.photoComments.count - 2 inSection:0];
+    FTFPhotoCommentTableViewCell *commentCell = [self.tableView cellForRowAtIndexPath:secondToLastCellIndex];
+    NSArray *visibleCells = [self.tableView visibleCells];
+    NSIndexPath *lastCellIndex = [NSIndexPath indexPathForRow:self.photo.photoComments.count - 1 inSection:0];
+    [self.tableView scrollToRowAtIndexPath:lastCellIndex atScrollPosition:UITableViewScrollPositionBottom animated: [visibleCells containsObject:commentCell] ? NO : YES];
+    
     self.textField.text = nil;
+    [self setPostButtonColorWithEnabledState:NO];
+    
 }
 
 #pragma mark - Table view data source
@@ -317,6 +323,11 @@ static NSString * const reuseIdentifier = @"commentCell";
 
 - (void)updateVisibleCells:(NSTimer *)timer {
     //[self.tableView reloadData];
+}
+
+- (void)setPostButtonColorWithEnabledState:(BOOL)enabled {
+    [self.postCommentButton setAttributedTitle:enabled ? bluePostString : lightGrayPostString forState:UIControlStateNormal];
+    self.postCommentButton.enabled = enabled;
 }
 
 @end
