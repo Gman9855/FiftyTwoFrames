@@ -15,6 +15,7 @@ static const CGFloat labelPadding = 10;
 // Private
 @interface MWCaptionView () {
     id <MWPhoto> _photo;
+    UIToolbar *_contentView;
     UILabel *_label;
     CGFloat maxHeight;
     BOOL tappedLabel;
@@ -38,11 +39,6 @@ static const CGFloat labelPadding = 10;
         _photo = photo;
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7")) {
             // Use iOS 7 blurry goodness
-            self.barStyle = UIBarStyleBlackTranslucent;
-            self.tintColor = nil;
-            self.barTintColor = nil;
-            self.barStyle = UIBarStyleBlackTranslucent;
-            [self setBackgroundImage:nil forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
         } else {
             // Transparent black with no gloss
             CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
@@ -52,7 +48,6 @@ static const CGFloat labelPadding = 10;
             CGContextFillRect(context, rect);
             UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
-            [self setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
         }
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
         [self setupCaption];
@@ -81,6 +76,28 @@ static const CGFloat labelPadding = 10;
 }
 
 - (void)setupCaption {
+    _contentView = [[UIToolbar alloc] initWithFrame:self.bounds];
+    _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7")) {
+        // Use iOS 7 blurry goodness
+        _contentView.barStyle = UIBarStyleBlackTranslucent;
+        _contentView.tintColor = nil;
+        _contentView.barTintColor = nil;
+        _contentView.barStyle = UIBarStyleBlackTranslucent;
+        [_contentView setBackgroundImage:nil forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+        self.layer.allowsGroupOpacity = NO;
+        } else {
+            // Transparent black with no gloss
+            CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+            UIGraphicsBeginImageContext(rect.size);
+            CGContextRef context = UIGraphicsGetCurrentContext();
+            CGContextSetFillColorWithColor(context, [[UIColor colorWithWhite:0 alpha:0.6] CGColor]);
+            CGContextFillRect(context, rect);
+            UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            [_contentView setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+        }
+    [self addSubview:_contentView];
     _label = [[UILabel alloc] initWithFrame:CGRectIntegral(CGRectMake(labelPadding, 0,
                                                        self.bounds.size.width-labelPadding*2,
                                                        self.bounds.size.height))];
@@ -109,7 +126,7 @@ static const CGFloat labelPadding = 10;
     if ([_photo respondsToSelector:@selector(caption)]) {
         _label.text = [_photo caption] ? [_photo caption] : @" ";
     }
-    [self addSubview:_label];
+    [_contentView addSubview:_label];
 }
 
 - (IBAction)tapped:(UITapGestureRecognizer *)recognizer {

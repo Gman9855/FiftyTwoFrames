@@ -8,6 +8,6 @@
 
 #import "MWCaptionView.h"
 
-@interface FTFCustomCaptionView : MWCaptionView
+@interface FTFCustomCaptionView : MWCaptionView <UIGestureRecognizerDelegate>
 
 @end

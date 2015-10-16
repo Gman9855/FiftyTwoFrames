@@ -23,6 +23,7 @@
 #import "FiftyTwoFrames.h"
 #import "FTFAlbumCategoryCollection.h"
 #import "FTFAlbumDescriptionViewController.h"
+#import "FTFCustomCaptionView.h"
 
 @interface FTFContentTableViewController () <UINavigationControllerDelegate, MWPhotoBrowserDelegate, FTFAlbumSelectionMenuViewControllerDelegate, FTFPhotoCollectionGridViewControllerDelegate>
 
@@ -357,6 +358,12 @@ BOOL _morePhotosToLoad = NO;
         [photos addObject:[image browserPhotoWithSize:size]];
     }
     return [photos copy];
+}
+
+- (MWCaptionView *)photoBrowser:(MWPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index {
+    MWPhoto *photo = [[self photosCompatibleForUseInPhotoBrowserWithSize:FTFImageSizeLarge] objectAtIndex:index];
+    FTFCustomCaptionView *captionView = [[FTFCustomCaptionView alloc] initWithPhoto:photo];
+    return captionView;
 }
 
 #pragma mark - FTFAlbumSelectionMenuViewController Delegate
