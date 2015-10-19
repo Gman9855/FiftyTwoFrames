@@ -374,18 +374,41 @@ BOOL _morePhotosToLoad = NO;
     return captionView;
 }
 
-#pragma mark - FTFAlbumSelectionMenuViewController Delegate
-
-- (void)albumSelectionMenuViewControllerdidTapDismissButton {
-    [UIView animateWithDuration:0.7
-                          delay:0.1
-         usingSpringWithDamping:0.8
-          initialSpringVelocity:0.1
-                        options:0
-                     animations:^{
-                         CGRect newRectLocation = CGRectMake(self.hostingView.frame.origin.x, 1000, self.hostingView.frame.size.width, self.hostingView.frame.size.height);
-                         self.hostingView.frame = newRectLocation;
-                     } completion:nil];
+- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
+    NSLog(@"%lu", (unsigned long)index);
+    static UILabel *photoBrowserNavBarLabel = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        photoBrowserNavBarLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+        photoBrowserNavBarLabel.font = [UIFont boldSystemFontOfSize:14];
+        photoBrowserNavBarLabel.shadowColor = [UIColor clearColor];
+        photoBrowserNavBarLabel.textColor = [UIColor whiteColor];
+        photoBrowserNavBarLabel.textAlignment = NSTextAlignmentCenter;
+    });
+    
+    FTFImage *photo = self.albumPhotos[index];
+    photoBrowserNavBarLabel.text = photo.title;
+    photoBrowser.navigationItem.titleView = photoBrowserNavBarLabel;
+//    [photoBrowser.navigationController.navigationBar addSubview:photoBrowserNavBarLabel];
+    
+    if (self.browserPhotos.count - index < 4 && !_finishedPaging) {
+        [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosWithCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
+            _finishedPaging = finishedPaging;
+            NSMutableArray *albumPhotos = [self.albumPhotos mutableCopy];
+            [albumPhotos addObjectsFromArray:photos];
+            self.albumPhotos = [albumPhotos copy];
+            self.browserPhotos = [self photosCompatibleForUseInPhotoBrowserWithSize:FTFImageSizeLarge];
+            self.photoBrowser.albumPhotos = self.albumPhotos;
+            self.photoGrid.gridPhotos = self.albumPhotos;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.photoBrowser reloadData];
+                [self.tableView reloadData];
+            });
+            
+            _didPageNextBatchOfPhotos = YES;
+            _morePhotosToLoad = YES;
+        }];
+    }
 }
 
 #pragma mark - FTFPhotoCollectionGridViewController Delegate
