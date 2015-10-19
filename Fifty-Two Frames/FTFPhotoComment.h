@@ -17,6 +17,4 @@
 @property (nonatomic, strong) NSString *comment;
 @property (nonatomic, strong) NSURL *commenterProfilePictureURL;
 
-//- (void)requestCommenterProfilePictureWithCompletionBlock:(void(^)(UIImage *image, NSError *error))block;
-
 @end

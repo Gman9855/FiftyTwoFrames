@@ -21,6 +21,7 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
 @property (nonatomic, strong) UINavigationController *photoCommentsNavigationController;
 @property (nonatomic, strong) UIView *hostingViewForCommentView;
 @property (nonatomic, strong) UIImageView *imageViewForButton;
+@property (nonatomic, strong) UILabel *navigationBarLabel;
 
 @end
 
@@ -71,9 +72,9 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
          forControlEvents:UIControlEventTouchUpInside];
         self.imageViewForButton.center = button.center;
         UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-        
         self.rightToolbarButtons = @[barItem];
         self.leftToolbarButtons = @[fbCommentsButton];
+        
     }
     
     return self;
@@ -83,11 +84,18 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
 {
     [super viewDidLoad];
     [self photoCommentsVC].delegate = self;
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"Custom"
+                                                                 style:UIBarButtonItemStylePlain
+                                                                target:nil
+                                                                action:nil];
+    
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     // Need this dispatch_after because this method gets called before setCurrentPhotoIndex
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//        FTFImage *photo = self.albumPhotos[self.currentIndex];
+//        self.navigationBarLabel.text = photo.title;
         self.imageViewForButton.image = [UIImage imageNamed:self.photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"];
     });
 }
@@ -108,7 +116,7 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
     anim.repeatCount = 1;
     anim.autoreverses = YES;
     anim.removedOnCompletion = YES;
-    anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)];
+    anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.4, 1.4, 1.0)];
     [self.imageViewForButton.layer addAnimation:anim forKey:nil];
     UIImage *thumbUnfilled = [UIImage imageNamed:@"ThumbUp"];
     UIImage *thumbFilled = [UIImage imageNamed:@"ThumbUpFilled"];

@@ -104,7 +104,7 @@ static NSString * const reuseIdentifier = @"commentCell";
     } completion:^(BOOL finished) {
         if (finished) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.photo.photoComments.count - 1 inSection:0]atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.photo.comments.count - 1 inSection:0]atScrollPosition:UITableViewScrollPositionBottom animated:YES];
             });
         }
     }];
@@ -215,17 +215,17 @@ static NSString * const reuseIdentifier = @"commentCell";
     [self.photo addPhotoComment:postedComment];
     [self.tableView beginUpdates];
     
-    NSIndexPath *i = [NSIndexPath indexPathForRow:self.photo.photoComments.count - 1 inSection:0];
+    NSIndexPath *i = [NSIndexPath indexPathForRow:self.photo.comments.count - 1 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[i] withRowAnimation:UITableViewRowAnimationBottom];
     
     [self.tableView endUpdates];
     
     BOOL isAtBottom = (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.frame.size.height));
     NSLog(@"Is at bottom: %s", isAtBottom ? "Yes" : "No");
-    NSIndexPath *secondToLastCellIndex = [NSIndexPath indexPathForRow:self.photo.photoComments.count - 2 inSection:0];
+    NSIndexPath *secondToLastCellIndex = [NSIndexPath indexPathForRow:self.photo.comments.count - 2 inSection:0];
     FTFPhotoCommentTableViewCell *commentCell = [self.tableView cellForRowAtIndexPath:secondToLastCellIndex];
     NSArray *visibleCells = [self.tableView visibleCells];
-    NSIndexPath *lastCellIndex = [NSIndexPath indexPathForRow:self.photo.photoComments.count - 1 inSection:0];
+    NSIndexPath *lastCellIndex = [NSIndexPath indexPathForRow:self.photo.comments.count - 1 inSection:0];
     [self.tableView scrollToRowAtIndexPath:lastCellIndex atScrollPosition:UITableViewScrollPositionBottom animated: [visibleCells containsObject:commentCell] ? NO : YES];
     
     self.textField.text = nil;
@@ -240,7 +240,7 @@ static NSString * const reuseIdentifier = @"commentCell";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.photo.photoComments count];
+    return [self.photo.comments count];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -253,7 +253,7 @@ static NSString * const reuseIdentifier = @"commentCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FTFPhotoCommentTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reuseIdentifier
                                                                               forIndexPath:indexPath];
-    FTFPhotoComment *photoComment = self.photo.photoComments[indexPath.row];
+    FTFPhotoComment *photoComment = self.photo.comments[indexPath.row];
     
     [cell.commenterProfilePicture setImageWithURL:photoComment.commenterProfilePictureURL];
     

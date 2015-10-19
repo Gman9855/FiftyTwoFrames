@@ -9,6 +9,8 @@
 #import "FTFContainerViewController.h"
 #import "FTFContentTableViewController.h"
 #import "FTFFacebookLoginViewController.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+
 
 @interface FTFContainerViewController ()
 
@@ -37,31 +39,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self addObserverToActiveSession];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChildViewControllerFromLoginState) name:FBSDKAccessTokenDidChangeNotification object:nil];
     [self updateChildViewControllerFromLoginState];
-    
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        if ([[FBSession activeSession] isOpen]) {
-//            [[FBSession activeSession] closeAndClearTokenInformation];
-//            [self removeObserverFromActiveSession];
-//            [FBSession setActiveSession:[FBSession new]];
-//            [self addObserverToActiveSession];
+//        if ([FBSDKAccessToken currentAccessToken]) {
+//            [[FBSDKLoginManager new] logOut];
 //        }
 //    });
-    
-}
-
-- (void)addObserverToActiveSession;
-{
-    [[FBSession activeSession] addObserver:self
-                                forKeyPath:@"state"
-                                   options:NSKeyValueObservingOptionNew
-                                   context:NULL];
-}
-
-- (void)removeObserverFromActiveSession;
-{
-    [[FBSession activeSession] removeObserver:self forKeyPath:@"state"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -72,7 +56,7 @@
 
 - (UIViewController *)viewControllerFromLoginState;
 {
-    if (FBSession.activeSession.isOpen) {
+    if ([FBSDKAccessToken currentAccessToken]) {
         return self.contentViewController;
     }
     
@@ -109,8 +93,6 @@
         [self updateChildViewControllerFromLoginState];
     }
 }
-
-
 /*
 #pragma mark - Navigation
 

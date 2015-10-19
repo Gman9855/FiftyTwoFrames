@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <FacebookSDK/FacebookSDK.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 @interface FTFFacebookLoginViewController : UIViewController
+
+@property (weak, nonatomic) IBOutlet FBSDKLoginButton *loginButton;
 
 @end

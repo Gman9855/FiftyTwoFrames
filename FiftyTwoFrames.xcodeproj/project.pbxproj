@@ -17,6 +17,7 @@
 		8B20E9E21992084C0074E66B /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B20E9E11992084C0074E66B /* libc++.1.dylib */; };
 		8B3994DE19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3994DD19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m */; };
 		8B41EC171BCF2AFF00E6D6D2 /* FTFCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B41EC161BCF2AFF00E6D6D2 /* FTFCommentsViewController.m */; settings = {ASSET_TAGS = (); }; };
+		8B41EC481BD1AE3C00E6D6D2 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B41EC471BD1AE3C00E6D6D2 /* FBSDKCoreKit.framework */; settings = {ASSET_TAGS = (); }; };
 		8B451D4B197ECD55005D7159 /* calendar-128.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D4A197ECD55005D7159 /* calendar-128.png */; };
 		8B451D531981B9B4005D7159 /* FTFAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D521981B9B4005D7159 /* FTFAlbum.m */; };
 		8B451D561981C046005D7159 /* FTFAlbumCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D551981C046005D7159 /* FTFAlbumCollection.m */; };
@@ -96,7 +97,6 @@
 		8BC938B3193C1C8300418F32 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8BC938B1193C1C8300418F32 /* InfoPlist.strings */; };
 		8BC938B5193C1C8300418F32 /* Fifty_Two_FramesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC938B4193C1C8300418F32 /* Fifty_Two_FramesTests.m */; };
 		8BC938D219400B5A00418F32 /* FTFTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC938D119400B5A00418F32 /* FTFTableViewCell.m */; };
-		8BC938D6194020A400418F32 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC938D5194020A400418F32 /* FacebookSDK.framework */; };
 		8BC938D91940593400418F32 /* FTFFacebookLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC938D81940593400418F32 /* FTFFacebookLoginViewController.m */; };
 		8BC938DC194529EB00418F32 /* FTFContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC938DB194529EB00418F32 /* FTFContainerViewController.m */; };
 		8BC938E01946BD2000418F32 /* facebook-login.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BC938DF1946BD2000418F32 /* facebook-login.png */; };
@@ -109,6 +109,8 @@
 		8BD040971AA6BFEB00700F4C /* FTFAlbumDescriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD040961AA6BFEB00700F4C /* FTFAlbumDescriptionViewController.m */; };
 		8BD2001F1974B3B700F9F347 /* info-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2001E1974B3B700F9F347 /* info-2.png */; };
 		8BD200211974B40200F9F347 /* info-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD200201974B40200F9F347 /* info-3.png */; };
+		8BE61EBA1BD1B29900E10AA3 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BE61EB91BD1B29900E10AA3 /* FBSDKLoginKit.framework */; settings = {ASSET_TAGS = (); }; };
+		8BE61EBC1BD1C33500E10AA3 /* 52f-square-whitebg-large.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BE61EBB1BD1C33500E10AA3 /* 52f-square-whitebg-large.jpg */; settings = {ASSET_TAGS = (); }; };
 		E96395B3DFD043DDB4965E32 /* libPods-FiftyTwoFrames.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A678DE796649F1B681F522 /* libPods-FiftyTwoFrames.a */; };
 /* End PBXBuildFile section */
 
@@ -143,6 +145,7 @@
 		8B3994DD19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbumSelectionMenuTableViewCell.m; sourceTree = "<group>"; };
 		8B41EC151BCF2AFF00E6D6D2 /* FTFCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFCommentsViewController.h; sourceTree = "<group>"; };
 		8B41EC161BCF2AFF00E6D6D2 /* FTFCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFCommentsViewController.m; sourceTree = "<group>"; };
+		8B41EC471BD1AE3C00E6D6D2 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		8B451D4A197ECD55005D7159 /* calendar-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar-128.png"; sourceTree = "<group>"; };
 		8B451D511981B9B4005D7159 /* FTFAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbum.h; sourceTree = "<group>"; };
 		8B451D521981B9B4005D7159 /* FTFAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbum.m; sourceTree = "<group>"; };
@@ -285,7 +288,6 @@
 		8BC938CD193CE3EF00418F32 /* FTFContentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFContentTableViewController.h; sourceTree = "<group>"; };
 		8BC938D019400B5A00418F32 /* FTFTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFTableViewCell.h; sourceTree = "<group>"; };
 		8BC938D119400B5A00418F32 /* FTFTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFTableViewCell.m; sourceTree = "<group>"; };
-		8BC938D5194020A400418F32 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		8BC938D71940593400418F32 /* FTFFacebookLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFFacebookLoginViewController.h; sourceTree = "<group>"; };
 		8BC938D81940593400418F32 /* FTFFacebookLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFFacebookLoginViewController.m; sourceTree = "<group>"; };
 		8BC938DA194529EB00418F32 /* FTFContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFContainerViewController.h; sourceTree = "<group>"; };
@@ -306,6 +308,8 @@
 		8BD040961AA6BFEB00700F4C /* FTFAlbumDescriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbumDescriptionViewController.m; sourceTree = "<group>"; };
 		8BD2001E1974B3B700F9F347 /* info-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-2.png"; sourceTree = "<group>"; };
 		8BD200201974B40200F9F347 /* info-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-3.png"; sourceTree = "<group>"; };
+		8BE61EB91BD1B29900E10AA3 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		8BE61EBB1BD1C33500E10AA3 /* 52f-square-whitebg-large.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "52f-square-whitebg-large.jpg"; sourceTree = "<group>"; };
 		D3A678DE796649F1B681F522 /* libPods-FiftyTwoFrames.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FiftyTwoFrames.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E700BC2D724CD02007E8BAE6 /* Pods-FiftyTwoFrames.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiftyTwoFrames.release.xcconfig"; path = "Pods/Target Support Files/Pods-FiftyTwoFrames/Pods-FiftyTwoFrames.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -318,9 +322,10 @@
 				8B20E9E21992084C0074E66B /* libc++.1.dylib in Frameworks */,
 				8BA2A6F3194E20E700341260 /* QuartzCore.framework in Frameworks */,
 				8BC9388C193C1C8300418F32 /* CoreGraphics.framework in Frameworks */,
-				8BC938D6194020A400418F32 /* FacebookSDK.framework in Frameworks */,
 				8BC9388E193C1C8300418F32 /* UIKit.framework in Frameworks */,
+				8B41EC481BD1AE3C00E6D6D2 /* FBSDKCoreKit.framework in Frameworks */,
 				8BC9388A193C1C8300418F32 /* Foundation.framework in Frameworks */,
+				8BE61EBA1BD1B29900E10AA3 /* FBSDKLoginKit.framework in Frameworks */,
 				E96395B3DFD043DDB4965E32 /* libPods-FiftyTwoFrames.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -387,6 +392,7 @@
 				8B645884194CD64D006D4B75 /* gear.png */,
 				8BD2001E1974B3B700F9F347 /* info-2.png */,
 				8BD200201974B40200F9F347 /* info-3.png */,
+				8BE61EBB1BD1C33500E10AA3 /* 52f-square-whitebg-large.jpg */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -413,6 +419,8 @@
 				8B41EC161BCF2AFF00E6D6D2 /* FTFCommentsViewController.m */,
 				1AA2BAC619C8BC650069A92F /* FTFCustomCaptionView.h */,
 				1AA2BAC719C8BC650069A92F /* FTFCustomCaptionView.m */,
+				8BC938D71940593400418F32 /* FTFFacebookLoginViewController.h */,
+				8BC938D81940593400418F32 /* FTFFacebookLoginViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -627,8 +635,9 @@
 			isa = PBXGroup;
 			children = (
 				8B20E9E11992084C0074E66B /* libc++.1.dylib */,
+				8BE61EB91BD1B29900E10AA3 /* FBSDKLoginKit.framework */,
+				8B41EC471BD1AE3C00E6D6D2 /* FBSDKCoreKit.framework */,
 				8BA2A6F2194E20E700341260 /* QuartzCore.framework */,
-				8BC938D5194020A400418F32 /* FacebookSDK.framework */,
 				8BC93889193C1C8300418F32 /* Foundation.framework */,
 				8BC9388B193C1C8300418F32 /* CoreGraphics.framework */,
 				8BC9388D193C1C8300418F32 /* UIKit.framework */,
@@ -649,8 +658,6 @@
 				8BC9389B193C1C8300418F32 /* Main.storyboard */,
 				8BD0408F1AA502EA00700F4C /* FTFCollectionReusableView.h */,
 				8BD040901AA502EA00700F4C /* FTFCollectionReusableView.m */,
-				8BC938D71940593400418F32 /* FTFFacebookLoginViewController.h */,
-				8BC938D81940593400418F32 /* FTFFacebookLoginViewController.m */,
 				8BC938A1193C1C8300418F32 /* Images.xcassets */,
 				8BC93890193C1C8300418F32 /* Supporting Files */,
 				8B6458BD194CFADC006D4B75 /* NSArray+FTFAdditions.h */,
@@ -764,6 +771,9 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Gershy Lev";
 				TargetAttributes = {
+					8BC93885193C1C8200418F32 = {
+						DevelopmentTeam = D6X654H249;
+					};
 					8BC938A6193C1C8300418F32 = {
 						TestTargetID = 8BC93885193C1C8200418F32;
 					};
@@ -800,6 +810,7 @@
 				8BAC032319BBE71D00451615 /* placeholder.png in Resources */,
 				8BC938E01946BD2000418F32 /* facebook-login.png in Resources */,
 				8B855F48194BA6F0008D06CE /* Facebook_like_button_thumb.png in Resources */,
+				8BE61EBC1BD1C33500E10AA3 /* 52f-square-whitebg-large.jpg in Resources */,
 				8B645885194CD64D006D4B75 /* gear.png in Resources */,
 				8B64587F194CD5F6006D4B75 /* message.png in Resources */,
 				8BC938E41946BE7400418F32 /* 52frames.jpg in Resources */,
@@ -1078,6 +1089,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1097,6 +1110,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gershylev.Fifty-Two-Frames";
 				PRODUCT_NAME = FiftyTwoFrames;
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1108,6 +1122,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1127,6 +1143,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gershylev.Fifty-Two-Frames";
 				PRODUCT_NAME = FiftyTwoFrames;
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 				WRAPPER_EXTENSION = app;
 			};

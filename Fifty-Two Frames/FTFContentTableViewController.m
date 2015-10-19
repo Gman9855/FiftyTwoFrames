@@ -25,7 +25,7 @@
 #import "FTFAlbumDescriptionViewController.h"
 #import "FTFCustomCaptionView.h"
 
-@interface FTFContentTableViewController () <UINavigationControllerDelegate, MWPhotoBrowserDelegate, FTFAlbumSelectionMenuViewControllerDelegate, FTFPhotoCollectionGridViewControllerDelegate>
+@interface FTFContentTableViewController () <UINavigationControllerDelegate, MWPhotoBrowserDelegate, FTFPhotoCollectionGridViewControllerDelegate>
 
 @property (nonatomic, strong) FTFAlbumSelectionMenuViewController *albumSelectionMenuViewController;
 @property (nonatomic, strong) UINavigationController *albumSelectionMenuNavigationController;
@@ -91,16 +91,13 @@ BOOL _morePhotosToLoad = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     self.photoGrid = [self.storyboard instantiateViewControllerWithIdentifier:@"grid"];
     self.photoGrid.delegate = self;
     
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    self.spinner.frame = CGRectMake(0, 0, 320, 12);
+    self.spinner.frame = CGRectMake(0, 0, 200, 12);
     self.spinner.hidden = YES;
     self.tableView.tableFooterView = self.spinner;
-
-    self.albumSelectionMenuViewController.delegate = self;
     
     self.navigationController.toolbarHidden = YES;
     [self setUpNavigationBarTitle];
@@ -187,12 +184,15 @@ BOOL _morePhotosToLoad = NO;
                                                                completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
                                                                    
                                                                    _finishedPaging = finishedPaging;
-                                                                   [self populateAlbumPhotosResultsWithPhotos:photos error:error];
+                                                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                                                       [self populateAlbumPhotosResultsWithPhotos:photos error:error];
+                                                                   });
                                                                }];
     }];
 }
 
 - (void)albumSelectionChanged:(NSNotification *)notification {
+    self.tableView.userInteractionEnabled = NO;
     albumSelectionChanged = YES;
     _morePhotosToLoad = NO;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -241,6 +241,7 @@ BOOL _morePhotosToLoad = NO;
         [self.tableView reloadData];
         NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
         [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        self.tableView.userInteractionEnabled = YES;
         
         [UIView animateWithDuration:1.5 animations:^{
             self.navigationItem.titleView.alpha = 0.0;
@@ -300,21 +301,21 @@ BOOL _morePhotosToLoad = NO;
     FTFTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     FTFImage *photo = self.albumPhotos[indexPath.row];
     
-    if ([cell isKindOfClass:[FTFTableViewCell class]]) {
-        [cell.photo setImageWithURL:photo.largePhotoURL placeholderImage:nil
-                            options:SDWebImageRetryFailed
-                           progress:nil
-                          completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                                if (cacheType == SDImageCacheTypeNone || cacheType == SDImageCacheTypeDisk) {
-                                    CATransition *t = [CATransition animation];
-                                    t.duration = 0.15;
-                                    t.type = kCATransitionFade;
-                                    [cell.photo.layer addAnimation:t forKey:@"ftf"];
-                                }
-                                cell.photo.image = image;
-                                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }];
-    }
+    [cell.photo setImageWithURL:photo.largePhotoURL placeholderImage:nil
+                        options:SDWebImageRetryFailed
+                       progress:nil
+                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                              if (cacheType == SDImageCacheTypeNone || cacheType == SDImageCacheTypeDisk) {
+                                  CATransition *t = [CATransition animation];
+                                  t.duration = 0.15;
+                                  t.type = kCATransitionFade;
+                                  [cell.photo.layer addAnimation:t forKey:@"ftf"];
+                              }
+                              cell.photo.image = image;
+                              cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                          });
+    }];
     return cell;
 }
 
@@ -357,6 +358,7 @@ BOOL _morePhotosToLoad = NO;
     for (FTFImage *image in self.albumPhotos) {
         [photos addObject:[image browserPhotoWithSize:size]];
     }
+    
     return [photos copy];
 }
 
@@ -393,11 +395,6 @@ BOOL _morePhotosToLoad = NO;
     [self presentViewController:self.albumSelectionMenuNavigationController animated:true completion:nil];
 }
 
-- (IBAction)menuButtonTapped:(UIBarButtonItem *)sender;
-{
-    
-}
-
 - (IBAction)likeIconTapped:(UIButton *)sender {
     CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
     anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -405,7 +402,7 @@ BOOL _morePhotosToLoad = NO;
     anim.repeatCount = 1;
     anim.autoreverses = YES;
     anim.removedOnCompletion = YES;
-    anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)];
+    anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.4, 1.4, 1.0)];
     [sender.layer addAnimation:anim forKey:nil];
     
     // Find which cell the like came from
@@ -427,9 +424,9 @@ BOOL _morePhotosToLoad = NO;
             if (error) {
                 return;
             } else {
-                photo.photoLikesCount++;
+                photo.likesCount++;
                 photo.isLiked = YES;
-                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.photoLikesCount];
+                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];
             }
         }];
     } else {
@@ -439,9 +436,9 @@ BOOL _morePhotosToLoad = NO;
             if (error) {
                 return;
             } else {
-                photo.photoLikesCount--;
+                photo.likesCount--;
                 photo.isLiked = NO;
-                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.photoLikesCount];
+                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];
             }
         }];
     }
@@ -461,28 +458,6 @@ BOOL _morePhotosToLoad = NO;
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-    
-//    UIView *navigationView = self.navigationController.view;
-//    self.hostingView.frame = navigationView.bounds;
-//    self.hostingView.bounds = self.view.bounds;
-//    
-//    navigationController.view.frame = self.hostingView.bounds;
-//    [self.hostingView addSubview:navigationController.view];
-//    [navigationView addSubview:self.hostingView];
-//    self.hostingView.frame = (CGRect) {
-//        CGPointMake(0, navigationView.frame.size.height),
-//        self.hostingView.frame.size
-//    };
-//    self.hostingView.center = CGPointMake(navigationView.center.x, self.hostingView.center.y);
-//    
-//    [UIView animateWithDuration:0.5
-//                          delay:0.1
-//         usingSpringWithDamping:0.8
-//          initialSpringVelocity:0.1
-//                        options:0
-//                     animations:^{
-//                         self.hostingView.center = self.view.center;
-//                     } completion:nil];
 }
 
 - (IBAction)gridButtonTapped:(UIBarButtonItem *)sender {
@@ -500,6 +475,8 @@ BOOL _morePhotosToLoad = NO;
         [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionNone animated:YES];
     }
 }
+
+#pragma mark - UIScrollView Delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)aScrollView {
     CGPoint offset = aScrollView.contentOffset;

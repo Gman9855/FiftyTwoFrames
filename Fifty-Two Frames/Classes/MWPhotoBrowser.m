@@ -249,6 +249,7 @@
             [newBackButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateHighlighted];
         }
         _previousViewControllerBackButton = previousViewController.navigationItem.backBarButtonItem; // remember previous
+
         previousViewController.navigationItem.backBarButtonItem = newBackButton;
     }
 

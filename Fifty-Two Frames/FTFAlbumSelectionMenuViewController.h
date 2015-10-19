@@ -9,15 +9,7 @@
 #import <UIKit/UIKit.h>
 @class FTFAlbumCollection;
 
-@protocol FTFAlbumSelectionMenuViewControllerDelegate <NSObject>
-
-- (void)albumSelectionMenuViewControllerdidTapDismissButton;
-
-@end
-
 @interface FTFAlbumSelectionMenuViewController : UITableViewController
-
-@property (nonatomic, weak) id <FTFAlbumSelectionMenuViewControllerDelegate> delegate;
 
 @property (nonatomic, strong) FTFAlbumCollection *weeklySubmissions;
 @property (nonatomic, strong) FTFAlbumCollection *photoWalks;

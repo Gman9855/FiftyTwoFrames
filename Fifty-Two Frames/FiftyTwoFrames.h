@@ -25,9 +25,6 @@
 
 - (void)requestNextPageOfAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block;
 
-- (void)requestPhotoWithPhotoURL:(NSURL *)photoURL
-                completionBlock:(void (^)(UIImage *image, NSError *error, BOOL isCached))block;
-
 - (void)publishPhotoLikeWithPhotoID:(NSString *)photoID
                     completionBlock:(void (^)(NSError *error))block;
 

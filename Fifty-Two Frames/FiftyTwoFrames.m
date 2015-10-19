@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Gershy Lev. All rights reserved.
 //
 
-#import <FacebookSDK/FacebookSDK.h>
-
 #import "FiftyTwoFrames.h"
 
 #import "FTFAlbumCategoryCollection.h"
@@ -16,12 +14,12 @@
 #import "FTFPhotoComment.h"
 #import "FTFUser.h"
 #import "TTTTimeIntervalFormatter.h"
-
 #import "SDWebImageManager.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 @interface FiftyTwoFrames ()
 
-@property (nonatomic, strong) FBRequestConnection *requestConnection;
+@property (nonatomic, strong) FBSDKGraphRequestConnection *requestConnection;
 
 @property (nonatomic, strong) NSString *nextPageOfAlbumsURL;
 @property (nonatomic, strong) NSString *nextPageOfAlbumPhotoResultsURL;
@@ -64,178 +62,138 @@
 #pragma mark - Public Methods
 
 - (void)requestUserWithCompletionBlock:(void (^)(FTFUser *user))block {
-
-    [FBRequestConnection startWithGraphPath:@"/me?fields=id,name,picture.fields(url)"
-                                 parameters:nil
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              if (block) {
-                                  if (!error) {
-                                      self.user = [self userWithResponseData:result];
-                                      block(self.user);
-                                  }
-                              }
-                          }];
+    
+//    @"/me?fields=id,name,picture.fields(url)
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"id, name, picture.fields(url)", @"fields", nil];
+    [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        if (block) {
+            if (!error) {
+                self.user = [self userWithResponseData:result];
+                block(self.user);
+            }
+        }
+    }];
 }
 
 - (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCategoryCollection *, NSError *))block;
 {
-    [FBRequestConnection startWithGraphPath:@"/180889155269546?fields=albums.limit(50).fields(name,description,photos.limit(1).fields(picture))"
-                                 parameters:nil
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              /* handle the result */
-                              if (block) {
-                                  __block FTFAlbumCategoryCollection *albumCategoryCollection = nil;
-                                  if (!error) {
-                                      self.albumDicts = [NSMutableArray new];
-                                      [self.albumDicts addObject:result];
-                                      NSString *nextPage = [result valueForKeyPath:@"albums.paging.next"];
-                                      self.nextPageOfAlbumsURL = [nextPage substringFromIndex:31];
-                                      [self requestRemainingAlbumsWithCompletionBlock:^(NSArray *albums, NSError *error) {
-                                          albumCategoryCollection = [[FTFAlbumCategoryCollection alloc] initWithAlbumCollections:albums];
-                                          block(albumCategoryCollection, error);
-                                      }];
-                                  } else {
-                                      block(nil, error);
-                                  }
-                              } else {
-                                  return;
-                              }
-                          }];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"albums.limit(50).fields(name,description,created_time,photos.limit(1).fields(picture))", @"fields", nil];
+    
+    NSString *graphPath = @"/180889155269546?albums.limit(50).fields(name,description,created_time,photos.limit(1).fields(picture))";
+    NSString *fullGraphPath = @"/180889155269546?fields=albums.limit(50).fields(name,description,created_time,photos.limit(1).fields(picture))";
+    
+    [[[FBSDKGraphRequest alloc] initWithGraphPath:fullGraphPath parameters:nil] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        if (block) {
+            __block FTFAlbumCategoryCollection *albumCategoryCollection = nil;
+            if (!error) {
+                self.albumDicts = [NSMutableArray new];
+                [self.albumDicts addObject:result];
+                NSString *nextPage = [result valueForKeyPath:@"albums.paging.next"];
+                self.nextPageOfAlbumsURL = [nextPage substringFromIndex:31];
+                [self requestRemainingAlbumsWithCompletionBlock:^(NSArray *albums, NSError *error) {
+                    albumCategoryCollection = [[FTFAlbumCategoryCollection alloc] initWithAlbumCollections:albums];
+                    block(albumCategoryCollection, error);
+                }];
+            } else {
+                block(nil, error);
+            }
+        } else {
+            return;
+        }
+    }];
 }
 
 - (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID completionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block
 {
-    [self.requestConnection cancel];
-//    NSString *graphPathQuery = [NSString stringWithFormat:@"/%@/photos?limit=50&fields=images,id,name,likes.limit(1).summary(true),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", albumID];
+//    if (self.requestConnection) {
+//        [self.requestConnection cancel];
+//        self.requestConnection = nil;
+//    }
     
-    NSString *graphPathQuery = [NSString stringWithFormat:@"/%@/photos?limit=50&fields=images,id,name,likes.limit(1).summary(true),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", albumID];
-    self.requestConnection = [FBRequestConnection startWithGraphPath: graphPathQuery
-                                 parameters:nil
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              /* handle the result */
-                              if (block) {
-                                  if (!error) {
-                                      NSArray *albumPhotos = [self albumPhotosWithAlbumPhotoResponseData:result];
-                                      NSString *nextPage = [result valueForKeyPath:@"paging.next"];
-                                      if (nextPage == NULL) {
-                                          block(albumPhotos, nil, YES);
-                                      } else {
-                                          self.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
-                                          block(albumPhotos, nil, NO);
-                                      }
-                                  } else {
-                                      block(nil, error, YES);
-                                  }
-                              } else {
-                                  return;
-                              }
-                          }];
+    NSString *graphPath = [NSString stringWithFormat:@"/%@/photos?limit=50", albumID];
+    NSString *fullGraphPath = [NSString stringWithFormat:@"/%@/photos?limit=50&fields=images,id,name,likes.limit(1).summary(true).fields(has_liked),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", albumID];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"images,id,name,likes.limit(1).summary(true).fields(has_liked),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", @"fields", nil];
+    
+//    self.requestConnection = [[FBSDKGraphRequestConnection alloc] init];
+//    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params];
+//    __weak typeof(self) weakSelf = self;
+//    [self.requestConnection addRequest:request completionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+//        if (block) {
+//            if (!error) {
+//                NSArray *albumPhotos = [weakSelf albumPhotosWithAlbumPhotoResponseData:result];
+//                NSString *nextPage = [result valueForKeyPath:@"paging.next"];
+//                if (nextPage == NULL) {
+//                    block(albumPhotos, nil, YES);
+//                } else {
+//                    weakSelf.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
+//                    block(albumPhotos, nil, NO);
+//                }
+//            } else {
+//                block(nil, error, YES);
+//            }
+//        } else {
+//            return;
+//        }
+//    }];
+//    
+//    [self.requestConnection start];
+
+    
+    [[[FBSDKGraphRequest alloc] initWithGraphPath:fullGraphPath parameters:nil] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        if (block) {
+            if (!error) {
+                NSArray *albumPhotos = [self albumPhotosWithAlbumPhotoResponseData:result];
+                NSString *nextPage = [result valueForKeyPath:@"paging.next"];
+                if (nextPage == NULL) {
+                    block(albumPhotos, nil, YES);
+                } else {
+                    self.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
+                    block(albumPhotos, nil, NO);
+                }
+            } else {
+                block(nil, error, YES);
+            }
+        } else {
+            return;
+        }
+    }];
+    
 }
 
 - (void)requestRemainingAlbumsWithCompletionBlock:(void (^)(NSArray *albums, NSError *error))block {
-    [FBRequestConnection startWithGraphPath:self.nextPageOfAlbumsURL
-                          completionHandler:^(FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error) {
-        
+    [[[FBSDKGraphRequest alloc] initWithGraphPath:self.nextPageOfAlbumsURL parameters:nil] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         NSString *nextPage = [result valueForKeyPath:@"paging.next"];
         self.nextPageOfAlbumsURL = [nextPage substringFromIndex:31];
         [self.albumDicts addObject:result];
         if (self.nextPageOfAlbumsURL.length > 0) {
             [self requestRemainingAlbumsWithCompletionBlock:block];
         } else {
-           NSArray *allAlbums = [self albumsWithAlbumResponseData:self.albumDicts];
+            NSArray *allAlbums = [self albumsWithAlbumResponseData:self.albumDicts];
             block(allAlbums, nil);
         }
     }];
 }
 
 - (void)requestNextPageOfAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block {
-//    if (self.nextPageOfAlbumPhotoResultsURL == NULL) {
-//        block(nil, nil, YES);
-//    } else {
-    [self.requestConnection cancel];
-    self.requestConnection = [FBRequestConnection startWithGraphPath:self.nextPageOfAlbumPhotoResultsURL
-                          completionHandler:^(FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error) {
-                              NSString *nextPage = [result valueForKeyPath:@"paging.next"];
-                              NSArray *nextBatchOfAlbumPhotos = [self albumPhotosWithAlbumPhotoResponseData:result];
-                              if (nextPage == NULL) {
-                                  block(nextBatchOfAlbumPhotos, nil, YES);
-                              } else {
-                                  self.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
-                                  block(nextBatchOfAlbumPhotos, nil, NO);
-                              }
-    }];
-}
-
-//- (void)requestRemainingAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error))block {
-//    [FBRequestConnection startWithGraphPath:self.nextPageOfAlbumPhotoResultsURL
-//                          completionHandler:^(FBRequestConnection *connection,
-//                                              id result,
-//                                              NSError *error) {
-//                              NSString *nextPage = [result valueForKeyPath:@"paging.next"];
-//                              self.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
-//                              [self.albumPhotoDicts addObject:result];
-//                              if (self.nextPageOfAlbumPhotoResultsURL.length > 0) {
-//                                  [self requestRemainingAlbumPhotosWithCompletionBlock:block];
-//                              } else {
-//                                  NSArray *allAlbumPhotos = [self albumPhotosWithAlbumPhotoResponseData:self.albumPhotoDicts];
-//                                  block(allAlbumPhotos, nil);
-//                              }
-//                          }];
-//}
-
-- (void)requestPhotoWithPhotoURL:(NSURL *)photoURL
-                completionBlock:(void (^)(UIImage *, NSError *, BOOL))block
-{
-    NSParameterAssert(block);
-    
-    block = ^(UIImage *image, NSError *error, BOOL isCached) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            block(image, error, isCached);
-        });
-    };
-    
-    if (!photoURL) {
-        block(nil, nil, NO);
-        return;
+    if (self.requestConnection) {
+        [self.requestConnection cancel];
+        self.requestConnection = nil;
     }
-    
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        SDWebImageManager *manager = [SDWebImageManager sharedManager];
-        UIImage *cachedImage = [manager.imageCache imageFromMemoryCacheForKey:photoURL.absoluteString];
-        if (cachedImage) {
-            block(cachedImage, nil, YES);
-            return;
+    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:self.nextPageOfAlbumPhotoResultsURL parameters:nil];
+    self.requestConnection = [[FBSDKGraphRequestConnection alloc] init];
+    __weak typeof(self) weakSelf = self;
+    [self.requestConnection addRequest:request completionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        NSString *nextPage = [result valueForKeyPath:@"paging.next"];
+        NSArray *nextBatchOfAlbumPhotos = [weakSelf albumPhotosWithAlbumPhotoResponseData:result];
+        if (nextPage == NULL) {
+            block(nextBatchOfAlbumPhotos, nil, YES);
+        } else {
+            weakSelf.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
+            block(nextBatchOfAlbumPhotos, nil, NO);
         }
-        
-        [manager downloadWithURL:photoURL options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (finished && photoURL && cacheType == SDImageCacheTypeNone) {
-                    [manager saveImageToCache:image forURL:photoURL];
-                }
-            });
-            
-            block(image, error, NO);
-        }];
-    });
+    }];
+    
+    [self.requestConnection start];
 }
 
 - (void)publishPhotoCommentWithPhotoID:(NSString *)photoID comment:(NSString *)comment completionBlock:(void (^)(NSError *error))block
@@ -243,48 +201,43 @@
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                             comment, @"message",
                             nil];
-    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/comments", photoID]
-                                 parameters:params
-                                 HTTPMethod:@"POST"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              block(error);
-                          }];
+    
+    [[[FBSDKGraphRequest alloc] initWithGraphPath:[NSString stringWithFormat:@"/%@/comments", photoID] parameters:params HTTPMethod:@"Post"] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        block(error);
+    }];
 }
 
 - (void)publishPhotoLikeWithPhotoID:(NSString *)photoID
                     completionBlock:(void (^)(NSError *))block
 {
-    [self.requestConnection cancel];
-    self.requestConnection = [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoID]
-                                 parameters:nil
-                                 HTTPMethod:@"POST"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              if(block) block(error);
-                          }];
+    if (self.requestConnection) {
+        [self.requestConnection cancel];
+        self.requestConnection = nil;
+    }
+    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoID] parameters:nil HTTPMethod:@"POST"];
+    self.requestConnection = [[FBSDKGraphRequestConnection alloc] init];
+    [self.requestConnection addRequest:request completionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        if(block) block(error);
+    }];
+    
+    [self.requestConnection start];
 }
 
 - (void)deletePhotoLikeWithPhotoID:(NSString *)photoID
                    completionBlock:(void (^)(NSError *error))block
 {
-    [self.requestConnection cancel];
-    self.requestConnection = [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoID]
-                                 parameters:nil
-                                 HTTPMethod:@"DELETE"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              if(block) block(error);
-                          }];
+    if (self.requestConnection) {
+        [self.requestConnection cancel];
+        self.requestConnection = nil;
+        self.requestConnection = [[FBSDKGraphRequestConnection alloc] init];
+    }
+    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:[NSString stringWithFormat:@"/%@/likes", photoID] parameters:nil HTTPMethod:@"DELETE"];
+    
+    [self.requestConnection addRequest:request completionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        if(block) block(error);
+    }];
+    
+    [self.requestConnection start];
 }
 
 #pragma mark - Private Methods
@@ -379,7 +332,7 @@
                 [arrayOfphotoCommentObjects addObject:photoComment];
             }
             NSSortDescriptor *createdTimeSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdTime" ascending:YES];
-            image.photoComments = [[arrayOfphotoCommentObjects sortedArrayUsingDescriptors:@[createdTimeSortDescriptor]] copy];
+            image.comments = [[arrayOfphotoCommentObjects sortedArrayUsingDescriptors:@[createdTimeSortDescriptor]] copy];
         }
         [objects addObject:image];
     }

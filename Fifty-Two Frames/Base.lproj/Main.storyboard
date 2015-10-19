@@ -100,6 +100,9 @@
                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="4xF-6z-Tus">
                                             <rect key="frame" x="282" y="3" width="37" height="37"/>
                                             <animations/>
+                                            <variation key="heightClass=regular" misplaced="YES">
+                                                <rect key="frame" x="282" y="4" width="37" height="37"/>
+                                            </variation>
                                         </activityIndicatorView>
                                     </subviews>
                                     <animations/>
@@ -620,41 +623,88 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jmL-cl-OcC">
-                                <rect key="frame" x="123" y="347" width="355" height="66"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xch-oG-FJI" customClass="FBSDKLoginButton">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="61" id="dFm-kh-0q6"/>
+                                    <constraint firstAttribute="width" constant="243" id="wAt-BQ-8yX"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="dFm-kh-0q6"/>
+                                        <exclude reference="wAt-BQ-8yX"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="dFm-kh-0q6"/>
+                                        <include reference="wAt-BQ-8yX"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="52f-square-whitebg-large.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="8Ft-t0-qqM">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="355" id="9FS-E1-RFD"/>
-                                    <constraint firstAttribute="height" constant="66" id="y8g-hp-TLW"/>
+                                    <constraint firstAttribute="width" constant="240" id="Pn1-IR-277"/>
+                                    <constraint firstAttribute="height" constant="240" id="dwH-4L-0f2"/>
                                 </constraints>
-                                <state key="normal" image="facebook-login.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="loginButtonTapped:" destination="QIM-fh-wkj" eventType="touchUpInside" id="FO9-Jh-nnw"/>
-                                </connections>
-                            </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="52frames.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="zXp-Kd-vY2">
-                                <rect key="frame" x="185" y="70" width="230" height="230"/>
-                                <animations/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Pn1-IR-277"/>
+                                        <exclude reference="dwH-4L-0f2"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="Pn1-IR-277"/>
+                                        <include reference="dwH-4L-0f2"/>
+                                    </mask>
+                                </variation>
                             </imageView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="zXp-Kd-vY2" firstAttribute="top" secondItem="drj-Nb-t84" secondAttribute="bottom" constant="50" id="3Zc-Dq-JS7"/>
-                            <constraint firstItem="zXp-Kd-vY2" firstAttribute="centerX" secondItem="GLe-53-Kev" secondAttribute="centerX" id="IC4-VT-Txa"/>
-                            <constraint firstItem="jmL-cl-OcC" firstAttribute="top" secondItem="zXp-Kd-vY2" secondAttribute="bottom" constant="47" id="OAl-Aq-7CY"/>
-                            <constraint firstItem="jmL-cl-OcC" firstAttribute="centerX" secondItem="GLe-53-Kev" secondAttribute="centerX" id="c6r-Ma-jf6"/>
+                            <constraint firstItem="8Ft-t0-qqM" firstAttribute="centerX" secondItem="GLe-53-Kev" secondAttribute="centerX" id="1It-Gx-urU"/>
+                            <constraint firstItem="Xch-oG-FJI" firstAttribute="centerX" secondItem="GLe-53-Kev" secondAttribute="centerX" id="2qZ-pH-JvP"/>
+                            <constraint firstItem="Xch-oG-FJI" firstAttribute="top" secondItem="8Ft-t0-qqM" secondAttribute="bottom" constant="76" id="32G-Nd-V9N"/>
+                            <constraint firstItem="8Ft-t0-qqM" firstAttribute="top" secondItem="drj-Nb-t84" secondAttribute="bottom" constant="165" id="cWN-EQ-F7G"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Xch-oG-FJI"/>
+                                <exclude reference="8Ft-t0-qqM"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="1It-Gx-urU"/>
+                                <exclude reference="cWN-EQ-F7G"/>
+                                <exclude reference="2qZ-pH-JvP"/>
+                                <exclude reference="32G-Nd-V9N"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="Xch-oG-FJI"/>
+                                <include reference="8Ft-t0-qqM"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="1It-Gx-urU"/>
+                                <include reference="cWN-EQ-F7G"/>
+                                <include reference="2qZ-pH-JvP"/>
+                                <include reference="32G-Nd-V9N"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
-                        <outlet property="loginButton" destination="jmL-cl-OcC" id="YNQ-GN-kxC"/>
+                        <outlet property="loginButton" destination="Xch-oG-FJI" id="oyO-ll-93Q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zFQ-Ym-8v9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="403.125" y="86.619718309859152"/>
+            <point key="canvasLocation" x="402" y="86.25"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8fG-w5-3oy">
@@ -730,11 +780,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="52frames.jpg" width="230" height="230"/>
+        <image name="52f-square-whitebg-large.jpg" width="2000" height="2000"/>
         <image name="Info" width="22" height="22"/>
         <image name="Menu" width="22" height="22"/>
         <image name="ThumbUp" width="22" height="22"/>
         <image name="UIBarButtonItemGrid.png" width="20" height="20"/>
-        <image name="facebook-login.png" width="250" height="61"/>
     </resources>
 </document>

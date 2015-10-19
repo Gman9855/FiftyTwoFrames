@@ -8,7 +8,7 @@
 
 #import "FTFPhotoComment.h"
 #import "FiftyTwoFrames.h"
-#import <FacebookSDK/FacebookSDK.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 @interface FTFPhotoComment()
 
@@ -38,22 +38,10 @@
                             nil
                             ];
     
-    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/picture?redirect=false", _commenterID]
-                                 parameters:params
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                              if (result) {
-                                  self.commenterProfilePictureURL = [[NSURL alloc] initWithString:[result valueForKeyPath:@"data.url"]];
-                              }
-                          }];
-}
-
-- (void)requestCommenterProfilePictureWithCompletionBlock:(void(^)(UIImage *image, NSError *error))block
-{
-    NSParameterAssert(block);
-    
-    [[FiftyTwoFrames sharedInstance] requestPhotoWithPhotoURL:self.commenterProfilePictureURL completionBlock:^(UIImage *image, NSError *error, BOOL isCached) {
-        block(image, error);
+    [[[FBSDKGraphRequest alloc] initWithGraphPath:[NSString stringWithFormat:@"/%@/picture?redirect=false", _commenterID] parameters:params HTTPMethod:@"GET"] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        if (result) {
+            self.commenterProfilePictureURL = [[NSURL alloc] initWithString:[result valueForKeyPath:@"data.url"]];
+        }
     }];
 }
 
