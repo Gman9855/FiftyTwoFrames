@@ -250,17 +250,16 @@ BOOL _morePhotosToLoad = NO;
         }];
         
         _morePhotosToLoad = YES;
-        
-//    } else {
-//        [MBProgressHUD hideHUDForView:self.view animated:NO];
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-//                                                            message:@"Sorry, no photos found for this album"
-//                                                           delegate:self
-//                                                  cancelButtonTitle:@"Okay"
-//                                                  otherButtonTitles:nil];
-//            [alert show];
-//        });
+    } else {
+        [MBProgressHUD hideHUDForView:self.view animated:NO];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"Sorry, no photos found for this album"
+                                                      delegate:self
+                                           cancelButtonTitle:@"Okay"
+                                            otherButtonTitles:nil];
+        [alert show];
+        });
     }
 }
 
@@ -282,8 +281,15 @@ BOOL _morePhotosToLoad = NO;
     if ([cell isKindOfClass:[FTFTableViewCell class]]) {
         FTFTableViewCell *ftfCell = (FTFTableViewCell *)cell;
         FTFImage *photo = self.albumPhotos[indexPath.row];
-        [ftfCell configureWithPhoto:photo];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+        ftfCell.likesCountLabel.text = [NSString stringWithFormat:@"%ld", (long)photo.likesCount];
+        
+        if (![photo.photoDescription isEqual:[NSNull null]]) {
+            ftfCell.descriptionLabel.text = photo.photoDescription;
+        } else {
+            ftfCell.descriptionLabel.text = @"";
+        }
+        [ftfCell.likeButton setImage:[UIImage imageNamed:photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"] forState:UIControlStateNormal];
     }
 }
 

@@ -308,15 +308,21 @@
     NSArray *photoDescriptionCollection = [dict valueForKeyPath:@"data.name"];
     NSArray *likesCountCollection = [dict valueForKeyPath:@"data.likes.summary.total_count"];
     NSArray *commentsCollection = [dict valueForKeyPath:@"data.comments.data"];
+    NSArray *userHasLikedPhotoCollection = [dict valueForKeyPath:@"data.likes.summary.has_liked"];
     
     NSMutableArray *objects = [NSMutableArray new];
     
     for (int i = 0; i < [photoCollections count]; i++) {
         NSArray *imageURLs = [self urlsFromPhotoArray:photoCollections[i]];
         FTFImage *image = [[FTFImage alloc] initWithImageURLs:imageURLs];
+        NSArray *lines = [photoDescriptionCollection[i] componentsSeparatedByString:@"\n"];
+        NSString *title = [lines[1] isEqualToString:@""] ? lines[2] : lines[1];
+        image.title = lines.count > 1 ? [title stringByReplacingOccurrencesOfString:@"\"" withString:@""] : photoDescriptionCollection[i];
+        image.author = lines.count > 0 ? lines[0] : photoDescriptionCollection[i];
         image.photoDescription = photoDescriptionCollection[i];
-        image.photoLikesCount = [likesCountCollection[i]integerValue];
+        image.likesCount = [likesCountCollection[i]integerValue];
         image.photoID = photoIDs[i];
+        image.isLiked = [userHasLikedPhotoCollection[i] intValue];
         NSArray *photoComments = commentsCollection[i];
         NSMutableArray *arrayOfphotoCommentObjects = [NSMutableArray new];
         if (photoComments != (id)[NSNull null]) {
