@@ -85,7 +85,7 @@
                                     <animations/>
                                     <constraints>
                                         <constraint firstItem="9gS-xd-XB3" firstAttribute="leading" secondItem="Uan-94-yOO" secondAttribute="trailing" constant="20" id="1vU-2y-hYi">
-                                            <variation key="heightClass=regular-widthClass=compact" constant="8"/>
+                                            <variation key="heightClass=regular-widthClass=compact" constant="13"/>
                                         </constraint>
                                         <constraint firstItem="Onq-40-guQ" firstAttribute="leading" secondItem="9gS-xd-XB3" secondAttribute="trailing" constant="8" symbolic="YES" id="4Xv-az-qd8">
                                             <variation key="heightClass=regular-widthClass=compact" constant="3"/>
@@ -103,7 +103,7 @@
                                             <variation key="heightClass=regular-widthClass=compact" constant="-4"/>
                                         </constraint>
                                         <constraint firstAttribute="trailing" secondItem="Onq-40-guQ" secondAttribute="trailing" id="Wp8-4e-v3P">
-                                            <variation key="heightClass=regular-widthClass=compact" constant="8"/>
+                                            <variation key="heightClass=regular-widthClass=compact" constant="3"/>
                                         </constraint>
                                         <constraint firstItem="lsQ-BI-Faj" firstAttribute="leading" secondItem="9Fi-cX-eg5" secondAttribute="leadingMargin" constant="-8" id="ehc-co-BW2"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="Uan-94-yOO" secondAttribute="bottom" constant="-3" id="gOO-gl-hRm"/>
