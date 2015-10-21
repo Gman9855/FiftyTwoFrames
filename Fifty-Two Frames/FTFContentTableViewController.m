@@ -436,25 +436,18 @@ BOOL _morePhotosToLoad = NO;
 }
 
 - (void)handlePhotoLikeWithCell:(FTFTableViewCell *)cell andPhoto:(FTFImage *)photo {
+    [cell.likeButton setImage:[UIImage imageNamed:!photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"] forState:UIControlStateNormal];
     if (!photo.isLiked) {
-        [cell.likeButton setImage:[UIImage imageNamed:@"ThumbUpFilled"] forState:UIControlStateNormal];
-        
         [[FiftyTwoFrames sharedInstance] publishPhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
-            if (error) {
-                return;
-            } else {
+            if (!error) {
                 photo.likesCount++;
                 photo.isLiked = YES;
                 cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];
             }
         }];
     } else {
-        [cell.likeButton setImage:[UIImage imageNamed:@"ThumbUp"] forState:UIControlStateNormal];
-
         [[FiftyTwoFrames sharedInstance] deletePhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
-            if (error) {
-                return;
-            } else {
+            if (!error) {
                 photo.likesCount--;
                 photo.isLiked = NO;
                 cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];

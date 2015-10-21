@@ -32,9 +32,29 @@
                                         <button opaque="NO" tag="1" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9gS-xd-XB3">
                                             <rect key="frame" x="527" y="296" width="27" height="23"/>
                                             <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="Nce-aF-vlY">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="50"/>
+                                                </constraint>
+                                                <constraint firstAttribute="width" constant="44" id="hs0-sw-JfA">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="50"/>
+                                                </constraint>
+                                            </constraints>
                                             <state key="normal" image="ThumbUp">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="Nce-aF-vlY"/>
+                                                    <exclude reference="hs0-sw-JfA"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="constraints">
+                                                    <include reference="Nce-aF-vlY"/>
+                                                    <include reference="hs0-sw-JfA"/>
+                                                </mask>
+                                            </variation>
                                             <connections>
                                                 <action selector="likeIconTapped:" destination="dCf-uT-a31" eventType="touchUpInside" id="jZH-Jc-hkX"/>
                                             </connections>
@@ -43,7 +63,9 @@
                                             <rect key="frame" x="6" y="294" width="174" height="21"/>
                                             <animations/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="174" id="2dy-WY-afY"/>
+                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="174" id="2dy-WY-afY">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="295"/>
+                                                </constraint>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -62,24 +84,41 @@
                                     </subviews>
                                     <animations/>
                                     <constraints>
-                                        <constraint firstItem="Onq-40-guQ" firstAttribute="leading" secondItem="9gS-xd-XB3" secondAttribute="trailing" constant="8" symbolic="YES" id="4Xv-az-qd8"/>
+                                        <constraint firstItem="9gS-xd-XB3" firstAttribute="leading" secondItem="Uan-94-yOO" secondAttribute="trailing" constant="20" id="1vU-2y-hYi">
+                                            <variation key="heightClass=regular-widthClass=compact" constant="8"/>
+                                        </constraint>
+                                        <constraint firstItem="Onq-40-guQ" firstAttribute="leading" secondItem="9gS-xd-XB3" secondAttribute="trailing" constant="8" symbolic="YES" id="4Xv-az-qd8">
+                                            <variation key="heightClass=regular-widthClass=compact" constant="3"/>
+                                        </constraint>
                                         <constraint firstItem="Onq-40-guQ" firstAttribute="top" secondItem="lsQ-BI-Faj" secondAttribute="bottom" constant="10" id="6bh-fn-0bZ">
-                                            <variation key="heightClass=regular-widthClass=compact" constant="4"/>
+                                            <variation key="heightClass=regular-widthClass=compact" constant="6"/>
                                         </constraint>
                                         <constraint firstItem="lsQ-BI-Faj" firstAttribute="top" secondItem="9Fi-cX-eg5" secondAttribute="topMargin" constant="-8" id="C7h-ee-5oR"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="lsQ-BI-Faj" secondAttribute="trailing" constant="-8" id="EV0-m2-21G"/>
                                         <constraint firstItem="Uan-94-yOO" firstAttribute="leading" secondItem="9Fi-cX-eg5" secondAttribute="leadingMargin" constant="-2" id="Egh-Fm-cLG"/>
                                         <constraint firstItem="Onq-40-guQ" firstAttribute="centerY" secondItem="9gS-xd-XB3" secondAttribute="centerY" constant="2" id="Fce-Fc-ciO">
-                                            <variation key="heightClass=regular-widthClass=compact" constant="0.0"/>
+                                            <variation key="heightClass=regular-widthClass=compact" constant="1.5"/>
                                         </constraint>
                                         <constraint firstAttribute="bottomMargin" secondItem="Onq-40-guQ" secondAttribute="bottom" constant="-8" id="VYL-ZB-Ac8">
-                                            <variation key="heightClass=regular-widthClass=compact" constant="-2"/>
+                                            <variation key="heightClass=regular-widthClass=compact" constant="-4"/>
                                         </constraint>
-                                        <constraint firstAttribute="trailing" secondItem="Onq-40-guQ" secondAttribute="trailing" id="Wp8-4e-v3P"/>
+                                        <constraint firstAttribute="trailing" secondItem="Onq-40-guQ" secondAttribute="trailing" id="Wp8-4e-v3P">
+                                            <variation key="heightClass=regular-widthClass=compact" constant="8"/>
+                                        </constraint>
                                         <constraint firstItem="lsQ-BI-Faj" firstAttribute="leading" secondItem="9Fi-cX-eg5" secondAttribute="leadingMargin" constant="-8" id="ehc-co-BW2"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="Uan-94-yOO" secondAttribute="bottom" constant="-3" id="gOO-gl-hRm"/>
                                         <constraint firstItem="Uan-94-yOO" firstAttribute="top" secondItem="lsQ-BI-Faj" secondAttribute="bottom" constant="5" id="kC5-1S-xOr"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="1vU-2y-hYi"/>
+                                        </mask>
+                                    </variation>
+                                    <variation key="heightClass=regular-widthClass=compact">
+                                        <mask key="constraints">
+                                            <include reference="1vU-2y-hYi"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <animations/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
