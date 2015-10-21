@@ -141,8 +141,11 @@ BOOL _morePhotosToLoad = NO;
 - (void)setUpNavigationBarTitle {
     self.navBarTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 85)];
     self.navBarTitle.textAlignment = NSTextAlignmentCenter;
-    self.navBarTitle.text = @"Fifty-Two Frames";
     self.navBarTitle.textColor = [UIColor whiteColor];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:@"52Frames"];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:NSMakeRange(0,2)];
+    [self.navBarTitle setAttributedText:attributedString];
+//    self.navBarTitle.text = @"52Frames";
     self.navBarTitle.font = [UIFont boldSystemFontOfSize:14];
     self.navBarTitle.numberOfLines = 2;
     self.navigationItem.titleView = self.navBarTitle;
@@ -236,10 +239,15 @@ BOOL _morePhotosToLoad = NO;
         
         [UIView animateWithDuration:1.5 animations:^{
             self.navigationItem.titleView.alpha = 0.0;
-            self.navBarTitle.text = self.albumToDisplay.name;
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:self.albumToDisplay.name];
+            NSArray *words = [self.albumToDisplay.name componentsSeparatedByString:@": "];
+            NSString *albumName = [words firstObject];
+            NSRange range = [self.albumToDisplay.name rangeOfString:albumName];
+            [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:range];
+            [self.navBarTitle setAttributedText:attributedString];
             self.navigationItem.titleView.alpha = 1.0;
         }];
-        
+    
         _morePhotosToLoad = YES;
     } else {
         [MBProgressHUD hideHUDForView:self.view animated:NO];
@@ -365,21 +373,6 @@ BOOL _morePhotosToLoad = NO;
 }
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
-    NSLog(@"%lu", (unsigned long)index);
-//    static UILabel *photoBrowserNavBarLabel = nil;
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-//        photoBrowserNavBarLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-//        photoBrowserNavBarLabel.font = [UIFont boldSystemFontOfSize:14];
-//        photoBrowserNavBarLabel.shadowColor = [UIColor clearColor];
-//        photoBrowserNavBarLabel.textColor = [UIColor orangeColor];
-////        photoBrowserNavBarLabel.textAlignment = NSTextAlignmentCenter;
-//    });
-//    
-//    photoBrowser.navigationItem.titleView = photoBrowserNavBarLabel;
-//    FTFImage *photo = self.albumPhotos[index];
-//    photoBrowserNavBarLabel.text = [@" " stringByAppendingString:photo.title];
-//    [photoBrowser.navigationController.navigationBar addSubview:photoBrowserNavBarLabel];
     
     if (self.browserPhotos.count - index < 4 && !_finishedPaging) {
         [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosWithCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {

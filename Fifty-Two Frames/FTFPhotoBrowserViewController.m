@@ -86,40 +86,32 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
     [self photoCommentsVC].delegate = self;
     
     self.navigationBarLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-    self.navigationBarLabel.font = [UIFont boldSystemFontOfSize:14];
+    self.navigationBarLabel.font = [UIFont boldSystemFontOfSize:15];
     self.navigationBarLabel.shadowColor = [UIColor clearColor];
     self.navigationBarLabel.textColor = [UIColor orangeColor];
-        //        photoBrowserNavBarLabel.textAlignment = NSTextAlignmentCenter;
-
     
     self.navigationItem.titleView = self.navigationBarLabel;
     FTFImage *photo = self.albumPhotos[self.currentIndex];
-    self.navigationBarLabel.text = [@" " stringByAppendingString:photo.title];
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"Custom"
-                                                                 style:UIBarButtonItemStylePlain
-                                                                target:nil
-                                                                action:nil];
+    self.navigationBarLabel.text = (photo.title != nil) ? [@" " stringByAppendingString:photo.title] : @"";
 }
 
 - (void)showNextPhotoAnimated:(BOOL)animated {  // When user taps the next arrow
     [super showNextPhotoAnimated:animated];
     FTFImage *photo = self.albumPhotos[self.currentIndex];
-    self.navigationBarLabel.text = [@" " stringByAppendingString:photo.title];
+    self.navigationBarLabel.text = (photo.title != nil) ? [@" " stringByAppendingString:photo.title] : @"";
 }
 
 - (void)showPreviousPhotoAnimated:(BOOL)animated {  // When user taps the previous arrow
     [super showPreviousPhotoAnimated:animated];
     FTFImage *photo = self.albumPhotos[self.currentIndex];
-    self.navigationBarLabel.text = [@" " stringByAppendingString:photo.title];
+    self.navigationBarLabel.text = (photo.title != nil) ? [@" " stringByAppendingString:photo.title] : @"";
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     // Need this dispatch_after because this method gets called before setCurrentPhotoIndex
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-//        FTFImage *photo = self.albumPhotos[self.currentIndex];
-//        self.navigationBarLabel.text = photo.title;
         FTFImage *photo = self.albumPhotos[self.currentIndex];
-        self.navigationBarLabel.text = [@" " stringByAppendingString:photo.title];
+        self.navigationBarLabel.text = (photo.title != nil) ? [@" " stringByAppendingString:photo.title] : @"";
         self.imageViewForButton.image = [UIImage imageNamed:self.photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"];
     });
 }

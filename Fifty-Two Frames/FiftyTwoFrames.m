@@ -301,9 +301,9 @@
                 image.title = photoDescriptionCollection[i];
             }
             image.photographerName = [lines[0] capitalizedString];
+            image.photoDescription = photoDescriptionCollection[i];
         }
         
-        image.photoDescription = photoDescriptionCollection[i];
         image.likesCount = [likesCountCollection[i]integerValue];
         image.photoID = photoIDs[i];
         image.isLiked = [userHasLikedPhotoCollection[i] intValue];

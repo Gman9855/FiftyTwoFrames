@@ -85,10 +85,10 @@
                                     <animations/>
                                     <constraints>
                                         <constraint firstItem="9gS-xd-XB3" firstAttribute="leading" secondItem="Uan-94-yOO" secondAttribute="trailing" constant="20" id="1vU-2y-hYi">
-                                            <variation key="heightClass=regular-widthClass=compact" constant="13"/>
+                                            <variation key="heightClass=regular-widthClass=compact" constant="19"/>
                                         </constraint>
                                         <constraint firstItem="Onq-40-guQ" firstAttribute="leading" secondItem="9gS-xd-XB3" secondAttribute="trailing" constant="8" symbolic="YES" id="4Xv-az-qd8">
-                                            <variation key="heightClass=regular-widthClass=compact" constant="3"/>
+                                            <variation key="heightClass=regular-widthClass=compact" constant="-3"/>
                                         </constraint>
                                         <constraint firstItem="Onq-40-guQ" firstAttribute="top" secondItem="lsQ-BI-Faj" secondAttribute="bottom" constant="10" id="6bh-fn-0bZ">
                                             <variation key="heightClass=regular-widthClass=compact" constant="6"/>
