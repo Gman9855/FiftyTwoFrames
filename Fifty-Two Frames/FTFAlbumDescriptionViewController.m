@@ -29,23 +29,31 @@
 
 - (void)_updateText;
 {
-    self.title = self.album.name;
+//    self.title = self.album.name;
+//    [self.navigationController.navigationBar setTitleTextAttributes:
+//     @{NSForegroundColorAttributeName:[UIColor orangeColor]}];
     self.textView.text = self.album.info;
 }
 
 - (void)viewDidLoad;
 {
     [super viewDidLoad];
-
+    self.view.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.75];
+    self.textView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
     [self _updateText];
 }
 
+- (IBAction)tappedInView:(UITapGestureRecognizer *)sender {
+    [self dismissViewControllerAnimated:true completion:nil];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
-    CGRect newFrame = self.view.frame;
-    
-    newFrame.size.width = 200;
-    newFrame.size.height = 200;
-    [self.view setFrame:newFrame];
+    [self.textView setContentOffset:CGPointZero animated:YES];
+//    CGRect newFrame = self.view.frame;
+//    
+//    newFrame.size.width = 200;
+//    newFrame.size.height = 200;
+//    [self.view setFrame:newFrame];
 }
 
 

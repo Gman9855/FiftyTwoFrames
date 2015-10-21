@@ -470,13 +470,11 @@ BOOL _morePhotosToLoad = NO;
 
 - (IBAction)infoButtonTapped:(UIBarButtonItem *)sender;
 {
-    self.albumDescriptionViewController.album = self.albumToDisplay;
-    self.albumDescriptionViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Dismiss" style:UIBarButtonItemStyleDone target:self action:@selector(_dismissButtonTapped:)];
-
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.albumDescriptionViewController];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    FTFAlbumDescriptionViewController *albumDescriptionVC = (FTFAlbumDescriptionViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"albumDescriptionVC"];
+    albumDescriptionVC.album = self.albumToDisplay;
+    albumDescriptionVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [albumDescriptionVC setModalPresentationStyle:UIModalPresentationOverCurrentContext];
+    [self presentViewController:albumDescriptionVC animated:YES completion:nil];
 }
 
 - (IBAction)gridButtonTapped:(UIBarButtonItem *)sender {
