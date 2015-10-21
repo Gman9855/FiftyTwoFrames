@@ -84,11 +84,33 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
 {
     [super viewDidLoad];
     [self photoCommentsVC].delegate = self;
+    
+    self.navigationBarLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    self.navigationBarLabel.font = [UIFont boldSystemFontOfSize:14];
+    self.navigationBarLabel.shadowColor = [UIColor clearColor];
+    self.navigationBarLabel.textColor = [UIColor orangeColor];
+        //        photoBrowserNavBarLabel.textAlignment = NSTextAlignmentCenter;
+
+    
+    self.navigationItem.titleView = self.navigationBarLabel;
+    FTFImage *photo = self.albumPhotos[self.currentIndex];
+    self.navigationBarLabel.text = [@" " stringByAppendingString:photo.title];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"Custom"
                                                                  style:UIBarButtonItemStylePlain
                                                                 target:nil
                                                                 action:nil];
-    
+}
+
+- (void)showNextPhotoAnimated:(BOOL)animated {  // When user taps the next arrow
+    [super showNextPhotoAnimated:animated];
+    FTFImage *photo = self.albumPhotos[self.currentIndex];
+    self.navigationBarLabel.text = [@" " stringByAppendingString:photo.title];
+}
+
+- (void)showPreviousPhotoAnimated:(BOOL)animated {  // When user taps the previous arrow
+    [super showPreviousPhotoAnimated:animated];
+    FTFImage *photo = self.albumPhotos[self.currentIndex];
+    self.navigationBarLabel.text = [@" " stringByAppendingString:photo.title];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
