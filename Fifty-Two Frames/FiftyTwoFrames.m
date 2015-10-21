@@ -291,10 +291,18 @@
     for (int i = 0; i < [photoCollections count]; i++) {
         NSArray *imageURLs = [self urlsFromPhotoArray:photoCollections[i]];
         FTFImage *image = [[FTFImage alloc] initWithImageURLs:imageURLs];
-        NSArray *lines = [photoDescriptionCollection[i] componentsSeparatedByString:@"\n"];
-        NSString *title = [lines[1] isEqualToString:@""] ? lines[2] : lines[1];
-        image.title = lines.count > 1 ? [[title stringByReplacingOccurrencesOfString:@"\"" withString:@""] capitalizedString] : photoDescriptionCollection[i];
-        image.photographerName = lines.count > 0 ? [lines[0] capitalizedString] : photoDescriptionCollection[i];
+        BOOL containsPhotoDescription = ![photoDescriptionCollection[i] isEqual:[NSNull null]];
+        if (containsPhotoDescription) {
+            NSArray *lines = [photoDescriptionCollection[i] componentsSeparatedByString:@"\n"];
+            if (lines.count > 1) {
+                NSString *title = [[lines[1] isEqualToString:@""] ? lines[0] : lines[1] stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                image.title = title;
+            } else {
+                image.title = photoDescriptionCollection[i];
+            }
+            image.photographerName = [lines[0] capitalizedString];
+        }
+        
         image.photoDescription = photoDescriptionCollection[i];
         image.likesCount = [likesCountCollection[i]integerValue];
         image.photoID = photoIDs[i];
