@@ -20,29 +20,8 @@
     return [NSString stringWithFormat:@"Comment: %@, Commenter name: %@", self.comment, self.commenterName];
 }
 
-- (NSURL *)commenterProfilePictureURL {
-    if (!_commenterProfilePictureURL) {
-        _commenterProfilePictureURL = [NSURL new];
-    }
-    return _commenterProfilePictureURL;
-}
-
 - (void)setCommenterID:(id)commenterID {
     _commenterID = commenterID;
-    
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            @"false", @"redirect",
-                            @"200", @"height",
-                            @"normal", @"type",
-                            @"200", @"width",
-                            nil
-                            ];
-    
-    [[[FBSDKGraphRequest alloc] initWithGraphPath:[NSString stringWithFormat:@"/%@/picture?redirect=false", _commenterID] parameters:params HTTPMethod:@"GET"] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-        if (result) {
-            self.commenterProfilePictureURL = [[NSURL alloc] initWithString:[result valueForKeyPath:@"data.url"]];
-        }
-    }];
 }
 
 @end

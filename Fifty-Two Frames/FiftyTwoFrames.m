@@ -63,7 +63,6 @@
 
 - (void)requestUserWithCompletionBlock:(void (^)(FTFUser *user))block {
     
-//    @"/me?fields=id,name,picture.fields(url)
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"id, name, picture.fields(url)", @"fields", nil];
     [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         if (block) {
@@ -80,9 +79,8 @@
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"albums.limit(50).fields(name,description,created_time,photos.limit(1).fields(picture))", @"fields", nil];
     
     NSString *graphPath = @"/180889155269546?albums.limit(50).fields(name,description,created_time,photos.limit(1).fields(picture))";
-    NSString *fullGraphPath = @"/180889155269546?fields=albums.limit(50).fields(name,description,created_time,photos.limit(1).fields(picture))";
     
-    [[[FBSDKGraphRequest alloc] initWithGraphPath:fullGraphPath parameters:nil] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+    [[[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         if (block) {
             __block FTFAlbumCategoryCollection *albumCategoryCollection = nil;
             if (!error) {
@@ -105,49 +103,26 @@
 
 - (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID completionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block
 {
-//    if (self.requestConnection) {
-//        [self.requestConnection cancel];
-//        self.requestConnection = nil;
-//    }
+    if (self.requestConnection) {
+        [self.requestConnection cancel];
+        self.requestConnection = nil;
+    }
     
     NSString *graphPath = [NSString stringWithFormat:@"/%@/photos?limit=50", albumID];
-    NSString *fullGraphPath = [NSString stringWithFormat:@"/%@/photos?limit=50&fields=images,id,name,likes.limit(1).summary(true).fields(has_liked),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", albumID];
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"images,id,name,likes.limit(1).summary(true).fields(has_liked),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", @"fields", nil];
     
-//    self.requestConnection = [[FBSDKGraphRequestConnection alloc] init];
-//    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params];
-//    __weak typeof(self) weakSelf = self;
-//    [self.requestConnection addRequest:request completionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-//        if (block) {
-//            if (!error) {
-//                NSArray *albumPhotos = [weakSelf albumPhotosWithAlbumPhotoResponseData:result];
-//                NSString *nextPage = [result valueForKeyPath:@"paging.next"];
-//                if (nextPage == NULL) {
-//                    block(albumPhotos, nil, YES);
-//                } else {
-//                    weakSelf.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
-//                    block(albumPhotos, nil, NO);
-//                }
-//            } else {
-//                block(nil, error, YES);
-//            }
-//        } else {
-//            return;
-//        }
-//    }];
-//    
-//    [self.requestConnection start];
-
-    
-    [[[FBSDKGraphRequest alloc] initWithGraphPath:fullGraphPath parameters:nil] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+    self.requestConnection = [[FBSDKGraphRequestConnection alloc] init];
+    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params];
+    __weak typeof(self) weakSelf = self;
+    [self.requestConnection addRequest:request completionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         if (block) {
             if (!error) {
-                NSArray *albumPhotos = [self albumPhotosWithAlbumPhotoResponseData:result];
+                NSArray *albumPhotos = [weakSelf albumPhotosWithAlbumPhotoResponseData:result];
                 NSString *nextPage = [result valueForKeyPath:@"paging.next"];
                 if (nextPage == NULL) {
                     block(albumPhotos, nil, YES);
                 } else {
-                    self.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
+                    weakSelf.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
                     block(albumPhotos, nil, NO);
                 }
             } else {
@@ -158,6 +133,7 @@
         }
     }];
     
+    [self.requestConnection start];
 }
 
 - (void)requestRemainingAlbumsWithCompletionBlock:(void (^)(NSArray *albums, NSError *error))block {
@@ -317,8 +293,8 @@
         FTFImage *image = [[FTFImage alloc] initWithImageURLs:imageURLs];
         NSArray *lines = [photoDescriptionCollection[i] componentsSeparatedByString:@"\n"];
         NSString *title = [lines[1] isEqualToString:@""] ? lines[2] : lines[1];
-        image.title = lines.count > 1 ? [title stringByReplacingOccurrencesOfString:@"\"" withString:@""] : photoDescriptionCollection[i];
-        image.author = lines.count > 0 ? lines[0] : photoDescriptionCollection[i];
+        image.title = lines.count > 1 ? [[title stringByReplacingOccurrencesOfString:@"\"" withString:@""] capitalizedString] : photoDescriptionCollection[i];
+        image.photographerName = lines.count > 0 ? [lines[0] capitalizedString] : photoDescriptionCollection[i];
         image.photoDescription = photoDescriptionCollection[i];
         image.likesCount = [likesCountCollection[i]integerValue];
         image.photoID = photoIDs[i];
@@ -350,11 +326,11 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterFullStyle];
+        [dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssz"];
     });
 
-    [dateFormatter setTimeStyle:NSDateFormatterFullStyle];
-    [dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssz"];
     return [dateFormatter dateFromString:fbDate];
 }
 

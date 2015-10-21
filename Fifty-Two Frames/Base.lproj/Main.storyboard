@@ -84,10 +84,10 @@
                                 <animations/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
-                                    <outlet property="descriptionLabel" destination="Uan-94-yOO" id="3O8-oW-kuo"/>
                                     <outlet property="likeButton" destination="9gS-xd-XB3" id="RMb-eH-4yY"/>
                                     <outlet property="likesCountLabel" destination="Onq-40-guQ" id="0DO-fh-l2a"/>
                                     <outlet property="photo" destination="lsQ-BI-Faj" id="5Vx-ZL-Whm"/>
+                                    <outlet property="photographerLabel" destination="Uan-94-yOO" id="y74-X6-7la"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="activityIndicatorCell" rowHeight="44" id="uB1-4A-TeP" customClass="FTFActivityIndicatorCell">
@@ -156,40 +156,78 @@
             <point key="canvasLocation" x="1971" y="86.25"/>
         </scene>
         <!--Album Description View Controller-->
-        <scene sceneID="A8r-ZN-UYq">
+        <scene sceneID="TWv-Aa-XEb">
             <objects>
-                <viewController storyboardIdentifier="albumDescriptionVC" id="bXg-9I-yUW" customClass="FTFAlbumDescriptionViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="albumDescriptionVC" id="lDX-ag-gtF" customClass="FTFAlbumDescriptionViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="lLO-Fa-g3k"/>
-                        <viewControllerLayoutGuide type="bottom" id="qLQ-li-emP"/>
+                        <viewControllerLayoutGuide type="top" id="yDw-Pm-qNC"/>
+                        <viewControllerLayoutGuide type="bottom" id="kfb-cb-Pbo"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="qWh-sc-wDB">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <view key="view" opaque="NO" contentMode="scaleToFill" id="2pG-PP-jFn">
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="textView" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LGJ-bg-zFD">
-                                <rect key="frame" x="0.0" y="64" width="320" height="460"/>
+                            <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="z8Q-gW-2bw">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="KF3-oY-RJI" appends="YES" id="ZC4-3v-La5"/>
+                                </connections>
                             </textView>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="z8Q-gW-2bw" firstAttribute="top" secondItem="yDw-Pm-qNC" secondAttribute="bottom" id="55m-Kz-DcY">
+                                <variation key="heightClass=regular-widthClass=compact" constant="44"/>
+                            </constraint>
+                            <constraint firstItem="z8Q-gW-2bw" firstAttribute="trailing" secondItem="2pG-PP-jFn" secondAttribute="trailingMargin" id="EU0-gg-bU4"/>
+                            <constraint firstItem="z8Q-gW-2bw" firstAttribute="leading" secondItem="2pG-PP-jFn" secondAttribute="leadingMargin" id="JYK-go-H5j"/>
+                            <constraint firstItem="kfb-cb-Pbo" firstAttribute="top" secondItem="z8Q-gW-2bw" secondAttribute="bottom" constant="20" id="XB3-fT-W1K">
+                                <variation key="heightClass=regular-widthClass=compact" constant="44"/>
+                            </constraint>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="z8Q-gW-2bw"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="55m-Kz-DcY"/>
+                                <exclude reference="EU0-gg-bU4"/>
+                                <exclude reference="JYK-go-H5j"/>
+                                <exclude reference="XB3-fT-W1K"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="z8Q-gW-2bw"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="55m-Kz-DcY"/>
+                                <include reference="EU0-gg-bU4"/>
+                                <include reference="JYK-go-H5j"/>
+                                <include reference="XB3-fT-W1K"/>
+                            </mask>
+                        </variation>
                     </view>
-                    <toolbarItems>
-                        <barButtonItem title="Dismiss" id="Gd5-GM-mOv"/>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" id="U5m-kS-sjG"/>
                     <connections>
-                        <outlet property="textView" destination="LGJ-bg-zFD" id="LTm-RV-oNQ"/>
+                        <outlet property="textView" destination="z8Q-gW-2bw" id="bvF-Gi-xga"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="NKW-9F-LKV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ibX-tB-GCR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="KF3-oY-RJI">
+                    <connections>
+                        <action selector="tappedInView:" destination="lDX-ag-gtF" id="eZC-yV-hH0"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="5127" y="12.75"/>
+            <point key="canvasLocation" x="5083.5" y="-30.75"/>
         </scene>
         <!--Photo Collection Grid View Controller-->
         <scene sceneID="Uoh-VJ-IcE">
@@ -599,7 +637,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="inputViewBottomConstraint" destination="3Iy-EX-aDh" id="vez-bI-KjC"/>
                         <outlet property="postCommentButton" destination="zWO-QS-hFc" id="vVo-AR-vbe"/>
@@ -761,10 +799,11 @@
         <!--Navigation Controller-->
         <scene sceneID="OT7-Dc-AFD">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QXB-nQ-v0j" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="photoCommentsNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="cSQ-5e-46Z" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="qda-8E-FYb">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="qda-8E-FYb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
@@ -774,7 +813,6 @@
                         <segue destination="1bL-XK-cUj" kind="relationship" relationship="rootViewController" id="WdX-XW-2ww"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QXB-nQ-v0j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2881.875" y="892.60563380281678"/>
         </scene>

@@ -41,6 +41,8 @@ static NSString * const reuseIdentifier = @"commentCell";
     self.postCommentButton.enabled = NO;
     self.tableView.estimatedRowHeight = 75;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
+//    self.navigationController.navigationBar.translucent = YES;
 
     [self.textField addTarget:self
                   action:@selector(textFieldDidChange:)
@@ -60,9 +62,9 @@ static NSString * const reuseIdentifier = @"commentCell";
 //                                             selector:@selector(keyboardFrameDidChange:)
 //                                                 name:UIKeyboardDidChangeFrameNotification object:nil];
 //    
-    self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
-    self.navigationController.view.layer.cornerRadius = 10;
-    self.navigationController.view.layer.masksToBounds = YES;
+//    self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
+//    self.navigationController.view.layer.cornerRadius = 10;
+//    self.navigationController.view.layer.masksToBounds = YES;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.textField.delegate = self;
@@ -181,7 +183,7 @@ static NSString * const reuseIdentifier = @"commentCell";
     if ([self.textField isFirstResponder]) {
         [self.view endEditing:YES];
     } else {
-        [self.delegate photoCommentsViewControllerDidTapDoneButton];
+        [self dismissViewControllerAnimated:true completion:nil];
     }
 }
 

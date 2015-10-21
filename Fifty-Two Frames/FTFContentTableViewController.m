@@ -31,7 +31,6 @@
 @property (nonatomic, strong) UINavigationController *albumSelectionMenuNavigationController;
 @property (nonatomic, strong) FTFPhotoBrowserViewController *photoBrowser;
 @property (nonatomic, strong) FTFPhotoCollectionGridViewController *photoGrid;
-@property (nonatomic, strong) FTFAlbumDescriptionViewController *albumDescriptionViewController;
 @property (nonatomic, strong) FTFAlbumCategoryCollection *photoAlbumCollection;
 @property (nonatomic, strong) FTFAlbum *albumToDisplay;
 @property (nonatomic, strong) FTFAlbumCollection *weeklyThemeAlbums;
@@ -76,14 +75,6 @@ BOOL _morePhotosToLoad = NO;
 
 - (FTFAlbumSelectionMenuViewController *)albumSelectionMenuViewController {
     return (FTFAlbumSelectionMenuViewController *)[self.albumSelectionMenuNavigationController topViewController];
-}
-
-
-- (FTFAlbumDescriptionViewController *)albumDescriptionViewController {
-    if (!_albumDescriptionViewController) {
-        _albumDescriptionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"albumDescriptionVC"];
-    }
-    return _albumDescriptionViewController;
 }
 
 #pragma mark - UIViewController
@@ -285,9 +276,9 @@ BOOL _morePhotosToLoad = NO;
         ftfCell.likesCountLabel.text = [NSString stringWithFormat:@"%ld", (long)photo.likesCount];
         
         if (![photo.photoDescription isEqual:[NSNull null]]) {
-            ftfCell.descriptionLabel.text = photo.photoDescription;
+            ftfCell.photographerLabel.text = photo.photographerName;
         } else {
-            ftfCell.descriptionLabel.text = @"";
+            ftfCell.photographerLabel.text = @"";
         }
         [ftfCell.likeButton setImage:[UIImage imageNamed:photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"] forState:UIControlStateNormal];
     }
@@ -311,16 +302,15 @@ BOOL _morePhotosToLoad = NO;
                         options:SDWebImageRetryFailed
                        progress:nil
                       completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                          dispatch_async(dispatch_get_main_queue(), ^{
-                              if (cacheType == SDImageCacheTypeNone || cacheType == SDImageCacheTypeDisk) {
-                                  CATransition *t = [CATransition animation];
-                                  t.duration = 0.15;
-                                  t.type = kCATransitionFade;
-                                  [cell.photo.layer addAnimation:t forKey:@"ftf"];
-                              }
-                              cell.photo.image = image;
-                              cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                          });
+                          if (cacheType == SDImageCacheTypeNone || cacheType == SDImageCacheTypeDisk) {
+                              CATransition *t = [CATransition animation];
+                              t.duration = 0.15;
+                              t.type = kCATransitionFade;
+                              [cell.photo.layer addAnimation:t forKey:@"ftf"];
+                          }
+                          cell.photo.image = image;
+                          cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                          
     }];
     return cell;
 }
@@ -376,19 +366,19 @@ BOOL _morePhotosToLoad = NO;
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
     NSLog(@"%lu", (unsigned long)index);
-    static UILabel *photoBrowserNavBarLabel = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        photoBrowserNavBarLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-        photoBrowserNavBarLabel.font = [UIFont boldSystemFontOfSize:14];
-        photoBrowserNavBarLabel.shadowColor = [UIColor clearColor];
-        photoBrowserNavBarLabel.textColor = [UIColor whiteColor];
-        photoBrowserNavBarLabel.textAlignment = NSTextAlignmentCenter;
-    });
-    
-    FTFImage *photo = self.albumPhotos[index];
-    photoBrowserNavBarLabel.text = photo.title;
-    photoBrowser.navigationItem.titleView = photoBrowserNavBarLabel;
+//    static UILabel *photoBrowserNavBarLabel = nil;
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        photoBrowserNavBarLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+//        photoBrowserNavBarLabel.font = [UIFont boldSystemFontOfSize:14];
+//        photoBrowserNavBarLabel.shadowColor = [UIColor clearColor];
+//        photoBrowserNavBarLabel.textColor = [UIColor orangeColor];
+////        photoBrowserNavBarLabel.textAlignment = NSTextAlignmentCenter;
+//    });
+//    
+//    photoBrowser.navigationItem.titleView = photoBrowserNavBarLabel;
+//    FTFImage *photo = self.albumPhotos[index];
+//    photoBrowserNavBarLabel.text = [@" " stringByAppendingString:photo.title];
 //    [photoBrowser.navigationController.navigationBar addSubview:photoBrowserNavBarLabel];
     
     if (self.browserPhotos.count - index < 4 && !_finishedPaging) {

@@ -96,11 +96,13 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 //        FTFImage *photo = self.albumPhotos[self.currentIndex];
 //        self.navigationBarLabel.text = photo.title;
+        FTFImage *photo = self.albumPhotos[self.currentIndex];
+        self.navigationBarLabel.text = [@" " stringByAppendingString:photo.title];
         self.imageViewForButton.image = [UIImage imageNamed:self.photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"];
     });
 }
 
-- (void)setCurrentPhotoIndex:(NSUInteger)index {
+- (void)setCurrentPhotoIndex:(NSUInteger)index {   // This method only called once when photoBrowser is initialized
     [super setCurrentPhotoIndex:index];
     self.imageViewForButton.image = [UIImage imageNamed:self.photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"];
 }
@@ -137,26 +139,28 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
 - (void)fbCommentsButtonTapped {
     [self photoCommentsVC].photo = self.albumPhotos[self.currentIndex];
 
-    UIView *navigationView = self.navigationController.view;
-    self.hostingViewForCommentView.frame = navigationView.bounds;
-    self.hostingViewForCommentView.bounds = self.view.bounds;
-    
-    [self.hostingViewForCommentView addSubview:self.photoCommentsNavigationController.view];
-    [navigationView addSubview:self.hostingViewForCommentView];
-    self.hostingViewForCommentView.frame = (CGRect) {
-        CGPointMake(0, navigationView.frame.size.height),
-        self.hostingViewForCommentView.frame.size
-    };
-    self.hostingViewForCommentView.center = CGPointMake(navigationView.center.x, self.hostingViewForCommentView.center.y);
-    [UIView animateWithDuration:0.5
-                           delay:0.1
-          usingSpringWithDamping:0.8
-           initialSpringVelocity:0.1
-                         options:0
-                      animations:^{
-                          self.hostingViewForCommentView.center = self.view.center;
-                    } completion:nil];
-    
+//    UIView *navigationView = self.navigationController.view;
+//    self.hostingViewForCommentView.frame = navigationView.bounds;
+//    self.hostingViewForCommentView.bounds = self.view.bounds;
+//    
+//    [self.hostingViewForCommentView addSubview:self.photoCommentsNavigationController.view];
+//    [navigationView addSubview:self.hostingViewForCommentView];
+//    self.hostingViewForCommentView.frame = (CGRect) {
+//        CGPointMake(0, navigationView.frame.size.height),
+//        self.hostingViewForCommentView.frame.size
+//    };
+//    self.hostingViewForCommentView.center = CGPointMake(navigationView.center.x, self.hostingViewForCommentView.center.y);
+//    [UIView animateWithDuration:0.5
+//                           delay:0.1
+//          usingSpringWithDamping:0.8
+//           initialSpringVelocity:0.1
+//                         options:0
+//                      animations:^{
+//                          self.hostingViewForCommentView.center = self.view.center;
+//                    } completion:nil];
+    [[self photoCommentsVC] setModalPresentationStyle:UIModalPresentationOverCurrentContext];
+    [self.photoCommentsNavigationController setModalPresentationStyle:UIModalPresentationOverCurrentContext];
+    [self presentViewController:self.photoCommentsNavigationController animated:true completion:nil];
     [[self photoCommentsVC].tableView reloadData];
 }
 

@@ -18,7 +18,7 @@ typedef enum {
 @interface FTFImage : NSObject
 
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *author;
+@property (nonatomic, strong) NSString *photographerName;
 @property (nonatomic, strong) NSString *photoDescription;
 @property (nonatomic, assign) NSInteger likesCount;
 @property (nonatomic, strong) NSArray *comments;
