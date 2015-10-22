@@ -37,7 +37,8 @@
 @property (nonatomic, strong) FTFAlbumCollection *photoWalksAlbums;
 @property (nonatomic, strong) FTFAlbumCollection *miscellaneousSubmissionsAlbums;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
-@property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *gridButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *albumInfoButton;
 @property (nonatomic, strong) NSArray *browserPhotos;
 @property (nonatomic, strong) UILabel *navBarTitle;
 @property (nonatomic, strong) NSArray *albumPhotos;
@@ -82,6 +83,13 @@ BOOL _morePhotosToLoad = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.settingsButton.enabled = NO;
+    self.gridButton.enabled = NO;
+    self.albumInfoButton.enabled = NO;
+    
+    self.tableView.userInteractionEnabled = NO;
+    
     self.photoGrid = [self.storyboard instantiateViewControllerWithIdentifier:@"grid"];
     self.photoGrid.delegate = self;
     
@@ -150,10 +158,13 @@ BOOL _morePhotosToLoad = NO;
     self.navigationItem.titleView = self.navBarTitle;
 }
 
-- (void)setUpActivityIndicator {
+- (void)showProgressHudWithText:(NSString *)text {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
-    hud.labelText = @"Loading photos";
-    hud.yOffset = -60;
+    if (![text isEqualToString:@""]) {
+        hud.labelText = text;
+    }
+    [hud setCenter:[self.view convertPoint:self.view.center fromView:self.view.superview]];
+//    hud.yOffset = -60;
 }
 
 - (void)retrievedAlbumCollection {
@@ -186,9 +197,11 @@ BOOL _morePhotosToLoad = NO;
 
 - (void)albumSelectionChanged:(NSNotification *)notification {
     self.tableView.userInteractionEnabled = NO;
+    self.gridButton.enabled = NO;
+    self.albumInfoButton.enabled = NO;
     albumSelectionChanged = YES;
     _morePhotosToLoad = NO;
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [self showProgressHudWithText:nil];
     [self.photoBrowser setCurrentPhotoIndex:0];
     
     self.albumToDisplay = [notification.userInfo objectForKey:@"selectedAlbum"];
@@ -213,6 +226,8 @@ BOOL _morePhotosToLoad = NO;
 
 - (void)populateAlbumPhotosResultsWithPhotos:(NSArray *)photos error:(NSError *)error {
     [MBProgressHUD hideHUDForView:self.view animated:NO];
+    self.tableView.userInteractionEnabled = YES;
+
     if (error) {
         if (error.code != 1) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
@@ -231,10 +246,14 @@ BOOL _morePhotosToLoad = NO;
         if (_finishedPaging) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"albumDoesNotNeedToBePagedNotification" object:nil];
         }
+        
+        self.settingsButton.enabled = YES;
+        self.gridButton.enabled = YES;
+        self.albumInfoButton.enabled = YES;
+        
         [self.tableView reloadData];
         NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
         [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        self.tableView.userInteractionEnabled = YES;
         
         [UIView animateWithDuration:1.5 animations:^{
             self.navigationItem.titleView.alpha = 0.0;
@@ -242,6 +261,7 @@ BOOL _morePhotosToLoad = NO;
             NSArray *words = [self.albumToDisplay.name componentsSeparatedByString:@": "];
             NSString *albumName = [words firstObject];
             NSRange range = [self.albumToDisplay.name rangeOfString:albumName];
+            range.length++;
             [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:range];
             [self.navBarTitle setAttributedText:attributedString];
             self.navigationItem.titleView.alpha = 1.0;

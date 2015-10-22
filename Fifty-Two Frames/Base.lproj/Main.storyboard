@@ -188,6 +188,8 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black"/>
                     <connections>
+                        <outlet property="albumInfoButton" destination="7Pm-ms-ZIB" id="nF6-Pj-Lsg"/>
+                        <outlet property="gridButton" destination="ozo-Y6-uDe" id="I18-3m-Usd"/>
                         <outlet property="settingsButton" destination="h4P-rn-NRx" id="v6k-O4-4Yn"/>
                     </connections>
                 </tableViewController>
@@ -365,6 +367,44 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2dy-i0-l1F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-281.25" y="86.619718309859152"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="e0B-TB-5qx">
+            <objects>
+                <viewController id="mU4-Kj-WOE" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Kcg-8H-rUG"/>
+                        <viewControllerLayoutGuide type="bottom" id="xTo-Vi-DyM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="FGR-a1-IIe">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z63-Y7-gPj">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <animations/>
+                                <state key="normal" image="Refresh.png"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="163" y="313" width="50" height="50"/>
+                                </variation>
+                            </button>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Z63-Y7-gPj"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="Z63-Y7-gPj"/>
+                            </mask>
+                        </variation>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lY5-lu-RcF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3697.5" y="-674.25"/>
         </scene>
         <!--Album Selection Menu View Controller-->
         <scene sceneID="Kla-3m-naI">
@@ -863,6 +903,7 @@
         <image name="52f-square-whitebg-large.jpg" width="2000" height="2000"/>
         <image name="Info" width="22" height="22"/>
         <image name="Menu" width="22" height="22"/>
+        <image name="Refresh.png" width="50" height="50"/>
         <image name="ThumbUp" width="22" height="22"/>
         <image name="UIBarButtonItemGrid.png" width="20" height="20"/>
     </resources>
