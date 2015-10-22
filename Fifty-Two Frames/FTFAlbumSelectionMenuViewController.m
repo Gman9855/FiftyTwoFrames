@@ -160,6 +160,16 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 {
     FTFAlbumSelectionMenuTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     FTFAlbum *album = self.selectedAlbumCollection.albums[indexPath.row];
+//    if ([album.name hasPrefix:@"Week"]) {
+//        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:album.name];
+//        NSArray *words = [album.name componentsSeparatedByString:@": "];
+//        NSString *week = [words firstObject];
+//        NSRange range = [album.name rangeOfString:week];
+//        [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:range];
+//        [cell.albumName setAttributedText:attributedString];
+//    } else {
+//        cell.albumName.text = album.name;
+//    }
     cell.albumName.text = album.name;
     [cell.albumThumbnail setImageWithURL:album.coverPhotoURL
                         placeholderImage:[UIImage imageNamed:@"placeholder"]];

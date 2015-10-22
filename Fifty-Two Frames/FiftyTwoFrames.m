@@ -294,12 +294,14 @@
         BOOL containsPhotoDescription = ![photoDescriptionCollection[i] isEqual:[NSNull null]];
         if (containsPhotoDescription) {
             NSArray *lines = [photoDescriptionCollection[i] componentsSeparatedByString:@"\n"];
-            if (lines.count > 1) {
-                NSString *title = [[lines[1] isEqualToString:@""] ? lines[0] : lines[1] stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-                image.title = title;
-            } else {
-                image.title = photoDescriptionCollection[i];
-            }
+//            if (lines.count > 2) {
+//                NSString *title = [lines[2] stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+//                image.title = title;
+//            } else {
+//                image.title = lines[1];
+//            }
+            
+            image.title = (lines.count > 2) ? [lines[2] stringByReplacingOccurrencesOfString:@"\"" withString:@""] : lines[0];
             image.photographerName = [lines[0] capitalizedString];
             image.photoDescription = photoDescriptionCollection[i];
         }

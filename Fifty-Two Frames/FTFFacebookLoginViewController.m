@@ -31,6 +31,7 @@
     [super viewDidLoad];
     self.loginButton.readPermissions =
     @[@"public_profile", @"email", @"user_friends"];
+    self.loginButton.publishPermissions =  @[@"publish_actions"];
 //    self.loginButton.center = self.view.center;
 //    [self.view addSubview:self.loginButton];
 //    self.loginButton.alpha = 0.0;

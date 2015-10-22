@@ -23,6 +23,7 @@ static const CGFloat labelPadding = 10;
     self = [super initWithPhoto:photo];
     if (self) {
         _photo = photo;
+        _textView.scrollEnabled = NO;
         self.userInteractionEnabled = YES;
         [self setupCaption];
     }
@@ -31,7 +32,7 @@ static const CGFloat labelPadding = 10;
 
 - (CGSize)sizeThatFits:(CGSize)size {
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat maxHeight = screenBounds.size.height / 6;
+    CGFloat maxHeight = screenBounds.size.height / 8;
     CGSize textSize = [_textView.text boundingRectWithSize:CGSizeMake(size.width - labelPadding * 2, maxHeight)
                                                    options:NSStringDrawingUsesLineFragmentOrigin
                                                 attributes:@{NSFontAttributeName:_textView.font}
@@ -66,7 +67,13 @@ static const CGFloat labelPadding = 10;
     if ([_photo respondsToSelector:@selector(caption)]) {
         _textView.text = [_photo caption] ? [_photo caption] : @" ";
     }
+    _textView.contentOffset = CGPointZero;
+    [_textView scrollRangeToVisible:NSMakeRange(0, 0)];
+    _textView.scrollEnabled = YES;
+
     [_contentView addSubview:_textView];
+    
+
 }
 
 @end

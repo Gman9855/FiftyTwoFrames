@@ -145,7 +145,6 @@ BOOL _morePhotosToLoad = NO;
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:@"52Frames"];
     [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:NSMakeRange(0,2)];
     [self.navBarTitle setAttributedText:attributedString];
-//    self.navBarTitle.text = @"52Frames";
     self.navBarTitle.font = [UIFont boldSystemFontOfSize:14];
     self.navBarTitle.numberOfLines = 2;
     self.navigationItem.titleView = self.navBarTitle;

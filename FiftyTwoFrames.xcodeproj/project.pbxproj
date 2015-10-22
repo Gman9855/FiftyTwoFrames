@@ -163,6 +163,7 @@
 		8B7D033A19C0DF4D006839BF /* FTFAlbumCategoryCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbumCategoryCollection.m; sourceTree = "<group>"; };
 		8B855F47194BA6F0008D06CE /* Facebook_like_button_thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Facebook_like_button_thumb.png; sourceTree = "<group>"; };
 		8B855F49194BB18D008D06CE /* messageIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = messageIcon.png; sourceTree = "<group>"; };
+		8B8E00AD1BD8672500CF62BE /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		8BA2A6E9194E12E600341260 /* WYPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPopoverController.h; sourceTree = "<group>"; };
 		8BA2A6EA194E12E600341260 /* WYPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPopoverController.m; sourceTree = "<group>"; };
 		8BA2A6EB194E12E600341260 /* WYStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYStoryboardPopoverSegue.h; sourceTree = "<group>"; };
@@ -634,6 +635,7 @@
 		8BC93888193C1C8300418F32 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B8E00AD1BD8672500CF62BE /* iAd.framework */,
 				8B20E9E11992084C0074E66B /* libc++.1.dylib */,
 				8BE61EB91BD1B29900E10AA3 /* FBSDKLoginKit.framework */,
 				8B41EC471BD1AE3C00E6D6D2 /* FBSDKCoreKit.framework */,
