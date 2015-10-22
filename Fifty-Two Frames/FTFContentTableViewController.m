@@ -104,14 +104,25 @@ BOOL _morePhotosToLoad = NO;
     self.navigationController.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-    [self setUpActivityIndicator];
+    [self showProgressHudWithText:@"Loading this week's photos"];
 
     [[FiftyTwoFrames sharedInstance] requestAlbumCollectionWithCompletionBlock:^(FTFAlbumCategoryCollection *albumCollection,
                                                                                  NSError *error) {
+        [MBProgressHUD hideHUDForView:self.tableView animated:YES];
         if (error) {
+            self.tableView.userInteractionEnabled = YES;
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"There was an error loading this week's photos" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alert show];
-            [MBProgressHUD hideHUDForView:self.tableView animated:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIButton *refreshButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                [refreshButton addTarget:self action:@selector(refreshButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                [refreshButton setImage:[UIImage imageNamed:@"Refresh"] forState:UIControlStateNormal];
+                [refreshButton sizeToFit];
+                refreshButton.center = [self.view convertPoint:self.view.center fromView:self.view.superview];
+                
+                [self.view addSubview:refreshButton];
+            });
+        
             NSLog(@"%@", error);
         } else {
             self.photoAlbumCollection = albumCollection;
@@ -485,6 +496,11 @@ BOOL _morePhotosToLoad = NO;
 - (IBAction)gridButtonTapped:(UIBarButtonItem *)sender {
     [self.navigationController pushViewController:self.photoGrid animated:YES];
     
+}
+
+- (void)refreshButtonTapped:(UIButton *)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Retry failed.  Please check your internet connection." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - UINavigationController Delegate
