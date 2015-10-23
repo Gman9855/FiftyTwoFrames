@@ -27,4 +27,20 @@
     return collection;
 }
 
+- (id)initWithCoder:(NSCoder *)coder
+{
+    if ((self = [super init]))
+    {
+        // Decode the property values by key, and assign them to the correct ivars
+        _albumCollections = [coder decodeObjectForKey:@"albumCollections"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder
+{
+    // Encode our ivars using string keys
+    [coder encodeObject:_albumCollections forKey:@"albumCollections"];
+}
+
 @end
