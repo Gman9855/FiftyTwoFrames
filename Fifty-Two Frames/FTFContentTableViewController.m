@@ -31,9 +31,7 @@
 @property (nonatomic, strong) UINavigationController *albumSelectionMenuNavigationController;
 @property (nonatomic, strong) FTFPhotoBrowserViewController *photoBrowser;
 @property (nonatomic, strong) FTFPhotoCollectionGridViewController *photoGrid;
-@property (nonatomic, strong) FTFAlbumCategoryCollection *photoAlbumCollection;
 @property (nonatomic, strong) FTFAlbum *albumToDisplay;
-@property (nonatomic, strong) FTFAlbumCollection *weeklyThemeAlbums;
 @property (nonatomic, strong) FTFAlbumCollection *photoWalksAlbums;
 @property (nonatomic, strong) FTFAlbumCollection *miscellaneousSubmissionsAlbums;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
@@ -105,31 +103,51 @@ BOOL _morePhotosToLoad = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
     [self showProgressHudWithText:@"Loading this week's photos"];
-
-    [[FiftyTwoFrames sharedInstance] requestAlbumCollectionWithCompletionBlock:^(FTFAlbumCategoryCollection *albumCollection,
-                                                                                 NSError *error) {
-        [MBProgressHUD hideHUDForView:self.tableView animated:YES];
-        if (error) {
-            self.tableView.userInteractionEnabled = YES;
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"There was an error loading this week's photos" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-            [alert show];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                UIButton *refreshButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                [refreshButton addTarget:self action:@selector(refreshButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-                [refreshButton setImage:[UIImage imageNamed:@"Refresh"] forState:UIControlStateNormal];
-                [refreshButton sizeToFit];
-                refreshButton.center = [self.view convertPoint:self.view.center fromView:self.view.superview];
-                
-                [self.view addSubview:refreshButton];
-            });
-        
-            NSLog(@"%@", error);
-        } else {
-            self.photoAlbumCollection = albumCollection;
-            [self retrievedAlbumCollection];
-        }
-    }];
     
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectoryPath = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:@"albumCollection"];
+    FTFAlbumCategoryCollection *collection = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+    
+    if (collection) {
+//        NSError *error;
+//        if ([[NSFileManager defaultManager] isDeletableFileAtPath:filePath]) {
+//            BOOL success = [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
+//            if (!success) {
+//                NSLog(@"Error removing file at path: %@", error.localizedDescription);
+//            }
+//        }
+        
+        [self retrievedAlbumCollection:collection];
+    } else {
+        [[FiftyTwoFrames sharedInstance] requestAlbumCollectionWithCompletionBlock:^(FTFAlbumCategoryCollection *albumCollection,
+                                                                                     NSError *error) {
+            if (error) {
+                [MBProgressHUD hideHUDForView:self.tableView animated:YES];
+                self.tableView.userInteractionEnabled = YES;
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"There was an error loading this week's photos." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alert show];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIButton *refreshButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                    [refreshButton addTarget:self action:@selector(refreshButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    [refreshButton setImage:[UIImage imageNamed:@"Refresh"] forState:UIControlStateNormal];
+                    [refreshButton sizeToFit];
+                    refreshButton.center = [self.view convertPoint:self.view.center fromView:self.view.superview];
+                    
+                    [self.view addSubview:refreshButton];
+                });
+                
+                NSLog(@"%@", error);
+            } else {
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *documentsDirectoryPath = [paths objectAtIndex:0];
+                NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:@"albumCollection"];
+                [NSKeyedArchiver archiveRootObject:albumCollection toFile:filePath];
+                [self retrievedAlbumCollection:albumCollection];
+            }
+        }];
+    }
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(albumSelectionChanged:)
                                                  name:@"albumSelectedNotification"
@@ -175,20 +193,22 @@ BOOL _morePhotosToLoad = NO;
         hud.labelText = text;
     }
     [hud setCenter:[self.view convertPoint:self.view.center fromView:self.view.superview]];
-//    hud.yOffset = -60;
 }
 
-- (void)retrievedAlbumCollection {
-    self.weeklyThemeAlbums = [self.photoAlbumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
-    
+- (void)retrievedAlbumCollection:(FTFAlbumCategoryCollection *)albumCollection {
+    FTFAlbumCollection *weeklyThemeAlbums = [albumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
+//    NSArray *albums = weeklyThemeAlbums.albums;
+//    for (FTFAlbum *album in albums) {
+//        NSLog(@"%@", album.name);
+//    }
     FTFAlbumSelectionMenuViewController *albumSelectionMenuVC = (FTFAlbumSelectionMenuViewController *)[self.albumSelectionMenuNavigationController topViewController];
-    albumSelectionMenuVC.weeklySubmissions = [self.photoAlbumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
-    albumSelectionMenuVC.photoWalks = [self.photoAlbumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryPhotoWalks];
-    albumSelectionMenuVC.miscellaneousAlbums = [self.photoAlbumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryMiscellaneous];
+    albumSelectionMenuVC.weeklySubmissions = weeklyThemeAlbums;
+    albumSelectionMenuVC.photoWalks = [albumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryPhotoWalks];
+    albumSelectionMenuVC.miscellaneousAlbums = [albumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryMiscellaneous];
     
-    FTFAlbum *mostCurrentWeeklyAlbum = self.weeklyThemeAlbums.albums.firstObject;
+    FTFAlbum *mostCurrentWeeklyAlbum = weeklyThemeAlbums.albums.firstObject;
     albumSelectionMenuVC.selectedAlbumCollection = [albumSelectionMenuVC albumsForGivenYear:mostCurrentWeeklyAlbum.yearCreated
-                                          fromAlbumCollection:self.weeklyThemeAlbums];
+                                          fromAlbumCollection:weeklyThemeAlbums];
     albumSelectionMenuVC.selectedAlbumYear = mostCurrentWeeklyAlbum.yearCreated;
     albumSelectionMenuVC.yearButton.title = mostCurrentWeeklyAlbum.yearCreated;
     
@@ -199,9 +219,8 @@ BOOL _morePhotosToLoad = NO;
                                                                completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
                                                                    
                                                                    _finishedPaging = finishedPaging;
-                                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                                       [self populateAlbumPhotosResultsWithPhotos:photos error:error];
-                                                                   });
+                                                                   [self populateAlbumPhotosResultsWithPhotos:photos error:error];
+                                                                   
                                                                }];
     }];
 }
@@ -268,13 +287,17 @@ BOOL _morePhotosToLoad = NO;
         
         [UIView animateWithDuration:1.5 animations:^{
             self.navigationItem.titleView.alpha = 0.0;
-            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:self.albumToDisplay.name];
-            NSArray *words = [self.albumToDisplay.name componentsSeparatedByString:@": "];
-            NSString *albumName = [words firstObject];
-            NSRange range = [self.albumToDisplay.name rangeOfString:albumName];
-            range.length++;
-            [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:range];
-            [self.navBarTitle setAttributedText:attributedString];
+            if ([self.albumToDisplay.name containsString:@":"]) {
+                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:self.albumToDisplay.name];
+                NSArray *words = [self.albumToDisplay.name componentsSeparatedByString:@": "];
+                NSString *albumName = [words firstObject];
+                NSRange range = [self.albumToDisplay.name rangeOfString:albumName];
+                range.length++;
+                [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:range];
+                [self.navBarTitle setAttributedText:attributedString];
+            } else {
+                self.navBarTitle.text = self.albumToDisplay.name;
+            }
             self.navigationItem.titleView.alpha = 1.0;
         }];
     
