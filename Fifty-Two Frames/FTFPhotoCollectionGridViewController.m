@@ -175,4 +175,8 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)dealloc {
+    [self removeObserver:self forKeyPath:@"gridPhotos" context:NULL];
+}
+
 @end

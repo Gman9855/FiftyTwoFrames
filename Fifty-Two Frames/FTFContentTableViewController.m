@@ -101,15 +101,29 @@ BOOL _morePhotosToLoad = NO;
 
     self.navigationController.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(albumSelectionChanged:)
+                                                 name:@"albumSelectedNotification"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(updateLikeCountLabel:)
+                                                name:didPressLikeNotification
+                                              object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateAlbumPhotosWithPagedPhotosFromPhotoGrid:) name:@"photoGridDidPageMorePhotosNotification"
+                                               object:nil];
 
     [self showProgressHudWithText:@"Loading this week's photos"];
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectoryPath = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:@"albumCollection"];
-    FTFAlbumCategoryCollection *collection = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *documentsDirectoryPath = [paths objectAtIndex:0];
+//    NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:@"albumCollection"];
+//    FTFAlbumCategoryCollection *collection = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
     
-    if (collection) {
+//    if (collection) {
 //        NSError *error;
 //        if ([[NSFileManager defaultManager] isDeletableFileAtPath:filePath]) {
 //            BOOL success = [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
@@ -118,8 +132,8 @@ BOOL _morePhotosToLoad = NO;
 //            }
 //        }
         
-        [self retrievedAlbumCollection:collection];
-    } else {
+//        [self retrievedAlbumCollection:collection];
+//    } else {
         [[FiftyTwoFrames sharedInstance] requestAlbumCollectionWithCompletionBlock:^(FTFAlbumCategoryCollection *albumCollection,
                                                                                      NSError *error) {
             if (error) {
@@ -139,28 +153,14 @@ BOOL _morePhotosToLoad = NO;
                 
                 NSLog(@"%@", error);
             } else {
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *documentsDirectoryPath = [paths objectAtIndex:0];
-                NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:@"albumCollection"];
-                [NSKeyedArchiver archiveRootObject:albumCollection toFile:filePath];
+//                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//                NSString *documentsDirectoryPath = [paths objectAtIndex:0];
+//                NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:@"albumCollection"];
+//                [NSKeyedArchiver archiveRootObject:albumCollection toFile:filePath];
                 [self retrievedAlbumCollection:albumCollection];
             }
         }];
-    }
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(albumSelectionChanged:)
-                                                 name:@"albumSelectedNotification"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter]addObserver:self
-                                            selector:@selector(updateLikeCountLabel:)
-                                                name:didPressLikeNotification
-                                              object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateAlbumPhotosWithPagedPhotosFromPhotoGrid:) name:@"photoGridDidPageMorePhotosNotification"
-                                               object:nil];
+//    }
 }
 
 - (void)updateLikeCountLabel:(NSNotification *)notification {
@@ -188,11 +188,12 @@ BOOL _morePhotosToLoad = NO;
 }
 
 - (void)showProgressHudWithText:(NSString *)text {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     if (![text isEqualToString:@""]) {
         hud.labelText = text;
     }
-    [hud setCenter:[self.view convertPoint:self.view.center fromView:self.view.superview]];
+//    [hud setCenter:[self.view convertPoint:self.view.center fromView:self.view.superview]];
+//    [hud setCenter:CGPointMake(self.view.bounds.size.height/2, self.view.bounds.size.width/2)];
 }
 
 - (void)retrievedAlbumCollection:(FTFAlbumCategoryCollection *)albumCollection {

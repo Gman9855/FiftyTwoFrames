@@ -7,7 +7,9 @@
 //
 
 #import "FTFAppDelegate.h"
+#import <Parse/Parse.h>
 #import "FTFContainerViewController.h"
+#import "FTFContentTableViewController.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginButton.h>
 
@@ -21,7 +23,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
+    [Parse setApplicationId:@"XXG1mhiISVKufte798cl8ScMYYkq2YXEc8HBkR5p"
+                  clientKey:@"s6zCQa7DzB4hQKWaaNqdfsdt4YELOWqfuMqZWvNE"];
+    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
+                                                    UIUserNotificationTypeBadge |
+                                                    UIUserNotificationTypeSound);
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
+                                                                             categories:nil];
+    [application registerUserNotificationSettings:settings];
+    [application registerForRemoteNotifications];
     [FBSDKLoginButton class];
     return [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
 }
@@ -58,12 +68,55 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    if (application.applicationIconBadgeNumber > 0) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        FTFContainerViewController *containerVC = (FTFContainerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"containerVC"];
+        self.window.rootViewController = containerVC;
+        PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+        if (currentInstallation.badge != 0) {
+            currentInstallation.badge = 0;
+            [currentInstallation saveEventually];
+        }
+    }
     [FBSDKAppEvents activateApp];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    // Store the deviceToken in the current installation and save it to Parse.
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    [currentInstallation setDeviceTokenFromData:deviceToken];
+    [currentInstallation saveInBackground];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+//    [PFPush handlePush:userInfo];
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    if (currentInstallation.badge != 0) {
+        currentInstallation.badge = 0;
+        [currentInstallation saveEventually];
+    }
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    FTFContainerViewController *containerVC = (FTFContainerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"containerVC"];
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        //present alert view
+        NSString *alert = [userInfo valueForKeyPath:@"aps.alert"];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"52Frames" message:alert preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *dismiss = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *viewNow = [UIAlertAction actionWithTitle:@"View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.window.rootViewController = containerVC;
+        }];
+        [alertController addAction:dismiss];
+        [alertController addAction:viewNow];
+        [self.window.rootViewController presentViewController:alertController animated:YES completion:nil];
+        
+    } else {
+        self.window.rootViewController = containerVC;
+    }
 }
 
 @end
