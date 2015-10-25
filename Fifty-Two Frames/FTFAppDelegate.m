@@ -114,11 +114,13 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshAlbumCollection" object:nil];
         }];
         UIAlertAction *view = [UIAlertAction actionWithTitle:@"View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
             self.window.rootViewController = containerVC;
         }];
         
         [alertController addAction:dismiss];
         [alertController addAction:view];
+
         
         UIViewController *topVC = [self.window visibleViewController];
         [topVC presentViewController:alertController animated:YES completion:nil];
