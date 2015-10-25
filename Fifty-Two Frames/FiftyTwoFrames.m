@@ -89,8 +89,12 @@
                 NSString *nextPage = [result valueForKeyPath:@"albums.paging.next"];
                 self.nextPageOfAlbumsURL = [nextPage substringFromIndex:31];
                 [self requestRemainingAlbumsWithCompletionBlock:^(NSArray *albums, NSError *error) {
-                    albumCategoryCollection = [[FTFAlbumCategoryCollection alloc] initWithAlbumCollections:albums];
-                    block(albumCategoryCollection, error);
+                    if (error) {
+                        block(nil, error);
+                    } else {
+                        albumCategoryCollection = [[FTFAlbumCategoryCollection alloc] initWithAlbumCollections:albums];
+                        block(albumCategoryCollection, error);
+                    }
                 }];
             } else {
                 block(nil, error);
@@ -138,14 +142,18 @@
 
 - (void)requestRemainingAlbumsWithCompletionBlock:(void (^)(NSArray *albums, NSError *error))block {
     [[[FBSDKGraphRequest alloc] initWithGraphPath:self.nextPageOfAlbumsURL parameters:nil] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-        NSString *nextPage = [result valueForKeyPath:@"paging.next"];
-        self.nextPageOfAlbumsURL = [nextPage substringFromIndex:31];
-        [self.albumDicts addObject:result];
-        if (self.nextPageOfAlbumsURL.length > 0) {
-            [self requestRemainingAlbumsWithCompletionBlock:block];
+        if (error) {
+            block(nil, error);
         } else {
-            NSArray *allAlbums = [self albumsWithAlbumResponseData:self.albumDicts];
-            block(allAlbums, nil);
+            NSString *nextPage = [result valueForKeyPath:@"paging.next"];
+            self.nextPageOfAlbumsURL = [nextPage substringFromIndex:31];
+            [self.albumDicts addObject:result];
+            if (self.nextPageOfAlbumsURL.length > 0) {
+                [self requestRemainingAlbumsWithCompletionBlock:block];
+            } else {
+                NSArray *allAlbums = [self albumsWithAlbumResponseData:self.albumDicts];
+                block(allAlbums, nil);
+            }
         }
     }];
 }

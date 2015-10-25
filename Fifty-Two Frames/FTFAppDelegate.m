@@ -10,8 +10,10 @@
 #import <Parse/Parse.h>
 #import "FTFContainerViewController.h"
 #import "FTFContentTableViewController.h"
+#import "FTFAlbumSelectionMenuViewController.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginButton.h>
+#import "UIWindow+UIWindow_Additions.h"
 
 @interface FTFAppDelegate ()
 

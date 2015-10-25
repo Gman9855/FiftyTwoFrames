@@ -11,6 +11,7 @@
 
 @class FTFUser;
 @class FTFAlbumCategoryCollection;
+@class FTFAlbum;
 
 @interface FiftyTwoFrames : NSObject
 

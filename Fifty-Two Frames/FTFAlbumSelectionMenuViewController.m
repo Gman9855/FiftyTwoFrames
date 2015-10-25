@@ -16,7 +16,7 @@
 #import "UIImageView+WebCache.h"
 #import "FTFAlbumSelectionMenuTableViewCell.h"
 #import "FTFAlbumCollection.h"
-
+#import "FTFAlbumCategoryCollection.h"
 
 @interface FTFAlbumSelectionMenuViewController ()
 
@@ -26,12 +26,21 @@
 @property (nonatomic, strong) WYPopoverController *popover;
 @property (nonatomic, strong) UILabel *noAlbumslabel;
 @property (nonatomic, strong) NSArray *albumThumbnailPhotos;
+@property (nonatomic, strong) FTFAlbumCollection *weeklySubmissions;
+@property (nonatomic, strong) FTFAlbumCollection *photoWalks;
+@property (nonatomic, strong) FTFAlbumCollection *miscellaneousAlbums;
+@property (strong, nonatomic) FTFAlbumCollection *selectedAlbumCollection;
+@property (nonatomic, strong) NSString *selectedAlbumYear;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *yearButton;
+@property (nonatomic, strong) UIButton *refreshAlbumPhotosButton;
 
 @end
 
 static NSString * const reuseIdentifier = @"reuseIdentifier";
 
 @implementation FTFAlbumSelectionMenuViewController
+
+#pragma mark - View Setup
 
 - (FTFYearPopoverTableViewController *)yearPopoverTableViewController {
     if (!_yearPopoverTableViewController) {
@@ -49,17 +58,60 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     return self;
 }
 
+- (void)awakeFromNib {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchAlbumCategoryCollection) name:@"RefreshAlbumCollection" object:nil];
+}
+
+- (void)fetchAlbumCategoryCollection {
+    [[FiftyTwoFrames sharedInstance] requestAlbumCollectionWithCompletionBlock:^(FTFAlbumCategoryCollection *albumCollection, NSError *error) {
+        if (!error) {
+            if (albumCollection) {
+                self.yearButton.enabled = YES;
+                [self parseAlbumCollection:albumCollection];
+            }
+        } else {
+            self.navigationController.toolbarHidden = NO;
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.tableView animated:YES];
+                self.refreshAlbumPhotosButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                [self.refreshAlbumPhotosButton addTarget:self action:@selector(refreshButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                [self.refreshAlbumPhotosButton setImage:[UIImage imageNamed:@"Refresh"] forState:UIControlStateNormal];
+                [self.refreshAlbumPhotosButton sizeToFit];
+                self.refreshAlbumPhotosButton.center = [self.navigationController.view convertPoint:self.navigationController.view.center fromView:self.navigationController.view.superview];
+                [self.navigationController.view addSubview:self.refreshAlbumPhotosButton];
+            });
+        }
+    }];
+}
+
+- (void)refreshButtonTapped:(UIButton *)sender {
+    self.refreshAlbumPhotosButton.hidden = YES;
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [self fetchAlbumCategoryCollection];
+}
+
+- (void)parseAlbumCollection:(FTFAlbumCategoryCollection *)albumCategoryCollection {
+    FTFAlbumCollection *weeklyThemeAlbums = [albumCategoryCollection albumCollectionForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
+    self.weeklySubmissions = weeklyThemeAlbums;
+    self.photoWalks = [albumCategoryCollection albumCollectionForCategory:FTFAlbumCollectionCategoryPhotoWalks];
+    self.miscellaneousAlbums = [albumCategoryCollection albumCollectionForCategory:FTFAlbumCollectionCategoryMiscellaneous];
+    
+    FTFAlbum *mostCurrentWeeklyAlbum = weeklyThemeAlbums.albums.firstObject;
+    self.selectedAlbumCollection = [self albumsForGivenYear:mostCurrentWeeklyAlbum.yearCreated fromAlbumCollection:weeklyThemeAlbums];
+    self.selectedAlbumYear = mostCurrentWeeklyAlbum.yearCreated;
+    self.yearButton.title = mostCurrentWeeklyAlbum.yearCreated;
+}
+
 - (void)setSelectedAlbumCollection:(FTFAlbumCollection *)selectedAlbumCollection {
     _selectedAlbumCollection = selectedAlbumCollection;
     
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
-    if (self.navigationController.toolbarHidden && self.segmentedControl.hidden) {
-        [UIView animateWithDuration:0.4 animations:^{
-            self.navigationController.toolbarHidden = NO;
-            self.segmentedControl.hidden = NO;
-        }];
-    }
+    [UIView animateWithDuration:0.7 animations:^{
+        self.navigationController.toolbarHidden = NO;
+        self.segmentedControl.hidden = NO;
+    }];
     
     self.noAlbumslabel.hidden = YES;
     [self.tableView reloadData];
@@ -90,31 +142,30 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     self.noAlbumslabel.hidden = YES;
 }
 
+#pragma mark - View Controller Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationController.toolbarHidden = NO;
-    self.segmentedControl.hidden = NO;
-    self.navigationController.view.layer.cornerRadius = 10;
-    self.navigationController.view.layer.masksToBounds = YES;
+    
+    self.segmentedControl.hidden = YES;
+    self.yearButton.enabled = NO;
     
     [self setUpNoAlbumsLabelAppearance];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     [[NSNotificationCenter defaultCenter]addObserver:self
                                             selector:@selector(yearChanged:)
                                                 name:@"yearSelectedNotification"
                                               object:nil];
     if (!self.weeklySubmissions.albums.count) {
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"Loading albums";
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+#pragma mark - Action methods
 
 - (IBAction)dismissButtonTapped:(UIBarButtonItem *)sender {
     [self dismissViewControllerAnimated:true completion:nil];
@@ -131,15 +182,6 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     NSArray *filteredAlbums = [albumCollection.albums filteredArrayUsingPredicate:yearPredicate];
     FTFAlbumCollection *filteredCollection = [[FTFAlbumCollection alloc] initWithAlbums:filteredAlbums andCollectionCategory:FTFAlbumCollectionCategoryCustom];
     return filteredCollection;
-}
-
-- (void)yearChanged:(NSNotification *)notification {
-    [self.popover dismissPopoverAnimated:YES];
-    self.selectedAlbumYear = [notification.userInfo objectForKey:@"year"];
-    self.yearButton.title = self.selectedAlbumYear;
-    NSArray *allAlbumCollections = @[self.weeklySubmissions, self.photoWalks, self.miscellaneousAlbums];
-    self.selectedAlbumCollection = [self albumsForGivenYear:self.selectedAlbumYear
-                                        fromAlbumCollection:allAlbumCollections[self.segmentedControl.selectedSegmentIndex]];
 }
 
 #pragma mark - Table view data source
@@ -210,60 +252,16 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
             [years addObject:album.yearCreated];
         }
     }
-//    NSOrderedSet *yearsSet = [NSOrderedSet orderedSetWithArray:years];
-//    [years removeAllObjects];
-//    for (NSString *year in yearsSet) {
-//        [years addObject:year];
-//    }
     return years;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (void)yearChanged:(NSNotification *)notification {
+    [self.popover dismissPopoverAnimated:YES];
+    self.selectedAlbumYear = [notification.userInfo objectForKey:@"year"];
+    self.yearButton.title = self.selectedAlbumYear;
+    NSArray *allAlbumCollections = @[self.weeklySubmissions, self.photoWalks, self.miscellaneousAlbums];
+    self.selectedAlbumCollection = [self albumsForGivenYear:self.selectedAlbumYear
+                                        fromAlbumCollection:allAlbumCollections[self.segmentedControl.selectedSegmentIndex]];
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-//}
 
 @end

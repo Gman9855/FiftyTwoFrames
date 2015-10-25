@@ -7,18 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-@class FTFAlbumCollection;
+
+@class FTFAlbumCategoryCollection;
 
 @interface FTFAlbumSelectionMenuViewController : UITableViewController
 
-@property (nonatomic, strong) FTFAlbumCollection *weeklySubmissions;
-@property (nonatomic, strong) FTFAlbumCollection *photoWalks;
-@property (nonatomic, strong) FTFAlbumCollection *miscellaneousAlbums;
-@property (strong, nonatomic) FTFAlbumCollection *selectedAlbumCollection;
-@property (nonatomic, strong) NSString *selectedAlbumYear;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *yearButton;
-
-- (FTFAlbumCollection *)albumsForGivenYear:(NSString *)year fromAlbumCollection:(FTFAlbumCollection *)albumCollection;
-
+- (void)fetchAlbumCategoryCollection;
 
 @end

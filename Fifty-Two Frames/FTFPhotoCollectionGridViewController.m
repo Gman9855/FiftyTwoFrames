@@ -74,10 +74,13 @@
 - (void)albumSelectionChanged:(NSNotification *)notification {
     _albumSelectionChanged = YES;
     _finishedPaging = NO;
-    NSIndexPath *firstIndexPathInCollectionView = [NSIndexPath indexPathForItem:0 inSection:0];
-    [self.collectionView scrollToItemAtIndexPath:firstIndexPathInCollectionView
-                                atScrollPosition:UICollectionViewScrollPositionTop
-                                        animated:NO];
+    if (self.gridPhotos) {
+        NSIndexPath *firstIndexPathInCollectionView = [NSIndexPath indexPathForItem:0 inSection:0];
+        [self.collectionView scrollToItemAtIndexPath:firstIndexPathInCollectionView
+                                    atScrollPosition:UICollectionViewScrollPositionTop
+                                            animated:NO];
+    }
+    
     _albumSelectionChanged = NO;
 }
 

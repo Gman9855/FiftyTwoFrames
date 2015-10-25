@@ -44,6 +44,7 @@
 @property (nonatomic, strong) UIView *hostingView;
 @property (nonatomic, strong) NSArray *thumbnailPhotosForGrid;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
+@property (nonatomic, strong) UIButton *refreshAlbumPhotosButton;
 
 @end
 
@@ -82,7 +83,7 @@ BOOL _morePhotosToLoad = NO;
 {
     [super viewDidLoad];
     
-    self.settingsButton.enabled = NO;
+//    self.settingsButton.enabled = NO;
     self.gridButton.enabled = NO;
     self.albumInfoButton.enabled = NO;
     
@@ -117,50 +118,11 @@ BOOL _morePhotosToLoad = NO;
                                                object:nil];
 
     [self showProgressHudWithText:@"Loading this week's photos"];
-    
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString *documentsDirectoryPath = [paths objectAtIndex:0];
-//    NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:@"albumCollection"];
-//    FTFAlbumCategoryCollection *collection = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    
-//    if (collection) {
-//        NSError *error;
-//        if ([[NSFileManager defaultManager] isDeletableFileAtPath:filePath]) {
-//            BOOL success = [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
-//            if (!success) {
-//                NSLog(@"Error removing file at path: %@", error.localizedDescription);
-//            }
-//        }
-        
-//        [self retrievedAlbumCollection:collection];
-//    } else {
-        [[FiftyTwoFrames sharedInstance] requestAlbumCollectionWithCompletionBlock:^(FTFAlbumCategoryCollection *albumCollection,
-                                                                                     NSError *error) {
-            if (error) {
-                [MBProgressHUD hideHUDForView:self.tableView animated:YES];
-                self.tableView.userInteractionEnabled = YES;
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"There was an error loading this week's photos." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-                [alert show];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    UIButton *refreshButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                    [refreshButton addTarget:self action:@selector(refreshButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-                    [refreshButton setImage:[UIImage imageNamed:@"Refresh"] forState:UIControlStateNormal];
-                    [refreshButton sizeToFit];
-                    refreshButton.center = [self.view convertPoint:self.view.center fromView:self.view.superview];
-                    
-                    [self.view addSubview:refreshButton];
-                });
-                
-                NSLog(@"%@", error);
-            } else {
-//                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//                NSString *documentsDirectoryPath = [paths objectAtIndex:0];
-//                NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:@"albumCollection"];
-//                [NSKeyedArchiver archiveRootObject:albumCollection toFile:filePath];
-                [self retrievedAlbumCollection:albumCollection];
-            }
-        }];
-//    }
+    [self.albumSelectionMenuViewController fetchAlbumCategoryCollection];
+    [[FiftyTwoFrames sharedInstance] requestLatestWeeklyThemeAlbumWithCompletionBlock:^(FTFAlbum *album, NSError *error, BOOL finishedPaging) {
+        self.albumToDisplay = album;
+        [self populateAlbumPhotosResultsWithPhotos:album.photos error:error finishedPaging:finishedPaging];
+    }];
 }
 
 - (void)updateLikeCountLabel:(NSNotification *)notification {
@@ -196,37 +158,8 @@ BOOL _morePhotosToLoad = NO;
 //    [hud setCenter:CGPointMake(self.view.bounds.size.height/2, self.view.bounds.size.width/2)];
 }
 
-- (void)retrievedAlbumCollection:(FTFAlbumCategoryCollection *)albumCollection {
-    FTFAlbumCollection *weeklyThemeAlbums = [albumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
-//    NSArray *albums = weeklyThemeAlbums.albums;
-//    for (FTFAlbum *album in albums) {
-//        NSLog(@"%@", album.name);
-//    }
-    FTFAlbumSelectionMenuViewController *albumSelectionMenuVC = (FTFAlbumSelectionMenuViewController *)[self.albumSelectionMenuNavigationController topViewController];
-    albumSelectionMenuVC.weeklySubmissions = weeklyThemeAlbums;
-    albumSelectionMenuVC.photoWalks = [albumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryPhotoWalks];
-    albumSelectionMenuVC.miscellaneousAlbums = [albumCollection albumCollectionForCategory:FTFAlbumCollectionCategoryMiscellaneous];
-    
-    FTFAlbum *mostCurrentWeeklyAlbum = weeklyThemeAlbums.albums.firstObject;
-    albumSelectionMenuVC.selectedAlbumCollection = [albumSelectionMenuVC albumsForGivenYear:mostCurrentWeeklyAlbum.yearCreated
-                                          fromAlbumCollection:weeklyThemeAlbums];
-    albumSelectionMenuVC.selectedAlbumYear = mostCurrentWeeklyAlbum.yearCreated;
-    albumSelectionMenuVC.yearButton.title = mostCurrentWeeklyAlbum.yearCreated;
-    
-    self.albumToDisplay = mostCurrentWeeklyAlbum;
-    
-    [[FiftyTwoFrames sharedInstance] requestUserWithCompletionBlock:^(FTFUser *user) {
-        [[FiftyTwoFrames sharedInstance] requestAlbumPhotosForAlbumWithAlbumID:self.albumToDisplay.albumID
-                                                               completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
-                                                                   
-                                                                   _finishedPaging = finishedPaging;
-                                                                   [self populateAlbumPhotosResultsWithPhotos:photos error:error];
-                                                                   
-                                                               }];
-    }];
-}
-
 - (void)albumSelectionChanged:(NSNotification *)notification {
+    self.refreshAlbumPhotosButton.hidden = YES;
     self.tableView.userInteractionEnabled = NO;
     self.gridButton.enabled = NO;
     self.albumInfoButton.enabled = NO;
@@ -238,9 +171,7 @@ BOOL _morePhotosToLoad = NO;
     self.albumToDisplay = [notification.userInfo objectForKey:@"selectedAlbum"];
     [[FiftyTwoFrames sharedInstance]requestAlbumPhotosForAlbumWithAlbumID:self.albumToDisplay.albumID
                                                           completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
-                                                              
-                                                              _finishedPaging = finishedPaging;
-                                                              [self populateAlbumPhotosResultsWithPhotos:photos error:error];
+                                                    [self populateAlbumPhotosResultsWithPhotos:photos error:error finishedPaging:finishedPaging];
     }];
 }
 
@@ -277,12 +208,11 @@ BOOL _morePhotosToLoad = NO;
         if (_finishedPaging) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"albumDoesNotNeedToBePagedNotification" object:nil];
         }
+        [self.tableView reloadData];
         
         self.settingsButton.enabled = YES;
         self.gridButton.enabled = YES;
         self.albumInfoButton.enabled = YES;
-        
-        [self.tableView reloadData];
         NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
         [self.tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
         
@@ -303,17 +233,18 @@ BOOL _morePhotosToLoad = NO;
         }];
     
         _morePhotosToLoad = YES;
-    } else {
-        [MBProgressHUD hideHUDForView:self.view animated:NO];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:@"Sorry, no photos found for this album"
-                                                      delegate:self
-                                           cancelButtonTitle:@"Okay"
-                                            otherButtonTitles:nil];
-        [alert show];
-        });
     }
+//    } else {
+//        [MBProgressHUD hideHUDForView:self.view animated:NO];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+//                                                        message:@"Sorry, no photos found for this album"
+//                                                      delegate:self
+//                                           cancelButtonTitle:@"Okay"
+//                                            otherButtonTitles:nil];
+//        [alert show];
+//        });
+//    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -459,6 +390,7 @@ BOOL _morePhotosToLoad = NO;
 - (IBAction)settingsButtonTapped:(UIBarButtonItem *)sender;
 {
     [self presentViewController:self.albumSelectionMenuNavigationController animated:true completion:nil];
+    NSLog(@"In content vc: %@", self.albumSelectionMenuViewController);
 }
 
 - (IBAction)likeIconTapped:(UIButton *)sender {
