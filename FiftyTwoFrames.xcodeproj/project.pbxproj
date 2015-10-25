@@ -711,13 +711,13 @@
 				8B7D033E19C2179B006839BF /* Custom Table View Cells */,
 				8BC9389B193C1C8300418F32 /* Main.storyboard */,
 				8BD0408F1AA502EA00700F4C /* FTFCollectionReusableView.h */,
-				8B4EF1281BDD753F00502AC8 /* UIWindow+UIWindow_Additions.h */,
-				8B4EF1291BDD753F00502AC8 /* UIWindow+UIWindow_Additions.m */,
 				8BD040901AA502EA00700F4C /* FTFCollectionReusableView.m */,
 				8BC938A1193C1C8300418F32 /* Images.xcassets */,
 				8BC93890193C1C8300418F32 /* Supporting Files */,
 				8B6458BD194CFADC006D4B75 /* NSArray+FTFAdditions.h */,
 				8B6458BE194CFADC006D4B75 /* NSArray+FTFAdditions.m */,
+				8B4EF1281BDD753F00502AC8 /* UIWindow+UIWindow_Additions.h */,
+				8B4EF1291BDD753F00502AC8 /* UIWindow+UIWindow_Additions.m */,
 			);
 			path = "Fifty-Two Frames";
 			sourceTree = "<group>";
