@@ -5,12 +5,12 @@ An elegant rendition of the notable Fifty-Two Frames Facebook page.
 
 Seamless asynchronous photo downloading with comment section and full photo browser
 
-![ftfscrollingandviewing](https://cloud.githubusercontent.com/assets/5007053/10089187/b0fc5e84-62d5-11e5-893a-759a1dbe71c7.gif)
+![52framesdemo1](https://cloud.githubusercontent.com/assets/5007053/10713827/12381254-7a89-11e5-8c1b-4869d3fa1a7f.gif)
 
 Grid view with paging
 
-![ftfgridviewandpaging](https://cloud.githubusercontent.com/assets/5007053/10090692/2f50a540-62e7-11e5-801b-6c531c47e3ad.gif)
+![52framesdemo3](https://cloud.githubusercontent.com/assets/5007053/10713831/331c9a62-7a89-11e5-8795-fffbcad979db.gif)
 
 Album selection by category and year
 
-![ftfalbumselecting](https://cloud.githubusercontent.com/assets/5007053/10091176/93f6a468-62ec-11e5-8e1a-daf7b9a869c3.gif)
+![52framesdemo2](https://cloud.githubusercontent.com/assets/5007053/10713833/4a1b7026-7a89-11e5-9576-d27689ef7a7b.gif)
