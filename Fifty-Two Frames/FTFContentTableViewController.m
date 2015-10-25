@@ -186,20 +186,44 @@ BOOL _morePhotosToLoad = NO;
     [self.tableView reloadData];
 }
 
-- (void)populateAlbumPhotosResultsWithPhotos:(NSArray *)photos error:(NSError *)error {
+- (void)populateAlbumPhotosResultsWithPhotos:(NSArray *)photos
+                                       error:(NSError *)error
+                              finishedPaging: (BOOL)finishedPaging {
+    _finishedPaging = finishedPaging;
     [MBProgressHUD hideHUDForView:self.view animated:NO];
     self.tableView.userInteractionEnabled = YES;
-
+    if (self.albumPhotos) {
+        self.settingsButton.enabled = YES;
+        self.gridButton.enabled = YES;
+        self.albumInfoButton.enabled = YES;
+    }
     if (error) {
-        if (error.code != 1) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:@"An error occured trying to grab this album's photos"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Okay"
-                                                  otherButtonTitles:nil];
-            [alert show];
-            return;
+        [MBProgressHUD hideHUDForView:self.tableView animated:YES];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"There was an error loading this album's photos."
+                                                       delegate:self
+                                              cancelButtonTitle:@"Okay"
+                                              otherButtonTitles:nil];
+        [alert show];
+        
+        if (!self.albumPhotos.count) {     // Check whether we're loading the initial latest album.  We don't want to
+                                           // display the refresh button if we already have an album showing
+            if (!self.refreshAlbumPhotosButton) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.refreshAlbumPhotosButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                    [self.refreshAlbumPhotosButton addTarget:self action:@selector(refreshButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    [self.refreshAlbumPhotosButton setImage:[UIImage imageNamed:@"Refresh"] forState:UIControlStateNormal];
+                    [self.refreshAlbumPhotosButton sizeToFit];
+                    self.refreshAlbumPhotosButton.center = [self.view convertPoint:self.view.center fromView:self.view.superview];
+                    
+                    [self.view addSubview:self.refreshAlbumPhotosButton];
+                });
+            } else {
+                self.refreshAlbumPhotosButton.hidden = NO;
+            }
+            
         }
+        return;
     }
     
     if ([photos count]) {
@@ -451,12 +475,15 @@ BOOL _morePhotosToLoad = NO;
 
 - (IBAction)gridButtonTapped:(UIBarButtonItem *)sender {
     [self.navigationController pushViewController:self.photoGrid animated:YES];
-    
 }
 
 - (void)refreshButtonTapped:(UIButton *)sender {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Retry failed.  Please check your internet connection." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-    [alert show];
+    [self showProgressHudWithText:nil];
+    self.refreshAlbumPhotosButton.hidden = YES;
+    [[FiftyTwoFrames sharedInstance] requestLatestWeeklyThemeAlbumWithCompletionBlock:^(FTFAlbum *album, NSError *error, BOOL finishedPaging) {
+        self.albumToDisplay = album;
+        [self populateAlbumPhotosResultsWithPhotos:album.photos error:error finishedPaging:finishedPaging];
+    }];
 }
 
 #pragma mark - UINavigationController Delegate

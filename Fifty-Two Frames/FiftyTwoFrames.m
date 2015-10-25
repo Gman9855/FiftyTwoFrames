@@ -74,11 +74,34 @@
     }];
 }
 
+- (void)requestLatestWeeklyThemeAlbumWithCompletionBlock:(void (^)(FTFAlbum *album, NSError *error, BOOL finishedPaging))block {
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"albums.limit(10).fields(name,description,created_time,photos.limit(1).fields(picture))", @"fields", nil];
+    NSString *graphPath = @"/180889155269546";
+    
+    [[[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        if (error) {
+            block(nil, error, YES);
+        } else {
+            FTFAlbumCategoryCollection *categoryCollection = [[FTFAlbumCategoryCollection alloc] initWithAlbumCollections:[self albumsWithAlbumResponseData:@[result]]];
+            FTFAlbumCollection *weeklyThemes = [categoryCollection albumCollectionForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
+            __block FTFAlbum *latestAlbum = weeklyThemes.albums.firstObject;
+            [self requestAlbumPhotosForAlbumWithAlbumID:latestAlbum.albumID completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
+                if (!error) {
+                    latestAlbum.photos = photos;
+                    block(latestAlbum, nil, finishedPaging);
+                } else {
+                    block(nil, error, YES);
+                }
+            }];
+        }
+    }];
+}
+
 - (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCategoryCollection *, NSError *))block;
 {
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"albums.limit(50).fields(name,description,created_time,photos.limit(1).fields(picture))", @"fields", nil];
     
-    NSString *graphPath = @"/180889155269546?albums.limit(50).fields(name,description,created_time,photos.limit(1).fields(picture))";
+    NSString *graphPath = @"/180889155269546?albums.limit(50)";
     
     [[[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         if (block) {

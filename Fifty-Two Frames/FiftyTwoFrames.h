@@ -22,6 +22,8 @@
 
 - (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCategoryCollection *, NSError *))block;
 
+- (void)requestLatestWeeklyThemeAlbumWithCompletionBlock:(void (^)(FTFAlbum *album, NSError *error, BOOL finishedPaging))block;
+
 - (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID completionBlock:(void(^)(NSArray *photos, NSError *error, BOOL finishedPaging))block;
 
 - (void)requestNextPageOfAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block;

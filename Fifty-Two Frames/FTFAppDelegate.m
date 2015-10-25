@@ -102,20 +102,25 @@
         currentInstallation.badge = 0;
         [currentInstallation saveEventually];
     }
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     FTFContainerViewController *containerVC = (FTFContainerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"containerVC"];
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
         //present alert view
         NSString *alert = [userInfo valueForKeyPath:@"aps.alert"];
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"52Frames" message:alert preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *dismiss = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:nil];
+        
+        UIAlertAction *dismiss = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshAlbumCollection" object:nil];
+        }];
         UIAlertAction *viewNow = [UIAlertAction actionWithTitle:@"View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             self.window.rootViewController = containerVC;
         }];
         [alertController addAction:dismiss];
         [alertController addAction:viewNow];
-        [self.window.rootViewController presentViewController:alertController animated:YES completion:nil];
         
+        UIViewController *topVC = [self.window visibleViewController];
+        [topVC presentViewController:alertController animated:YES completion:nil];
     } else {
         self.window.rootViewController = containerVC;
     }
