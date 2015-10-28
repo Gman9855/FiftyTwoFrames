@@ -83,7 +83,6 @@ BOOL _morePhotosToLoad = NO;
 {
     [super viewDidLoad];
     
-//    self.settingsButton.enabled = NO;
     self.gridButton.enabled = NO;
     self.albumInfoButton.enabled = NO;
     

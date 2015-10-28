@@ -178,10 +178,14 @@ static NSString * const reuseIdentifier = @"commentCell";
             
         }
     }];
-    
-    
-    
 }
+
+- (IBAction)tapReceivedInTableView:(UITapGestureRecognizer *)sender {
+    if ([self.textField isFirstResponder]) {
+        [self.view endEditing:YES];
+    }
+}
+
 
 #pragma mark - Table view data source
 

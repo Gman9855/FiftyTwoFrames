@@ -152,10 +152,7 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
     
     photoCommentsVC.photo = self.albumPhotos[self.currentIndex];
 
-//    [[self photoCommentsVC] setModalPresentationStyle:UIModalPresentationOverCurrentContext];
-//    [self.photoCommentsNavigationController setModalPresentationStyle:UIModalPresentationOverCurrentContext];
     [self presentViewController:photoCommentsNavController animated:true completion:nil];
-//    [[self photoCommentsVC].tableView reloadData];
 }
 
 #pragma mark - Photo Comments VC Delegate
