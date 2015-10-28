@@ -38,12 +38,12 @@ static NSString * const reuseIdentifier = @"commentCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
     self.postCommentButton.enabled = NO;
     self.tableView.estimatedRowHeight = 75;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
-//    self.navigationController.navigationBar.translucent = YES;
-
     [self.textField addTarget:self
                   action:@selector(textFieldDidChange:)
         forControlEvents:UIControlEventEditingChanged];
@@ -61,10 +61,7 @@ static NSString * const reuseIdentifier = @"commentCell";
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(keyboardFrameDidChange:)
 //                                                 name:UIKeyboardDidChangeFrameNotification object:nil];
-//    
-//    self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
-//    self.navigationController.view.layer.cornerRadius = 10;
-//    self.navigationController.view.layer.masksToBounds = YES;
+
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.textField.delegate = self;
@@ -83,23 +80,7 @@ static NSString * const reuseIdentifier = @"commentCell";
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-//    if (!shouldIgnoreKeyboardEvents) {
-//        CGSize keyboardSize = [self convertedRectFromKeyboardNotification:notification].size;
-//        
-//        //Given size may not account for screen rotation
-//        self.keyboardHeight = MIN(keyboardSize.height,keyboardSize.width);
-//        
-//        [self animateUsingKeyboardUserInfo:notification.userInfo animations:^{
-//            [self updateInputView];
-//        }];
-//    }
-    
     CGRect keyboardFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-//    [UIView animateWithDuration:0.1 animations:^{
-//        self.inputViewBottomConstraint.constant = keyboardFrame.size.height;
-//        
-//    }];
     
     [UIView animateWithDuration:0.1 animations:^{
         self.inputViewBottomConstraint.constant = keyboardFrame.size.height;
@@ -114,45 +95,10 @@ static NSString * const reuseIdentifier = @"commentCell";
 
 - (void)keyboardWillHide:(NSNotification *)notification;
 {
-//    if (!shouldIgnoreKeyboardEvents) {
-//        self.keyboardHeight = 0;
-//        
-//        [self animateUsingKeyboardUserInfo:notification.userInfo animations:^{
-//            [self updateInputView];
-//        }];
-//
-//    }
-    
     [UIView animateWithDuration:0.1 animations:^{
         self.inputViewBottomConstraint.constant = 0;
     }];
 }
-
-//- (void)animateUsingKeyboardUserInfo:(NSDictionary *)userInfo animations:(dispatch_block_t)animations;
-//{
-////    BOOL showingLastIndexPath = [[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:self.photo.photoComments.count - 1]];
-//    
-//    [UIView beginAnimations:nil context:NULL];
-//    
-////    if (!showingLastIndexPath) {
-////        [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-//    [UIView setAnimationCurve:1.0];
-//    [UIView setAnimationDuration:0.0];
-//
-////        [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue]];
-////    }
-//
-//    animations();
-//    
-//    [UIView commitAnimations];
-//}
-
-//-(void)keyboardFrameDidChange:(NSNotification*)notification{
-//    NSDictionary *info = [notification userInfo];
-//    
-//    CGRect kKeyBoardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-//    [self.view setFrame:CGRectMake(0, kKeyBoardFrame.origin.y-self.view.frame.size.height, 320, self.view.frame.size.height)];
-//}
 
 #pragma mark - Text Field Delegate
 
@@ -167,15 +113,6 @@ static NSString * const reuseIdentifier = @"commentCell";
     [self setPostButtonColorWithEnabledState:textFieldHasText];
     
 }
-
-//- (void)updateInputView;
-//{
-//    self.inputViewBottomConstraint.constant = self.keyboardHeight;
-//
-//    if (self.keyboardHeight) {
-//        [self.tableView setContentOffset:CGPointMake(self.tableView.contentOffset.x, CGFLOAT_MAX) animated:NO];
-//    }
-//}
 
 #pragma mark - Actions
 
@@ -200,19 +137,19 @@ static NSString * const reuseIdentifier = @"commentCell";
     shouldIgnoreKeyboardEvents = NO;
     postedComment.comment = self.textField.text;
     
-//    [[FiftyTwoFrames sharedInstance] publishPhotoCommentWithPhotoID:self.photo.photoID
-//                                                            comment:postedComment.comment
-//                                                    completionBlock:^(NSError *error) {
-//        if (error) {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-//                                                            message:@"Something went wrong trying to post your comment"
-//                                                           delegate:self
-//                                                  cancelButtonTitle:@"Okay"
-//                                                  otherButtonTitles:nil];
-//            [alert show];
-//            return;
-//        }
-//    }];
+    [[FiftyTwoFrames sharedInstance] publishPhotoCommentWithPhotoID:self.photo.photoID
+                                                            comment:postedComment.comment
+                                                    completionBlock:^(NSError *error) {
+        if (error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"Could not post your comment.  Please check your internet."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Okay"
+                                                  otherButtonTitles:nil];
+            [alert show];
+            return;
+        }
+    }];
     
     [self.photo addPhotoComment:postedComment];
     [self.tableView beginUpdates];
@@ -266,17 +203,6 @@ static NSString * const reuseIdentifier = @"commentCell";
     return cell;
 }
 
-//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [self configureCommentCell:(FTFPhotoCommentTableViewCell *)cell atIndexPath:indexPath];
-//}
-//
-//- (FTFPhotoCommentTableViewCell *)commentCellAtIndexPath:(NSIndexPath *)indexPath {
-//    FTFPhotoCommentTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reuseIdentifier
-//                                                                              forIndexPath:indexPath];
-//    [self configureCommentCell:cell atIndexPath:indexPath];
-//    return cell;
-//}
-
 - (void)configureCommentCell:(FTFPhotoCommentTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
 //    FTFPhotoComment *photoComment = self.photo.photoComments[indexPath.section];
 //    
@@ -324,7 +250,7 @@ static NSString * const reuseIdentifier = @"commentCell";
 }
 
 - (void)updateVisibleCells:(NSTimer *)timer {
-    //[self.tableView reloadData];
+    [self.tableView reloadData];
 }
 
 - (void)setPostButtonColorWithEnabledState:(BOOL)enabled {

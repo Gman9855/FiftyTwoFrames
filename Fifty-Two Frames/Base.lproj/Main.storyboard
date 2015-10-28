@@ -561,7 +561,7 @@
                                     </constraint>
                                     <constraint firstItem="lI8-n1-dGU" firstAttribute="leading" secondItem="Luz-sx-qsz" secondAttribute="leading" constant="20" id="Zvb-ef-9xN"/>
                                     <constraint firstItem="zWO-QS-hFc" firstAttribute="top" secondItem="Luz-sx-qsz" secondAttribute="top" constant="20" id="uBR-47-2JY">
-                                        <variation key="heightClass=regular-widthClass=compact" constant="18"/>
+                                        <variation key="heightClass=regular-widthClass=compact" constant="14"/>
                                     </constraint>
                                 </constraints>
                                 <variation key="default">
@@ -597,7 +597,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="328" height="59"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hhg-NA-rHA">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hhg-NA-rHA">
                                                     <rect key="frame" x="13" y="0.0" width="35" height="35"/>
                                                     <animations/>
                                                     <constraints>
@@ -680,19 +680,21 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="e7r-WD-pAg" firstAttribute="top" secondItem="uNP-O7-Nlc" secondAttribute="bottom" constant="-64" id="2ge-GS-m0T"/>
                             <constraint firstItem="Uyn-Uf-oAI" firstAttribute="top" secondItem="Luz-sx-qsz" secondAttribute="bottom" id="3Iy-EX-aDh"/>
                             <constraint firstItem="e7r-WD-pAg" firstAttribute="leading" secondItem="jeI-QS-PQh" secondAttribute="leadingMargin" constant="-20" id="AqT-5B-kKj"/>
                             <constraint firstAttribute="trailingMargin" secondItem="e7r-WD-pAg" secondAttribute="trailing" constant="-20" id="aMX-aw-1mg"/>
-                            <constraint firstItem="e7r-WD-pAg" firstAttribute="top" secondItem="uNP-O7-Nlc" secondAttribute="bottom" id="h00-Vb-WAq"/>
                             <constraint firstItem="Luz-sx-qsz" firstAttribute="leading" secondItem="jeI-QS-PQh" secondAttribute="leadingMargin" constant="-20" id="t5U-H9-xEN"/>
-                            <constraint firstItem="Luz-sx-qsz" firstAttribute="top" secondItem="e7r-WD-pAg" secondAttribute="bottom" id="uVV-Aj-v3g"/>
+                            <constraint firstItem="Luz-sx-qsz" firstAttribute="top" secondItem="e7r-WD-pAg" secondAttribute="bottom" id="uVV-Aj-v3g">
+                                <variation key="heightClass=regular-widthClass=compact" constant="-1"/>
+                            </constraint>
                             <constraint firstAttribute="trailingMargin" secondItem="Luz-sx-qsz" secondAttribute="trailing" constant="-20" id="vzh-q0-n4I"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="2ge-GS-m0T"/>
                                 <exclude reference="AqT-5B-kKj"/>
                                 <exclude reference="aMX-aw-1mg"/>
-                                <exclude reference="h00-Vb-WAq"/>
                                 <exclude reference="t5U-H9-xEN"/>
                                 <exclude reference="uVV-Aj-v3g"/>
                                 <exclude reference="vzh-q0-n4I"/>
@@ -701,9 +703,9 @@
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="constraints">
+                                <include reference="2ge-GS-m0T"/>
                                 <include reference="AqT-5B-kKj"/>
                                 <include reference="aMX-aw-1mg"/>
-                                <include reference="h00-Vb-WAq"/>
                                 <include reference="t5U-H9-xEN"/>
                                 <include reference="uVV-Aj-v3g"/>
                                 <include reference="vzh-q0-n4I"/>
@@ -711,7 +713,6 @@
                             </mask>
                         </variation>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="Comments" id="08t-b5-VF2">
                         <barButtonItem key="rightBarButtonItem" title="Done" id="3hi-7K-d1s">
                             <connections>
@@ -719,7 +720,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="inputViewBottomConstraint" destination="3Iy-EX-aDh" id="vez-bI-KjC"/>
                         <outlet property="postCommentButton" destination="zWO-QS-hFc" id="vVo-AR-vbe"/>
@@ -729,7 +729,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q9T-16-RoE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3705" y="892.5"/>
+            <point key="canvasLocation" x="4119" y="893.25"/>
         </scene>
         <!--Facebook Login View Controller-->
         <scene sceneID="YPl-La-4qf">
@@ -879,25 +879,24 @@
             <point key="canvasLocation" x="1180.5" y="86.25"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="OT7-Dc-AFD">
+        <scene sceneID="TAI-rs-aZh">
             <objects>
-                <navigationController storyboardIdentifier="photoCommentsNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="cSQ-5e-46Z" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="photoCommentsNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="CPD-u9-0dh" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="qda-8E-FYb">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="qit-db-ZWK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
-                        <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="1bL-XK-cUj" kind="relationship" relationship="rootViewController" id="WdX-XW-2ww"/>
+                        <segue destination="1bL-XK-cUj" kind="relationship" relationship="rootViewController" id="SKL-T5-iHL"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QXB-nQ-v0j" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zqr-6J-8AO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2881.875" y="892.60563380281678"/>
+            <point key="canvasLocation" x="3201" y="893.25"/>
         </scene>
     </scenes>
     <resources>
