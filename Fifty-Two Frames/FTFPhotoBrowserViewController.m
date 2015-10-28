@@ -89,30 +89,25 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
     self.navigationBarLabel.font = [UIFont boldSystemFontOfSize:15];
     self.navigationBarLabel.shadowColor = [UIColor clearColor];
     self.navigationBarLabel.textColor = [UIColor orangeColor];
-    
     self.navigationItem.titleView = self.navigationBarLabel;
-    FTFImage *photo = self.albumPhotos[self.currentIndex];
-    self.navigationBarLabel.text = (photo.title != nil) ? [@" " stringByAppendingString:photo.title] : @"";
+    
+    [self updateNavTitleAndLikeButton];
 }
 
 - (void)showNextPhotoAnimated:(BOOL)animated {  // When user taps the next arrow
     [super showNextPhotoAnimated:animated];
-    FTFImage *photo = self.albumPhotos[self.currentIndex];
-    self.navigationBarLabel.text = (photo.title != nil) ? [@" " stringByAppendingString:photo.title] : @"";
+    [self updateNavTitleAndLikeButton];
 }
 
 - (void)showPreviousPhotoAnimated:(BOOL)animated {  // When user taps the previous arrow
     [super showPreviousPhotoAnimated:animated];
-    FTFImage *photo = self.albumPhotos[self.currentIndex];
-    self.navigationBarLabel.text = (photo.title != nil) ? [@" " stringByAppendingString:photo.title] : @"";
+    [self updateNavTitleAndLikeButton];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     // Need this dispatch_after because this method gets called before setCurrentPhotoIndex
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        FTFImage *photo = self.albumPhotos[self.currentIndex];
-        self.navigationBarLabel.text = (photo.title != nil) ? [@" " stringByAppendingString:photo.title] : @"";
-        self.imageViewForButton.image = [UIImage imageNamed:self.photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"];
+        [self updateNavTitleAndLikeButton];
     });
 }
 
@@ -153,25 +148,6 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
 - (void)fbCommentsButtonTapped {
     [self photoCommentsVC].photo = self.albumPhotos[self.currentIndex];
 
-//    UIView *navigationView = self.navigationController.view;
-//    self.hostingViewForCommentView.frame = navigationView.bounds;
-//    self.hostingViewForCommentView.bounds = self.view.bounds;
-//    
-//    [self.hostingViewForCommentView addSubview:self.photoCommentsNavigationController.view];
-//    [navigationView addSubview:self.hostingViewForCommentView];
-//    self.hostingViewForCommentView.frame = (CGRect) {
-//        CGPointMake(0, navigationView.frame.size.height),
-//        self.hostingViewForCommentView.frame.size
-//    };
-//    self.hostingViewForCommentView.center = CGPointMake(navigationView.center.x, self.hostingViewForCommentView.center.y);
-//    [UIView animateWithDuration:0.5
-//                           delay:0.1
-//          usingSpringWithDamping:0.8
-//           initialSpringVelocity:0.1
-//                         options:0
-//                      animations:^{
-//                          self.hostingViewForCommentView.center = self.view.center;
-//                    } completion:nil];
     [[self photoCommentsVC] setModalPresentationStyle:UIModalPresentationOverCurrentContext];
     [self.photoCommentsNavigationController setModalPresentationStyle:UIModalPresentationOverCurrentContext];
     [self presentViewController:self.photoCommentsNavigationController animated:true completion:nil];
@@ -190,6 +166,12 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
                          CGRect newRectLocation = CGRectMake(self.hostingViewForCommentView.frame.origin.x, 1000, self.hostingViewForCommentView.frame.size.width, self.hostingViewForCommentView.frame.size.height);
                          self.hostingViewForCommentView.frame = newRectLocation;
                    } completion:nil];
+}
+
+- (void)updateNavTitleAndLikeButton {
+    FTFImage *photo = self.albumPhotos[self.currentIndex];
+    self.navigationBarLabel.text = (photo.title != nil) ? [@" " stringByAppendingString:photo.title] : @"";
+    self.imageViewForButton.image = [UIImage imageNamed:self.photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"];
 }
 
 - (void)didReceiveMemoryWarning

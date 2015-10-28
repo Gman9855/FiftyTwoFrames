@@ -148,8 +148,6 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 {
     [super viewDidLoad];
     
-    
-    
     [self setUpNoAlbumsLabelAppearance];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
