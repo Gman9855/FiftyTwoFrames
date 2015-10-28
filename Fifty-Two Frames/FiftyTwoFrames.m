@@ -49,7 +49,8 @@
 - (FTFUser *)user {
     if (!_user) {
         __block BOOL done = NO;
-        [self requestUserWithCompletionBlock:^(FTFUser *user) {
+        [self requestUserWithCompletionBlock:^(FTFUser *user, NSError *error) {
+            _user = user;
             done = YES;
         }];
     
@@ -61,14 +62,18 @@
 
 #pragma mark - Public Methods
 
-- (void)requestUserWithCompletionBlock:(void (^)(FTFUser *user))block {
+- (void)requestUserWithCompletionBlock:(void (^)(FTFUser *user, NSError *error))block {
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"id, name, picture.fields(url)", @"fields", nil];
     [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            self.user = [self userWithResponseData:result];
+        }
         if (block) {
             if (!error) {
-                self.user = [self userWithResponseData:result];
-                block(self.user);
+                block(self.user, nil);
+            } else {
+                block(nil, error);
             }
         }
     }];
@@ -95,6 +100,8 @@
             }];
         }
     }];
+    
+    [self requestUserWithCompletionBlock:nil];
 }
 
 - (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCategoryCollection *, NSError *))block;

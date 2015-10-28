@@ -146,12 +146,16 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
 }
 
 - (void)fbCommentsButtonTapped {
-    [self photoCommentsVC].photo = self.albumPhotos[self.currentIndex];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UINavigationController *photoCommentsNavController = [storyboard instantiateViewControllerWithIdentifier:@"photoCommentsNavigationController"];
+    FTFPhotoCommentsViewController *photoCommentsVC = (FTFPhotoCommentsViewController *)[photoCommentsNavController topViewController];
+    
+    photoCommentsVC.photo = self.albumPhotos[self.currentIndex];
 
-    [[self photoCommentsVC] setModalPresentationStyle:UIModalPresentationOverCurrentContext];
-    [self.photoCommentsNavigationController setModalPresentationStyle:UIModalPresentationOverCurrentContext];
-    [self presentViewController:self.photoCommentsNavigationController animated:true completion:nil];
-    [[self photoCommentsVC].tableView reloadData];
+//    [[self photoCommentsVC] setModalPresentationStyle:UIModalPresentationOverCurrentContext];
+//    [self.photoCommentsNavigationController setModalPresentationStyle:UIModalPresentationOverCurrentContext];
+    [self presentViewController:photoCommentsNavController animated:true completion:nil];
+//    [[self photoCommentsVC].tableView reloadData];
 }
 
 #pragma mark - Photo Comments VC Delegate

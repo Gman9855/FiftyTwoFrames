@@ -125,6 +125,7 @@ static NSString * const reuseIdentifier = @"commentCell";
 }
 
 - (IBAction)postButtonTapped:(UIButton *)sender {
+    [self setPostButtonColorWithEnabledState:NO];
     FTFUser *user = [FiftyTwoFrames sharedInstance].user;
     FTFPhotoComment *postedComment = [[FTFPhotoComment alloc] init];
     postedComment.commenterName = user.name;
@@ -141,34 +142,44 @@ static NSString * const reuseIdentifier = @"commentCell";
                                                             comment:postedComment.comment
                                                     completionBlock:^(NSError *error) {
         if (error) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:@"Could not post your comment.  Please check your internet."
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Okay"
-                                                  otherButtonTitles:nil];
-            [alert show];
-            return;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self setPostButtonColorWithEnabledState:YES];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:@"Could not post your comment.  Please check your internet."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Okay"
+                                                      otherButtonTitles:nil];
+                [alert show];
+                
+                return;
+            });
+            
+        } else {
+            [self.photo addPhotoComment:postedComment];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView beginUpdates];
+                
+                NSIndexPath *i = [NSIndexPath indexPathForRow:self.photo.comments.count - 1 inSection:0];
+                [self.tableView insertRowsAtIndexPaths:@[i] withRowAnimation:UITableViewRowAnimationBottom];
+                
+                [self.tableView endUpdates];
+                
+                BOOL isAtBottom = (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.frame.size.height));
+                NSLog(@"Is at bottom: %s", isAtBottom ? "Yes" : "No");
+                NSIndexPath *secondToLastCellIndex = [NSIndexPath indexPathForRow:self.photo.comments.count - 2 inSection:0];
+                FTFPhotoCommentTableViewCell *commentCell = [self.tableView cellForRowAtIndexPath:secondToLastCellIndex];
+                NSArray *visibleCells = [self.tableView visibleCells];
+                NSIndexPath *lastCellIndex = [NSIndexPath indexPathForRow:self.photo.comments.count - 1 inSection:0];
+                [self.tableView scrollToRowAtIndexPath:lastCellIndex atScrollPosition:UITableViewScrollPositionBottom animated: [visibleCells containsObject:commentCell] ? NO : YES];
+                
+                self.textField.text = nil;
+                [self setPostButtonColorWithEnabledState:NO];
+            });
+            
         }
     }];
     
-    [self.photo addPhotoComment:postedComment];
-    [self.tableView beginUpdates];
     
-    NSIndexPath *i = [NSIndexPath indexPathForRow:self.photo.comments.count - 1 inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[i] withRowAnimation:UITableViewRowAnimationBottom];
-    
-    [self.tableView endUpdates];
-    
-    BOOL isAtBottom = (self.tableView.contentOffset.y >= (self.tableView.contentSize.height - self.tableView.frame.size.height));
-    NSLog(@"Is at bottom: %s", isAtBottom ? "Yes" : "No");
-    NSIndexPath *secondToLastCellIndex = [NSIndexPath indexPathForRow:self.photo.comments.count - 2 inSection:0];
-    FTFPhotoCommentTableViewCell *commentCell = [self.tableView cellForRowAtIndexPath:secondToLastCellIndex];
-    NSArray *visibleCells = [self.tableView visibleCells];
-    NSIndexPath *lastCellIndex = [NSIndexPath indexPathForRow:self.photo.comments.count - 1 inSection:0];
-    [self.tableView scrollToRowAtIndexPath:lastCellIndex atScrollPosition:UITableViewScrollPositionBottom animated: [visibleCells containsObject:commentCell] ? NO : YES];
-    
-    self.textField.text = nil;
-    [self setPostButtonColorWithEnabledState:NO];
     
 }
 

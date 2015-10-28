@@ -38,6 +38,5 @@
                                comment:(NSString *)comment
                        completionBlock:(void (^)(NSError *error))block;
 
-- (void)requestUserWithCompletionBlock:(void (^)(FTFUser *user))block;
-
+- (void)requestUserWithCompletionBlock:(void (^)(FTFUser *user, NSError *error))block;
 @end
