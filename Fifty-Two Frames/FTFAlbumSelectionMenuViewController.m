@@ -148,8 +148,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 {
     [super viewDidLoad];
     
-    self.segmentedControl.hidden = YES;
-    self.yearButton.enabled = NO;
+    
     
     [self setUpNoAlbumsLabelAppearance];
     
@@ -160,6 +159,8 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
                                                 name:@"yearSelectedNotification"
                                               object:nil];
     if (!self.weeklySubmissions.albums.count) {
+        self.segmentedControl.hidden = YES;
+        self.yearButton.enabled = NO;
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = @"Loading albums";
     }
