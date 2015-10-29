@@ -72,8 +72,6 @@ static const CGFloat labelPadding = 10;
     _textView.scrollEnabled = YES;
 
     [_contentView addSubview:_textView];
-    
-
 }
 
 @end

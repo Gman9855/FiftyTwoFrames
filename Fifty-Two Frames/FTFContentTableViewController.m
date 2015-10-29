@@ -203,9 +203,10 @@ BOOL _morePhotosToLoad = NO;
                                               cancelButtonTitle:@"Okay"
                                               otherButtonTitles:nil];
         [alert show];
-        
+
         if (!self.albumPhotos.count) {     // Check whether we're loading the initial latest album.  We don't want to
                                            // display the refresh button if we already have an album showing
+            self.tableView.scrollEnabled = NO;
             if (!self.refreshAlbumPhotosButton) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     self.refreshAlbumPhotosButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -219,12 +220,12 @@ BOOL _morePhotosToLoad = NO;
             } else {
                 self.refreshAlbumPhotosButton.hidden = NO;
             }
-            
         }
         return;
     }
     
     if ([photos count]) {
+        self.tableView.scrollEnabled = YES;
         self.albumPhotos = photos;
         self.photoGrid.gridPhotos = photos;
         if (_finishedPaging) {
