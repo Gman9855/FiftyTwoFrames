@@ -586,12 +586,12 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="59" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="e7r-WD-pAg">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="70" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="e7r-WD-pAg">
                                 <rect key="frame" x="-4" y="0.0" width="328" height="439"/>
                                 <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="commentCell" rowHeight="59" id="UA5-QZ-R2q" customClass="FTFPhotoCommentTableViewCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="commentCell" rowHeight="70" id="UA5-QZ-R2q" customClass="FTFPhotoCommentTableViewCell">
                                         <rect key="frame" x="0.0" y="22" width="328" height="59"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UA5-QZ-R2q" id="pMm-IX-gsX">
@@ -651,10 +651,13 @@
                                             </subviews>
                                             <animations/>
                                             <constraints>
-                                                <constraint firstItem="hhg-NA-rHA" firstAttribute="top" secondItem="pMm-IX-gsX" secondAttribute="topMargin" constant="-8" id="3ck-5x-776"/>
+                                                <constraint firstItem="hhg-NA-rHA" firstAttribute="top" secondItem="pMm-IX-gsX" secondAttribute="topMargin" constant="-8" id="3ck-5x-776">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="0.0"/>
+                                                </constraint>
                                                 <constraint firstItem="jzE-LO-CyA" firstAttribute="leading" secondItem="hhg-NA-rHA" secondAttribute="trailing" constant="5" id="5d1-y3-dfS"/>
-                                                <constraint firstItem="zDV-eA-cCf" firstAttribute="top" secondItem="pMm-IX-gsX" secondAttribute="topMargin" constant="-8" id="6aN-dd-9Jx"/>
-                                                <constraint firstItem="hhg-NA-rHA" firstAttribute="leading" secondItem="pMm-IX-gsX" secondAttribute="leadingMargin" constant="5" id="F9H-QZ-Se5"/>
+                                                <constraint firstItem="hhg-NA-rHA" firstAttribute="leading" secondItem="pMm-IX-gsX" secondAttribute="leadingMargin" constant="5" id="F9H-QZ-Se5">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="0.0"/>
+                                                </constraint>
                                                 <constraint firstItem="zDV-eA-cCf" firstAttribute="top" secondItem="hhg-NA-rHA" secondAttribute="top" id="PeP-MC-dE4"/>
                                                 <constraint firstItem="2sn-2d-Hh0" firstAttribute="top" secondItem="zDV-eA-cCf" secondAttribute="bottom" constant="3" id="R0c-5w-owe"/>
                                                 <constraint firstItem="jzE-LO-CyA" firstAttribute="top" secondItem="2sn-2d-Hh0" secondAttribute="bottom" constant="2" id="Ypa-1y-mWj">
@@ -662,7 +665,7 @@
                                                 </constraint>
                                                 <constraint firstItem="zDV-eA-cCf" firstAttribute="leading" secondItem="hhg-NA-rHA" secondAttribute="trailing" constant="5" id="kxb-b6-kCd"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="jzE-LO-CyA" secondAttribute="bottom" constant="-3" id="lM7-XX-8nR">
-                                                    <variation key="heightClass=regular-widthClass=compact" constant="-5"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="-2"/>
                                                 </constraint>
                                                 <constraint firstItem="2sn-2d-Hh0" firstAttribute="leading" secondItem="hhg-NA-rHA" secondAttribute="trailing" constant="5" id="xFD-2i-2My"/>
                                             </constraints>
