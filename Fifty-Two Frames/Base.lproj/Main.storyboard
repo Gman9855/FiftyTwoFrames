@@ -273,28 +273,27 @@
             <point key="canvasLocation" x="5083.5" y="-30.75"/>
         </scene>
         <!--Photo Collection Grid View Controller-->
-        <scene sceneID="Uoh-VJ-IcE">
+        <scene sceneID="qBB-Q6-aDj">
             <objects>
-                <collectionViewController storyboardIdentifier="grid" autoresizesArchivedViewToFullSize="NO" id="8tf-94-dpJ" customClass="FTFPhotoCollectionGridViewController" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="eoh-L7-crL">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                <collectionViewController storyboardIdentifier="grid" id="iZh-Zc-LQJ" customClass="FTFPhotoCollectionGridViewController" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="6ph-C5-kUS">
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="R6r-o9-1AA">
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="UyC-2A-RZj">
                             <size key="itemSize" width="100" height="100"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="50" height="50"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="FE9-Dg-sfE" customClass="FTFCollectionViewCell">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="Wtr-99-pgG" customClass="FTFCollectionViewCell">
                                 <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jgh-Z3-dYF">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cVv-c2-yWa">
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                             <animations/>
                                         </imageView>
@@ -305,49 +304,49 @@
                                 <animations/>
                                 <size key="customSize" width="100" height="100"/>
                                 <connections>
-                                    <outlet property="thumbnailView" destination="Jgh-Z3-dYF" id="t0m-Jr-TUM"/>
+                                    <outlet property="thumbnailView" destination="cVv-c2-yWa" id="Sic-wM-Rqn"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="footer" id="cyb-N6-RGI" customClass="FTFCollectionReusableView">
+                        <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="footer" id="Bc7-NI-GZs" customClass="FTFCollectionReusableView">
                             <rect key="frame" x="0.0" y="100" width="600" height="50"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="RSR-3E-OdR">
+                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="nAL-wf-Hek">
                                     <rect key="frame" x="150" y="15" width="20" height="20"/>
                                     <animations/>
                                 </activityIndicatorView>
                             </subviews>
                             <animations/>
                             <constraints>
-                                <constraint firstItem="RSR-3E-OdR" firstAttribute="centerY" secondItem="cyb-N6-RGI" secondAttribute="centerY" id="aED-bQ-4lM"/>
-                                <constraint firstItem="RSR-3E-OdR" firstAttribute="centerX" secondItem="cyb-N6-RGI" secondAttribute="centerX" id="xDp-6v-Gu2"/>
+                                <constraint firstItem="nAL-wf-Hek" firstAttribute="centerX" secondItem="Bc7-NI-GZs" secondAttribute="centerX" id="9uC-bi-xzV"/>
+                                <constraint firstItem="nAL-wf-Hek" firstAttribute="centerY" secondItem="Bc7-NI-GZs" secondAttribute="centerY" id="tvh-jN-ckZ"/>
                             </constraints>
                             <variation key="default">
                                 <mask key="constraints">
-                                    <exclude reference="aED-bQ-4lM"/>
-                                    <exclude reference="xDp-6v-Gu2"/>
+                                    <exclude reference="tvh-jN-ckZ"/>
+                                    <exclude reference="9uC-bi-xzV"/>
                                 </mask>
                             </variation>
                             <variation key="heightClass=regular-widthClass=compact">
                                 <mask key="constraints">
-                                    <include reference="aED-bQ-4lM"/>
-                                    <include reference="xDp-6v-Gu2"/>
+                                    <include reference="tvh-jN-ckZ"/>
+                                    <include reference="9uC-bi-xzV"/>
                                 </mask>
                             </variation>
                             <connections>
-                                <outlet property="spinner" destination="RSR-3E-OdR" id="Iff-4w-poU"/>
+                                <outlet property="spinner" destination="nAL-wf-Hek" id="z7S-Tw-4LI"/>
                             </connections>
                         </collectionReusableView>
                         <connections>
-                            <outlet property="dataSource" destination="8tf-94-dpJ" id="Idw-9h-VVk"/>
-                            <outlet property="delegate" destination="8tf-94-dpJ" id="5af-1F-y8q"/>
+                            <outlet property="dataSource" destination="iZh-Zc-LQJ" id="i2e-D2-gdG"/>
+                            <outlet property="delegate" destination="iZh-Zc-LQJ" id="DIL-EC-pxv"/>
                         </connections>
                     </collectionView>
                 </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cps-5x-Tl3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9Sp-Lf-DZ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6337.5" y="-130.98591549295773"/>
+            <point key="canvasLocation" x="6495" y="-138"/>
         </scene>
         <!--Container View Controller-->
         <scene sceneID="ZZb-r3-0jl">

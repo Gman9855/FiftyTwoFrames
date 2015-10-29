@@ -15,7 +15,7 @@
 #import "FiftyTwoFrames.h"
 #import "FTFCollectionReusableView.h"
 
-@interface FTFPhotoCollectionGridViewController ()
+@interface FTFPhotoCollectionGridViewController () <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) FTFCollectionReusableView *collectionReusableView;
 
@@ -141,6 +141,10 @@
     }
     
     return self.collectionReusableView;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 50) / 3, 100);
 }
 
 #pragma mark - Scroll View Delegate

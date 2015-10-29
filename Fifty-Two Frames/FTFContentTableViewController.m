@@ -82,7 +82,6 @@ BOOL _morePhotosToLoad = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     self.gridButton.enabled = NO;
     self.albumInfoButton.enabled = NO;
     
@@ -328,6 +327,7 @@ BOOL _morePhotosToLoad = NO;
                           cell.selectionStyle = UITableViewCellSelectionStyleNone;
                           
     }];
+
     return cell;
 }
 
