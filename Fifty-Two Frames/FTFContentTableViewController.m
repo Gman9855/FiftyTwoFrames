@@ -313,13 +313,13 @@ BOOL _morePhotosToLoad = NO;
     FTFTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     FTFImage *photo = self.albumPhotos[indexPath.row];
     
-    [cell.photo setImageWithURL:photo.largePhotoURL placeholderImage:nil
+    [cell.photo setImageWithURL:photo.smallPhotoURL placeholderImage:nil
                         options:SDWebImageRetryFailed
                        progress:nil
                       completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
                           if (cacheType == SDImageCacheTypeNone || cacheType == SDImageCacheTypeDisk) {
                               CATransition *t = [CATransition animation];
-                              t.duration = 0.15;
+                              t.duration = 0.12;
                               t.type = kCATransitionFade;
                               [cell.photo.layer addAnimation:t forKey:@"ftf"];
                           }
