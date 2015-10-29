@@ -115,7 +115,7 @@
                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
                                     if (cacheType == SDImageCacheTypeNone || cacheType == SDImageCacheTypeDisk) {
                                         CATransition *t = [CATransition animation];
-                                        t.duration = 0.15;
+                                        t.duration = 0.12;
                                         t.type = kCATransitionFade;
                                         [cell.thumbnailView.layer addAnimation:t forKey:@"ftf"];
                                     }
@@ -144,7 +144,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 50) / 3, 100);
+    return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 44) / 3, 100);
 }
 
 #pragma mark - Scroll View Delegate

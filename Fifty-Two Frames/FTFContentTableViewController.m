@@ -257,17 +257,6 @@ BOOL _morePhotosToLoad = NO;
     
         _morePhotosToLoad = YES;
     }
-//    } else {
-//        [MBProgressHUD hideHUDForView:self.view animated:NO];
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-//                                                        message:@"Sorry, no photos found for this album"
-//                                                      delegate:self
-//                                           cancelButtonTitle:@"Okay"
-//                                            otherButtonTitles:nil];
-//        [alert show];
-//        });
-//    }
 }
 
 - (void)didReceiveMemoryWarning
