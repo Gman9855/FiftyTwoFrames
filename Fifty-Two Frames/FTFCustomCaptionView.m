@@ -63,7 +63,7 @@ static const CGFloat labelPadding = 10;
     _textView.backgroundColor = [UIColor clearColor];
     _textView.textAlignment = NSTextAlignmentCenter;
     _textView.textColor = [UIColor whiteColor];
-    _textView.font = [UIFont systemFontOfSize:10];
+    _textView.font = [UIFont systemFontOfSize:12];
     if ([_photo respondsToSelector:@selector(caption)]) {
         _textView.text = [_photo caption] ? [_photo caption] : @" ";
     }
