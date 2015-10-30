@@ -634,24 +634,8 @@
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" misplaced="YES" placeholderIntrinsicWidth="243" placeholderIntrinsicHeight="16" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="219" translatesAutoresizingMaskIntoConstraints="NO" id="2sn-2d-Hh0">
                                                     <rect key="frame" x="53" y="24" width="229" height="16"/>
                                                     <animations/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="16" id="1Vs-JI-F7Q"/>
-                                                        <constraint firstAttribute="width" constant="331" id="O6z-MX-XCt"/>
-                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="default">
-                                                        <mask key="constraints">
-                                                            <exclude reference="1Vs-JI-F7Q"/>
-                                                            <exclude reference="O6z-MX-XCt"/>
-                                                        </mask>
-                                                    </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
-                                                        <mask key="constraints">
-                                                            <include reference="1Vs-JI-F7Q"/>
-                                                            <include reference="O6z-MX-XCt"/>
-                                                        </mask>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <animations/>
@@ -663,6 +647,7 @@
                                                 <constraint firstItem="hhg-NA-rHA" firstAttribute="leading" secondItem="pMm-IX-gsX" secondAttribute="leadingMargin" constant="5" id="F9H-QZ-Se5">
                                                     <variation key="heightClass=regular-widthClass=compact" constant="0.0"/>
                                                 </constraint>
+                                                <constraint firstAttribute="trailingMargin" secondItem="2sn-2d-Hh0" secondAttribute="trailing" constant="13" id="Gem-Hg-Pfk"/>
                                                 <constraint firstItem="zDV-eA-cCf" firstAttribute="top" secondItem="hhg-NA-rHA" secondAttribute="top" id="PeP-MC-dE4"/>
                                                 <constraint firstItem="2sn-2d-Hh0" firstAttribute="top" secondItem="zDV-eA-cCf" secondAttribute="bottom" constant="3" id="R0c-5w-owe"/>
                                                 <constraint firstItem="jzE-LO-CyA" firstAttribute="top" secondItem="2sn-2d-Hh0" secondAttribute="bottom" constant="2" id="Ypa-1y-mWj">
@@ -674,6 +659,16 @@
                                                 </constraint>
                                                 <constraint firstItem="2sn-2d-Hh0" firstAttribute="leading" secondItem="hhg-NA-rHA" secondAttribute="trailing" constant="5" id="xFD-2i-2My"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="Gem-Hg-Pfk"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="constraints">
+                                                    <include reference="Gem-Hg-Pfk"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                         <animations/>
                                         <connections>
@@ -684,6 +679,9 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="77" width="400" height="741"/>
+                                </variation>
                             </tableView>
                         </subviews>
                         <animations/>

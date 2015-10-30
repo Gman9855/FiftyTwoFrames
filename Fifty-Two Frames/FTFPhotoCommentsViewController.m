@@ -212,6 +212,7 @@ static NSString * const reuseIdentifier = @"commentCell";
     [cell.commenterProfilePicture setImageWithURL:photoComment.commenterProfilePictureURL];
     
     cell.commenterName.text = photoComment.commenterName;
+    
     cell.commentBody.text = photoComment.comment;
     
     cell.commentDate.text = [self timeIntervalformattedDateStringFromFacebookDate:photoComment.createdTime];
