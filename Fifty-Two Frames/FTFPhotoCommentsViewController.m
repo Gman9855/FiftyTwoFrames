@@ -26,6 +26,7 @@ static NSAttributedString *lightGrayPostString = nil;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UIButton *postCommentButton;
 @property (nonatomic, assign) NSInteger keyboardHeight;
+@property (weak, nonatomic) IBOutlet UIView *textFieldContainerView;
 
 @end
 
@@ -38,7 +39,8 @@ static NSString * const reuseIdentifier = @"commentCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.textFieldContainerView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.textFieldContainerView.layer.borderWidth = 0.5;
     self.tableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
     self.postCommentButton.enabled = NO;
     self.tableView.estimatedRowHeight = 75;
