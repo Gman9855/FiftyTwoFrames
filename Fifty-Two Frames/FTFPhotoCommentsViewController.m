@@ -121,9 +121,9 @@ static NSString * const reuseIdentifier = @"commentCell";
 - (IBAction)doneButtonTapped:(UIBarButtonItem *)sender {
     if ([self.textField isFirstResponder]) {
         [self.view endEditing:YES];
-    } else {
-        [self dismissViewControllerAnimated:true completion:nil];
     }
+    [self dismissViewControllerAnimated:true completion:nil];
+
 }
 
 - (IBAction)postButtonTapped:(UIButton *)sender {
