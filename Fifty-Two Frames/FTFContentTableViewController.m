@@ -152,6 +152,7 @@ BOOL _morePhotosToLoad = NO;
     if (![text isEqualToString:@""]) {
         hud.labelText = text;
     }
+    
 //    [hud setCenter:[self.view convertPoint:self.view.center fromView:self.view.superview]];
 //    [hud setCenter:CGPointMake(self.view.bounds.size.height/2, self.view.bounds.size.width/2)];
 }
