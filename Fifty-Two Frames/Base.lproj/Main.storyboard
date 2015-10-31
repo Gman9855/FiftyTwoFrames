@@ -342,7 +342,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Sp-Lf-DZ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6495" y="-138"/>
+            <point key="canvasLocation" x="6465" y="-136.5"/>
         </scene>
         <!--Container View Controller-->
         <scene sceneID="ZZb-r3-0jl">
@@ -756,7 +756,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="52f-square-whitebg-large.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="8Ft-t0-qqM">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="52f-square-whitebg-large.png" translatesAutoresizingMaskIntoConstraints="NO" id="8Ft-t0-qqM">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <animations/>
                                 <constraints>
@@ -919,7 +919,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="52f-square-whitebg-large.jpg" width="2000" height="2000"/>
+        <image name="52f-square-whitebg-large.png" width="2000" height="2000"/>
         <image name="Info" width="22" height="22"/>
         <image name="Menu" width="22" height="22"/>
         <image name="Refresh.png" width="50" height="50"/>
