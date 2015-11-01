@@ -28,6 +28,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:reuseIdentifier];
 
     // Uncomment the following line to preserve selection between presentations.
