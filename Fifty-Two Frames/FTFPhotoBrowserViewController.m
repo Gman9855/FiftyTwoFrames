@@ -119,24 +119,73 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
 #pragma mark - Action Methods
 
 - (void)fbLikeButtonTapped {
-    [self postLikeButtonTappedNotificationWithCurrentPhotoIndex];
+    FTFImage *photo = self.albumPhotos[self.currentIndex];
+    BOOL hasTappedLikeButtonOnce = [[NSUserDefaults standardUserDefaults] boolForKey:@"HasTappedLikeButtonOnce"];
+    BOOL hasTappedUnlikeButtonOnce = [[NSUserDefaults standardUserDefaults] boolForKey:@"HasTappedUnlikeButtonOnce"];
+    if (!hasTappedLikeButtonOnce || !hasTappedUnlikeButtonOnce) {
+        
+        NSString *messageString;
+        if (photo.isLiked) {
+            messageString = @"This will delete a like from Facebook.  Do you wish to continue?";
+        } else {
+            messageString = @"This will publish a like to Facebook.  Do you wish to continue?";
+        }
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:messageString preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            if (photo.isLiked) {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasTappedUnlikeButtonOnce"];
+            } else {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasTappedLikeButtonOnce"];
+            }
+            
+            [[NSUserDefaults standardUserDefaults] synchronize];
 
-    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
-    anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    anim.duration = 0.2;
-    anim.repeatCount = 1;
-    anim.autoreverses = YES;
-    anim.removedOnCompletion = YES;
-    anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.4, 1.4, 1.0)];
-    [self.imageViewForButton.layer addAnimation:anim forKey:nil];
-    UIImage *thumbUnfilled = [UIImage imageNamed:@"ThumbUp"];
-    UIImage *thumbFilled = [UIImage imageNamed:@"ThumbUpFilled"];
-    [UIView transitionWithView:self.imageViewForButton
-                      duration:0.2f
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        self.imageViewForButton.image = !self.photo.isLiked ? thumbFilled : thumbUnfilled;
-                    } completion:NULL];
+            [self postLikeButtonTappedNotificationWithCurrentPhotoIndex];
+            
+            CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
+            anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            anim.duration = 0.2;
+            anim.repeatCount = 1;
+            anim.autoreverses = YES;
+            anim.removedOnCompletion = YES;
+            anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.4, 1.4, 1.0)];
+            [self.imageViewForButton.layer addAnimation:anim forKey:nil];
+            UIImage *thumbUnfilled = [UIImage imageNamed:@"ThumbUp"];
+            UIImage *thumbFilled = [UIImage imageNamed:@"ThumbUpFilled"];
+            [UIView transitionWithView:self.imageViewForButton
+                              duration:0.2f
+                               options:UIViewAnimationOptionTransitionCrossDissolve
+                            animations:^{
+                                self.imageViewForButton.image = !self.photo.isLiked ? thumbFilled : thumbUnfilled;
+                            } completion:NULL];
+        }];
+        
+        [alertController addAction:cancelAction];
+        [alertController addAction:okAction];
+        [self presentViewController:alertController animated:true completion:nil];
+    } else {
+    
+        [self postLikeButtonTappedNotificationWithCurrentPhotoIndex];
+        
+        CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
+        anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        anim.duration = 0.2;
+        anim.repeatCount = 1;
+        anim.autoreverses = YES;
+        anim.removedOnCompletion = YES;
+        anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.4, 1.4, 1.0)];
+        [self.imageViewForButton.layer addAnimation:anim forKey:nil];
+        UIImage *thumbUnfilled = [UIImage imageNamed:@"ThumbUp"];
+        UIImage *thumbFilled = [UIImage imageNamed:@"ThumbUpFilled"];
+        [UIView transitionWithView:self.imageViewForButton
+                          duration:0.2f
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+                            self.imageViewForButton.image = !self.photo.isLiked ? thumbFilled : thumbUnfilled;
+                        } completion:NULL];
+    }
+    
 }
 
 - (void)postLikeButtonTappedNotificationWithCurrentPhotoIndex {

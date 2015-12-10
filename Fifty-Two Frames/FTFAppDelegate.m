@@ -35,6 +35,7 @@
     [application registerUserNotificationSettings:settings];
     [application registerForRemoteNotifications];
     [FBSDKLoginButton class];
+    
     return [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
