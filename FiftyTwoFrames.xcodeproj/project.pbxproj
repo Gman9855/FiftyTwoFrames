@@ -1153,7 +1153,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					/Users/Gershy/Documents/FacebookSDK,
+					/Users/gershylev/Documents/FacebookSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Fifty-Two Frames/FiftyTwoFrames-Prefix.pch";
@@ -1186,7 +1186,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					/Users/Gershy/Documents/FacebookSDK,
+					/Users/gershylev/Documents/FacebookSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Fifty-Two Frames/FiftyTwoFrames-Prefix.pch";
