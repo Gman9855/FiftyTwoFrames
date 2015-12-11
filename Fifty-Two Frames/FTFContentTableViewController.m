@@ -471,7 +471,6 @@ BOOL didLikePhotoFromBrowser = NO;
                     }
                 }];
             }
-            
         }];
         
         [alertController addAction:cancelAction];

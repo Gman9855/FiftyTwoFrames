@@ -29,7 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
+    self.loginButton.readPermissions = @[@"public_profile", @"user_friends"];
     self.loginButton.publishPermissions =  @[@"publish_actions"];
     self.loginButton.loginBehavior = FBSDKLoginBehaviorNative;
 //    self.loginButton.center = self.view.center;
