@@ -11,6 +11,7 @@
 		1AA2BAC819C8BC650069A92F /* FTFCustomCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AA2BAC719C8BC650069A92F /* FTFCustomCaptionView.m */; };
 		1AD3044A19CF748D0001823F /* FTFActivityIndicatorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AD3044919CF748D0001823F /* FTFActivityIndicatorCell.m */; };
 		1AEB1B3B19C5725100EB67D2 /* FTFUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AEB1B3A19C5725100EB67D2 /* FTFUser.m */; };
+		7CBB74EA1C1B7B6C00179997 /* FTFLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */; };
 		8B12265019B2DE9700FBFE4E /* FTFPhotoContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */; };
 		8B12265319B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */; };
 		8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */; };
@@ -147,6 +148,8 @@
 		1AEB1B3919C5725100EB67D2 /* FTFUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFUser.h; sourceTree = "<group>"; };
 		1AEB1B3A19C5725100EB67D2 /* FTFUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFUser.m; sourceTree = "<group>"; };
 		585C73FEB11132E90D8621EC /* Pods-FiftyTwoFrames.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiftyTwoFrames.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FiftyTwoFrames/Pods-FiftyTwoFrames.debug.xcconfig"; sourceTree = "<group>"; };
+		7CBB74E81C1B7B6C00179997 /* FTFLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFLikeButton.h; sourceTree = "<group>"; };
+		7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFLikeButton.m; sourceTree = "<group>"; };
 		8B12264E19B2DE9700FBFE4E /* FTFPhotoContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoContainerViewController.h; sourceTree = "<group>"; };
 		8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoContainerViewController.m; sourceTree = "<group>"; };
 		8B12265119B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FTFImage+MWPhotoAdditions.h"; sourceTree = "<group>"; };
@@ -410,6 +413,8 @@
 				8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */,
 				8BCB4BF519931B7E00B9C751 /* FTFPhotoComment.h */,
 				8BCB4BF619931B7E00B9C751 /* FTFPhotoComment.m */,
+				7CBB74E81C1B7B6C00179997 /* FTFLikeButton.h */,
+				7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */,
 			);
 			name = "Model Objects";
 			sourceTree = "<group>";
@@ -963,6 +968,7 @@
 				8BA8797E19675FF400A43819 /* SDWebImageDecoder.m in Sources */,
 				8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */,
 				8BA8793819674E6A00A43819 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
+				7CBB74EA1C1B7B6C00179997 /* FTFLikeButton.m in Sources */,
 				8BA8794419674E6A00A43819 /* PSTGridLayoutSection.m in Sources */,
 				8BA8794119674E6A00A43819 /* PSTGridLayoutInfo.m in Sources */,
 				8BA8793F19674E6A00A43819 /* PSTCollectionViewLayout.m in Sources */,

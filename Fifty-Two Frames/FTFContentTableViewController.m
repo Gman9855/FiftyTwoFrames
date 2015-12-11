@@ -24,6 +24,7 @@
 #import "FTFAlbumCategoryCollection.h"
 #import "FTFAlbumDescriptionViewController.h"
 #import "FTFCustomCaptionView.h"
+#import "FTFLikeButton.h"
 
 @interface FTFContentTableViewController () <UINavigationControllerDelegate, MWPhotoBrowserDelegate, FTFPhotoCollectionGridViewControllerDelegate>
 
@@ -409,17 +410,7 @@ BOOL didLikePhotoFromBrowser = NO;
     NSLog(@"In content vc: %@", self.albumSelectionMenuViewController);
 }
 
-- (IBAction)likeIconTapped:(UIButton *)sender {
-
-    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
-    anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    anim.duration = 0.2;
-    anim.repeatCount = 1;
-    anim.autoreverses = YES;
-    anim.removedOnCompletion = YES;
-    anim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.4, 1.4, 1.0)];
-    [sender.layer addAnimation:anim forKey:nil];
-    
+- (IBAction)likeIconTapped:(FTFLikeButton *)sender {
     // Find which cell the like came from
     CGPoint center = sender.center;
     CGPoint rootViewPoint = [sender.superview convertPoint:center toView:self.tableView];
@@ -427,17 +418,13 @@ BOOL didLikePhotoFromBrowser = NO;
     
     FTFImage *photo = self.albumPhotos[indexPath.row];
     FTFTableViewCell *cell = (FTFTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        
-    [self handlePhotoLikeWithCell:cell andPhoto:photo];
-}
-
-- (void)handlePhotoLikeWithCell:(FTFTableViewCell *)cell andPhoto:(FTFImage *)photo {
+    
     BOOL hasTappedLikeButtonOnce = [[NSUserDefaults standardUserDefaults] boolForKey:@"HasTappedLikeButtonOnce"];
     BOOL hasTappedUnlikeButtonOnce = [[NSUserDefaults standardUserDefaults] boolForKey:@"HasTappedUnlikeButtonOnce"];
     
-    if ((!hasTappedLikeButtonOnce || !hasTappedUnlikeButtonOnce) && !didLikePhotoFromBrowser) {
-        
+    if ((!hasTappedLikeButtonOnce || !hasTappedUnlikeButtonOnce)) {
         NSString *messageString;
+        
         if (photo.isLiked) {
             messageString = @"This will delete a like from Facebook.  Do you wish to continue?";
         } else {
@@ -446,55 +433,43 @@ BOOL didLikePhotoFromBrowser = NO;
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:messageString preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            if (!photo.isLiked) {
-                [[FiftyTwoFrames sharedInstance] publishPhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
-                    if (!error) {
-                        [cell.likeButton setImage:[UIImage imageNamed:!photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"] forState:UIControlStateNormal];
-                        photo.likesCount++;
-                        photo.isLiked = YES;
-                        cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];
-                        
-                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasTappedLikeButtonOnce"];
-                        [[NSUserDefaults standardUserDefaults] synchronize];
-                    }
-                }];
-            } else if (photo.isLiked) {
-                [[FiftyTwoFrames sharedInstance] deletePhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
-                    if (!error) {
-                        [cell.likeButton setImage:[UIImage imageNamed:!photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"] forState:UIControlStateNormal];
-                        photo.likesCount--;
-                        photo.isLiked = NO;
-                        cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];
-                        
-                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasTappedUnlikeButtonOnce"];
-                        [[NSUserDefaults standardUserDefaults] synchronize];
-                    }
-                }];
+            [sender animateTap];
+            if (photo.isLiked) {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasTappedUnlikeButtonOnce"];
+            } else {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasTappedLikeButtonOnce"];
             }
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            [self handlePhotoLikeWithCell:cell andPhoto:photo];
         }];
-        
         [alertController addAction:cancelAction];
         [alertController addAction:okAction];
         [self presentViewController:alertController animated:true completion:nil];
     } else {
-        [cell.likeButton setImage:[UIImage imageNamed:!photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"] forState:UIControlStateNormal];
-        if (!photo.isLiked) {
-            [[FiftyTwoFrames sharedInstance] publishPhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
-                if (!error) {
-                    photo.likesCount++;
-                    photo.isLiked = YES;
-                    cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];
-                }
-            }];
-        } else {
-            [[FiftyTwoFrames sharedInstance] deletePhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
-                if (!error) {
-                    photo.likesCount--;
-                    photo.isLiked = NO;
-                    cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];
-                }
-            }];
-        }
+        [sender animateTap];
+        [self handlePhotoLikeWithCell:cell andPhoto:photo];
+    }
+}
+
+- (void)handlePhotoLikeWithCell:(FTFTableViewCell *)cell andPhoto:(FTFImage *)photo {
+    [cell.likeButton setImage:[UIImage imageNamed:!photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"] forState:UIControlStateNormal];
+    if (!photo.isLiked) {
+        [[FiftyTwoFrames sharedInstance] publishPhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
+            if (!error) {
+                photo.likesCount++;
+                photo.isLiked = YES;
+                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];
+            }
+        }];
+    } else {
+        [[FiftyTwoFrames sharedInstance] deletePhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
+            if (!error) {
+                photo.likesCount--;
+                photo.isLiked = NO;
+                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];
+            }
+        }];
     }
 }
 

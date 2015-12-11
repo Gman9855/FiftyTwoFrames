@@ -74,7 +74,6 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
         UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:button];
         self.rightToolbarButtons = @[barItem];
         self.leftToolbarButtons = @[fbCommentsButton];
-        
     }
     
     return self;
