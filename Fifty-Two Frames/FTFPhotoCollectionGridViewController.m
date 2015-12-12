@@ -18,6 +18,7 @@
 @interface FTFPhotoCollectionGridViewController () <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) FTFCollectionReusableView *collectionReusableView;
+@property (nonatomic, strong) UILabel *navBarTitle;
 
 @end
 
@@ -25,6 +26,18 @@
     BOOL _albumSelectionChanged;
     BOOL _morePhotosToLoad;
     BOOL _finishedPaging;
+}
+
+- (UILabel *)navBarTitle {
+    if (!_navBarTitle) {
+        _navBarTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 85)];
+        _navBarTitle.textAlignment = NSTextAlignmentCenter;
+        _navBarTitle.textColor = [UIColor whiteColor];
+        _navBarTitle.font = [UIFont boldSystemFontOfSize:14];
+        _navBarTitle.numberOfLines = 2;
+        self.navigationItem.titleView = _navBarTitle;
+    }
+    return _navBarTitle;
 }
 
 #pragma mark - View controller
@@ -59,10 +72,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.gridPhotos.count) {
-        [MBProgressHUD showHUDAddedTo:self.collectionView animated:YES];
-    }
-    self.navigationController.toolbarHidden = YES;
+    [self setNavBarTitleWithAttributedText];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -175,6 +185,22 @@
                 _morePhotosToLoad = YES;
             }];
         }
+    }
+}
+
+#pragma mark - Helper Methods
+
+- (void)setNavBarTitleWithAttributedText {
+    if ([self.albumName containsString:@":"]) {
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:self.albumName];
+        NSArray *words = [self.albumName componentsSeparatedByString:@": "];
+        NSString *albumName = [words firstObject];
+        NSRange range = [self.albumName rangeOfString:albumName];
+        range.length++;
+        [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:range];
+        [self.navBarTitle setAttributedText:attributedString];
+    } else {
+        self.navBarTitle.text = self.albumName;
     }
 }
 

@@ -19,5 +19,6 @@
 @property (nonatomic, weak) id <FTFPhotoCollectionGridViewControllerDelegate> delegate;
 
 @property (nonatomic, strong) NSArray *gridPhotos;
+@property (nonatomic, strong) NSString *albumName;
 
 @end

@@ -232,6 +232,7 @@ BOOL didLikePhotoFromBrowser = NO;
         self.tableView.scrollEnabled = YES;
         self.albumPhotos = photos;
         self.photoGrid.gridPhotos = photos;
+        self.photoGrid.albumName = self.albumToDisplay.name;
         if (_finishedPaging) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"albumDoesNotNeedToBePagedNotification" object:nil];
         }
