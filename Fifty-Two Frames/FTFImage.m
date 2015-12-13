@@ -100,7 +100,13 @@
 }
 
 - (void)addPhotoComment:(FTFPhotoComment *)photoComment {
-    NSMutableArray *mutableArray = [self.comments mutableCopy];
+    NSMutableArray *mutableArray;
+    if (self.comments != nil) {
+        mutableArray = [self.comments mutableCopy];
+    } else {
+        mutableArray = [NSMutableArray new];
+    }
+    
     [mutableArray addObject:photoComment];
     self.comments = [mutableArray copy];
 }

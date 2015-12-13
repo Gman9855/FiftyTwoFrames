@@ -85,7 +85,10 @@ static NSString * const reuseIdentifier = @"commentCell";
     } completion:^(BOOL finished) {
         if (finished) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.photo.comments.count - 1 inSection:0]atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                if (self.photo.comments.count > 0) {
+                    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.photo.comments.count - 1 inSection:0]atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                }
+                
             });
         }
     }];
