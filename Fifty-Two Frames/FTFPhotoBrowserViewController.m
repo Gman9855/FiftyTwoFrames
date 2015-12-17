@@ -121,14 +121,19 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
     FTFImage *photo = self.albumPhotos[self.currentIndex];
     BOOL hasTappedLikeButtonOnce = [[NSUserDefaults standardUserDefaults] boolForKey:@"HasTappedLikeButtonOnce"];
     BOOL hasTappedUnlikeButtonOnce = [[NSUserDefaults standardUserDefaults] boolForKey:@"HasTappedUnlikeButtonOnce"];
-    if (!hasTappedLikeButtonOnce || !hasTappedUnlikeButtonOnce) {
-        
-        NSString *messageString;
-        if (photo.isLiked) {
-            messageString = @"This will delete a like from Facebook.  Do you wish to continue?";
-        } else {
-            messageString = @"This will publish a like to Facebook.  Do you wish to continue?";
-        }
+    
+    NSString *messageString;
+    BOOL shouldShowAlert = NO;
+    
+    if (!photo.isLiked && !hasTappedLikeButtonOnce) {  // if the user taps to like a photo and they haven't liked a photo before
+        shouldShowAlert = YES;
+        messageString = @"This will publish a like to Facebook.  Do you wish to continue?";
+    } else if (photo.isLiked && !hasTappedUnlikeButtonOnce) {
+        shouldShowAlert = YES;
+        messageString = @"This will delete a like from Facebook.  Do you wish to continue?";
+    }
+    
+    if (shouldShowAlert) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:messageString preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -139,7 +144,7 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
             }
             
             [[NSUserDefaults standardUserDefaults] synchronize];
-
+            
             [self postLikeButtonTappedNotificationWithCurrentPhotoIndex];
             
             CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
@@ -163,8 +168,9 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
         [alertController addAction:cancelAction];
         [alertController addAction:okAction];
         [self presentViewController:alertController animated:true completion:nil];
+        
     } else {
-    
+
         [self postLikeButtonTappedNotificationWithCurrentPhotoIndex];
         
         CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
@@ -184,7 +190,6 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
                             self.imageViewForButton.image = !self.photo.isLiked ? thumbFilled : thumbUnfilled;
                         } completion:NULL];
     }
-    
 }
 
 - (void)postLikeButtonTappedNotificationWithCurrentPhotoIndex {
