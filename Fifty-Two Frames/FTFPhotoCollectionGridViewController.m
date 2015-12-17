@@ -155,7 +155,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 46) / 3, ([UIScreen mainScreen].bounds.size.width - 46) / 3);
+    return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 28) / 3, ([UIScreen mainScreen].bounds.size.width - 28) / 3);
 }
 
 #pragma mark - Scroll View Delegate
