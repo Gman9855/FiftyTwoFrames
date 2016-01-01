@@ -25,6 +25,8 @@
 #import "FTFAlbumDescriptionViewController.h"
 #import "FTFCustomCaptionView.h"
 #import "FTFLikeButton.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 @interface FTFContentTableViewController () <UINavigationControllerDelegate, MWPhotoBrowserDelegate, FTFPhotoCollectionGridViewControllerDelegate>
 
@@ -460,24 +462,48 @@ BOOL didLikePhotoFromBrowser = NO;
 }
 
 - (void)handlePhotoLikeWithCell:(FTFTableViewCell *)cell andPhoto:(FTFImage *)photo {
-    [cell.likeButton setImage:[UIImage imageNamed:!photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"] forState:UIControlStateNormal];
-    if (!photo.isLiked) {
-        [[FiftyTwoFrames sharedInstance] publishPhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
-            if (!error) {
-                photo.likesCount++;
-                photo.isLiked = YES;
-                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];
-            }
-        }];
+    if ([[FBSDKAccessToken currentAccessToken] hasGranted:@"publish_actions"]) {
+        [cell.likeButton setImage:[UIImage imageNamed:!photo.isLiked ? @"ThumbUpFilled" : @"ThumbUp"] forState:UIControlStateNormal];
+        if (!photo.isLiked) {
+            [[FiftyTwoFrames sharedInstance] publishPhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
+                if (!error) {
+                    photo.likesCount++;
+                    photo.isLiked = YES;
+                    cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];
+                }
+            }];
+        } else {
+            [[FiftyTwoFrames sharedInstance] deletePhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
+                if (!error) {
+                    photo.likesCount--;
+                    photo.isLiked = NO;
+                    cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];
+                }
+            }];
+        }
     } else {
-        [[FiftyTwoFrames sharedInstance] deletePhotoLikeWithPhotoID:photo.photoID completionBlock:^(NSError *error) {
-            if (!error) {
-                photo.likesCount--;
-                photo.isLiked = NO;
-                cell.likesCountLabel.text = [NSString stringWithFormat:@"%d", (int)photo.likesCount];
-            }
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"In order to like or comment on a photo, you'll need to grant this app permission to post to Facebook. We will NEVER submit anything without your permission. Do you wish to continue?" preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+            [loginManager logInWithPublishPermissions:@[@"publish_actions"]
+                                   fromViewController:self
+                                              handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                                                  if (error) {
+                                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                                          UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"Something went wrong.  Please check your internet and try again." preferredStyle:UIAlertControllerStyleAlert];
+                                                          UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:nil];
+                                                          [alertController addAction:okAction];
+                                                          [self presentViewController:alertController animated:YES completion:nil];
+                                                      });
+                                                  }
+                                              }];
         }];
+        [alertController addAction:cancelAction];
+        [alertController addAction:okAction];
+        [self presentViewController:alertController animated:true completion:nil];
     }
+    
 }
 
 - (void)_dismissButtonTapped:(id)sender;

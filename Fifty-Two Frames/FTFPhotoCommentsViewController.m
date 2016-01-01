@@ -12,8 +12,9 @@
 #import "FTFUser.h"
 #import "UIImageView+WebCache.h"
 #import "TTTTimeIntervalFormatter.h"
-
 #import "FiftyTwoFrames.h"
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 static NSAttributedString *bluePostString = nil;
 static NSAttributedString *lightGrayPostString = nil;
@@ -186,27 +187,29 @@ static NSString * const reuseIdentifier = @"commentCell";
 #pragma mark
 
 - (void)postComment {
-    [self setPostButtonColorWithEnabledState:NO];
-    FTFUser *user = [FiftyTwoFrames sharedInstance].user;
-    FTFPhotoComment *postedComment = [[FTFPhotoComment alloc] init];
-    postedComment.commenterName = user.name;
-    postedComment.commenterID = user.userID;
-    postedComment.commenterProfilePictureURL = user.profilePictureURL;
-    postedComment.createdTime = [NSDate date];
-    shouldIgnoreKeyboardEvents = YES;
-    //    [self.textField resignFirstResponder];
-    //    [self.textField becomeFirstResponder];
-    shouldIgnoreKeyboardEvents = NO;
-    postedComment.comment = self.textField.text;
-    
-    [[FiftyTwoFrames sharedInstance] publishPhotoCommentWithPhotoID:self.photo.photoID
-                                                            comment:postedComment.comment
-                                                    completionBlock:^(NSError *error) {
+    if ([[FBSDKAccessToken currentAccessToken] hasGranted:@"publish_actions"]) {
+        [self setPostButtonColorWithEnabledState:NO];
+        FTFUser *user = [FiftyTwoFrames sharedInstance].user;
+        FTFPhotoComment *postedComment = [[FTFPhotoComment alloc] init];
+        postedComment.commenterName = user.name;
+        postedComment.commenterID = user.userID;
+        postedComment.commenterProfilePictureURL = user.profilePictureURL;
+        postedComment.createdTime = [NSDate date];
+        shouldIgnoreKeyboardEvents = YES;
+        //    [self.textField resignFirstResponder];
+        //    [self.textField becomeFirstResponder];
+        shouldIgnoreKeyboardEvents = NO;
+        postedComment.comment = self.textField.text;
+        
+        [[FiftyTwoFrames sharedInstance] publishPhotoCommentWithPhotoID:self.photo.photoID
+                                                                comment:postedComment.comment
+                                                        completionBlock:^(NSError *error) {
+                                                            
             if (error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self setPostButtonColorWithEnabledState:YES];
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                    message:@"Could not post your comment.  Please check your internet."
+                                                                    message:@"Could not post your comment.  Please check your internet and try again."
                                                                    delegate:self
                                                           cancelButtonTitle:@"Okay"
                                                           otherButtonTitles:nil];
@@ -238,8 +241,32 @@ static NSString * const reuseIdentifier = @"commentCell";
                 });
                 
             }
-    }];
+        }];
 
+    } else {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"In order to like or comment on a photo, you'll need to grant this app permission to post to Facebook. We will NEVER submit anything without your permission. Do you wish to continue?" preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+            [loginManager logInWithPublishPermissions:@[@"publish_actions"]
+                                   fromViewController:self
+                                              handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                                                  if (error) {
+                                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                                          UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"Something went wrong.  Please check your internet and try again." preferredStyle:UIAlertControllerStyleAlert];
+                                                          UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:nil];
+                                                          [alertController addAction:okAction];
+                                                          [self presentViewController:alertController animated:YES completion:nil];
+                                                      });
+                                                  }
+                                              }];
+        }];
+        [alertController addAction:cancelAction];
+        [alertController addAction:okAction];
+        [self presentViewController:alertController animated:true completion:nil];
+
+    }
+    
 }
 
 #pragma mark - Helper methods
