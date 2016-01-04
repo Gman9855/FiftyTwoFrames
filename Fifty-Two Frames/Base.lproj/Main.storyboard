@@ -622,9 +622,6 @@
                                                     <rect key="frame" x="53" y="24" width="229" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="48" y="32" width="259" height="16"/>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <constraints>
