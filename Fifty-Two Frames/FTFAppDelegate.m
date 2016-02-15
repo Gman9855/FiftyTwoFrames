@@ -104,6 +104,8 @@
         [currentInstallation saveEventually];
     }
     
+    [PFAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     FTFContainerViewController *containerVC = (FTFContainerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"containerVC"];
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
