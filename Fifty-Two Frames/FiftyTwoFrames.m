@@ -330,16 +330,19 @@
         NSArray *imageURLs = [self urlsFromPhotoArray:photoCollections[i]];
         FTFImage *image = [[FTFImage alloc] initWithImageURLs:imageURLs];
         BOOL containsPhotoDescription = ![photoDescriptionCollection[i] isEqual:[NSNull null]];
+        NSString *photoTitle;
         if (containsPhotoDescription) {
             NSArray *lines = [photoDescriptionCollection[i] componentsSeparatedByString:@"\n"];
-//            if (lines.count > 2) {
-//                NSString *title = [lines[2] stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-//                image.title = title;
-//            } else {
-//                image.title = lines[1];
-//            }
+            for (NSString *string in lines) {
+                if (string.length > 0) {                //the string starting with a " is the title of the photo
+                    NSString *firstLetter = [string substringToIndex:1];
+                    if ([firstLetter isEqualToString:@"\""]) {
+                        photoTitle = string;
+                    }
+                }
+            }
             
-            image.title = (lines.count > 2) ? [lines[2] stringByReplacingOccurrencesOfString:@"\"" withString:@""] : lines[0];
+            image.title = photoTitle.length > 0 ? [[photoTitle stringByReplacingOccurrencesOfString:@"\"" withString:@""] capitalizedString] : [lines[0] capitalizedString];
             image.photographerName = [lines[0] capitalizedString];
             image.photoDescription = photoDescriptionCollection[i];
         }

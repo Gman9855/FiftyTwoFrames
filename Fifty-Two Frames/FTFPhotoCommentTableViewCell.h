@@ -14,5 +14,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *commenterProfilePicture;
 @property (weak, nonatomic) IBOutlet UILabel *commentDate;
 @property (weak, nonatomic) IBOutlet UILabel *commentBody;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *commentBodyToNameConstraint;
 
 @end

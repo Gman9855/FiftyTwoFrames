@@ -12,6 +12,7 @@
 		1AD3044A19CF748D0001823F /* FTFActivityIndicatorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AD3044919CF748D0001823F /* FTFActivityIndicatorCell.m */; };
 		1AEB1B3B19C5725100EB67D2 /* FTFUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AEB1B3A19C5725100EB67D2 /* FTFUser.m */; };
 		7CBB74EA1C1B7B6C00179997 /* FTFLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */; };
+		7CCE35B61C7A9C400061C760 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC93889193C1C8300418F32 /* Foundation.framework */; };
 		8B12265019B2DE9700FBFE4E /* FTFPhotoContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */; };
 		8B12265319B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */; };
 		8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */; };
@@ -87,7 +88,6 @@
 		8BAC031D19BBD3F700451615 /* FTFCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAC031C19BBD3F700451615 /* FTFCollectionViewCell.m */; };
 		8BAC032319BBE71D00451615 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BAC032219BBE71D00451615 /* placeholder.png */; };
 		8BC32592197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC32590197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m */; };
-		8BC9388A193C1C8300418F32 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC93889193C1C8300418F32 /* Foundation.framework */; };
 		8BC9388C193C1C8300418F32 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC9388B193C1C8300418F32 /* CoreGraphics.framework */; };
 		8BC9388E193C1C8300418F32 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC9388D193C1C8300418F32 /* UIKit.framework */; };
 		8BC93894193C1C8300418F32 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8BC93892193C1C8300418F32 /* InfoPlist.strings */; };
@@ -347,6 +347,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CCE35B61C7A9C400061C760 /* Foundation.framework in Frameworks */,
 				8BEC71CA1BDACACF006121F7 /* Social.framework in Frameworks */,
 				8BEC71C81BDACAC8006121F7 /* Accounts.framework in Frameworks */,
 				8BEC71C61BDACA9B006121F7 /* libsqlite3.tbd in Frameworks */,
@@ -362,7 +363,6 @@
 				8BC9388E193C1C8300418F32 /* UIKit.framework in Frameworks */,
 				8BEC71B61BDACA01006121F7 /* Parse.framework in Frameworks */,
 				8B41EC481BD1AE3C00E6D6D2 /* FBSDKCoreKit.framework in Frameworks */,
-				8BC9388A193C1C8300418F32 /* Foundation.framework in Frameworks */,
 				8BEC71B51BDACA01006121F7 /* Bolts.framework in Frameworks */,
 				8BE61EBA1BD1B29900E10AA3 /* FBSDKLoginKit.framework in Frameworks */,
 				E96395B3DFD043DDB4965E32 /* libPods-FiftyTwoFrames.a in Frameworks */,
