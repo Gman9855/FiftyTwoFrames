@@ -17,6 +17,8 @@
 #import "SDWebImageManager.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
+static NSString * const facebookPageID = @"180889155269546";
+
 @interface FiftyTwoFrames ()
 
 @property (nonatomic, strong) FBSDKGraphRequestConnection *requestConnection;
@@ -83,7 +85,7 @@
 
 - (void)requestLatestWeeklyThemeAlbumWithCompletionBlock:(void (^)(FTFAlbum *album, NSError *error, BOOL finishedPaging))block {
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"albums.limit(10).fields(name,description,created_time,photos.limit(1).fields(picture))", @"fields", nil];
-    NSString *graphPath = @"/180889155269546";
+    NSString *graphPath = [NSString stringWithFormat:@"/%@", facebookPageID];
     
     [[[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         if (error) {
@@ -110,7 +112,7 @@
 {
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"albums.limit(50).fields(name,description,created_time,photos.limit(1).fields(picture))", @"fields", nil];
     
-    NSString *graphPath = @"/180889155269546?albums.limit(50)";
+    NSString *graphPath = [NSString stringWithFormat:@"/%@?albums.limit(50)", facebookPageID];
     
     [[[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         if (block) {
