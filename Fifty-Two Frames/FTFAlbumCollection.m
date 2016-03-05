@@ -19,7 +19,7 @@
 
 @implementation FTFAlbumCollection
 
-- (instancetype)initWithAlbums:(NSArray *)albums andCollectionCategory:(FTFAlbumCollectionCategory)collectionCategory{
+- (instancetype)initWithAlbums:(NSArray *)albums andCollectionCategory:(FTFAlbumCollectionCategory)collectionCategory {
     if (self = [super init]) {
         _albums = albums;
         _collectionCategory = collectionCategory;
@@ -30,7 +30,7 @@
 - (id)initWithCoder:(NSCoder *)coder
 {
     if ((self = [super init]))
-    {
+{
         // Decode the property values by key, and assign them to the correct ivars
         _albums = [coder decodeObjectForKey:@"albums"];
         NSNumber *collectionCategory = [coder decodeObjectForKey:@"collectionCategory"];

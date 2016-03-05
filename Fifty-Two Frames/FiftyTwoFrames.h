@@ -17,7 +17,7 @@
 
 + (instancetype)sharedInstance;
 
-@property (nonatomic, strong) FTFUser *user;
+@property (nonatomic, strong, readonly) FTFUser *user;
 
 
 - (void)requestAlbumCollectionWithCompletionBlock:(void (^)(FTFAlbumCategoryCollection *, NSError *))block;

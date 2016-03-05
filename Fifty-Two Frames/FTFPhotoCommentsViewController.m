@@ -180,7 +180,6 @@ static NSString * const reuseIdentifier = @"commentCell";
     [cell.commenterProfilePicture setImageWithURL:photoComment.commenterProfilePictureURL];
     cell.commenterName.text = photoComment.commenterName;
     cell.commentBody.text = photoComment.comment;
-    cell.commentBody.adjustsFontSizeToFitWidth = YES;
     cell.commentDate.text = [self timeIntervalformattedDateStringFromFacebookDate:photoComment.createdTime];
     return cell;
 }

@@ -10,4 +10,14 @@
 
 @implementation FTFUser
 
+- (instancetype)initWithDictionary:(NSDictionary *)dict {
+    if (self = [super init]) {
+        _name = [dict valueForKey:@"name"];
+        _userID = [dict valueForKey:@"id"];
+        _profilePictureURL = [NSURL URLWithString:[dict valueForKeyPath:@"picture.data.url"]];
+    }
+    
+    return self;
+}
+
 @end

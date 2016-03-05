@@ -657,7 +657,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="commentBody" destination="2sn-2d-Hh0" id="qnZ-cy-fzW"/>
-                                            <outlet property="commentBodyToNameConstraint" destination="R0c-5w-owe" id="Z0h-Mp-kJz"/>
                                             <outlet property="commentDate" destination="jzE-LO-CyA" id="2ag-MB-cbX"/>
                                             <outlet property="commenterName" destination="zDV-eA-cCf" id="114-Lb-aG3"/>
                                             <outlet property="commenterProfilePicture" destination="hhg-NA-rHA" id="wuo-Dc-Mw5"/>

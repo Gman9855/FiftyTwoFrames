@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "FTFAlbumCollection.h"
 
+// This class represents all the different collections of albums (weekly, photo walks, etc)
+
 @interface FTFAlbumCategoryCollection : NSObject
 
 @property (nonatomic, readonly, strong) NSArray *albumCollections;

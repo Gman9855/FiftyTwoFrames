@@ -33,6 +33,8 @@
 @property (nonatomic, strong) NSMutableArray *photoWalkAlbums;
 @property (nonatomic, strong) NSMutableArray *miscellaneousAlbums;
 
+@property (nonatomic, strong, readwrite) FTFUser *user;
+
 @end
 
 @implementation FiftyTwoFrames
@@ -67,7 +69,7 @@
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"id, name, picture.fields(url)", @"fields", nil];
     [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         if (!error) {
-            self.user = [self userWithResponseData:result];
+            self.user = [[FTFUser alloc] initWithDictionary:result];
         }
         if (block) {
             if (!error) {
@@ -255,14 +257,6 @@
 }
 
 #pragma mark - Private Methods
-
-- (FTFUser *)userWithResponseData:(NSDictionary *)response {
-    FTFUser *user = [FTFUser new];
-    user.name = [response valueForKey:@"name"];
-    user.userID = [response valueForKey:@"id"];
-    user.profilePictureURL = [NSURL URLWithString:[response valueForKeyPath:@"picture.data.url"]];
-    return user;
-}
 
 - (NSArray *)albumsWithAlbumResponseData:(NSArray *)response {
     NSMutableArray *weeklyThemeAlbums = [NSMutableArray new];

@@ -547,6 +547,16 @@ BOOL didLikePhotoFromBrowser = NO;
 #pragma mark - UIScrollView Delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)aScrollView {
+//    NSLog(@"Content offset:  %f", self.tableView.contentOffset.y);
+//    NSLog(@"Content size:  %f", self.tableView.contentSize.height);
+//    BOOL navBarWithinSizeConstraints = self.navigationController.navigationBar.frame.size.height >= 0 && self.navigationController.navigationBar.frame.size.height <= 44;
+//    if (self.albumPhotos && navBarWithinSizeConstraints) {
+//        CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+//        CGFloat navBarHeight = self.navigationController.navigationBar.frame.size.height;
+//        CGRect navBarRect = self.navigationController.navigationBar.frame;
+//        navBarRect.size.height -= aScrollView.contentOffset.y + statusBarHeight + navBarHeight;
+//        self.navigationController.navigationBar.frame = navBarRect;
+//    }
     CGPoint offset = aScrollView.contentOffset;
     CGRect bounds = aScrollView.bounds;
     CGSize size = aScrollView.contentSize;
@@ -577,5 +587,30 @@ BOOL didLikePhotoFromBrowser = NO;
         }
     }
 }
+
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+//    
+//    NSLog(@"%f", scrollView.contentOffset.y);
+//    [UIView animateWithDuration:0.5 animations:^{
+//        self.navigationController.navigationBar.alpha = 0.0;
+//        self.navigationController.toolbar.alpha = 0.0;
+//    }];
+//}
+//
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+//    if (!decelerate) {
+//        [UIView animateWithDuration:0.5 animations:^{
+//            self.navigationController.navigationBar.alpha = 1.0;
+//            self.navigationController.toolbar.alpha = 1.0;
+//        }];
+//    }
+//}
+//
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+//    [UIView animateWithDuration:0.5 animations:^{
+//        self.navigationController.navigationBar.alpha = 1.0;
+//        self.navigationController.toolbar.alpha = 1.0;
+//    }];
+//}
 
 @end
