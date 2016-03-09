@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class FTFAlbum;
+
 typedef enum {
     FTFAlbumCollectionCategoryWeeklyThemes,
     FTFAlbumCollectionCategoryPhotoWalks,
@@ -20,6 +22,6 @@ typedef enum {
 - (instancetype)initWithAlbums:(NSArray *)albums andCollectionCategory:(FTFAlbumCollectionCategory)collectionCategory;  // initializes with FTFAlbum's
 
 @property (nonatomic, readonly) FTFAlbumCollectionCategory collectionCategory;
-@property (nonatomic, readonly, strong) NSArray *albums;
+@property (nonatomic, readonly, strong) NSArray<FTFAlbum *> *albums;
 
 @end

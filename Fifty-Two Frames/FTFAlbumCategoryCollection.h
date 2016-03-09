@@ -13,9 +13,11 @@
 
 @interface FTFAlbumCategoryCollection : NSObject
 
-@property (nonatomic, readonly, strong) NSArray *albumCollections;
+@property (nonatomic, readonly, strong) NSArray<FTFAlbumCollection *> *albumCollections;
 
 - (instancetype)initWithAlbumCollections:(NSArray *)albumCollections;
+
+- (instancetype)initWithArray:(NSArray *)array;   // array of dictionaries
 
 - (FTFAlbumCollection *)albumCollectionForCategory:(FTFAlbumCollectionCategory)collectionCategory;
 

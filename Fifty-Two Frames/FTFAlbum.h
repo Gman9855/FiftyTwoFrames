@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class FTFImage;
+
 @interface FTFAlbum : NSObject
 
 @property (nonatomic, strong) NSString *name;
@@ -15,7 +17,7 @@
 @property (nonatomic, strong) NSString *info;
 @property (nonatomic, strong) NSString *yearCreated;
 @property (nonatomic, strong) NSURL *coverPhotoURL;
-@property (nonatomic, strong) NSArray *photos;
+@property (nonatomic, strong) NSArray<FTFImage *> *photos;
 
 //- (void)retrieveAlbumPhotos:(void(^)(NSArray *photos, NSError *error))block;
  // of FTFImage's

@@ -91,7 +91,7 @@ static NSString * const facebookPageID = @"180889155269546";
         if (error) {
             block(nil, error, YES);
         } else {
-            FTFAlbumCategoryCollection *categoryCollection = [[FTFAlbumCategoryCollection alloc] initWithAlbumCollections:[self albumsWithAlbumResponseData:@[result]]];
+            FTFAlbumCategoryCollection *categoryCollection = [[FTFAlbumCategoryCollection alloc] initWithArray:@[result]];
             FTFAlbumCollection *weeklyThemes = [categoryCollection albumCollectionForCategory:FTFAlbumCollectionCategoryWeeklyThemes];
             __block FTFAlbum *latestAlbum = weeklyThemes.albums.firstObject;
             [self requestAlbumPhotosForAlbumWithAlbumID:latestAlbum.albumID completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
@@ -116,17 +116,15 @@ static NSString * const facebookPageID = @"180889155269546";
     
     [[[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         if (block) {
-            __block FTFAlbumCategoryCollection *albumCategoryCollection = nil;
             if (!error) {
                 self.albumDicts = [NSMutableArray new];
                 [self.albumDicts addObject:result];
                 NSString *nextPage = [result valueForKeyPath:@"albums.paging.next"];
                 self.nextPageOfAlbumsURL = [nextPage substringFromIndex:31];
-                [self requestRemainingAlbumsWithCompletionBlock:^(NSArray *albums, NSError *error) {
+                [self requestRemainingAlbumsWithCompletionBlock:^(FTFAlbumCategoryCollection *albumCategoryCollection, NSError *error) {
                     if (error) {
                         block(nil, error);
                     } else {
-                        albumCategoryCollection = [[FTFAlbumCategoryCollection alloc] initWithAlbumCollections:albums];
                         block(albumCategoryCollection, error);
                     }
                 }];
@@ -174,7 +172,7 @@ static NSString * const facebookPageID = @"180889155269546";
     [self.requestConnection start];
 }
 
-- (void)requestRemainingAlbumsWithCompletionBlock:(void (^)(NSArray *albums, NSError *error))block {
+- (void)requestRemainingAlbumsWithCompletionBlock:(void (^)(FTFAlbumCategoryCollection *albumCategoryCollection, NSError *error))block {
     [[[FBSDKGraphRequest alloc] initWithGraphPath:self.nextPageOfAlbumsURL parameters:nil] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         if (error) {
             block(nil, error);
@@ -185,8 +183,8 @@ static NSString * const facebookPageID = @"180889155269546";
             if (self.nextPageOfAlbumsURL.length > 0) {
                 [self requestRemainingAlbumsWithCompletionBlock:block];
             } else {
-                NSArray *allAlbums = [self albumsWithAlbumResponseData:self.albumDicts];
-                block(allAlbums, nil);
+                FTFAlbumCategoryCollection *albumCategoryCollection = [[FTFAlbumCategoryCollection alloc] initWithArray:self.albumDicts];
+                block(albumCategoryCollection, nil);
             }
         }
     }];
@@ -259,58 +257,6 @@ static NSString * const facebookPageID = @"180889155269546";
 }
 
 #pragma mark - Private Methods
-
-- (NSArray *)albumsWithAlbumResponseData:(NSArray *)response {
-    NSMutableArray *weeklyThemeAlbums = [NSMutableArray new];
-    NSMutableArray *photoWalkAlbums = [NSMutableArray new];
-    NSMutableArray *miscellaneousAlbums = [NSMutableArray new];
-    
-    for (NSDictionary *dict in response) {
-        
-        NSArray *albumInfoDicts = [dict valueForKeyPath:@"albums.data"];
-        if (!albumInfoDicts) {
-            albumInfoDicts = [dict valueForKeyPath:@"data"];
-        }
-        NSPredicate *weekPredicate = [NSPredicate predicateWithFormat:@"(name BEGINSWITH[cd] %@)", @"week"];
-        NSPredicate *photoWalkPredicate = [NSPredicate predicateWithFormat:@"(name CONTAINS[cd] %@ || name CONTAINS[cd] %@ || name CONTAINS[cd] %@)", @"photowalk", @"photo walk", @"photo-walk"];
-        NSPredicate *orPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[weekPredicate, photoWalkPredicate]];
-        NSPredicate *compoundPredicate = [NSCompoundPredicate notPredicateWithSubpredicate:orPredicate];
-        
-        NSSortDescriptor *createdDateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"created_time" ascending:NO];
-        NSArray *weeklyThemeDicts = [[albumInfoDicts filteredArrayUsingPredicate:weekPredicate]sortedArrayUsingDescriptors:@[createdDateSortDescriptor]];
-        NSArray *photoWalkDicts = [[albumInfoDicts filteredArrayUsingPredicate:photoWalkPredicate]sortedArrayUsingDescriptors:@[createdDateSortDescriptor]];
-        NSArray *miscellaneousAlbumDicts = [[albumInfoDicts filteredArrayUsingPredicate:compoundPredicate]sortedArrayUsingDescriptors:@[createdDateSortDescriptor]];
-        
-        NSArray *weekArrays = @[weeklyThemeDicts, weeklyThemeAlbums];
-        NSArray *photoWalkArrays = @[photoWalkDicts, photoWalkAlbums];
-        NSArray *miscArrays = @[miscellaneousAlbumDicts, miscellaneousAlbums];
-        NSArray *arrayOfAlbumCollectionArrays = @[weekArrays, photoWalkArrays, miscArrays];
-        
-        for (NSArray *array in arrayOfAlbumCollectionArrays) {
-            NSArray *source = array[0];
-            NSMutableArray *destination = array[1];
-            
-            for (NSDictionary *dict in source) {
-                FTFAlbum *album = [FTFAlbum new];
-                album.name = [dict valueForKey:@"name"];
-                album.albumID = [dict valueForKey:@"id"];
-                album.info = [dict valueForKey:@"description"];
-                NSArray *pictureURLstring = [dict valueForKeyPath:@"photos.data.picture"];
-                album.coverPhotoURL = [NSURL URLWithString:[pictureURLstring firstObject]];
-                album.yearCreated = [[dict valueForKeyPath:@"created_time"]substringToIndex:4];
-                if (album.coverPhotoURL) {
-                    [destination addObject:album];
-                }
-            }
-        }
-    }
-    
-    FTFAlbumCollection *weeklyThemeCollection = [[FTFAlbumCollection alloc] initWithAlbums:weeklyThemeAlbums andCollectionCategory:FTFAlbumCollectionCategoryWeeklyThemes];
-    FTFAlbumCollection *photoWalkCollection = [[FTFAlbumCollection alloc] initWithAlbums:photoWalkAlbums andCollectionCategory:FTFAlbumCollectionCategoryPhotoWalks];
-    FTFAlbumCollection *miscellaneousCollection = [[FTFAlbumCollection alloc] initWithAlbums:miscellaneousAlbums andCollectionCategory:FTFAlbumCollectionCategoryMiscellaneous];
-        
-    return @[weeklyThemeCollection, photoWalkCollection, miscellaneousCollection];
-}
 
 - (NSArray *)albumPhotosWithAlbumPhotoResponseData:(NSDictionary *)dict {
     NSArray *photoIDs = [dict valueForKeyPath:@"data.id"];
