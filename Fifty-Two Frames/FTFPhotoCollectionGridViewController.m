@@ -159,8 +159,9 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 28) / 3, ([UIScreen mainScreen].bounds.size.width - 28) / 3);
+    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
+    CGFloat combinedSpacingAndInsets = flowLayout.sectionInset.left + flowLayout.sectionInset.right + flowLayout.minimumInteritemSpacing + flowLayout.minimumLineSpacing;
+    return CGSizeMake(([UIScreen mainScreen].bounds.size.width - combinedSpacingAndInsets) / 3, ([UIScreen mainScreen].bounds.size.width - combinedSpacingAndInsets) / 3);
 }
 
 #pragma mark - Scroll View Delegate
