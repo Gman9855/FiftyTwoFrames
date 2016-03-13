@@ -19,7 +19,6 @@
 		8B20E9E21992084C0074E66B /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B20E9E11992084C0074E66B /* libc++.1.dylib */; };
 		8B3994DE19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3994DD19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m */; };
 		8B41EC171BCF2AFF00E6D6D2 /* FTFCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B41EC161BCF2AFF00E6D6D2 /* FTFCommentsViewController.m */; };
-		8B41EC481BD1AE3C00E6D6D2 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B41EC471BD1AE3C00E6D6D2 /* FBSDKCoreKit.framework */; };
 		8B451D4B197ECD55005D7159 /* calendar-128.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D4A197ECD55005D7159 /* calendar-128.png */; };
 		8B451D531981B9B4005D7159 /* FTFAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D521981B9B4005D7159 /* FTFAlbum.m */; };
 		8B451D561981C046005D7159 /* FTFAlbumCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D551981C046005D7159 /* FTFAlbumCollection.m */; };
@@ -112,9 +111,6 @@
 		8BD040971AA6BFEB00700F4C /* FTFAlbumDescriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD040961AA6BFEB00700F4C /* FTFAlbumDescriptionViewController.m */; };
 		8BD2001F1974B3B700F9F347 /* info-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2001E1974B3B700F9F347 /* info-2.png */; };
 		8BD200211974B40200F9F347 /* info-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD200201974B40200F9F347 /* info-3.png */; };
-		8BE61EBA1BD1B29900E10AA3 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BE61EB91BD1B29900E10AA3 /* FBSDKLoginKit.framework */; };
-		8BEC71B51BDACA01006121F7 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BEC71B31BDACA01006121F7 /* Bolts.framework */; };
-		8BEC71B61BDACA01006121F7 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BEC71B41BDACA01006121F7 /* Parse.framework */; };
 		8BEC71B81BDACA3C006121F7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BEC71B71BDACA3C006121F7 /* AudioToolbox.framework */; };
 		8BEC71BA1BDACA45006121F7 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BEC71B91BDACA45006121F7 /* CFNetwork.framework */; };
 		8BEC71BC1BDACA55006121F7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BEC71BB1BDACA55006121F7 /* CoreLocation.framework */; };
@@ -124,6 +120,7 @@
 		8BEC71C61BDACA9B006121F7 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BEC71C51BDACA9B006121F7 /* libsqlite3.tbd */; };
 		8BEC71C81BDACAC8006121F7 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BEC71C71BDACAC8006121F7 /* Accounts.framework */; };
 		8BEC71CA1BDACACF006121F7 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BEC71C91BDACACF006121F7 /* Social.framework */; };
+		D08E9DA51C95234600F7A7AD /* FTFListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08E9DA41C95234600F7A7AD /* FTFListLayout.swift */; };
 		E96395B3DFD043DDB4965E32 /* libPods-FiftyTwoFrames.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A678DE796649F1B681F522 /* libPods-FiftyTwoFrames.a */; };
 /* End PBXBuildFile section */
 
@@ -160,7 +157,6 @@
 		8B3994DD19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbumSelectionMenuTableViewCell.m; sourceTree = "<group>"; };
 		8B41EC151BCF2AFF00E6D6D2 /* FTFCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFCommentsViewController.h; sourceTree = "<group>"; };
 		8B41EC161BCF2AFF00E6D6D2 /* FTFCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFCommentsViewController.m; sourceTree = "<group>"; };
-		8B41EC471BD1AE3C00E6D6D2 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		8B451D4A197ECD55005D7159 /* calendar-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar-128.png"; sourceTree = "<group>"; };
 		8B451D511981B9B4005D7159 /* FTFAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbum.h; sourceTree = "<group>"; };
 		8B451D521981B9B4005D7159 /* FTFAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbum.m; sourceTree = "<group>"; };
@@ -326,9 +322,6 @@
 		8BD040961AA6BFEB00700F4C /* FTFAlbumDescriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbumDescriptionViewController.m; sourceTree = "<group>"; };
 		8BD2001E1974B3B700F9F347 /* info-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-2.png"; sourceTree = "<group>"; };
 		8BD200201974B40200F9F347 /* info-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-3.png"; sourceTree = "<group>"; };
-		8BE61EB91BD1B29900E10AA3 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
-		8BEC71B31BDACA01006121F7 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
-		8BEC71B41BDACA01006121F7 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		8BEC71B71BDACA3C006121F7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8BEC71B91BDACA45006121F7 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		8BEC71BB1BDACA55006121F7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -338,6 +331,8 @@
 		8BEC71C51BDACA9B006121F7 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		8BEC71C71BDACAC8006121F7 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		8BEC71C91BDACACF006121F7 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		D08E9DA41C95234600F7A7AD /* FTFListLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTFListLayout.swift; sourceTree = "<group>"; };
+		D08E9DA61C9525E800F7A7AD /* FiftyTwoFrames-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FiftyTwoFrames-Bridging-Header.h"; sourceTree = "<group>"; };
 		D3A678DE796649F1B681F522 /* libPods-FiftyTwoFrames.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FiftyTwoFrames.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E700BC2D724CD02007E8BAE6 /* Pods-FiftyTwoFrames.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiftyTwoFrames.release.xcconfig"; path = "Pods/Target Support Files/Pods-FiftyTwoFrames/Pods-FiftyTwoFrames.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -361,10 +356,6 @@
 				8BA2A6F3194E20E700341260 /* QuartzCore.framework in Frameworks */,
 				8BC9388C193C1C8300418F32 /* CoreGraphics.framework in Frameworks */,
 				8BC9388E193C1C8300418F32 /* UIKit.framework in Frameworks */,
-				8BEC71B61BDACA01006121F7 /* Parse.framework in Frameworks */,
-				8B41EC481BD1AE3C00E6D6D2 /* FBSDKCoreKit.framework in Frameworks */,
-				8BEC71B51BDACA01006121F7 /* Bolts.framework in Frameworks */,
-				8BE61EBA1BD1B29900E10AA3 /* FBSDKLoginKit.framework in Frameworks */,
 				E96395B3DFD043DDB4965E32 /* libPods-FiftyTwoFrames.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,6 +433,7 @@
 			children = (
 				8BD200281975018A00F9F347 /* Album List VC */,
 				8BAC031819BB7C0F00451615 /* FTFPhotoCollectionGridViewController.h */,
+				D08E9DA41C95234600F7A7AD /* FTFListLayout.swift */,
 				8BAC031919BB7C0F00451615 /* FTFPhotoCollectionGridViewController.m */,
 				8BC938DA194529EB00418F32 /* FTFContainerViewController.h */,
 				8BC938DB194529EB00418F32 /* FTFContainerViewController.m */,
@@ -684,11 +676,7 @@
 				8BEC71BB1BDACA55006121F7 /* CoreLocation.framework */,
 				8BEC71B91BDACA45006121F7 /* CFNetwork.framework */,
 				8BEC71B71BDACA3C006121F7 /* AudioToolbox.framework */,
-				8BEC71B31BDACA01006121F7 /* Bolts.framework */,
-				8BEC71B41BDACA01006121F7 /* Parse.framework */,
 				8B20E9E11992084C0074E66B /* libc++.1.dylib */,
-				8BE61EB91BD1B29900E10AA3 /* FBSDKLoginKit.framework */,
-				8B41EC471BD1AE3C00E6D6D2 /* FBSDKCoreKit.framework */,
 				8BA2A6F2194E20E700341260 /* QuartzCore.framework */,
 				8BC93889193C1C8300418F32 /* Foundation.framework */,
 				8BC9388B193C1C8300418F32 /* CoreGraphics.framework */,
@@ -702,6 +690,7 @@
 		8BC9388F193C1C8300418F32 /* Fifty-Two Frames */ = {
 			isa = PBXGroup;
 			children = (
+				D08E9DA61C9525E800F7A7AD /* FiftyTwoFrames-Bridging-Header.h */,
 				8BC93898193C1C8300418F32 /* FTFAppDelegate.h */,
 				8BC93899193C1C8300418F32 /* FTFAppDelegate.m */,
 				8B451D50198178C0005D7159 /* Model Objects */,
@@ -822,6 +811,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = FTF;
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Gershy Lev";
 				TargetAttributes = {
@@ -970,6 +960,7 @@
 				8BA2A6ED194E12E600341260 /* WYPopoverController.m in Sources */,
 				8BA8794019674E6A00A43819 /* PSTCollectionViewUpdateItem.m in Sources */,
 				8BA8797E19675FF400A43819 /* SDWebImageDecoder.m in Sources */,
+				D08E9DA51C95234600F7A7AD /* FTFListLayout.swift in Sources */,
 				8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */,
 				8BA8793819674E6A00A43819 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
 				7CBB74EA1C1B7B6C00179997 /* FTFLikeButton.m in Sources */,
@@ -1093,6 +1084,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Gershon Lev (D2DPPN434D)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1135,6 +1127,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Gershon Lev (D2DPPN434D)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1157,8 +1150,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1175,10 +1170,13 @@
 				);
 				INFOPLIST_FILE = "Fifty-Two Frames/FiftyTwoFrames-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gershylev.Fifty-Two-Frames";
 				PRODUCT_NAME = FiftyTwoFrames;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Fifty-Two Frames/FiftyTwoFrames-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1190,8 +1188,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1208,10 +1208,12 @@
 				);
 				INFOPLIST_FILE = "Fifty-Two Frames/FiftyTwoFrames-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gershylev.Fifty-Two-Frames";
 				PRODUCT_NAME = FiftyTwoFrames;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Fifty-Two Frames/FiftyTwoFrames-Bridging-Header.h";
 				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 				WRAPPER_EXTENSION = app;
 			};

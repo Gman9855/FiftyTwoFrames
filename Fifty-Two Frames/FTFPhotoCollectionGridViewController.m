@@ -14,11 +14,14 @@
 #import "MWPhotoBrowser.h"
 #import "FiftyTwoFrames.h"
 #import "FTFCollectionReusableView.h"
+#import "FiftyTwoFrames-Swift.h"
 
 @interface FTFPhotoCollectionGridViewController () <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) FTFCollectionReusableView *collectionReusableView;
 @property (nonatomic, strong) UILabel *navBarTitle;
+@property (nonatomic, strong) FTFListLayout *listLayout;
+@property (nonatomic, strong) UICollectionViewFlowLayout *gridLayout;
 
 @end
 
@@ -68,12 +71,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.listLayout = [[FTFListLayout alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:YES animated:NO];
     [self setNavBarTitleWithAttributedText];
+    [self setListbutton];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -124,6 +131,7 @@
         _morePhotosToLoad = YES;
     }
     
+    
     [cell.thumbnailView setImageWithURL:photoAtIndex.smallPhotoURL
                        placeholderImage:[UIImage imageNamed:@"placeholder"]
                                 options:SDWebImageRetryFailed
@@ -142,6 +150,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     [self.delegate photoCollectionGridDidSelectPhotoAtIndex:indexPath.row];
 }
 
@@ -158,9 +167,14 @@
     return self.collectionReusableView;
 }
 
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 28) / 3, ([UIScreen mainScreen].bounds.size.width - 28) / 3);
+    if (self.listLayout == collectionViewLayout) {
+        return self.listLayout.itemSize;
+    } else {
+        self.gridLayout = collectionViewLayout;
+        return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 28) / 3, ([UIScreen mainScreen].bounds.size.width - 28) / 3);
+    }
 }
 
 #pragma mark - Scroll View Delegate
@@ -207,6 +221,42 @@
     } else {
         self.navBarTitle.text = self.albumName;
     }
+}
+
+- (void)setListbutton {
+    UIBarButtonItem *listButton = [[UIBarButtonItem alloc] initWithTitle:@"List"
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:self
+                                                            action:@selector(changeLayout)];
+    self.navigationItem.rightBarButtonItem = listButton;
+    
+
+}
+
+
+-(void)changeLayout {
+    NSLog(@"yoooo");
+    UICollectionViewFlowLayout *layout;
+    if (self.collectionView.collectionViewLayout == self.gridLayout) {
+        layout = self.listLayout;
+        self.navigationItem.rightBarButtonItem.title = @"Grid";
+    } else {
+        layout = self.gridLayout;
+        self.navigationItem.rightBarButtonItem.title = @"List";
+    }
+    
+    
+    [self.collectionView.collectionViewLayout invalidateLayout];
+    [UIView animateWithDuration:0.55
+                          delay:0.10
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^{
+                         [self.collectionView setCollectionViewLayout:layout animated:YES];
+                     }
+                     completion:nil];
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
