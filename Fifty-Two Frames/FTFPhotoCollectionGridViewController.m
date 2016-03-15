@@ -249,15 +249,10 @@
     
     
     [self.collectionView.collectionViewLayout invalidateLayout];
-    [UIView animateWithDuration:0.55
-                          delay:0.10
-                        options:UIViewAnimationOptionCurveLinear
-                     animations:^{
-                         [self.collectionView setCollectionViewLayout:layout animated:YES];
-                     }
-                     completion:nil];
     
-    
+    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.865 initialSpringVelocity:1.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [self.collectionView setCollectionViewLayout:layout animated:YES];
+    } completion:nil];
     
 }
 

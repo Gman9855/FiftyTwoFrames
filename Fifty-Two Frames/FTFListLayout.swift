@@ -36,9 +36,4 @@ import UIKit
         self.minimumInteritemSpacing = 8.0;
         self.minimumLineSpacing = 8.0;
     }
-    
-    
-    
-    
-    
 }
