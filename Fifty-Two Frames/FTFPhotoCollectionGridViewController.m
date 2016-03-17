@@ -14,14 +14,14 @@
 #import "MWPhotoBrowser.h"
 #import "FiftyTwoFrames.h"
 #import "FTFCollectionReusableView.h"
-#import "FiftyTwoFrames-Swift.h"
-
+#import "FTFListLayout.h"
+#import "FTFGridLayout.h"
 @interface FTFPhotoCollectionGridViewController () <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) FTFCollectionReusableView *collectionReusableView;
 @property (nonatomic, strong) UILabel *navBarTitle;
 @property (nonatomic, strong) FTFListLayout *listLayout;
-@property (nonatomic, strong) UICollectionViewFlowLayout *gridLayout;
+@property (nonatomic, strong) FTFGridLayout *gridLayout;
 
 @end
 
@@ -71,8 +71,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.listLayout = [[FTFListLayout alloc] init];
+    self.gridLayout = [[FTFGridLayout alloc] init];
+    self.collectionView.collectionViewLayout = self.listLayout;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -131,7 +133,6 @@
         _morePhotosToLoad = YES;
     }
     
-    
     [cell.thumbnailView setImageWithURL:photoAtIndex.smallPhotoURL
                        placeholderImage:[UIImage imageNamed:@"placeholder"]
                                 options:SDWebImageRetryFailed
@@ -174,7 +175,7 @@
     if (self.listLayout == collectionViewLayout) {
         return self.listLayout.itemSize;
     } else {
-        self.gridLayout = collectionViewLayout;
+        self.gridLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
         return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 28) / 3, ([UIScreen mainScreen].bounds.size.width - 28) / 3);
     }
 }
@@ -226,7 +227,7 @@
 }
 
 - (void)setListbutton {
-    UIBarButtonItem *listButton = [[UIBarButtonItem alloc] initWithTitle:@"List"
+    UIBarButtonItem *listButton = [[UIBarButtonItem alloc] initWithTitle:@"Grid"
                                                              style:UIBarButtonItemStylePlain
                                                             target:self
                                                             action:@selector(changeLayout)];
@@ -237,14 +238,13 @@
 
 
 -(void)changeLayout {
-    NSLog(@"yoooo");
     UICollectionViewFlowLayout *layout;
-    if (self.collectionView.collectionViewLayout == self.gridLayout) {
-        layout = self.listLayout;
-        self.navigationItem.rightBarButtonItem.title = @"Grid";
-    } else {
+    if (self.collectionView.collectionViewLayout == self.listLayout) {
         layout = self.gridLayout;
         self.navigationItem.rightBarButtonItem.title = @"List";
+    } else {
+        layout = self.listLayout;
+        self.navigationItem.rightBarButtonItem.title = @"Grid";
     }
     
     

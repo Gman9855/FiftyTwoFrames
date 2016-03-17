@@ -11,6 +11,8 @@
 		1AA2BAC819C8BC650069A92F /* FTFCustomCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AA2BAC719C8BC650069A92F /* FTFCustomCaptionView.m */; };
 		1AD3044A19CF748D0001823F /* FTFActivityIndicatorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AD3044919CF748D0001823F /* FTFActivityIndicatorCell.m */; };
 		1AEB1B3B19C5725100EB67D2 /* FTFUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AEB1B3A19C5725100EB67D2 /* FTFUser.m */; };
+		7C4A04C91C98904400FE3F0F /* FTFListLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04C81C98904400FE3F0F /* FTFListLayout.m */; };
+		7C4A04CC1C9B466300FE3F0F /* FTFGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */; };
 		7CBB74EA1C1B7B6C00179997 /* FTFLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */; };
 		7CCE35B61C7A9C400061C760 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC93889193C1C8300418F32 /* Foundation.framework */; };
 		8B12265019B2DE9700FBFE4E /* FTFPhotoContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */; };
@@ -120,7 +122,6 @@
 		8BEC71C61BDACA9B006121F7 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BEC71C51BDACA9B006121F7 /* libsqlite3.tbd */; };
 		8BEC71C81BDACAC8006121F7 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BEC71C71BDACAC8006121F7 /* Accounts.framework */; };
 		8BEC71CA1BDACACF006121F7 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BEC71C91BDACACF006121F7 /* Social.framework */; };
-		D08E9DA51C95234600F7A7AD /* FTFListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08E9DA41C95234600F7A7AD /* FTFListLayout.swift */; };
 		E96395B3DFD043DDB4965E32 /* libPods-FiftyTwoFrames.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A678DE796649F1B681F522 /* libPods-FiftyTwoFrames.a */; };
 /* End PBXBuildFile section */
 
@@ -144,6 +145,10 @@
 		1AEB1B3919C5725100EB67D2 /* FTFUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFUser.h; sourceTree = "<group>"; };
 		1AEB1B3A19C5725100EB67D2 /* FTFUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFUser.m; sourceTree = "<group>"; };
 		585C73FEB11132E90D8621EC /* Pods-FiftyTwoFrames.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiftyTwoFrames.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FiftyTwoFrames/Pods-FiftyTwoFrames.debug.xcconfig"; sourceTree = "<group>"; };
+		7C4A04C71C98904400FE3F0F /* FTFListLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFListLayout.h; sourceTree = "<group>"; };
+		7C4A04C81C98904400FE3F0F /* FTFListLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFListLayout.m; sourceTree = "<group>"; };
+		7C4A04CA1C9B466300FE3F0F /* FTFGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFGridLayout.h; sourceTree = "<group>"; };
+		7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFGridLayout.m; sourceTree = "<group>"; };
 		7CBB74E81C1B7B6C00179997 /* FTFLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFLikeButton.h; sourceTree = "<group>"; };
 		7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFLikeButton.m; sourceTree = "<group>"; };
 		8B12264E19B2DE9700FBFE4E /* FTFPhotoContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoContainerViewController.h; sourceTree = "<group>"; };
@@ -331,7 +336,6 @@
 		8BEC71C51BDACA9B006121F7 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		8BEC71C71BDACAC8006121F7 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		8BEC71C91BDACACF006121F7 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		D08E9DA41C95234600F7A7AD /* FTFListLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTFListLayout.swift; sourceTree = "<group>"; };
 		D08E9DA61C9525E800F7A7AD /* FiftyTwoFrames-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FiftyTwoFrames-Bridging-Header.h"; sourceTree = "<group>"; };
 		D3A678DE796649F1B681F522 /* libPods-FiftyTwoFrames.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FiftyTwoFrames.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E700BC2D724CD02007E8BAE6 /* Pods-FiftyTwoFrames.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiftyTwoFrames.release.xcconfig"; path = "Pods/Target Support Files/Pods-FiftyTwoFrames/Pods-FiftyTwoFrames.release.xcconfig"; sourceTree = "<group>"; };
@@ -433,8 +437,11 @@
 			children = (
 				8BD200281975018A00F9F347 /* Album List VC */,
 				8BAC031819BB7C0F00451615 /* FTFPhotoCollectionGridViewController.h */,
-				D08E9DA41C95234600F7A7AD /* FTFListLayout.swift */,
 				8BAC031919BB7C0F00451615 /* FTFPhotoCollectionGridViewController.m */,
+				7C4A04CA1C9B466300FE3F0F /* FTFGridLayout.h */,
+				7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */,
+				7C4A04C71C98904400FE3F0F /* FTFListLayout.h */,
+				7C4A04C81C98904400FE3F0F /* FTFListLayout.m */,
 				8BC938DA194529EB00418F32 /* FTFContainerViewController.h */,
 				8BC938DB194529EB00418F32 /* FTFContainerViewController.m */,
 				8BC938CD193CE3EF00418F32 /* FTFContentTableViewController.h */,
@@ -951,6 +958,7 @@
 				8BC938D219400B5A00418F32 /* FTFTableViewCell.m in Sources */,
 				8BA8793C19674E6A00A43819 /* PSTCollectionViewData.m in Sources */,
 				8BA8798319675FF400A43819 /* UIButton+WebCache.m in Sources */,
+				7C4A04CC1C9B466300FE3F0F /* FTFGridLayout.m in Sources */,
 				8B12265019B2DE9700FBFE4E /* FTFPhotoContainerViewController.m in Sources */,
 				8B6458BF194CFADC006D4B75 /* NSArray+FTFAdditions.m in Sources */,
 				8BC93896193C1C8300418F32 /* main.m in Sources */,
@@ -960,7 +968,6 @@
 				8BA2A6ED194E12E600341260 /* WYPopoverController.m in Sources */,
 				8BA8794019674E6A00A43819 /* PSTCollectionViewUpdateItem.m in Sources */,
 				8BA8797E19675FF400A43819 /* SDWebImageDecoder.m in Sources */,
-				D08E9DA51C95234600F7A7AD /* FTFListLayout.swift in Sources */,
 				8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */,
 				8BA8793819674E6A00A43819 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
 				7CBB74EA1C1B7B6C00179997 /* FTFLikeButton.m in Sources */,
@@ -979,6 +986,7 @@
 				8BA8798719675FF400A43819 /* UIImageView+HighlightedWebCache.m in Sources */,
 				8BA8793419674E6A00A43819 /* MWZoomingScrollView.m in Sources */,
 				8B6458C2194D0BE6006D4B75 /* FTFImage.m in Sources */,
+				7C4A04C91C98904400FE3F0F /* FTFListLayout.m in Sources */,
 				8BC32592197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m in Sources */,
 				8B3994DE19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m in Sources */,
 				1AEB1B3B19C5725100EB67D2 /* FTFUser.m in Sources */,
