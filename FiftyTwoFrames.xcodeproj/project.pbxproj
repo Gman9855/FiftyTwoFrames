@@ -11,7 +11,7 @@
 		1AA2BAC819C8BC650069A92F /* FTFCustomCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AA2BAC719C8BC650069A92F /* FTFCustomCaptionView.m */; };
 		1AD3044A19CF748D0001823F /* FTFActivityIndicatorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AD3044919CF748D0001823F /* FTFActivityIndicatorCell.m */; };
 		1AEB1B3B19C5725100EB67D2 /* FTFUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AEB1B3A19C5725100EB67D2 /* FTFUser.m */; };
-		7C4A04C91C98904400FE3F0F /* FTFListLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04C81C98904400FE3F0F /* FTFListLayout.m */; };
+		7C4A04C91C98904400FE3F0F /* FTFListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04C81C98904400FE3F0F /* FTFListLayout.swift */; };
 		7C4A04CC1C9B466300FE3F0F /* FTFGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */; };
 		7CBB74EA1C1B7B6C00179997 /* FTFLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */; };
 		7CCE35B61C7A9C400061C760 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC93889193C1C8300418F32 /* Foundation.framework */; };
@@ -145,8 +145,7 @@
 		1AEB1B3919C5725100EB67D2 /* FTFUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFUser.h; sourceTree = "<group>"; };
 		1AEB1B3A19C5725100EB67D2 /* FTFUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFUser.m; sourceTree = "<group>"; };
 		585C73FEB11132E90D8621EC /* Pods-FiftyTwoFrames.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiftyTwoFrames.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FiftyTwoFrames/Pods-FiftyTwoFrames.debug.xcconfig"; sourceTree = "<group>"; };
-		7C4A04C71C98904400FE3F0F /* FTFListLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFListLayout.h; sourceTree = "<group>"; };
-		7C4A04C81C98904400FE3F0F /* FTFListLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFListLayout.m; sourceTree = "<group>"; };
+		7C4A04C81C98904400FE3F0F /* FTFListLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTFListLayout.swift; sourceTree = "<group>"; };
 		7C4A04CA1C9B466300FE3F0F /* FTFGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFGridLayout.h; sourceTree = "<group>"; };
 		7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFGridLayout.m; sourceTree = "<group>"; };
 		7CBB74E81C1B7B6C00179997 /* FTFLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFLikeButton.h; sourceTree = "<group>"; };
@@ -440,8 +439,7 @@
 				8BAC031919BB7C0F00451615 /* FTFPhotoCollectionGridViewController.m */,
 				7C4A04CA1C9B466300FE3F0F /* FTFGridLayout.h */,
 				7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */,
-				7C4A04C71C98904400FE3F0F /* FTFListLayout.h */,
-				7C4A04C81C98904400FE3F0F /* FTFListLayout.m */,
+				7C4A04C81C98904400FE3F0F /* FTFListLayout.swift */,
 				8BC938DA194529EB00418F32 /* FTFContainerViewController.h */,
 				8BC938DB194529EB00418F32 /* FTFContainerViewController.m */,
 				8BC938CD193CE3EF00418F32 /* FTFContentTableViewController.h */,
@@ -986,7 +984,7 @@
 				8BA8798719675FF400A43819 /* UIImageView+HighlightedWebCache.m in Sources */,
 				8BA8793419674E6A00A43819 /* MWZoomingScrollView.m in Sources */,
 				8B6458C2194D0BE6006D4B75 /* FTFImage.m in Sources */,
-				7C4A04C91C98904400FE3F0F /* FTFListLayout.m in Sources */,
+				7C4A04C91C98904400FE3F0F /* FTFListLayout.swift in Sources */,
 				8BC32592197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m in Sources */,
 				8B3994DE19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m in Sources */,
 				1AEB1B3B19C5725100EB67D2 /* FTFUser.m in Sources */,

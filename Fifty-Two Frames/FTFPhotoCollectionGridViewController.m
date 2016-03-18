@@ -14,7 +14,7 @@
 #import "MWPhotoBrowser.h"
 #import "FiftyTwoFrames.h"
 #import "FTFCollectionReusableView.h"
-#import "FTFListLayout.h"
+#import "FiftyTwoFrames-Swift.h"
 #import "FTFGridLayout.h"
 @interface FTFPhotoCollectionGridViewController () <UICollectionViewDelegateFlowLayout>
 
@@ -121,9 +121,13 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     static NSString *identifier = @"Cell";
     FTFCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                            forIndexPath:indexPath];
+    
+    
+    
     FTFImage *photoAtIndex = self.gridPhotos[indexPath.row];
     if (photoAtIndex) {
         [MBProgressHUD hideHUDForView:self.collectionView animated:NO];
@@ -146,6 +150,15 @@
 
                                     cell.thumbnailView.image = image;
     }];
+    
+    //[cell layoutSubviews];
+    
+    if (self.collectionView.collectionViewLayout == self.listLayout) {
+        cell.bottomDetailView.hidden = NO;
+    } else {
+        cell.bottomDetailView.hidden = YES;
+    }
+    
     return cell;
 }
 
@@ -172,11 +185,12 @@
 
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
     if (self.listLayout == collectionViewLayout) {
         return self.listLayout.itemSize;
     } else {
-        self.gridLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
-        return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 28) / 3, ([UIScreen mainScreen].bounds.size.width - 28) / 3);
+        return self.gridLayout.itemSize;
+        
     }
 }
 
@@ -236,23 +250,37 @@
 
 }
 
+-(void)postLayoutNotification:(NSDictionary *)userInfo {
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"LayoutDidChange"
+     object:self userInfo:userInfo];
+}
 
 -(void)changeLayout {
     UICollectionViewFlowLayout *layout;
+    NSString *layoutType;
     if (self.collectionView.collectionViewLayout == self.listLayout) {
         layout = self.gridLayout;
+        layoutType = @"grid";
         self.navigationItem.rightBarButtonItem.title = @"List";
     } else {
         layout = self.listLayout;
+        layoutType = @"list";
         self.navigationItem.rightBarButtonItem.title = @"Grid";
     }
     
-    
-    [self.collectionView.collectionViewLayout invalidateLayout];
+    NSDictionary* userInfo = @{@"layoutType": layoutType};
     
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.865 initialSpringVelocity:1.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         [self.collectionView setCollectionViewLayout:layout animated:YES];
-    } completion:nil];
+        if (layout == self.gridLayout) {
+            [self postLayoutNotification:userInfo];
+        }
+    } completion:^(BOOL finished){
+        if (layout == self.listLayout) {
+            [self postLayoutNotification:userInfo];
+        }
+    }];
     
 }
 

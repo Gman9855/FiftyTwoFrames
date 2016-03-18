@@ -19,7 +19,7 @@
 }
 
 - (void)setup {
-    double itemWidth = [UIScreen mainScreen].bounds.size.width / 3 - 28;
+    double itemWidth = ([UIScreen mainScreen].bounds.size.width - 28.0)/ 3;
     self.itemSize = CGSizeMake(itemWidth, itemWidth);
     self.sectionInset = UIEdgeInsetsMake(0, 6, 0, 6);
     self.minimumInteritemSpacing = 8.0;

@@ -10,27 +10,61 @@
 
 @implementation FTFCollectionViewCell
 
-- (id)initWithFrame:(CGRect)frame
+- (void)commonInit
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
+    // do any initialization that's common to both -initWithFrame:
+    // and -initWithCoder: in this method
+}
+
+- (id)initWithFrame:(CGRect)aRect {
+    if ((self = [super initWithFrame:aRect])) {
+        [self commonInit];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(layoutDidChange:)
+                                                     name:@"LayoutDidChange"
+                                                   object:nil];
+        
     }
     return self;
 }
 
-- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
-    [super applyLayoutAttributes:layoutAttributes];
-    [self layoutIfNeeded];
+- (id)initWithCoder:(NSCoder*)coder {
+    if ((self = [super initWithCoder:coder])) {
+        [self commonInit];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(layoutDidChange:)
+                                                     name:@"LayoutDidChange"
+                                                   object:nil];
+    }
+    return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
+- (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-*/
+
+- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
+    [self layoutIfNeeded];
+    [super applyLayoutAttributes:layoutAttributes];
+}
+
+- (void) layoutDidChange:(NSNotification *)notification {
+    if ([[notification name] isEqualToString:@"LayoutDidChange"]) {
+        NSDictionary* userInfo = notification.userInfo;
+        NSString* layoutType = (NSString*)userInfo[@"layoutType"];
+        
+        // Can use switch statement, but only works with a string in Swift, otherwise you have to use a dictrionary
+        if ([layoutType  isEqual: @"grid"]) {
+            self.bottomDetailView.hidden = YES;
+        } else {
+            self.bottomDetailView.hidden = NO;
+        }
+    }
+        
+}
+
+
 
 @end
