@@ -442,6 +442,10 @@
                                 </variation>
                                 <connections>
                                     <outlet property="bottomDetailView" destination="2fb-xe-uRI" id="Oac-5d-Tps"/>
+                                    <outlet property="bottomDetailViewBottomToContainerViewBottomConstraint" destination="IyC-By-4vG" id="iif-ti-GGp"/>
+                                    <outlet property="bottomDetailViewHeightConstraint" destination="8gz-0W-4ZS" id="OJm-RY-jBq"/>
+                                    <outlet property="bottomDetailViewLeadingConstraint" destination="ORa-tr-GCD" id="6r2-k5-qxl"/>
+                                    <outlet property="bottomDetailViewTrailingConstraint" destination="P3E-gh-RdB" id="0d5-Yw-M0H"/>
                                     <outlet property="containerView" destination="PHI-Om-V6q" id="uzM-rc-8g3"/>
                                     <outlet property="imageViewBottomToBottomDetailViewTopConstraint" destination="CHo-59-D7V" id="big-mL-89j"/>
                                     <outlet property="thumbnailView" destination="cVv-c2-yWa" id="a0c-Lc-ESg"/>

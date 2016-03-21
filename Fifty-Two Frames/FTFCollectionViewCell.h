@@ -13,4 +13,10 @@
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailView;
 @property (weak, nonatomic) IBOutlet UIView *bottomDetailView;
 
+@property (strong, nonatomic) NSLayoutConstraint *imageViewBottomToContainerViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageViewBottomToBottomDetailViewTopConstraint;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
+
+- (void)updateCellsForLayout:(UICollectionViewLayout *)layout;
+
 @end

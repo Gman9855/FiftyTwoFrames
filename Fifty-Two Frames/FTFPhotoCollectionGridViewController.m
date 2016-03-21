@@ -25,7 +25,7 @@
 @property (nonatomic, strong) UILabel *navBarTitle;
 @property (nonatomic, strong) FTFListLayout *listLayout;
 @property (nonatomic, strong) CHTCollectionViewWaterfallLayout *gridLayout;
-@property (nonatomic, strong) UICollectionViewLayout *currentLayout;
+@property (nonatomic, assign) BOOL shouldReloadData;
 
 @end
 
@@ -60,7 +60,7 @@
 
 - (void)awakeFromNib {
     [self addObserver:self forKeyPath:@"gridPhotos" options:NSKeyValueObservingOptionNew context:NULL];
-    
+    self.shouldReloadData = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(albumSelectionChanged:)
                                                  name:@"albumSelectedNotification"
@@ -75,7 +75,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.collectionView registerNib:[UINib nibWithNibName:@"FTFCollectionViewGridCell" bundle:nil] forCellWithReuseIdentifier:@"gridCell"];
     self.listLayout = [[FTFListLayout alloc] init];
     self.gridLayout = [[CHTCollectionViewWaterfallLayout alloc] init];
     self.gridLayout.columnCount = 3;
@@ -98,7 +97,9 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqual:@"gridPhotos"]) {
-        [self.collectionView reloadData];
+        if (self.shouldReloadData) {
+            [self.collectionView reloadData];
+        }
     }
 }
 
@@ -143,6 +144,8 @@
         _morePhotosToLoad = YES;
     }
     
+    [cell updateCellsForLayout:collectionView.collectionViewLayout];
+
     [cell.thumbnailView setImageWithURL:photoAtIndex.smallPhotoURL
                        placeholderImage:[UIImage imageNamed:@"placeholder"]
                                 options:SDWebImageRetryFailed
@@ -157,7 +160,7 @@
                                     cell.thumbnailView.image = image;
     }];
     
-    cell.bottomDetailView.alpha = collectionView.collectionViewLayout != self.gridLayout;
+//    cell.bottomDetailView.alpha = collectionView.collectionViewLayout != self.gridLayout;
 
     return cell;
 }
@@ -191,7 +194,6 @@
     return CGSizeMake(40.0f, 40.0f);
 }
 
-
 //- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
 //    
 //    return self.listLayout == collectionViewLayout ? self.listLayout.itemSize : self.gridLayout.itemSize;
@@ -223,9 +225,25 @@
         if (!_finishedPaging) {
             [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosWithCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
                 _finishedPaging = finishedPaging;
+                
                 NSMutableArray *albumPhotos = [self.gridPhotos mutableCopy];
                 [albumPhotos addObjectsFromArray:photos];
+                self.shouldReloadData = NO;
+                NSInteger gridPhotosCount = self.gridPhotos.count;
                 self.gridPhotos = [albumPhotos copy];
+                self.shouldReloadData = YES;
+                
+                [self.collectionView performBatchUpdates:^{
+                    NSMutableArray *indexPaths = [NSMutableArray new];
+                    for (NSInteger i = gridPhotosCount; i < gridPhotosCount + photos.count; i++) {
+                        NSIndexPath *ip = [NSIndexPath indexPathForRow:i inSection:0];
+                        [indexPaths addObject:ip];
+                    }
+                    [self.collectionView insertItemsAtIndexPaths:indexPaths];
+
+                } completion:nil];
+                
+                
                 NSNumber *isFinishedPaging = [NSNumber numberWithBool:finishedPaging];
                 NSDictionary *updatedAlbumPhotos = [NSDictionary dictionaryWithObjectsAndKeys:albumPhotos, @"albumPhotos", isFinishedPaging, @"finishedPaging", nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"photoGridDidPageMorePhotosNotification"
@@ -280,9 +298,7 @@
         self.navigationItem.rightBarButtonItem.title = @"Grid";
     }
     
-    self.currentLayout = layout;
-    
-    NSDictionary *userInfo = @{@"layoutType": layoutType};
+    NSDictionary *userInfo = @{@"layout": layout, @"layoutType": layoutType};
     
     NSArray *visibleCells = [self.collectionView visibleCells];
     FTFCollectionViewCell *firstPhoto = (FTFCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
