@@ -269,8 +269,8 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="listCell" id="Wtr-99-pgG" customClass="FTFCollectionViewListCell">
-                                <rect key="frame" x="106" y="0.0" width="388" height="415"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionViewCell" id="Wtr-99-pgG" customClass="FTFCollectionViewCell">
+                                <rect key="frame" x="100" y="0.0" width="400" height="302"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="302"/>
@@ -349,11 +349,11 @@
                                                             <exclude reference="40W-yf-1M6"/>
                                                             <exclude reference="Urh-Uz-bNF"/>
                                                             <exclude reference="m3I-XK-fvF"/>
-                                                            <exclude reference="Sti-3H-WYM"/>
-                                                            <exclude reference="i44-Nq-fuQ"/>
                                                             <exclude reference="1BM-o0-Gkl"/>
                                                             <exclude reference="4Mk-e8-r4V"/>
                                                             <exclude reference="p0g-iP-cym"/>
+                                                            <exclude reference="Sti-3H-WYM"/>
+                                                            <exclude reference="i44-Nq-fuQ"/>
                                                         </mask>
                                                     </variation>
                                                     <variation key="heightClass=regular-widthClass=compact">
@@ -367,11 +367,11 @@
                                                             <include reference="40W-yf-1M6"/>
                                                             <include reference="Urh-Uz-bNF"/>
                                                             <include reference="m3I-XK-fvF"/>
-                                                            <include reference="Sti-3H-WYM"/>
-                                                            <include reference="i44-Nq-fuQ"/>
                                                             <include reference="1BM-o0-Gkl"/>
                                                             <include reference="4Mk-e8-r4V"/>
                                                             <include reference="p0g-iP-cym"/>
+                                                            <include reference="Sti-3H-WYM"/>
+                                                            <include reference="i44-Nq-fuQ"/>
                                                         </mask>
                                                     </variation>
                                                 </view>
@@ -441,13 +441,15 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <outlet property="bottomDetailView" destination="2fb-xe-uRI" id="afG-kk-BFF"/>
-                                    <outlet property="thumbnailView" destination="cVv-c2-yWa" id="wGQ-Yr-m62"/>
+                                    <outlet property="bottomDetailView" destination="2fb-xe-uRI" id="Oac-5d-Tps"/>
+                                    <outlet property="containerView" destination="PHI-Om-V6q" id="uzM-rc-8g3"/>
+                                    <outlet property="imageViewBottomToBottomDetailViewTopConstraint" destination="CHo-59-D7V" id="big-mL-89j"/>
+                                    <outlet property="thumbnailView" destination="cVv-c2-yWa" id="a0c-Lc-ESg"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
                         <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="footer" id="Bc7-NI-GZs" customClass="FTFCollectionReusableView">
-                            <rect key="frame" x="0.0" y="415" width="600" height="50"/>
+                            <rect key="frame" x="0.0" y="302" width="600" height="50"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="nAL-wf-Hek">
