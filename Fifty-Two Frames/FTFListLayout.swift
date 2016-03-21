@@ -23,18 +23,11 @@ import UIKit
     }
     
     func setup() {
-        let width = (UIScreen.mainScreen().bounds.size.width - CGFloat(28.0)) / numberOfColumns
-        self.itemSize = CGSizeMake(width, width);
-        self.sectionInset = UIEdgeInsetsMake(0, 6, 0, 6);
-        self.minimumInteritemSpacing = 8.0;
-        self.minimumLineSpacing = 8.0;
+        let width = (UIScreen.mainScreen().bounds.size.width) / numberOfColumns
+        self.itemSize = CGSizeMake(width, width / 1.32)
     }
     
     override func prepareLayout() {
-        let width = (UIScreen.mainScreen().bounds.size.width - CGFloat(28.0)) / numberOfColumns
-        self.itemSize = CGSizeMake(width, width);
-        self.sectionInset = UIEdgeInsetsMake(0, 6, 0, 6);
-        self.minimumInteritemSpacing = 8.0;
-        self.minimumLineSpacing = 8.0;
+        setup()
     }
 }

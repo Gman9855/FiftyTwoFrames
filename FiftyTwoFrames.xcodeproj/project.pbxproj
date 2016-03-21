@@ -13,6 +13,9 @@
 		1AEB1B3B19C5725100EB67D2 /* FTFUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AEB1B3A19C5725100EB67D2 /* FTFUser.m */; };
 		7C4A04C91C98904400FE3F0F /* FTFListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04C81C98904400FE3F0F /* FTFListLayout.swift */; };
 		7C4A04CC1C9B466300FE3F0F /* FTFGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */; };
+		7C4A04CE1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4A04CD1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib */; };
+		7C4A04D11C9F3FC000FE3F0F /* FTFCollectionViewGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04D01C9F3FC000FE3F0F /* FTFCollectionViewGridCell.m */; };
+		7C4A04D41C9F426500FE3F0F /* FTFCollectionViewListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04D31C9F426500FE3F0F /* FTFCollectionViewListCell.m */; };
 		7CBB74EA1C1B7B6C00179997 /* FTFLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */; };
 		7CCE35B61C7A9C400061C760 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC93889193C1C8300418F32 /* Foundation.framework */; };
 		8B12265019B2DE9700FBFE4E /* FTFPhotoContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */; };
@@ -148,6 +151,11 @@
 		7C4A04C81C98904400FE3F0F /* FTFListLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTFListLayout.swift; sourceTree = "<group>"; };
 		7C4A04CA1C9B466300FE3F0F /* FTFGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFGridLayout.h; sourceTree = "<group>"; };
 		7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFGridLayout.m; sourceTree = "<group>"; };
+		7C4A04CD1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FTFCollectionViewGridCell.xib; sourceTree = "<group>"; };
+		7C4A04CF1C9F3FC000FE3F0F /* FTFCollectionViewGridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFCollectionViewGridCell.h; sourceTree = "<group>"; };
+		7C4A04D01C9F3FC000FE3F0F /* FTFCollectionViewGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFCollectionViewGridCell.m; sourceTree = "<group>"; };
+		7C4A04D21C9F426500FE3F0F /* FTFCollectionViewListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFCollectionViewListCell.h; sourceTree = "<group>"; };
+		7C4A04D31C9F426500FE3F0F /* FTFCollectionViewListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFCollectionViewListCell.m; sourceTree = "<group>"; };
 		7CBB74E81C1B7B6C00179997 /* FTFLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFLikeButton.h; sourceTree = "<group>"; };
 		7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFLikeButton.m; sourceTree = "<group>"; };
 		8B12264E19B2DE9700FBFE4E /* FTFPhotoContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoContainerViewController.h; sourceTree = "<group>"; };
@@ -473,6 +481,11 @@
 				8B3994DD19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m */,
 				8BAC031B19BBD3F700451615 /* FTFCollectionViewCell.h */,
 				8BAC031C19BBD3F700451615 /* FTFCollectionViewCell.m */,
+				7C4A04CD1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib */,
+				7C4A04CF1C9F3FC000FE3F0F /* FTFCollectionViewGridCell.h */,
+				7C4A04D01C9F3FC000FE3F0F /* FTFCollectionViewGridCell.m */,
+				7C4A04D21C9F426500FE3F0F /* FTFCollectionViewListCell.h */,
+				7C4A04D31C9F426500FE3F0F /* FTFCollectionViewListCell.m */,
 				8BCB4C061995777000B9C751 /* FTFPhotoCommentTableViewCell.h */,
 				8BCB4C071995777000B9C751 /* FTFPhotoCommentTableViewCell.m */,
 			);
@@ -876,6 +889,7 @@
 				8BC9389D193C1C8300418F32 /* Main.storyboard in Resources */,
 				8BA8794619674E6A00A43819 /* README.md in Resources */,
 				8BD200211974B40200F9F347 /* info-3.png in Resources */,
+				7C4A04CE1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib in Resources */,
 				8B4A76C01BE378DB007990F1 /* Default-568h@2x.png in Resources */,
 				8BAC031719BAFE2C00451615 /* UIBarButtonItemGrid@2x.png in Resources */,
 				8B645881194CD614006D4B75 /* thumbnails-1.png in Resources */,
@@ -993,6 +1007,7 @@
 				8B41EC171BCF2AFF00E6D6D2 /* FTFCommentsViewController.m in Sources */,
 				8BA8792E19674E6A00A43819 /* MWGridCell.m in Sources */,
 				8BA8793E19674E6A00A43819 /* PSTCollectionViewItemKey.m in Sources */,
+				7C4A04D41C9F426500FE3F0F /* FTFCollectionViewListCell.m in Sources */,
 				8BA8798819675FF400A43819 /* UIImageView+WebCache.m in Sources */,
 				1AA2BAC819C8BC650069A92F /* FTFCustomCaptionView.m in Sources */,
 				8BA8792F19674E6A00A43819 /* MWGridViewController.m in Sources */,
@@ -1012,6 +1027,7 @@
 				8BA8798419675FF400A43819 /* UIImage+GIF.m in Sources */,
 				8B4EF12A1BDD753F00502AC8 /* UIWindow+UIWindow_Additions.m in Sources */,
 				8B451D531981B9B4005D7159 /* FTFAlbum.m in Sources */,
+				7C4A04D11C9F3FC000FE3F0F /* FTFCollectionViewGridCell.m in Sources */,
 				8BA8793919674E6A00A43819 /* PSTCollectionView.m in Sources */,
 				8BA8797C19675FF400A43819 /* SDImageCache.m in Sources */,
 				8BD040911AA502EA00700F4C /* FTFCollectionReusableView.m in Sources */,

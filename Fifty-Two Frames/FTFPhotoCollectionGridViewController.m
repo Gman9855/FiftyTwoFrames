@@ -246,8 +246,6 @@
                                                             target:self
                                                             action:@selector(changeLayout)];
     self.navigationItem.rightBarButtonItem = listButton;
-    
-
 }
 
 -(void)postLayoutNotification:(NSDictionary *)userInfo {
@@ -257,7 +255,7 @@
 }
 
 -(void)changeLayout {
-    UICollectionViewFlowLayout *layout;
+    UICollectionViewLayout *layout;
     NSString *layoutType;
     if (self.collectionView.collectionViewLayout == self.listLayout) {
         layout = self.gridLayout;

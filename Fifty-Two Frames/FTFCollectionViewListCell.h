@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FTFCollectionViewCell.h"
 
-@interface FTFCollectionViewListCell : UICollectionViewCell
+@interface FTFCollectionViewListCell : FTFCollectionViewCell
+
+@property (weak, nonatomic) IBOutlet UIImageView *thumbnailView;
+@property (weak, nonatomic) IBOutlet UIView *bottomDetailView;
 
 @end

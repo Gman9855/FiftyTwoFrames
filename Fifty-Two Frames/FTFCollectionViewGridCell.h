@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FTFCollectionViewCell.h"
 
-@interface FTFCollectionViewGridCell : UICollectionViewCell
+@interface FTFCollectionViewGridCell : FTFCollectionViewCell
+
+@property (weak, nonatomic) IBOutlet UIImageView *thumbnailView;
 
 @end
