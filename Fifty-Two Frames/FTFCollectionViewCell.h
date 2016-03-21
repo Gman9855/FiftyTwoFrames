@@ -10,7 +10,7 @@
 
 @interface FTFCollectionViewCell : UICollectionViewCell
 
-- (UIImageView *)thumbnailView;
-- (UIView *)bottomDetailView;
+@property (weak, nonatomic) IBOutlet UIImageView *thumbnailView;
+@property (weak, nonatomic) IBOutlet UIView *bottomDetailView;
 
 @end

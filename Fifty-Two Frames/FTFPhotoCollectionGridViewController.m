@@ -129,7 +129,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    NSString *identifier = self.currentLayout == self.listLayout ? @"listCell" : @"gridCell";
+    NSString *identifier = @"collectionViewCell";
     
     FTFCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                      forIndexPath:indexPath];
@@ -157,9 +157,7 @@
                                     cell.thumbnailView.image = image;
     }];
     
-    if ([cell isKindOfClass:[FTFCollectionViewListCell class]]) {
-        cell.bottomDetailView.alpha = collectionView.collectionViewLayout != self.gridLayout;
-    }
+    cell.bottomDetailView.alpha = collectionView.collectionViewLayout != self.gridLayout;
 
     return cell;
 }
@@ -291,11 +289,9 @@
     BOOL containsFirstPhoto = [visibleCells containsObject:firstPhoto];
     
 
-    [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
-
     [UIView animateWithDuration:0.55 delay:0 usingSpringWithDamping:0.865 initialSpringVelocity:1.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         
-        [self.collectionView setCollectionViewLayout:layout animated:YES];
+        [self.collectionView setCollectionViewLayout:layout animated:NO];
         
         if (containsFirstPhoto) {
             [self.collectionView setContentOffset:CGPointZero];
