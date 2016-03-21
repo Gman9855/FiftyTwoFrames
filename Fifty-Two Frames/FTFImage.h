@@ -23,8 +23,11 @@ typedef enum {
 @property (nonatomic, assign) NSInteger likesCount;
 @property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong) NSString *photoID;
-@property (nonatomic, strong, readonly) NSURL *largePhotoURL;
 @property (nonatomic, strong, readonly) NSURL *smallPhotoURL;
+@property (nonatomic, strong, readonly) NSURL *largePhotoURL;
+@property (nonatomic, assign) CGSize smallPhotoSize;
+@property (nonatomic, assign) CGSize largePhotoSize;
+
 @property (nonatomic, assign) BOOL isLiked;
 
 - (instancetype)initWithImageURLs:(NSArray *)imageURLs;

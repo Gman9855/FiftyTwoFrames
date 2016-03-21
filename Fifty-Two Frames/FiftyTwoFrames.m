@@ -269,8 +269,30 @@ static NSString * const facebookPageID = @"180889155269546";
     NSMutableArray *objects = [NSMutableArray new];
     
     for (int i = 0; i < [photoCollections count]; i++) {
-        NSArray *imageURLs = [self urlsFromPhotoArray:photoCollections[i]];
-        FTFImage *image = [[FTFImage alloc] initWithImageURLs:imageURLs];
+        NSArray *array = photoCollections[i];
+        NSDictionary *largePhotoDict = array.firstObject;
+        NSDictionary *smallPhotoDict = [self preferredSmallPhotoURLDictFromPhotoArray:photoCollections[i]];
+        
+//        NSArray *imageURLs = [self urlsFromPhotoArray:photoCollections[i]];
+        NSString *largePhotoStringURL = [largePhotoDict valueForKey:@"source"];
+        NSString *smallPhotoStringURL = [smallPhotoDict valueForKey:@"source"];
+        
+        NSURL *largePhotoURL = [NSURL URLWithString:largePhotoStringURL];
+        NSURL *smallPhotoURL = [NSURL URLWithString:smallPhotoStringURL];
+        
+        FTFImage *image = [[FTFImage alloc] initWithImageURLs:@[largePhotoURL, smallPhotoURL]];
+        
+        CGFloat smallPhotoWidth = [[smallPhotoDict valueForKey:@"width"] floatValue];
+        CGFloat smallPhotoHeight = [[smallPhotoDict valueForKey:@"height"] floatValue];
+        
+        CGFloat largePhotoWidth = [[largePhotoDict valueForKey:@"width"] floatValue];
+        CGFloat largePhotoHeight = [[largePhotoDict valueForKey:@"height"] floatValue];
+        
+        image.smallPhotoSize = CGSizeMake(smallPhotoWidth, smallPhotoHeight);
+        image.largePhotoSize = CGSizeMake(largePhotoWidth, largePhotoHeight);
+        
+        NSLog(@"small photo width: %f, height: %f", image.smallPhotoSize.width, image.smallPhotoSize.height);
+    
         BOOL containsPhotoDescription = ![photoDescriptionCollection[i] isEqual:[NSNull null]];
         NSString *photoTitle;
         if (containsPhotoDescription) {
@@ -344,6 +366,19 @@ static NSString * const facebookPageID = @"180889155269546";
               smallImageURL] map:^id(id object, NSUInteger index) {
                   return [NSURL URLWithString:object];
               }];
+}
+
+- (NSDictionary *)preferredSmallPhotoURLDictFromPhotoArray:(NSArray *)array {
+    NSDictionary *smallImageDict = [array firstObject];
+    for (NSDictionary *dict in array) {
+        NSInteger imageHeight = [[dict valueForKeyPath:@"height"]intValue];
+        if (imageHeight <= 500 && imageHeight >= 350) {
+            smallImageDict = dict;
+            break;
+        }
+    }
+    
+    return smallImageDict;
 }
 
 - (NSString *)sourceOfImageData:(NSDictionary *)data;
