@@ -11,17 +11,21 @@
 #import "UIImageView+WebCache.h"
 #import "MBProgressHUD.h"
 #import "FTFCollectionViewCell.h"
+#import "FTFCollectionViewListCell.h"
+#import "FTFCollectionViewGridCell.h"
 #import "MWPhotoBrowser.h"
 #import "FiftyTwoFrames.h"
 #import "FTFCollectionReusableView.h"
 #import "FiftyTwoFrames-Swift.h"
 #import "FTFGridLayout.h"
-@interface FTFPhotoCollectionGridViewController () <UICollectionViewDelegateFlowLayout>
+#import "CHTCollectionViewWaterfallLayout.h"
+@interface FTFPhotoCollectionGridViewController () <CHTCollectionViewDelegateWaterfallLayout>
 
 @property (nonatomic, strong) FTFCollectionReusableView *collectionReusableView;
 @property (nonatomic, strong) UILabel *navBarTitle;
 @property (nonatomic, strong) FTFListLayout *listLayout;
-@property (nonatomic, strong) FTFGridLayout *gridLayout;
+@property (nonatomic, strong) CHTCollectionViewWaterfallLayout *gridLayout;
+@property (nonatomic, strong) UICollectionViewLayout *currentLayout;
 
 @end
 
@@ -71,9 +75,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self.collectionView registerNib:[UINib nibWithNibName:@"FTFCollectionViewGridCell" bundle:nil] forCellWithReuseIdentifier:@"gridCell"];
     self.listLayout = [[FTFListLayout alloc] init];
-    self.gridLayout = [[FTFGridLayout alloc] init];
+    self.gridLayout = [[CHTCollectionViewWaterfallLayout alloc] init];
+    self.gridLayout.columnCount = 3;
+    self.gridLayout.minimumColumnSpacing = 10;
+    self.gridLayout.minimumInteritemSpacing = 10;
     self.collectionView.collectionViewLayout = self.listLayout;
 }
 
@@ -122,11 +129,10 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    static NSString *identifier = @"Cell";
+    NSString *identifier = self.currentLayout == self.listLayout ? @"listCell" : @"gridCell";
+    
     FTFCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
-                                                                           forIndexPath:indexPath];
-    
-    
+                                                     forIndexPath:indexPath];
     
     FTFImage *photoAtIndex = self.gridPhotos[indexPath.row];
     if (photoAtIndex) {
@@ -151,14 +157,10 @@
                                     cell.thumbnailView.image = image;
     }];
     
-    //[cell layoutSubviews];
-    
-    if (self.collectionView.collectionViewLayout == self.listLayout) {
-        cell.bottomDetailView.hidden = NO;
-    } else {
-        cell.bottomDetailView.hidden = YES;
+    if ([cell isKindOfClass:[FTFCollectionViewListCell class]]) {
+        cell.bottomDetailView.alpha = collectionView.collectionViewLayout != self.gridLayout;
     }
-    
+
     return cell;
 }
 
@@ -183,16 +185,29 @@
     return self.collectionReusableView;
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    return CGSizeMake(0.0f, 0.0f);
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    return CGSizeMake(40.0f, 40.0f);
+}
+
+
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+//    
+//    return self.listLayout == collectionViewLayout ? self.listLayout.itemSize : self.gridLayout.itemSize;
+//}
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (self.listLayout == collectionViewLayout) {
-        return self.listLayout.itemSize;
-    } else {
-        return self.gridLayout.itemSize;
-        
+    if (collectionViewLayout == self.gridLayout) {
+        FTFImage *photo = self.gridPhotos[indexPath.row];
+        return photo.smallPhotoSize;
     }
+    
+    return self.listLayout.itemSize;
 }
+
 
 #pragma mark - Scroll View Delegate
 
@@ -267,19 +282,29 @@
         self.navigationItem.rightBarButtonItem.title = @"Grid";
     }
     
-    NSDictionary* userInfo = @{@"layoutType": layoutType};
+    self.currentLayout = layout;
     
-    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.865 initialSpringVelocity:1.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    NSDictionary *userInfo = @{@"layoutType": layoutType};
+    
+    NSArray *visibleCells = [self.collectionView visibleCells];
+    FTFCollectionViewCell *firstPhoto = (FTFCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    BOOL containsFirstPhoto = [visibleCells containsObject:firstPhoto];
+    
+
+    [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
+
+    [UIView animateWithDuration:0.55 delay:0 usingSpringWithDamping:0.865 initialSpringVelocity:1.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
         [self.collectionView setCollectionViewLayout:layout animated:YES];
-        if (layout == self.gridLayout) {
-            [self postLayoutNotification:userInfo];
+        
+        if (containsFirstPhoto) {
+            [self.collectionView setContentOffset:CGPointZero];
+            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
         }
-    } completion:^(BOOL finished){
-        if (layout == self.listLayout) {
-            [self postLayoutNotification:userInfo];
-        }
-    }];
-    
+     
+        [self postLayoutNotification:userInfo];
+        
+    } completion:nil];
 }
 
 - (void)didReceiveMemoryWarning

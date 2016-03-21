@@ -4,6 +4,7 @@ platform :ios, "9.0"
 target "FiftyTwoFrames" do
   pod 'pop', '~> 1.0'
   pod 'SlackTextViewController'
+  pod 'CHTCollectionViewWaterfallLayout'
   pod 'Parse'
   pod 'Bolts'
   pod 'FBSDKCoreKit'
