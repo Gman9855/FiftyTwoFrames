@@ -290,9 +290,7 @@ static NSString * const facebookPageID = @"180889155269546";
         
         image.smallPhotoSize = CGSizeMake(smallPhotoWidth, smallPhotoHeight);
         image.largePhotoSize = CGSizeMake(largePhotoWidth, largePhotoHeight);
-        
-        NSLog(@"small photo width: %f, height: %f", image.smallPhotoSize.width, image.smallPhotoSize.height);
-    
+            
         BOOL containsPhotoDescription = ![photoDescriptionCollection[i] isEqual:[NSNull null]];
         NSString *photoTitle;
         if (containsPhotoDescription) {

@@ -66,18 +66,15 @@
             self.imageViewBottomToContainerViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.thumbnailView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.containerView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
             [self addConstraint:self.imageViewBottomToContainerViewBottomConstraint];
         }
-        
     } else {
         if (![self.containerView.subviews containsObject:self.bottomDetailView]) {
-            [self.containerView removeConstraint:self.imageViewBottomToContainerViewBottomConstraint];
+            [self removeConstraint:self.imageViewBottomToContainerViewBottomConstraint];
             [self.containerView addSubview:self.bottomDetailView];
-            [self.containerView addConstraint:self.bottomDetailViewHeightConstraint];
-            [self.containerView addConstraint:self.bottomDetailViewLeadingConstraint];
-            [self.containerView addConstraint:self.bottomDetailViewTrailingConstraint];
-            [self.containerView addConstraint:self.bottomDetailViewBottomToContainerViewBottomConstraint];
-            
-            //FIXME:  Why the eff does this constraint not play nice?
-            [self.containerView addConstraint:self.imageViewBottomToBottomDetailViewTopConstraint];
+            [self addConstraint:self.bottomDetailViewHeightConstraint];
+            [self addConstraint:self.bottomDetailViewLeadingConstraint];
+            [self addConstraint:self.bottomDetailViewTrailingConstraint];
+            [self addConstraint:self.bottomDetailViewBottomToContainerViewBottomConstraint];
+            [self addConstraint:self.imageViewBottomToBottomDetailViewTopConstraint];
         }
     }
 }

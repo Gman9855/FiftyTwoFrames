@@ -24,7 +24,7 @@ import UIKit
     
     func setup() {
         let width = (UIScreen.mainScreen().bounds.size.width) / numberOfColumns
-        self.itemSize = CGSizeMake(width, width / 1.32)
+        self.itemSize = CGSizeMake(width, 322)
     }
     
     override func prepareLayout() {

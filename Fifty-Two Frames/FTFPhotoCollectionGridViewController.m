@@ -25,6 +25,7 @@
 @property (nonatomic, strong) UILabel *navBarTitle;
 @property (nonatomic, strong) FTFListLayout *listLayout;
 @property (nonatomic, strong) CHTCollectionViewWaterfallLayout *gridLayout;
+@property (nonatomic, strong) UICollectionViewLayout *currentLayout;
 @property (nonatomic, assign) BOOL shouldReloadData;
 
 @end
@@ -33,6 +34,8 @@
     BOOL _albumSelectionChanged;
     BOOL _morePhotosToLoad;
     BOOL _finishedPaging;
+    BOOL _didUpdateCells;
+    BOOL _layoutDidChange;
 }
 
 - (UILabel *)navBarTitle {
@@ -81,6 +84,7 @@
     self.gridLayout.minimumColumnSpacing = 10;
     self.gridLayout.minimumInteritemSpacing = 10;
     self.collectionView.collectionViewLayout = self.listLayout;
+    self.currentLayout = self.listLayout;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -129,7 +133,6 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     NSString *identifier = @"collectionViewCell";
     
     FTFCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
@@ -144,8 +147,8 @@
         _morePhotosToLoad = YES;
     }
     
-    [cell updateCellsForLayout:collectionView.collectionViewLayout];
-
+    [cell updateCellsForLayout:self.currentLayout];
+    
     [cell.thumbnailView setImageWithURL:photoAtIndex.smallPhotoURL
                        placeholderImage:[UIImage imageNamed:@"placeholder"]
                                 options:SDWebImageRetryFailed
@@ -160,12 +163,8 @@
                                     cell.thumbnailView.image = image;
     }];
     
-//    cell.bottomDetailView.alpha = collectionView.collectionViewLayout != self.gridLayout;
-
     return cell;
 }
-
-
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -194,11 +193,6 @@
     return CGSizeMake(40.0f, 40.0f);
 }
 
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-//    
-//    return self.listLayout == collectionViewLayout ? self.listLayout.itemSize : self.gridLayout.itemSize;
-//}
-
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (collectionViewLayout == self.gridLayout) {
         FTFImage *photo = self.gridPhotos[indexPath.row];
@@ -219,7 +213,7 @@
     float y = offset.y + bounds.size.height - inset.bottom;
     float h = size.height;
     float reload_distance = -150;
-    if(y > h + reload_distance && self.gridPhotos && _morePhotosToLoad) {
+    if(y > h + reload_distance && self.gridPhotos && _morePhotosToLoad && !_layoutDidChange) {
         _morePhotosToLoad = NO;
         NSLog(@"Grid hit the bottom");
         if (!_finishedPaging) {
@@ -253,6 +247,7 @@
             }];
         }
     }
+    _layoutDidChange = NO;
 }
 
 #pragma mark - Helper Methods
@@ -286,6 +281,7 @@
 }
 
 -(void)changeLayout {
+    _layoutDidChange = YES;
     UICollectionViewLayout *layout;
     NSString *layoutType;
     if (self.collectionView.collectionViewLayout == self.listLayout) {
@@ -298,24 +294,23 @@
         self.navigationItem.rightBarButtonItem.title = @"Grid";
     }
     
+    self.currentLayout = layout;
+    
     NSDictionary *userInfo = @{@"layout": layout, @"layoutType": layoutType};
     
     NSArray *visibleCells = [self.collectionView visibleCells];
     FTFCollectionViewCell *firstPhoto = (FTFCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     BOOL containsFirstPhoto = [visibleCells containsObject:firstPhoto];
     
-
-    [UIView animateWithDuration:0.55 delay:0 usingSpringWithDamping:0.865 initialSpringVelocity:1.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        
+    [UIView animateWithDuration:0.45 delay:0 usingSpringWithDamping:0.865 initialSpringVelocity:1.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         [self.collectionView setCollectionViewLayout:layout animated:NO];
-        
         if (containsFirstPhoto) {
             [self.collectionView setContentOffset:CGPointZero];
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
         }
-     
-        [self postLayoutNotification:userInfo];
         
+        [self postLayoutNotification:userInfo];
+
     } completion:nil];
 }
 
