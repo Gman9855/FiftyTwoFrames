@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="hNK-Qc-fFQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="hNK-Qc-fFQ">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -273,7 +273,7 @@
                                 <rect key="frame" x="100" y="0.0" width="400" height="302"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="400" height="302"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="322"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PHI-Om-V6q">
@@ -423,7 +423,7 @@
                                     <constraint firstItem="PHI-Om-V6q" firstAttribute="leading" secondItem="Wtr-99-pgG" secondAttribute="leading" id="fo4-ua-b02"/>
                                     <constraint firstItem="PHI-Om-V6q" firstAttribute="top" secondItem="Wtr-99-pgG" secondAttribute="top" id="q3x-O4-Ctl"/>
                                 </constraints>
-                                <size key="customSize" width="400" height="302"/>
+                                <size key="customSize" width="400" height="322"/>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="VVg-zy-9pD"/>
@@ -489,7 +489,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Sp-Lf-DZ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6465" y="-136.5"/>
+            <point key="canvasLocation" x="6577.5" y="-145.5"/>
         </scene>
         <!--Container View Controller-->
         <scene sceneID="ZZb-r3-0jl">
