@@ -80,7 +80,7 @@
     [super viewDidLoad];
     self.listLayout = [[FTFListLayout alloc] init];
     self.gridLayout = [[CHTCollectionViewWaterfallLayout alloc] init];
-    self.gridLayout.columnCount = 3;
+    self.gridLayout.columnCount = 2;
     self.gridLayout.minimumColumnSpacing = 10;
     self.gridLayout.minimumInteritemSpacing = 10;
     self.collectionView.collectionViewLayout = self.listLayout;
@@ -92,7 +92,6 @@
     [self.navigationController setToolbarHidden:YES animated:NO];
     [self setNavBarTitleWithAttributedText];
     [self setListbutton];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -190,7 +189,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-    return CGSizeMake(40.0f, 40.0f);
+    return CGSizeMake(50.0f, 50.0f);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
