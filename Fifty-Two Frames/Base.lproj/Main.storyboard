@@ -270,7 +270,7 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionViewCell" id="Wtr-99-pgG" customClass="FTFCollectionViewCell">
-                                <rect key="frame" x="100" y="0.0" width="400" height="302"/>
+                                <rect key="frame" x="100" y="0.0" width="400" height="322"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="322"/>
@@ -453,7 +453,7 @@
                             </collectionViewCell>
                         </cells>
                         <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="footer" id="Bc7-NI-GZs" customClass="FTFCollectionReusableView">
-                            <rect key="frame" x="0.0" y="302" width="600" height="50"/>
+                            <rect key="frame" x="0.0" y="322" width="600" height="50"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="nAL-wf-Hek">

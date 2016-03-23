@@ -211,7 +211,7 @@
     UIEdgeInsets inset = aScrollView.contentInset;
     float y = offset.y + bounds.size.height - inset.bottom;
     float h = size.height;
-    float reload_distance = -150;
+    float reload_distance = -300;
     if(y > h + reload_distance && self.gridPhotos && _morePhotosToLoad && !_layoutDidChange) {
         _morePhotosToLoad = NO;
         NSLog(@"Grid hit the bottom");
