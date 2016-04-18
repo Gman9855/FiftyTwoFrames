@@ -300,6 +300,7 @@ static NSString * const facebookPageID = @"180889155269546";
                     NSString *firstLetter = [string substringToIndex:1];
                     if ([firstLetter isEqualToString:@"\""]) {
                         photoTitle = string;
+                        break;
                     }
                 }
             }
