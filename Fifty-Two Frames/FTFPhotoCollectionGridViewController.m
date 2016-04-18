@@ -81,8 +81,8 @@
     self.listLayout = [[FTFListLayout alloc] init];
     self.gridLayout = [[CHTCollectionViewWaterfallLayout alloc] init];
     self.gridLayout.columnCount = 2;
-    self.gridLayout.minimumColumnSpacing = 10;
-    self.gridLayout.minimumInteritemSpacing = 10;
+    self.gridLayout.minimumColumnSpacing = 5;
+    self.gridLayout.minimumInteritemSpacing = 5;
     self.collectionView.collectionViewLayout = self.listLayout;
     self.currentLayout = self.listLayout;
 }
@@ -172,14 +172,17 @@
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-
-    self.collectionReusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footer" forIndexPath:indexPath];
-    
-    if (_finishedPaging || !self.gridPhotos.count) {
-        self.collectionReusableView.spinner.hidden = YES;
+    if (![kind isEqualToString:UICollectionElementKindSectionFooter]) {
+        return nil;
     } else {
-        self.collectionReusableView.spinner.hidden = NO;
-        [self.collectionReusableView.spinner startAnimating];
+        self.collectionReusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footer" forIndexPath:indexPath];
+        
+        if (_finishedPaging || !self.gridPhotos.count) {
+            self.collectionReusableView.spinner.hidden = YES;
+        } else {
+            self.collectionReusableView.spinner.hidden = NO;
+            [self.collectionReusableView.spinner startAnimating];
+        }
     }
     
     return self.collectionReusableView;
@@ -188,7 +191,7 @@
 //- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
 //    return CGSizeMake(0.0f, 0.0f);
 //}
-//
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
     return CGSizeMake(50.0f, 50.0f);
 }
