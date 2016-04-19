@@ -10,4 +10,8 @@
 
 @interface FTFNavigationBarAlbumTitle : UILabel
 
+- (instancetype)initWithTitle:(NSString *)title;
+
+- (void)setAttributedTitleWithText:(NSString *)title;
+
 @end

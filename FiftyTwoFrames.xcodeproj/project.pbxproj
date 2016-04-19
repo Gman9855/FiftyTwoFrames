@@ -16,6 +16,7 @@
 		7C4A04CE1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4A04CD1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib */; };
 		7C4A04D11C9F3FC000FE3F0F /* FTFCollectionViewGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04D01C9F3FC000FE3F0F /* FTFCollectionViewGridCell.m */; };
 		7C4A04D41C9F426500FE3F0F /* FTFCollectionViewListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04D31C9F426500FE3F0F /* FTFCollectionViewListCell.m */; };
+		7C7A72C11CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C7A72C01CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m */; };
 		7CBB74EA1C1B7B6C00179997 /* FTFLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */; };
 		7CCE35B61C7A9C400061C760 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC93889193C1C8300418F32 /* Foundation.framework */; };
 		8B12265019B2DE9700FBFE4E /* FTFPhotoContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */; };
@@ -156,6 +157,8 @@
 		7C4A04D01C9F3FC000FE3F0F /* FTFCollectionViewGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFCollectionViewGridCell.m; sourceTree = "<group>"; };
 		7C4A04D21C9F426500FE3F0F /* FTFCollectionViewListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFCollectionViewListCell.h; sourceTree = "<group>"; };
 		7C4A04D31C9F426500FE3F0F /* FTFCollectionViewListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFCollectionViewListCell.m; sourceTree = "<group>"; };
+		7C7A72BF1CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFNavigationBarAlbumTitle.h; sourceTree = "<group>"; };
+		7C7A72C01CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFNavigationBarAlbumTitle.m; sourceTree = "<group>"; };
 		7CBB74E81C1B7B6C00179997 /* FTFLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFLikeButton.h; sourceTree = "<group>"; };
 		7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFLikeButton.m; sourceTree = "<group>"; };
 		8B12264E19B2DE9700FBFE4E /* FTFPhotoContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoContainerViewController.h; sourceTree = "<group>"; };
@@ -717,6 +720,8 @@
 				8BC9389B193C1C8300418F32 /* Main.storyboard */,
 				8BD0408F1AA502EA00700F4C /* FTFCollectionReusableView.h */,
 				8BD040901AA502EA00700F4C /* FTFCollectionReusableView.m */,
+				7C7A72BF1CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.h */,
+				7C7A72C01CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m */,
 				8BC938A1193C1C8300418F32 /* Images.xcassets */,
 				8BC93890193C1C8300418F32 /* Supporting Files */,
 				8B6458BD194CFADC006D4B75 /* NSArray+FTFAdditions.h */,
@@ -963,6 +968,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BA8793219674E6A00A43819 /* MWTapDetectingImageView.m in Sources */,
+				7C7A72C11CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m in Sources */,
 				8BA8794219674E6A00A43819 /* PSTGridLayoutItem.m in Sources */,
 				8BA8793619674E6A00A43819 /* MBProgressHUD.m in Sources */,
 				8BA8797D19675FF400A43819 /* SDWebImageCompat.m in Sources */,

@@ -19,10 +19,13 @@
 #import "FiftyTwoFrames-Swift.h"
 #import "FTFGridLayout.h"
 #import "CHTCollectionViewWaterfallLayout.h"
+#import "FTFNavigationBarAlbumTitle.h"
+
 @interface FTFPhotoCollectionGridViewController () <CHTCollectionViewDelegateWaterfallLayout>
 
 @property (nonatomic, strong) FTFCollectionReusableView *collectionReusableView;
 @property (nonatomic, strong) UILabel *navBarTitle;
+@property (nonatomic, strong) FTFNavigationBarAlbumTitle *navBarAlbumTitle;
 @property (nonatomic, strong) FTFListLayout *listLayout;
 @property (nonatomic, strong) CHTCollectionViewWaterfallLayout *gridLayout;
 @property (nonatomic, strong) UICollectionViewLayout *currentLayout;
@@ -37,18 +40,6 @@
     BOOL _finishedPaging;
     BOOL _didUpdateCells;
     BOOL _layoutDidChange;
-}
-
-- (UILabel *)navBarTitle {
-    if (!_navBarTitle) {
-        _navBarTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 85)];
-        _navBarTitle.textAlignment = NSTextAlignmentCenter;
-        _navBarTitle.textColor = [UIColor whiteColor];
-        _navBarTitle.font = [UIFont boldSystemFontOfSize:14];
-        _navBarTitle.numberOfLines = 2;
-        self.navigationItem.titleView = _navBarTitle;
-    }
-    return _navBarTitle;
 }
 
 #pragma mark - View controller
@@ -90,13 +81,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:YES animated:NO];
-    [self setNavBarTitleWithAttributedText];
-    [self setListbutton];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+    self.navBarAlbumTitle = [[FTFNavigationBarAlbumTitle alloc] initWithTitle:self.albumName];
+    self.navigationItem.titleView = self.navBarAlbumTitle;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -193,7 +179,7 @@
         [MBProgressHUD hideHUDForView:self.collectionView animated:NO];
     }
 
-    if (indexPath.row == self.gridPhotos.count - 4) {
+    if (indexPath.row == self.gridPhotos.count - 7) {
         _morePhotosToLoad = YES;
     }
     
@@ -302,30 +288,6 @@
         }
     }
     _layoutDidChange = NO;
-}
-
-#pragma mark - Helper Methods
-
-- (void)setNavBarTitleWithAttributedText {
-    if ([self.albumName containsString:@":"]) {
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:self.albumName];
-        NSArray *words = [self.albumName componentsSeparatedByString:@": "];
-        NSString *albumName = [words firstObject];
-        NSRange range = [self.albumName rangeOfString:albumName];
-        range.length++;
-        [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:range];
-        [self.navBarTitle setAttributedText:attributedString];
-    } else {
-        self.navBarTitle.text = self.albumName;
-    }
-}
-
-- (void)setListbutton {
-    UIBarButtonItem *listButton = [[UIBarButtonItem alloc] initWithTitle:@"Grid"
-                                                             style:UIBarButtonItemStylePlain
-                                                            target:self
-                                                            action:@selector(changeLayout)];
-    self.navigationItem.rightBarButtonItem = listButton;
 }
 
 -(void)postLayoutNotification:(NSDictionary *)userInfo {

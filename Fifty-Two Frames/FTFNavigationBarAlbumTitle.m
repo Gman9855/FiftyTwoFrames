@@ -18,4 +18,31 @@
 }
 */
 
+- (instancetype)initWithTitle:(NSString *)title {
+    if (self = [super initWithFrame:CGRectMake(0, 0, 200, 85)]) {
+        self.textAlignment = NSTextAlignmentCenter;
+        self.textColor = [UIColor whiteColor];
+        self.font = [UIFont boldSystemFontOfSize:14];
+        self.numberOfLines = 2;
+        
+        [self setAttributedTitleWithText:title];
+    }
+    
+    return self;
+}
+
+- (void)setAttributedTitleWithText:(NSString *)title {
+    if ([title containsString:@":"]) {
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:title];
+        NSArray *words = [title componentsSeparatedByString:@": "];
+        NSString *albumName = [words firstObject];
+        NSRange range = [title rangeOfString:albumName];
+        range.length++;
+        [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:range];
+        [self setAttributedText:attributedString];
+    } else {
+        self.text = title;
+    }
+}
+
 @end
