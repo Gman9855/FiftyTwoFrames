@@ -486,6 +486,32 @@
                             <outlet property="delegate" destination="iZh-Zc-LQJ" id="DIL-EC-pxv"/>
                         </connections>
                     </collectionView>
+                    <toolbarItems>
+                        <barButtonItem image="Menu" id="2TP-we-hYh">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="albumMenuButtonTapped:" destination="iZh-Zc-LQJ" id="tLC-Ui-Jlu"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="2ms-lF-24l"/>
+                        <barButtonItem image="UIBarButtonItemGrid.png" id="6hq-8B-leE">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="toggleLayout:" destination="iZh-Zc-LQJ" id="3Co-GZ-Dif"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="4Jb-Yl-GxL"/>
+                        <barButtonItem image="Info" id="NEv-7Q-fbN">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="albumInfoButtonTapped:" destination="iZh-Zc-LQJ" id="aBC-vU-9yy"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="layoutToggleButton" destination="6hq-8B-leE" id="VIE-z3-ai7"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Sp-Lf-DZ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

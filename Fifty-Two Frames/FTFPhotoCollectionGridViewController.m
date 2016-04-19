@@ -27,6 +27,7 @@
 @property (nonatomic, strong) CHTCollectionViewWaterfallLayout *gridLayout;
 @property (nonatomic, strong) UICollectionViewLayout *currentLayout;
 @property (nonatomic, assign) BOOL shouldReloadData;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *layoutToggleButton;
 
 @end
 
@@ -121,6 +122,56 @@
 
 - (void)updateForAlbumWithNoPaging:(NSNotification *)notification {
     _finishedPaging = YES;
+}
+
+#pragma mark - Action Methods
+
+
+- (IBAction)albumMenuButtonTapped:(UIBarButtonItem *)sender {
+    UINavigationController *albumSelectionMenuNavigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"albumListNavController"];
+    [self presentViewController:albumSelectionMenuNavigationController animated:true completion:nil];
+}
+
+- (IBAction)toggleLayout:(UIBarButtonItem *)sender {
+    _layoutDidChange = YES;
+    UICollectionViewLayout *layout;
+    NSString *layoutType;
+    NSString *toolbarIconImageName;
+    if (self.collectionView.collectionViewLayout == self.listLayout) {
+        layout = self.gridLayout;
+        layoutType = @"grid";
+        self.navigationItem.rightBarButtonItem.title = @"List";
+        toolbarIconImageName = @"DefaultStyle";
+    } else {
+        layout = self.listLayout;
+        layoutType = @"list";
+        self.navigationItem.rightBarButtonItem.title = @"Grid";
+        toolbarIconImageName = @"UIBarButtonItemGrid";
+    }
+    self.currentLayout = layout;
+    self.layoutToggleButton.image = [UIImage imageNamed:toolbarIconImageName];
+    
+    NSDictionary *userInfo = @{@"layout": layout, @"layoutType": layoutType};
+    
+    NSArray *visibleCells = [self.collectionView visibleCells];
+    FTFCollectionViewCell *firstPhoto = (FTFCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    BOOL containsFirstPhoto = [visibleCells containsObject:firstPhoto];
+    
+    [UIView animateWithDuration:0.45 delay:0 usingSpringWithDamping:0.865 initialSpringVelocity:1.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
+        [self.collectionView setCollectionViewLayout:layout animated:NO];
+        if (containsFirstPhoto) {
+            [self.collectionView setContentOffset:CGPointZero];
+            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+        }
+        
+        [self postLayoutNotification:userInfo];
+        
+    } completion:nil];
+}
+
+- (IBAction)albumInfoButtonTapped:(UIBarButtonItem *)sender {
+    
 }
 
 #pragma mark - Collection View Delegate
