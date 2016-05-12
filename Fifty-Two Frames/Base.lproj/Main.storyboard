@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="hNK-Qc-fFQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="hNK-Qc-fFQ">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -313,6 +313,7 @@
                                                                 </mask>
                                                             </variation>
                                                             <connections>
+                                                                <action selector="likeButtonTapped:" destination="iZh-Zc-LQJ" eventType="touchUpInside" id="QhG-g0-f7O"/>
                                                                 <action selector="likeIconTapped:" destination="dCf-uT-a31" eventType="touchUpInside" id="gJy-2i-5xB"/>
                                                             </connections>
                                                         </button>
@@ -448,6 +449,9 @@
                                     <outlet property="bottomDetailViewTrailingConstraint" destination="P3E-gh-RdB" id="0d5-Yw-M0H"/>
                                     <outlet property="containerView" destination="PHI-Om-V6q" id="uzM-rc-8g3"/>
                                     <outlet property="imageViewBottomToBottomDetailViewTopConstraint" destination="CHo-59-D7V" id="big-mL-89j"/>
+                                    <outlet property="likeButton" destination="MuI-sK-lu0" id="wUn-2W-Hxf"/>
+                                    <outlet property="photoLikeCount" destination="xlN-9q-HR9" id="Seq-xz-B09"/>
+                                    <outlet property="photographerName" destination="1b5-Ra-gQZ" id="uFX-zj-oA3"/>
                                     <outlet property="thumbnailView" destination="cVv-c2-yWa" id="a0c-Lc-ESg"/>
                                 </connections>
                             </collectionViewCell>
@@ -488,34 +492,37 @@
                     </collectionView>
                     <toolbarItems>
                         <barButtonItem image="Menu" id="2TP-we-hYh">
-                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="albumMenuButtonTapped:" destination="iZh-Zc-LQJ" id="tLC-Ui-Jlu"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="2ms-lF-24l"/>
-                        <barButtonItem image="UIBarButtonItemGrid.png" id="6hq-8B-leE">
-                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <barButtonItem image="Grid" id="6hq-8B-leE">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="toggleLayout:" destination="iZh-Zc-LQJ" id="3Co-GZ-Dif"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="4Jb-Yl-GxL"/>
                         <barButtonItem image="Info" id="NEv-7Q-fbN">
-                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="albumInfoButtonTapped:" destination="iZh-Zc-LQJ" id="aBC-vU-9yy"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
+                    <navigationItem key="navigationItem" id="Xdc-WD-bMH"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="albumInfoButton" destination="NEv-7Q-fbN" id="3ci-LI-Fak"/>
+                        <outlet property="gridButton" destination="6hq-8B-leE" id="rTb-WL-Qba"/>
                         <outlet property="layoutToggleButton" destination="6hq-8B-leE" id="VIE-z3-ai7"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Sp-Lf-DZ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6577.5" y="-145.5"/>
+            <point key="canvasLocation" x="7495.5" y="-145.5"/>
         </scene>
         <!--Container View Controller-->
         <scene sceneID="ZZb-r3-0jl">
@@ -1069,9 +1076,33 @@
             </objects>
             <point key="canvasLocation" x="3201" y="893.25"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="l2O-Ff-ZJT">
+            <objects>
+                <navigationController storyboardIdentifier="collectionViewNavController" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="4if-sc-rAx" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="4XE-ui-huT">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="imr-ft-3lX">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="iZh-Zc-LQJ" kind="relationship" relationship="rootViewController" id="ll6-TD-sZo"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tAO-h4-Msx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6577.5" y="-145.5"/>
+        </scene>
     </scenes>
     <resources>
         <image name="52f-square-whitebg-large.png" width="2000" height="2000"/>
+        <image name="Grid" width="22" height="22"/>
         <image name="Info" width="22" height="22"/>
         <image name="Menu" width="22" height="22"/>
         <image name="Refresh.png" width="50" height="50"/>

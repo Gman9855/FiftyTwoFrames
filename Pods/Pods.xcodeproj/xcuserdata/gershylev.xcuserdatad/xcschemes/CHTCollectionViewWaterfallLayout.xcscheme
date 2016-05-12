@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '3829F6BCDEFB7D97F05B5EFA2FB8AD84'
-               BlueprintName = 'pop'
+               BlueprintIdentifier = '9B36D462102DAF8E84F6D9AB9C868C59'
+               BlueprintName = 'CHTCollectionViewWaterfallLayout'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libpop.a'>
+               BuildableName = 'libCHTCollectionViewWaterfallLayout.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

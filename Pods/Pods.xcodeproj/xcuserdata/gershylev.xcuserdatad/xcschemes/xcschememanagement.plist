@@ -39,6 +39,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-FiftyTwoFramesTests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SlackTextViewController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,22 +62,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>0C1F8E331232C34F034FD26C684AFA0A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>3829F6BCDEFB7D97F05B5EFA2FB8AD84</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3D417356AB9DCA5B17565C7420759161</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>4E286D373D75563CE26E479A68203892</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5127D1C7A0D0AB24B1A91E5EBE1E535E</key>
+		<key>73EA358BAE89064C887DDCB350B647A5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -97,17 +97,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E06183727A5F8E42D3708C27A006B136</key>
+		<key>E0994E5AC7E061802875AEBF79107190</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>F21523DE0EE1E35B265242490D97EE4C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FB84D5762991F3081E4D910909F18C83</key>
 		<dict>
 			<key>primary</key>
 			<true/>

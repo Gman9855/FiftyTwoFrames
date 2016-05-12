@@ -32,13 +32,18 @@
 }
 
 - (void)setAttributedTitleWithText:(NSString *)title {
+    NSMutableAttributedString *attributedString;
     if ([title containsString:@":"]) {
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:title];
+        attributedString = [[NSMutableAttributedString alloc]initWithString:title];
         NSArray *words = [title componentsSeparatedByString:@": "];
         NSString *albumName = [words firstObject];
         NSRange range = [title rangeOfString:albumName];
         range.length++;
         [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:range];
+        [self setAttributedText:attributedString];
+    } else if ([title isEqualToString:@"52Frames"]) {
+        attributedString = [[NSMutableAttributedString alloc]initWithString:title];
+        [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:NSMakeRange(0,2)];
         [self setAttributedText:attributedString];
     } else {
         self.text = title;

@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '3829F6BCDEFB7D97F05B5EFA2FB8AD84'
-               BlueprintName = 'pop'
+               BlueprintIdentifier = '81D7FE2A0FD9258247B1232874B837DA'
+               BlueprintName = 'FBSDKCoreKit'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libpop.a'>
+               BuildableName = 'libFBSDKCoreKit.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
