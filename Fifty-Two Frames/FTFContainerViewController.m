@@ -24,7 +24,7 @@
 
 - (UIViewController *)contentViewController {
     if (!_contentViewController) {
-        _contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentNavigationController"];
+        _contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"collectionViewNavController"];
     }
     return _contentViewController;
 }

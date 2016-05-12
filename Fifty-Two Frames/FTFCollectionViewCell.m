@@ -8,24 +8,75 @@
 
 #import "FTFCollectionViewCell.h"
 
+#import "CHTCollectionViewWaterfallLayout.h"
+
+@interface FTFCollectionViewCell ()
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomDetailViewHeightConstraint;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomDetailViewBottomToContainerViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomDetailViewLeadingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomDetailViewTrailingConstraint;
+
+@end
+
 @implementation FTFCollectionViewCell
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
+- (id)initWithCoder:(NSCoder*)coder {
+    if ((self = [super initWithCoder:coder])) {
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(layoutDidChange:)
+                                                     name:@"LayoutDidChange"
+                                                   object:nil];
+        
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
+- (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-*/
+
+- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
+    [self layoutIfNeeded];
+    [super applyLayoutAttributes:layoutAttributes];
+}
+
+- (void)layoutDidChange:(NSNotification *)notification {
+    if ([[notification name] isEqualToString:@"LayoutDidChange"]) {
+        NSDictionary *userInfo = notification.userInfo;
+        NSString *layoutType = (NSString *)userInfo[@"layoutType"];
+        UICollectionViewLayout *layout = (UICollectionViewLayout *)userInfo[@"layout"];
+        
+        [self updateCellsForLayout:layout];
+        
+        CGFloat time = [layoutType isEqual: @"grid"] ? 0 : 0.3;
+        
+        [UIView animateWithDuration:time delay:time options:0 animations:^{
+            self.bottomDetailView.alpha = ![layoutType isEqual: @"grid"];
+        } completion:nil];
+    }
+}
+
+- (void)updateCellsForLayout:(UICollectionViewLayout *)layout {
+    if ([layout isKindOfClass:[CHTCollectionViewWaterfallLayout class]]) {
+        if ([self.containerView.subviews containsObject:self.bottomDetailView]) {
+            [self.bottomDetailView removeFromSuperview];
+            self.imageViewBottomToContainerViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.thumbnailView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.containerView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
+            [self addConstraint:self.imageViewBottomToContainerViewBottomConstraint];
+        }
+    } else {
+        if (![self.containerView.subviews containsObject:self.bottomDetailView]) {
+            [self removeConstraint:self.imageViewBottomToContainerViewBottomConstraint];
+            [self.containerView addSubview:self.bottomDetailView];
+            [self addConstraint:self.bottomDetailViewHeightConstraint];
+            [self addConstraint:self.bottomDetailViewLeadingConstraint];
+            [self addConstraint:self.bottomDetailViewTrailingConstraint];
+            [self addConstraint:self.bottomDetailViewBottomToContainerViewBottomConstraint];
+            [self addConstraint:self.imageViewBottomToBottomDetailViewTopConstraint];
+        }
+    }
+}
 
 @end
