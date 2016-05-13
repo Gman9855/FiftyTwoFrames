@@ -32,7 +32,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
-@interface FTFPhotoCollectionGridViewController () <CHTCollectionViewDelegateWaterfallLayout, UINavigationControllerDelegate, MWPhotoBrowserDelegate>
+@interface FTFPhotoCollectionGridViewController () <CHTCollectionViewDelegateWaterfallLayout, UINavigationControllerDelegate, MWPhotoBrowserDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) FTFCollectionReusableView *collectionReusableView;
 @property (nonatomic, strong) UILabel *navBarTitle;
@@ -55,6 +55,8 @@
 @property (nonatomic, strong) UIButton *refreshAlbumPhotosButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *gridButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *albumInfoButton;
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *searchButton;
 
 @end
 
@@ -136,6 +138,11 @@ BOOL didLikePhotoFromBrowser = NO;
     self.collectionView.userInteractionEnabled = NO;
     self.navigationController.toolbarHidden = YES;
     self.navigationController.delegate = self;
+    
+    self.searchBar = [[UISearchBar alloc] init];
+    self.searchBar.showsCancelButton = YES;
+    self.searchBar.translucent = YES;
+    self.searchBar.delegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(albumSelectionChanged:)
@@ -303,6 +310,27 @@ BOOL didLikePhotoFromBrowser = NO;
 
 - (IBAction)albumMenuButtonTapped:(UIBarButtonItem *)sender {
     [self presentViewController:self.albumSelectionMenuNavigationController animated:true completion:nil];
+}
+- (IBAction)searchButtonTapped:(UIBarButtonItem *)sender {
+    [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissSearchBar)]];
+
+    [UIView animateWithDuration:0.1 animations:^{
+        NSMutableArray *navBarButtons = [self.navigationItem.rightBarButtonItems mutableCopy];
+        [navBarButtons removeObject:self.searchButton];
+        [self.navigationItem setRightBarButtonItems:navBarButtons animated:YES];
+        self.navBarAlbumTitle.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        // remove the search button
+        self.navigationItem.rightBarButtonItem = nil;
+        // add the search bar (which will start out hidden).
+        self.navigationItem.titleView = self.searchBar;
+        self.searchBar.alpha = 0.0;
+        [self.searchBar becomeFirstResponder];
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                             self.searchBar.alpha = 1.0;
+                         } completion:nil];
+    }];
 }
 
 - (IBAction)toggleLayout:(UIBarButtonItem *)sender {
@@ -727,6 +755,35 @@ BOOL didLikePhotoFromBrowser = NO;
         [self postLayoutNotification:userInfo];
 
     } completion:nil];
+}
+
+#pragma mark UISearchBarDelegate methods
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [self dismissSearchBar];
+}
+
+- (void)dismissSearchBar {
+    [self.view removeGestureRecognizer:self.view.gestureRecognizers.firstObject];
+    
+    if ([self.searchBar isFirstResponder]) {
+        [self.searchBar resignFirstResponder];
+    }
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        self.searchBar.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.3 animations:^ {
+            // unhide search button
+            //            self.navigationItem.rightBarButtonItem = self.searchButton;
+            NSMutableArray *navBarButtons = [self.navigationItem.rightBarButtonItems mutableCopy];
+            if (![navBarButtons containsObject:self.searchButton]) {
+                [navBarButtons addObject:self.searchButton];
+                [self.navigationItem setRightBarButtonItems:navBarButtons animated:YES];
+            }
+            self.navigationItem.titleView = self.navBarAlbumTitle;
+            self.navBarAlbumTitle.alpha = 1.0;
+        }];
+    }];
 }
 
 - (void)didReceiveMemoryWarning

@@ -262,6 +262,7 @@
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="6ph-C5-kUS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <gestureRecognizers/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="8" minimumInteritemSpacing="8" id="UyC-2A-RZj">
                             <size key="itemSize" width="400" height="325"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -512,12 +513,20 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" id="Xdc-WD-bMH"/>
+                    <navigationItem key="navigationItem" id="Xdc-WD-bMH">
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="Qv5-Wj-j9M">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="searchButtonTapped:" destination="iZh-Zc-LQJ" id="LxH-6J-vud"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="albumInfoButton" destination="NEv-7Q-fbN" id="3ci-LI-Fak"/>
                         <outlet property="gridButton" destination="6hq-8B-leE" id="rTb-WL-Qba"/>
                         <outlet property="layoutToggleButton" destination="6hq-8B-leE" id="VIE-z3-ai7"/>
+                        <outlet property="searchButton" destination="Qv5-Wj-j9M" id="Suu-8o-rvq"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Sp-Lf-DZ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
