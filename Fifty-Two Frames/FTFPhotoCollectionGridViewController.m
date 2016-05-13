@@ -481,6 +481,10 @@ BOOL didLikePhotoFromBrowser = NO;
     }];
 }
 
+-(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
+    
+}
+
 #pragma mark - UICollectionViewDelegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section

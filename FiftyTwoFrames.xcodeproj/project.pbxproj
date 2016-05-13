@@ -17,6 +17,7 @@
 		7C4A04CE1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4A04CD1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib */; };
 		7C4A04D11C9F3FC000FE3F0F /* FTFCollectionViewGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04D01C9F3FC000FE3F0F /* FTFCollectionViewGridCell.m */; };
 		7C4A04D41C9F426500FE3F0F /* FTFCollectionViewListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04D31C9F426500FE3F0F /* FTFCollectionViewListCell.m */; };
+		7C7783C61CE5FC5200C3BA66 /* FTFFiltersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C7783C51CE5FC5200C3BA66 /* FTFFiltersViewController.m */; };
 		7C7A72C11CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C7A72C01CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m */; };
 		7CBB74EA1C1B7B6C00179997 /* FTFLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */; };
 		7CCE35B61C7A9C400061C760 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC93889193C1C8300418F32 /* Foundation.framework */; };
@@ -159,6 +160,8 @@
 		7C7783BE1CE4F1F700C3BA66 /* libFBSDKCoreKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFBSDKCoreKit.a; path = "../../../Library/Developer/Xcode/DerivedData/FiftyTwoFrames-epwqzksrgkkibaelddinjbmvpgne/Build/Products/Debug-iphonesimulator/libFBSDKCoreKit.a"; sourceTree = "<group>"; };
 		7C7783C01CE4F1FE00C3BA66 /* libFBSDKShareKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFBSDKShareKit.a; path = "../../../Library/Developer/Xcode/DerivedData/FiftyTwoFrames-epwqzksrgkkibaelddinjbmvpgne/Build/Products/Debug-iphonesimulator/libFBSDKShareKit.a"; sourceTree = "<group>"; };
 		7C7783C21CE4F20200C3BA66 /* libFBSDKLoginKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFBSDKLoginKit.a; path = "../../../Library/Developer/Xcode/DerivedData/FiftyTwoFrames-epwqzksrgkkibaelddinjbmvpgne/Build/Products/Debug-iphonesimulator/libFBSDKLoginKit.a"; sourceTree = "<group>"; };
+		7C7783C41CE5FC5200C3BA66 /* FTFFiltersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFFiltersViewController.h; sourceTree = "<group>"; };
+		7C7783C51CE5FC5200C3BA66 /* FTFFiltersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFFiltersViewController.m; sourceTree = "<group>"; };
 		7C7A72BF1CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFNavigationBarAlbumTitle.h; sourceTree = "<group>"; };
 		7C7A72C01CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFNavigationBarAlbumTitle.m; sourceTree = "<group>"; };
 		7CBB74E81C1B7B6C00179997 /* FTFLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFLikeButton.h; sourceTree = "<group>"; };
@@ -471,6 +474,8 @@
 				1AA2BAC719C8BC650069A92F /* FTFCustomCaptionView.m */,
 				8BC938D71940593400418F32 /* FTFFacebookLoginViewController.h */,
 				8BC938D81940593400418F32 /* FTFFacebookLoginViewController.m */,
+				7C7783C41CE5FC5200C3BA66 /* FTFFiltersViewController.h */,
+				7C7783C51CE5FC5200C3BA66 /* FTFFiltersViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -1050,6 +1055,7 @@
 				8BA8794319674E6A00A43819 /* PSTGridLayoutRow.m in Sources */,
 				8BA8798019675FF400A43819 /* SDWebImageDownloaderOperation.m in Sources */,
 				8BAC031319B83CF400451615 /* FiftyTwoFrames.m in Sources */,
+				7C7783C61CE5FC5200C3BA66 /* FTFFiltersViewController.m in Sources */,
 				8BA2A6EE194E12E600341260 /* WYStoryboardPopoverSegue.m in Sources */,
 				8BA8797A19675FF400A43819 /* MKAnnotationView+WebCache.m in Sources */,
 				8BC938DC194529EB00418F32 /* FTFContainerViewController.m in Sources */,
