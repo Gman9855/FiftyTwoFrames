@@ -26,7 +26,12 @@ static NSString * const facebookPageID = @"180889155269546";
 @property (nonatomic, strong) NSString *nextPageOfAlbumsURL;
 @property (nonatomic, strong) NSString *nextPageOfAlbumPhotoResultsURL;
 
+@property (nonatomic, strong) NSString *graphPathForNameSearch;
+@property (nonatomic, strong) NSDictionary *parametersForNameSearch;
+
 @property (nonatomic, strong) NSMutableArray *albums;
+@property (nonatomic, strong) NSMutableArray *allNameAndIdResponsesForAlbum;
+@property (nonatomic, strong) NSMutableDictionary *albumIdsToNameAndIdsArrays;
 @property (nonatomic, strong) NSMutableDictionary *albumResultsFromFacebook;
 @property (nonatomic, strong) NSMutableArray *albumDicts;
 @property (nonatomic, strong) NSMutableArray *albumPhotoDicts;
@@ -50,6 +55,14 @@ static NSString * const facebookPageID = @"180889155269546";
     return sharedInstance;
 }
 
+- (NSDictionary *)parametersForNameSearch {
+    if (!_parametersForNameSearch) {
+        _parametersForNameSearch = [NSDictionary dictionaryWithObjectsAndKeys:@"name", @"fields", nil];
+    }
+    
+    return _parametersForNameSearch;
+}
+
 - (FTFUser *)user {
     if (!_user) {
         __block BOOL done = NO;
@@ -62,6 +75,22 @@ static NSString * const facebookPageID = @"180889155269546";
     }
 
     return _user;
+}
+
+- (NSMutableArray *)allNameAndIdResponsesForAlbum {
+    if (!_allNameAndIdResponsesForAlbum) {
+        _allNameAndIdResponsesForAlbum = [NSMutableArray new];
+    }
+    
+    return _allNameAndIdResponsesForAlbum;
+}
+
+- (NSMutableDictionary *)albumIdsToNameAndIdsArrays {
+    if (!_albumIdsToNameAndIdsArrays) {
+        _albumIdsToNameAndIdsArrays = [NSMutableDictionary new];
+    }
+    
+    return _albumIdsToNameAndIdsArrays;
 }
 
 #pragma mark - Public Methods
@@ -144,7 +173,8 @@ static NSString * const facebookPageID = @"180889155269546";
         self.requestConnection = nil;
     }
     
-    NSString *graphPath = [NSString stringWithFormat:@"/%@/photos?limit=50", albumID];
+    NSString *graphPath = [NSString stringWithFormat:@"/%@/photos?limit=100", albumID];
+    self.graphPathForNameSearch = graphPath;
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"images,id,name,likes.limit(1).summary(true).fields(has_liked),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", @"fields", nil];
     
     self.requestConnection = [[FBSDKGraphRequestConnection alloc] init];
@@ -153,7 +183,7 @@ static NSString * const facebookPageID = @"180889155269546";
     [self.requestConnection addRequest:request completionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         if (block) {
             if (!error) {
-                NSArray *albumPhotos = [weakSelf albumPhotosWithAlbumPhotoResponseData:result];
+                NSArray *albumPhotos = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:@"data"]];
                 NSString *nextPage = [result valueForKeyPath:@"paging.next"];
                 if (nextPage == NULL) {
                     block(albumPhotos, nil, YES);
@@ -200,7 +230,7 @@ static NSString * const facebookPageID = @"180889155269546";
     __weak typeof(self) weakSelf = self;
     [self.requestConnection addRequest:request completionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         NSString *nextPage = [result valueForKeyPath:@"paging.next"];
-        NSArray *nextBatchOfAlbumPhotos = [weakSelf albumPhotosWithAlbumPhotoResponseData:result];
+        NSArray *nextBatchOfAlbumPhotos = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:@"data"]];
         if (nextPage == NULL) {
             block(nextBatchOfAlbumPhotos, nil, YES);
         } else {
@@ -210,6 +240,91 @@ static NSString * const facebookPageID = @"180889155269546";
     }];
     
     [self.requestConnection start];
+}
+
+- (void)requestAlbumPhotosForPhotographerSearchName:(NSString *)searchName albumId:(NSString *)albumId completionBlock:(void (^)(NSArray *photos, NSError *error))block {
+    __weak typeof(self) weakSelf = self;
+    if (self.albumIdsToNameAndIdsArrays[albumId]) {
+        NSArray *namesAndIds = self.albumIdsToNameAndIdsArrays[albumId];
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photographerName CONTAINS %@", searchName];
+        NSArray *filtered = [namesAndIds filteredArrayUsingPredicate:predicate];
+        if (filtered.count == 0) {
+            NSError *error = [NSError errorWithDomain:@"com.52Frames" code:100 userInfo:@{@"message" : @"Could not find photos that match search term."}];
+            block(nil, error);
+            return;
+        }
+        
+        NSString *graphPath = [self graphPathFromFilteredNamesAndIds:filtered];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"images,id,name,likes.limit(1).summary(true).fields(has_liked),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", @"fields", nil];
+        [[[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+            if (block) {
+                if (!error) {
+                    NSMutableArray *albumPhotos = [NSMutableArray new];
+                    for (FTFImage *photo in filtered) {
+                        NSString *photoId = photo.photoID;
+                        NSArray *parsedPhoto = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:photoId]];
+                        if (parsedPhoto.count > 0) {
+                            [albumPhotos addObject:(FTFImage *)parsedPhoto.firstObject];
+                        }
+                    }
+                    block(albumPhotos, nil);
+                    
+                } else {
+                    block(nil, error);
+                }
+            } else {
+                return;
+            }
+        }];
+    } else {
+        [[[FBSDKGraphRequest alloc] initWithGraphPath:self.graphPathForNameSearch parameters:self.parametersForNameSearch] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+            NSString *nextPage = [result valueForKeyPath:@"paging.next"];
+            [self.allNameAndIdResponsesForAlbum addObject:[result valueForKey:@"data"]];
+            if (nextPage == NULL) {
+                [self addNamesAndIdsFromArrayOfFacebookResponses:[self.allNameAndIdResponsesForAlbum copy] forKey:albumId];
+                self.allNameAndIdResponsesForAlbum = nil;
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photographerName CONTAINS %@", searchName];
+                NSArray *filtered = [self.albumIdsToNameAndIdsArrays[albumId] filteredArrayUsingPredicate:predicate];
+                if (filtered.count == 0) {
+                    NSError *error = [NSError errorWithDomain:@"com.52Frames" code:100 userInfo:@{@"message" : @"Could not find photos that match search term."}];
+                    block(nil, error);
+                    return;
+                }
+                
+                NSString *graphPath = [self graphPathFromFilteredNamesAndIds:filtered];
+                NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"images,id,name,likes.limit(1).summary(true).fields(has_liked),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", @"fields", nil];
+                [[[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+                    if (block) {
+                        if (!error) {
+                            NSMutableArray *albumPhotos = [NSMutableArray new];
+                            for (FTFImage *photo in filtered) {
+                                NSString *photoId = photo.photoID;
+                                NSArray *parsedPhoto = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:photoId]];
+                                if (parsedPhoto.count > 0) {
+                                    [albumPhotos addObject:(FTFImage *)parsedPhoto.firstObject];
+                                }
+                            }
+                            block(albumPhotos, nil);
+                            
+                        } else {
+                            block(nil, error);
+                        }
+                    } else {
+                        return;
+                    }
+                }];
+            } else {
+                self.graphPathForNameSearch = [nextPage substringFromIndex:31];
+                if (self.parametersForNameSearch) {
+                    self.parametersForNameSearch = nil;
+                }
+                [self requestAlbumPhotosForPhotographerSearchName:searchName albumId:albumId completionBlock:block];
+                NSLog(@"Fetching another 100 photos");
+            }
+        }];
+    }
+    
 }
 
 - (void)publishPhotoCommentWithPhotoID:(NSString *)photoID comment:(NSString *)comment completionBlock:(void (^)(NSError *error))block
@@ -259,18 +374,33 @@ static NSString * const facebookPageID = @"180889155269546";
 #pragma mark - Private Methods
 
 - (NSArray *)albumPhotosWithAlbumPhotoResponseData:(NSDictionary *)dict {
-    NSArray *photoIDs = [dict valueForKeyPath:@"data.id"];
-    NSArray *photoCollections = [dict valueForKeyPath:@"data.images"];
-    NSArray *photoDescriptionCollection = [dict valueForKeyPath:@"data.name"];
-    NSArray *likesCountCollection = [dict valueForKeyPath:@"data.likes.summary.total_count"];
-    NSArray *commentsCollection = [dict valueForKeyPath:@"data.comments.data"];
-    NSArray *userHasLikedPhotoCollection = [dict valueForKeyPath:@"data.likes.summary.has_liked"];
+    NSArray *photoCollections;
+    NSArray *photoDescriptionCollection;
+    NSArray *likesCountCollection;
+    NSArray *commentsCollection;
+    NSArray *userHasLikedPhotoCollection;
+    NSArray *photoIDs = [dict valueForKeyPath:@"id"];
+    if ([photoIDs isKindOfClass:[NSString class]]) {
+        photoIDs = @[[dict valueForKeyPath:@"id"]];
+        photoCollections = @[[dict valueForKeyPath:@"images"]];
+        photoDescriptionCollection = @[[dict valueForKeyPath:@"name"]];
+        likesCountCollection = @[[dict valueForKeyPath:@"likes.summary.total_count"]];
+        commentsCollection = @[[dict valueForKeyPath:@"comments.data"]];
+        userHasLikedPhotoCollection = @[[dict valueForKeyPath:@"likes.summary.has_liked"]];
+    } else {
+        photoCollections = [dict valueForKeyPath:@"images"];
+        photoDescriptionCollection = [dict valueForKeyPath:@"name"];
+        likesCountCollection = [dict valueForKeyPath:@"likes.summary.total_count"];
+        commentsCollection = [dict valueForKeyPath:@"comments.data"];
+        userHasLikedPhotoCollection = [dict valueForKeyPath:@"likes.summary.has_liked"];
+    }
     
     NSMutableArray *objects = [NSMutableArray new];
     
     for (int i = 0; i < [photoCollections count]; i++) {
         NSArray *array = photoCollections[i];
         NSDictionary *largePhotoDict = array.firstObject;
+        
         NSDictionary *smallPhotoDict = [self preferredSmallPhotoURLDictFromPhotoArray:photoCollections[i]];
         
 //        NSArray *imageURLs = [self urlsFromPhotoArray:photoCollections[i]];
@@ -312,6 +442,7 @@ static NSString * const facebookPageID = @"180889155269546";
 
         image.likesCount = [likesCountCollection[i]integerValue];
         image.photoID = photoIDs[i];
+                
         image.isLiked = [userHasLikedPhotoCollection[i] intValue];
         NSArray *photoComments = commentsCollection[i];
         NSMutableArray *arrayOfphotoCommentObjects = [NSMutableArray new];
@@ -384,4 +515,39 @@ static NSString * const facebookPageID = @"180889155269546";
 {
     return [data valueForKeyPath:@"source"];
 }
+
+- (void)addNamesAndIdsFromArrayOfFacebookResponses:(NSArray *)responses forKey:(NSString *)key {
+    NSMutableArray *namesAndIds = [NSMutableArray new];
+    for (NSDictionary *dict in self.allNameAndIdResponsesForAlbum) {
+        NSArray *photoCaptionArray = [dict valueForKeyPath:@"name"];
+        NSArray *photoIdArray = [dict valueForKey:@"id"];
+        for (int i = 0; i < photoIdArray.count; i++) {
+            NSString *nameAtIndex = photoCaptionArray[i];
+            NSArray *lines = [nameAtIndex componentsSeparatedByString:@"\n"];
+            NSString *name = lines.firstObject;
+            NSLog(@"%@", name);
+            FTFImage *photo = [FTFImage new];
+            photo.photographerName = name;
+            photo.photoID = photoIdArray[i];
+            [namesAndIds addObject:photo];
+        }
+    }
+    [self.albumIdsToNameAndIdsArrays setObject:[namesAndIds copy] forKey:key];
+}
+
+- (NSString *)graphPathFromFilteredNamesAndIds:(NSArray *)namesAndIds {
+    NSMutableString *photoIdsForFacebookQuery = [NSMutableString new];
+    int count = namesAndIds.count <= 50 ? (int)namesAndIds.count : 50;
+    for (int i = 0; i < count; i++) {
+        BOOL shouldAppendComma = YES;
+        if (namesAndIds.count - 1 == i) {
+            shouldAppendComma = NO;
+        }
+        FTFImage *photo = namesAndIds[i];
+        [photoIdsForFacebookQuery appendString:!shouldAppendComma ? photo.photoID : [photo.photoID stringByAppendingString:@","]];
+    }
+    
+    return [NSString stringWithFormat:@"?ids=%@", photoIdsForFacebookQuery];
+}
+
 @end

@@ -26,6 +26,8 @@
 
 - (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID completionBlock:(void(^)(NSArray *photos, NSError *error, BOOL finishedPaging))block;
 
+- (void)requestAlbumPhotosForPhotographerSearchName:(NSString *)searchName albumId:(NSString *)albumId completionBlock:(void (^)(NSArray *photos, NSError *error))block;
+
 - (void)requestNextPageOfAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block;
 
 - (void)publishPhotoLikeWithPhotoID:(NSString *)photoID
