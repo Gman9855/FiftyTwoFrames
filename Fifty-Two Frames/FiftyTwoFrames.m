@@ -26,10 +26,11 @@ static NSString * const facebookPageID = @"180889155269546";
 @property (nonatomic, strong) NSString *nextPageOfAlbumsURL;
 @property (nonatomic, strong) NSString *nextPageOfAlbumPhotoResultsURL;
 
+@property (nonatomic, strong) NSDictionary *photoRequestParameters;
+
 @property (nonatomic, strong) NSString *graphPathForNameSearch;
 @property (nonatomic, strong) NSDictionary *parametersForNameSearch;
 
-@property (nonatomic, strong) NSMutableArray *albums;
 @property (nonatomic, strong) NSMutableArray *allNameAndIdResponsesForAlbum;
 @property (nonatomic, strong) NSMutableDictionary *albumIdsToNameAndIdsArrays;
 @property (nonatomic, strong) NSMutableDictionary *albumResultsFromFacebook;
@@ -53,6 +54,14 @@ static NSString * const facebookPageID = @"180889155269546";
         sharedInstance = [self new];
     });
     return sharedInstance;
+}
+
+- (NSDictionary *)photoRequestParameters {
+    if (!_photoRequestParameters) {
+        _photoRequestParameters = @{@"fields" : @"images,id,name,likes.limit(1).summary(true).fields(has_liked),comments.fields(from.fields(picture.type(large),id,name),created_time,message)"};
+    }
+    
+    return _photoRequestParameters;
 }
 
 - (NSDictionary *)parametersForNameSearch {
@@ -173,12 +182,11 @@ static NSString * const facebookPageID = @"180889155269546";
         self.requestConnection = nil;
     }
     
-    NSString *graphPath = [NSString stringWithFormat:@"/%@/photos?limit=100", albumID];
-    self.graphPathForNameSearch = graphPath;
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"images,id,name,likes.limit(1).summary(true).fields(has_liked),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", @"fields", nil];
+    NSString *graphPath = [NSString stringWithFormat:@"/%@/photos?limit=50", albumID];
+    self.graphPathForNameSearch = [NSString stringWithFormat:@"/%@/photos?limit=100", albumID];
     
     self.requestConnection = [[FBSDKGraphRequestConnection alloc] init];
-    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params];
+    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:self.photoRequestParameters];
     __weak typeof(self) weakSelf = self;
     [self.requestConnection addRequest:request completionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         if (block) {
@@ -256,8 +264,8 @@ static NSString * const facebookPageID = @"180889155269546";
         }
         
         NSString *graphPath = [self graphPathFromFilteredNamesAndIds:filtered];
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"images,id,name,likes.limit(1).summary(true).fields(has_liked),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", @"fields", nil];
-        [[[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+
+        [[[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:self.photoRequestParameters] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
             if (block) {
                 if (!error) {
                     NSMutableArray *albumPhotos = [NSMutableArray new];
@@ -385,7 +393,9 @@ static NSString * const facebookPageID = @"180889155269546";
         photoCollections = @[[dict valueForKeyPath:@"images"]];
         photoDescriptionCollection = @[[dict valueForKeyPath:@"name"]];
         likesCountCollection = @[[dict valueForKeyPath:@"likes.summary.total_count"]];
-        commentsCollection = @[[dict valueForKeyPath:@"comments.data"]];
+        if ([dict valueForKeyPath:@"comments.data"]) {
+            commentsCollection = @[[dict valueForKeyPath:@"comments.data"]];
+        }
         userHasLikedPhotoCollection = @[[dict valueForKeyPath:@"likes.summary.has_liked"]];
     } else {
         photoCollections = [dict valueForKeyPath:@"images"];
@@ -525,7 +535,6 @@ static NSString * const facebookPageID = @"180889155269546";
             NSString *nameAtIndex = photoCaptionArray[i];
             NSArray *lines = [nameAtIndex componentsSeparatedByString:@"\n"];
             NSString *name = lines.firstObject;
-            NSLog(@"%@", name);
             FTFImage *photo = [FTFImage new];
             photo.photographerName = name;
             photo.photoID = photoIdArray[i];
