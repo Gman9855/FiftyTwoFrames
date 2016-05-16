@@ -8,7 +8,13 @@
 
 #import "FTFFiltersViewController.h"
 
-@interface FTFFiltersViewController ()
+@interface FTFFiltersViewController () <UITextFieldDelegate>
+
+@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
+@property (weak, nonatomic) IBOutlet UISwitch *nameOnlySwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *sortByLikesSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *sortByCommentsSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *sortByNamesSwitch;
 
 @end
 
@@ -16,7 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.searchTextField.delegate = self;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -28,71 +34,71 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+- (IBAction)sortByLikesSwitchToggled:(UISwitch *)sender {
+    if (sender.isOn) {
+        [self.sortByNamesSwitch setOn:NO animated:true];
+        [self.sortByCommentsSwitch setOn:NO animated:true];
+    }
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+- (IBAction)sortByCommentsSwitchToggled:(UISwitch *)sender {
+    if (sender.isOn) {
+        [self.sortByNamesSwitch setOn:NO animated:true];
+        [self.sortByLikesSwitch setOn:NO animated:true];
+    }
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+- (IBAction)sortByNameSwitchToggled:(UISwitch *)sender {
+    if (sender.isOn) {
+        [self.sortByLikesSwitch setOn:NO animated:true];
+        [self.sortByCommentsSwitch setOn:NO animated:true];
+    }
+}
+
+- (IBAction)saveButtonTapped:(UIButton *)sender {
+    if (![self shouldSaveFilters]) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Oops!" message:@"Looks like you missed something." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:alertAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+        return;
+    }
+    FTFSortOrder sortOrder = FTFSortOrderNone;
+    if (self.sortByLikesSwitch.isOn) {
+        sortOrder = FTFSortOrderLikes;
+    }
+    if (self.sortByNamesSwitch.isOn) {
+        sortOrder = FTFSortOrderName;
+    }
+    if (self.sortByCommentsSwitch.isOn) {
+        sortOrder = FTFSortOrderComments;
+    }
     
-    // Configure the cell...
-    
-    return cell;
+    [self.delegate filtersViewControllerDidSaveFilters:![self.searchTextField.text isEqualToString:@""] ? self.searchTextField.text : nil  nameOnly:[self.searchTextField.text isEqualToString:@""] ? NO : self.nameOnlySwitch.isOn sortOrder:sortOrder];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
-*/
+- (IBAction)resetButtonTapped:(UIBarButtonItem *)sender {
+    [self.sortByLikesSwitch setOn:NO];
+    [self.sortByNamesSwitch setOn:NO];
+    [self.sortByCommentsSwitch setOn:NO];
+    [self.nameOnlySwitch setOn:NO];
+    self.searchTextField.text = @"";
+    
+    [self.delegate filtersViewControllerDidResetFilters];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
+- (BOOL)shouldSaveFilters {
+    return self.sortByNamesSwitch.isOn || self.sortByLikesSwitch.isOn || self.sortByCommentsSwitch.isOn || ![self.searchTextField.text isEqualToString:@""];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (range.location == 0 && [string isEqualToString:@" "]) {
+        return NO;
+    }
     return YES;
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

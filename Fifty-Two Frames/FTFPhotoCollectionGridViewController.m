@@ -29,10 +29,11 @@
 #import "FTFImage+MWPhotoAdditions.h"
 #import "FTFCustomCaptionView.h"
 #import "FTFAlbumDescriptionViewController.h"
+#import "FTFFiltersViewController.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
-@interface FTFPhotoCollectionGridViewController () <CHTCollectionViewDelegateWaterfallLayout, UINavigationControllerDelegate, MWPhotoBrowserDelegate, UISearchBarDelegate>
+@interface FTFPhotoCollectionGridViewController () <CHTCollectionViewDelegateWaterfallLayout, UINavigationControllerDelegate, MWPhotoBrowserDelegate, FTFFiltersViewControllerDelegate>
 
 @property (nonatomic, strong) FTFCollectionReusableView *collectionReusableView;
 @property (nonatomic, strong) UILabel *navBarTitle;
@@ -55,8 +56,10 @@
 @property (nonatomic, strong) UIButton *refreshAlbumPhotosButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *gridButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *albumInfoButton;
-@property (nonatomic, strong) UISearchBar *searchBar;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *searchButton;
+@property (strong, nonnull) NSArray *cachedAlbumPhotos;
+@property (nonatomic, strong) UINavigationController *filtersNavController;
+@property (nonatomic, strong) FTFFiltersViewController *filtersViewController;
 
 @end
 
@@ -73,6 +76,7 @@ BOOL didLikePhotoFromBrowser = NO;
     BOOL _layoutDidChange;
     BOOL _didPageNextBatchOfPhotos;
     BOOL _isCurrentlyLoadingMorePhotos;
+    BOOL _showingFilteredResults;
 }
 
 - (UIView *)hostingView {
@@ -101,6 +105,25 @@ BOOL didLikePhotoFromBrowser = NO;
     return _navBarAlbumTitle;
 }
 
+- (UINavigationController *)filtersNavController {
+    if (!_filtersNavController) {
+        _filtersNavController = [self.storyboard instantiateViewControllerWithIdentifier:@"filtersNavigationController"];
+    }
+    
+    return _filtersNavController;
+}
+
+- (FTFFiltersViewController *)filtersViewController {
+    if (!_filtersViewController) {
+        _filtersViewController = (FTFFiltersViewController *)self.filtersNavController.topViewController;
+    }
+    return _filtersViewController;
+}
+
+- (void)setGridPhotos:(NSArray *)gridPhotos {
+    _gridPhotos = gridPhotos;
+}
+
 #pragma mark - View controller
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -113,7 +136,6 @@ BOOL didLikePhotoFromBrowser = NO;
 }
 
 - (void)awakeFromNib {
-    [self addObserver:self forKeyPath:@"gridPhotos" options:NSKeyValueObservingOptionNew context:NULL];
     self.shouldReloadData = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -139,10 +161,7 @@ BOOL didLikePhotoFromBrowser = NO;
     self.navigationController.toolbarHidden = YES;
     self.navigationController.delegate = self;
     
-    self.searchBar = [[UISearchBar alloc] init];
-    self.searchBar.showsCancelButton = YES;
-    self.searchBar.translucent = YES;
-    self.searchBar.delegate = self;
+    self.filtersViewController.delegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(albumSelectionChanged:)
@@ -272,6 +291,7 @@ BOOL didLikePhotoFromBrowser = NO;
     if ([photos count]) {
         self.collectionView.scrollEnabled = YES;
         self.gridPhotos = photos;
+        self.cachedAlbumPhotos = photos;
         if (_finishedPaging) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"albumDoesNotNeedToBePagedNotification" object:nil];
         }
@@ -312,25 +332,7 @@ BOOL didLikePhotoFromBrowser = NO;
     [self presentViewController:self.albumSelectionMenuNavigationController animated:true completion:nil];
 }
 - (IBAction)searchButtonTapped:(UIBarButtonItem *)sender {
-    [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissSearchBar)]];
-
-    [UIView animateWithDuration:0.1 animations:^{
-        NSMutableArray *navBarButtons = [self.navigationItem.rightBarButtonItems mutableCopy];
-        [navBarButtons removeObject:self.searchButton];
-        [self.navigationItem setRightBarButtonItems:navBarButtons animated:YES];
-        self.navBarAlbumTitle.alpha = 0.0;
-    } completion:^(BOOL finished) {
-        // remove the search button
-        self.navigationItem.rightBarButtonItem = nil;
-        // add the search bar (which will start out hidden).
-        self.navigationItem.titleView = self.searchBar;
-        self.searchBar.alpha = 0.0;
-        [self.searchBar becomeFirstResponder];
-        [UIView animateWithDuration:0.2
-                         animations:^{
-                             self.searchBar.alpha = 1.0;
-                         } completion:nil];
-    }];
+    [self presentViewController:self.filtersNavController animated:YES completion:nil];
 }
 
 - (IBAction)toggleLayout:(UIBarButtonItem *)sender {
@@ -481,8 +483,42 @@ BOOL didLikePhotoFromBrowser = NO;
     }];
 }
 
+#pragma mark - UIStoryboardSegue
+
 -(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
     
+}
+
+#pragma mark - FTFFiltersViewControllerDelegate
+
+- (void)filtersViewControllerDidSaveFilters:(NSString *)searchTerm nameOnly:(BOOL)nameOnly sortOrder:(FTFSortOrder)sortOrder {
+    [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    [[FiftyTwoFrames sharedInstance] requestAlbumPhotosForPhotographerSearchName:searchTerm albumId:self.albumToDisplay.albumID completionBlock:^(NSArray *photos, NSError *error) {
+        [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
+        if (error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error" message:error.userInfo[@"message"] preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *action = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                [alertController addAction:action];
+                [self presentViewController:alertController animated:YES completion:nil];
+            });
+            
+            return;
+        }
+        self.gridPhotos = photos;
+        _showingFilteredResults = YES;
+        [self.collectionView reloadData];
+        self.collectionReusableView.hidden = YES;
+    }];
+}
+
+- (void)filtersViewControllerDidResetFilters {
+    if (_showingFilteredResults) {
+        _showingFilteredResults = NO;
+        self.collectionReusableView.hidden = NO;
+        self.gridPhotos = self.cachedAlbumPhotos;
+        [self.collectionView reloadData];
+    }
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -631,7 +667,7 @@ BOOL didLikePhotoFromBrowser = NO;
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
     
-    if (self.browserPhotos.count - index < 4 && !_finishedPaging) {
+    if (self.browserPhotos.count - index < 4 && !_finishedPaging && !_showingFilteredResults) {
         [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosWithCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
             _finishedPaging = finishedPaging;
             NSMutableArray *albumPhotos = [self.gridPhotos mutableCopy];
@@ -671,7 +707,7 @@ BOOL didLikePhotoFromBrowser = NO;
     float y = offset.y + bounds.size.height - inset.bottom;
     float h = size.height;
     float reload_distance = -150;
-    if(y > h + reload_distance && self.gridPhotos && _morePhotosToLoad && !_layoutDidChange) {
+    if(y > h + reload_distance && self.gridPhotos && _morePhotosToLoad && !_layoutDidChange && !_showingFilteredResults) {
         _morePhotosToLoad = NO;
         NSLog(@"Grid hit the bottom");
         if (!_finishedPaging) {
@@ -691,6 +727,7 @@ BOOL didLikePhotoFromBrowser = NO;
                 self.shouldReloadData = NO;
                 NSInteger gridPhotosCount = self.gridPhotos.count;
                 self.gridPhotos = [albumPhotos copy];
+                self.cachedAlbumPhotos = [self.gridPhotos copy];
                 self.shouldReloadData = YES;
                 
                 [self.collectionView performBatchUpdates:^{
@@ -761,42 +798,9 @@ BOOL didLikePhotoFromBrowser = NO;
     } completion:nil];
 }
 
-#pragma mark UISearchBarDelegate methods
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    [self dismissSearchBar];
-}
-
-- (void)dismissSearchBar {
-    [self.view removeGestureRecognizer:self.view.gestureRecognizers.firstObject];
-    
-    if ([self.searchBar isFirstResponder]) {
-        [self.searchBar resignFirstResponder];
-    }
-    
-    [UIView animateWithDuration:0.2 animations:^{
-        self.searchBar.alpha = 0.0;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3 animations:^ {
-            // unhide search button
-            //            self.navigationItem.rightBarButtonItem = self.searchButton;
-            NSMutableArray *navBarButtons = [self.navigationItem.rightBarButtonItems mutableCopy];
-            if (![navBarButtons containsObject:self.searchButton]) {
-                [navBarButtons addObject:self.searchButton];
-                [self.navigationItem setRightBarButtonItems:navBarButtons animated:YES];
-            }
-            self.navigationItem.titleView = self.navBarAlbumTitle;
-            self.navBarAlbumTitle.alpha = 1.0;
-        }];
-    }];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-- (void)dealloc {
-    [self removeObserver:self forKeyPath:@"gridPhotos" context:NULL];
 }
 
 @end

@@ -8,6 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    FTFSortOrderName,
+    FTFSortOrderLikes,
+    FTFSortOrderComments,
+    FTFSortOrderNone
+} FTFSortOrder;
+
+@protocol FTFFiltersViewControllerDelegate <NSObject>
+
+- (void)filtersViewControllerDidSaveFilters:(NSString *)searchTerm nameOnly:(BOOL)nameOnly sortOrder:(FTFSortOrder)sortOrder;
+- (void)filtersViewControllerDidResetFilters;
+
+@end
+
 @interface FTFFiltersViewController : UITableViewController
+
+@property (nonatomic, weak) id <FTFFiltersViewControllerDelegate> delegate;
 
 @end
