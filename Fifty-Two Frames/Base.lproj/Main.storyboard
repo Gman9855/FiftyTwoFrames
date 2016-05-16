@@ -517,7 +517,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="Qv5-Wj-j9M">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <segue destination="pkV-Hw-4Gg" kind="presentation" id="KJl-4q-ooO"/>
+                                <action selector="searchButtonTapped:" destination="iZh-Zc-LQJ" id="wXu-bh-wab"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -536,16 +536,19 @@
         <!--Filters-->
         <scene sceneID="zB8-oC-IWC">
             <objects>
-                <tableViewController id="rOI-sC-pRY" customClass="FTFFiltersViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="filtersViewController" id="rOI-sC-pRY" customClass="FTFFiltersViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="faN-mg-UkH">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
                             <tableViewSection headerTitle="Search" id="1TA-MA-SwZ">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="6jr-XQ-peS">
+                                        <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6jr-XQ-peS" id="bb4-V3-dwv">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter a name or search keyword" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0Tp-sk-xnJ">
@@ -588,8 +591,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="SG3-4u-sGz">
+                                        <rect key="frame" x="0.0" y="157.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SG3-4u-sGz" id="dA6-KS-bWl">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name only" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSO-HJ-O5J">
@@ -615,10 +620,10 @@
                                                     <exclude reference="FJi-qy-YsA"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="BGF-O6-jE0"/>
-                                                    <exclude reference="P4h-rQ-Js4"/>
                                                     <exclude reference="UD7-Z0-Rjf"/>
                                                     <exclude reference="t5B-k5-Fud"/>
+                                                    <exclude reference="BGF-O6-jE0"/>
+                                                    <exclude reference="P4h-rQ-Js4"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=compact">
@@ -627,10 +632,10 @@
                                                     <include reference="FJi-qy-YsA"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="BGF-O6-jE0"/>
-                                                    <include reference="P4h-rQ-Js4"/>
                                                     <include reference="UD7-Z0-Rjf"/>
                                                     <include reference="t5B-k5-Fud"/>
+                                                    <include reference="BGF-O6-jE0"/>
+                                                    <include reference="P4h-rQ-Js4"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -640,13 +645,18 @@
                             <tableViewSection headerTitle="Sort by" id="VTD-gf-5X5">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="8dt-Te-rRL">
+                                        <rect key="frame" x="0.0" y="251.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8dt-Te-rRL" id="2nc-mq-0uf">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rOn-6w-CYK">
                                                     <rect key="frame" x="-25" y="-15" width="51" height="31"/>
                                                     <color key="onTintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <connections>
+                                                        <action selector="sortByLikesSwitchToggled:" destination="rOI-sC-pRY" eventType="valueChanged" id="0Ej-F7-XcH"/>
+                                                    </connections>
                                                 </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Likes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nT0-0T-0sb">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
@@ -669,10 +679,10 @@
                                                     <exclude reference="nT0-0T-0sb"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="36Z-Mt-H9u"/>
-                                                    <exclude reference="iO1-PL-FO0"/>
                                                     <exclude reference="gFl-ME-cBl"/>
                                                     <exclude reference="rl2-ZW-xtt"/>
+                                                    <exclude reference="36Z-Mt-H9u"/>
+                                                    <exclude reference="iO1-PL-FO0"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=compact">
@@ -681,22 +691,27 @@
                                                     <include reference="nT0-0T-0sb"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="36Z-Mt-H9u"/>
-                                                    <include reference="iO1-PL-FO0"/>
                                                     <include reference="gFl-ME-cBl"/>
                                                     <include reference="rl2-ZW-xtt"/>
+                                                    <include reference="36Z-Mt-H9u"/>
+                                                    <include reference="iO1-PL-FO0"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="3n1-9L-1tL">
+                                        <rect key="frame" x="0.0" y="295.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3n1-9L-1tL" id="aPG-bV-RcN">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Y91-Kb-gwH">
                                                     <rect key="frame" x="-25" y="-15" width="51" height="31"/>
                                                     <color key="onTintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <connections>
+                                                        <action selector="sortByCommentsSwitchToggled:" destination="rOI-sC-pRY" eventType="valueChanged" id="m31-Rd-8FG"/>
+                                                    </connections>
                                                 </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Spr-SA-fCw">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
@@ -719,10 +734,10 @@
                                                     <exclude reference="Spr-SA-fCw"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="8Hn-N4-8QF"/>
-                                                    <exclude reference="uuY-fG-k5w"/>
                                                     <exclude reference="Fkt-sc-BjW"/>
                                                     <exclude reference="hEj-sJ-2di"/>
+                                                    <exclude reference="8Hn-N4-8QF"/>
+                                                    <exclude reference="uuY-fG-k5w"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=compact">
@@ -731,22 +746,27 @@
                                                     <include reference="Spr-SA-fCw"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="8Hn-N4-8QF"/>
-                                                    <include reference="uuY-fG-k5w"/>
                                                     <include reference="Fkt-sc-BjW"/>
                                                     <include reference="hEj-sJ-2di"/>
+                                                    <include reference="8Hn-N4-8QF"/>
+                                                    <include reference="uuY-fG-k5w"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="8kI-kJ-Xlh">
+                                        <rect key="frame" x="0.0" y="339.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8kI-kJ-Xlh" id="Mnb-yQ-Z9X">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="g3O-ts-3Y8">
                                                     <rect key="frame" x="-25" y="-15" width="51" height="31"/>
                                                     <color key="onTintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <connections>
+                                                        <action selector="sortByNameSwitchToggled:" destination="rOI-sC-pRY" eventType="valueChanged" id="7qd-vY-3db"/>
+                                                    </connections>
                                                 </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dzl-OI-7c7">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
@@ -769,10 +789,10 @@
                                                     <exclude reference="Dzl-OI-7c7"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="4Fu-z1-cee"/>
-                                                    <exclude reference="wsy-6O-rVH"/>
                                                     <exclude reference="i7M-Hc-g9a"/>
                                                     <exclude reference="idx-QR-lSh"/>
+                                                    <exclude reference="4Fu-z1-cee"/>
+                                                    <exclude reference="wsy-6O-rVH"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=compact">
@@ -781,10 +801,10 @@
                                                     <include reference="Dzl-OI-7c7"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="4Fu-z1-cee"/>
-                                                    <include reference="wsy-6O-rVH"/>
                                                     <include reference="i7M-Hc-g9a"/>
                                                     <include reference="idx-QR-lSh"/>
+                                                    <include reference="4Fu-z1-cee"/>
+                                                    <include reference="wsy-6O-rVH"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -794,8 +814,10 @@
                             <tableViewSection id="fYd-9D-DTt">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="54" id="mx9-hd-hdO">
+                                        <rect key="frame" x="0.0" y="419.5" width="600" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mx9-hd-hdO" id="giw-g1-BJs">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="53.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U7n-J5-I7c">
@@ -810,6 +832,9 @@
                                                             <integer key="value" value="7"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="saveButtonTapped:" destination="rOI-sC-pRY" eventType="touchUpInside" id="O80-em-w4q"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -856,8 +881,18 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Reset" id="RQM-X0-za4">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="resetButtonTapped:" destination="rOI-sC-pRY" id="dCu-QD-dgi"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="nameOnlySwitch" destination="FJi-qy-YsA" id="bC2-YY-Kjv"/>
+                        <outlet property="searchTextField" destination="0Tp-sk-xnJ" id="GEU-yb-fEf"/>
+                        <outlet property="sortByCommentsSwitch" destination="Y91-Kb-gwH" id="svp-3y-kJn"/>
+                        <outlet property="sortByLikesSwitch" destination="rOn-6w-CYK" id="PWg-5O-UB4"/>
+                        <outlet property="sortByNamesSwitch" destination="g3O-ts-3Y8" id="vSx-A7-vUf"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OVl-L0-x3I" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="zyH-Uu-G2w" userLabel="Exit" sceneMemberID="exit"/>
@@ -1435,7 +1470,7 @@
         <!--Navigation Controller-->
         <scene sceneID="3cX-oJ-EAo">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pkV-Hw-4Gg" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="filtersNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="pkV-Hw-4Gg" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="wHD-hM-kAU">
