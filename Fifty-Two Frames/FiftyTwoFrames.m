@@ -548,12 +548,9 @@ static NSString * const facebookPageID = @"180889155269546";
     NSMutableString *photoIdsForFacebookQuery = [NSMutableString new];
     int count = namesAndIds.count <= 50 ? (int)namesAndIds.count : 50;
     for (int i = 0; i < count; i++) {
-        BOOL shouldAppendComma = YES;
-        if (namesAndIds.count - 1 == i) {
-            shouldAppendComma = NO;
-        }
+        BOOL shouldIgnoreComma = count - i == 1;
         FTFImage *photo = namesAndIds[i];
-        [photoIdsForFacebookQuery appendString:!shouldAppendComma ? photo.photoID : [photo.photoID stringByAppendingString:@","]];
+        [photoIdsForFacebookQuery appendString:shouldIgnoreComma ? photo.photoID : [photo.photoID stringByAppendingString:@","]];
     }
     
     return [NSString stringWithFormat:@"?ids=%@", photoIdsForFacebookQuery];
