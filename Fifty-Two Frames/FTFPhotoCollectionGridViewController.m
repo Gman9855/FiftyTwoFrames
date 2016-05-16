@@ -234,6 +234,7 @@ BOOL didLikePhotoFromBrowser = NO;
     self.albumInfoButton.enabled = NO;
     albumSelectionChanged = YES;
     _morePhotosToLoad = NO;
+    _showingFilteredResults = NO;
     [self showProgressHudWithText:nil];
     [self.photoBrowser setCurrentPhotoIndex:0];
     
@@ -592,7 +593,7 @@ BOOL didLikePhotoFromBrowser = NO;
     } else {
         self.collectionReusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footer" forIndexPath:indexPath];
         
-        if (_finishedPaging || !self.gridPhotos.count) {
+        if (_finishedPaging || !self.gridPhotos.count || _showingFilteredResults) {
             self.collectionReusableView.spinner.hidden = YES;
         } else {
             self.collectionReusableView.spinner.hidden = NO;
