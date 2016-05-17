@@ -241,6 +241,7 @@ BOOL didLikePhotoFromBrowser = NO;
     self.albumToDisplay = [notification.userInfo objectForKey:@"selectedAlbum"];
     [[FiftyTwoFrames sharedInstance]requestAlbumPhotosForAlbumWithAlbumID:self.albumToDisplay.albumID
                                                           completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
+                                                              [self setFilterIconEnabled:NO];
                                                               [self populateAlbumPhotosResultsWithPhotos:photos error:error finishedPaging:finishedPaging];
                                                           }];
 }
@@ -506,6 +507,7 @@ BOOL didLikePhotoFromBrowser = NO;
             
             return;
         }
+        [self setFilterIconEnabled:YES];
         self.gridPhotos = photos;
         _showingFilteredResults = YES;
         [self.collectionView reloadData];
@@ -514,12 +516,21 @@ BOOL didLikePhotoFromBrowser = NO;
 }
 
 - (void)filtersViewControllerDidResetFilters {
+    [self setFilterIconEnabled:NO];
     if (_showingFilteredResults) {
         _showingFilteredResults = NO;
         self.collectionReusableView.hidden = NO;
         self.gridPhotos = self.cachedAlbumPhotos;
         [self.collectionView reloadData];
     }
+}
+
+- (void)setFilterIconEnabled:(BOOL)enabled {
+    UIImage *filterImage = enabled ? [UIImage imageNamed:@"filter-enabled"] : [UIImage imageNamed:@"filter-disabled"];
+    UIColor *tintColor = enabled ? [UIColor orangeColor] : [UIColor whiteColor];
+
+    [self.searchButton setImage:filterImage];
+    self.searchButton.tintColor = tintColor;
 }
 
 #pragma mark - UICollectionViewDelegate
