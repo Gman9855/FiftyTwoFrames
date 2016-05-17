@@ -250,26 +250,21 @@ static NSString * const facebookPageID = @"180889155269546";
     [self.requestConnection start];
 }
 
-- (void)requestAlbumPhotosForPhotographerSearchName:(NSString *)searchName albumId:(NSString *)albumId completionBlock:(void (^)(NSArray *photos, NSError *error))block {
+- (void)requestAlbumPhotosForPhotographerSearchTerm:(NSString *)searchTerm albumId:(NSString *)albumId completionBlock:(void (^)(NSArray *photos, NSError *error))block {
     __weak typeof(self) weakSelf = self;
-    if (self.albumIdsToNameAndIdsArrays[albumId]) {
-        NSArray *namesAndIds = self.albumIdsToNameAndIdsArrays[albumId];
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photographerName CONTAINS %@", searchName];
-        NSArray *filtered = [namesAndIds filteredArrayUsingPredicate:predicate];
-        if (filtered.count == 0) {
-            NSError *error = [NSError errorWithDomain:@"com.52Frames" code:100 userInfo:@{@"message" : @"Couldn't find photos that match your search term."}];
+    
+    [self namesAndIdsForPhotographerSearchTerm:searchTerm albumId:albumId completionBlock:^(NSArray *namesAndIds, NSError *error) {
+        if (error) {
             block(nil, error);
             return;
         }
-        
-        NSString *graphPath = [self graphPathFromFilteredNamesAndIds:filtered];
+        NSString *graphPath = [self graphPathFromFilteredNamesAndIds:namesAndIds];
 
         [[[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:self.photoRequestParameters] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
             if (block) {
                 if (!error) {
                     NSMutableArray *albumPhotos = [NSMutableArray new];
-                    for (FTFImage *photo in filtered) {
+                    for (FTFImage *photo in namesAndIds) {
                         NSString *photoId = photo.photoID;
                         NSArray *parsedPhoto = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:photoId]];
                         if (parsedPhoto.count > 0) {
@@ -285,54 +280,7 @@ static NSString * const facebookPageID = @"180889155269546";
                 return;
             }
         }];
-    } else {
-        [[[FBSDKGraphRequest alloc] initWithGraphPath:self.graphPathForNameSearch parameters:self.parametersForNameSearch] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-            NSString *nextPage = [result valueForKeyPath:@"paging.next"];
-            [self.allNameAndIdResponsesForAlbum addObject:[result valueForKey:@"data"]];
-            if (nextPage == NULL) {
-                [self addNamesAndIdsFromArrayOfFacebookResponses:[self.allNameAndIdResponsesForAlbum copy] forKey:albumId];
-                self.allNameAndIdResponsesForAlbum = nil;
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photographerName CONTAINS %@", searchName];
-                NSArray *filtered = [self.albumIdsToNameAndIdsArrays[albumId] filteredArrayUsingPredicate:predicate];
-                if (filtered.count == 0) {
-                    NSError *error = [NSError errorWithDomain:@"com.52Frames" code:100 userInfo:@{@"message" : @"Couldn't find photos that match your search term."}];
-                    block(nil, error);
-                    return;
-                }
-                
-                NSString *graphPath = [self graphPathFromFilteredNamesAndIds:filtered];
-                NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"images,id,name,likes.limit(1).summary(true).fields(has_liked),comments.fields(from.fields(picture.type(large),id,name),created_time,message)", @"fields", nil];
-                [[[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-                    if (block) {
-                        if (!error) {
-                            NSMutableArray *albumPhotos = [NSMutableArray new];
-                            for (FTFImage *photo in filtered) {
-                                NSString *photoId = photo.photoID;
-                                NSArray *parsedPhoto = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:photoId]];
-                                if (parsedPhoto.count > 0) {
-                                    [albumPhotos addObject:(FTFImage *)parsedPhoto.firstObject];
-                                }
-                            }
-                            block(albumPhotos, nil);
-                            
-                        } else {
-                            block(nil, error);
-                        }
-                    } else {
-                        return;
-                    }
-                }];
-            } else {
-                self.graphPathForNameSearch = [nextPage substringFromIndex:31];
-                if (self.parametersForNameSearch) {
-                    self.parametersForNameSearch = nil;
-                }
-                [self requestAlbumPhotosForPhotographerSearchName:searchName albumId:albumId completionBlock:block];
-                NSLog(@"Fetching another 100 photos");
-            }
-        }];
-    }
-    
+    }];
 }
 
 - (void)publishPhotoCommentWithPhotoID:(NSString *)photoID comment:(NSString *)comment completionBlock:(void (^)(NSError *error))block
@@ -556,6 +504,55 @@ static NSString * const facebookPageID = @"180889155269546";
     }
     
     return [NSString stringWithFormat:@"?ids=%@", photoIdsForFacebookQuery];
+}
+
+- (void)namesAndIdsForPhotographerSearchTerm:(NSString *)searchTerm albumId:(NSString *)albumId completionBlock:(void (^)(NSArray *namesAndIds, NSError *error))block {
+    
+    NSError *noMatchesFoundError = [NSError errorWithDomain:@"com.52Frames" code:100 userInfo:@{@"message" : @"Couldn't find photos that match your search term."}];
+    
+    if (self.albumIdsToNameAndIdsArrays[albumId]) {
+        NSArray *filtered = [self filteredNamesAndIdsForSearchTerm:searchTerm albumId:albumId];
+        if (filtered.count == 0) {
+            block(nil, noMatchesFoundError);
+            return;
+        }
+        
+        block(filtered, nil);
+    } else {
+        [[[FBSDKGraphRequest alloc] initWithGraphPath:self.graphPathForNameSearch parameters:self.parametersForNameSearch] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+            NSString *nextPage = [result valueForKeyPath:@"paging.next"];
+            [self.allNameAndIdResponsesForAlbum addObject:[result valueForKey:@"data"]];
+            if (nextPage == NULL) {
+                [self addNamesAndIdsFromArrayOfFacebookResponses:[self.allNameAndIdResponsesForAlbum copy] forKey:albumId];
+                self.allNameAndIdResponsesForAlbum = nil;
+                NSArray *filtered = [self filteredNamesAndIdsForSearchTerm:searchTerm albumId:albumId];
+                if (filtered.count == 0) {
+                    block(nil, noMatchesFoundError);
+                    return;
+                }
+                
+                block(filtered, nil);
+            } else {
+                self.graphPathForNameSearch = [nextPage substringFromIndex:31];
+                if (self.parametersForNameSearch) {
+                    self.parametersForNameSearch = nil;
+                }
+                [self namesAndIdsForPhotographerSearchTerm:searchTerm albumId:albumId completionBlock:block];
+                NSLog(@"Fetching another 100 photos");
+            }
+        }];
+    }
+}
+
+- (NSArray *)filteredNamesAndIdsForSearchTerm:(NSString *)searchTerm albumId:(NSString *)albumId {
+    if (!self.albumIdsToNameAndIdsArrays[albumId]) {
+        return nil;
+    }
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photographerName CONTAINS %@", searchTerm];
+    NSArray *namesAndIds = self.albumIdsToNameAndIdsArrays[albumId];
+    NSArray *filtered = [namesAndIds filteredArrayUsingPredicate:predicate];
+    return filtered;
 }
 
 @end

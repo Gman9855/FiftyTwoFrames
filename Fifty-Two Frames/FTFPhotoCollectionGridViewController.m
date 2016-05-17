@@ -453,7 +453,7 @@ BOOL didLikePhotoFromBrowser = NO;
 
 - (void)filtersViewControllerDidSaveFilters:(NSString *)searchTerm nameOnly:(BOOL)nameOnly sortOrder:(FTFSortOrder)sortOrder {
     [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    [[FiftyTwoFrames sharedInstance] requestAlbumPhotosForPhotographerSearchName:searchTerm albumId:self.albumToDisplay.albumID completionBlock:^(NSArray *photos, NSError *error) {
+    [[FiftyTwoFrames sharedInstance] requestAlbumPhotosForPhotographerSearchTerm:searchTerm albumId:self.albumToDisplay.albumID completionBlock:^(NSArray *photos, NSError *error) {
         [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
         if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
