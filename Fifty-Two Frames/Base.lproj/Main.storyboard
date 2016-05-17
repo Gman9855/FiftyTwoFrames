@@ -1261,6 +1261,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Comments" id="08t-b5-VF2">
                         <barButtonItem key="rightBarButtonItem" title="Done" id="3hi-7K-d1s">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="doneButtonTapped:" destination="1bL-XK-cUj" id="NvO-ba-gar"/>
                             </connections>
