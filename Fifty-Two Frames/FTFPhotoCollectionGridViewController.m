@@ -49,8 +49,6 @@
 @property (nonatomic, strong) FTFAlbumCollection *photoWalksAlbums;
 @property (nonatomic, strong) FTFAlbumCollection *miscellaneousSubmissionsAlbums;
 @property (nonatomic, strong) NSArray *browserPhotos;
-@property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) UIView *hostingView;
 @property (nonatomic, strong) NSArray *thumbnailPhotosForGrid;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
 @property (nonatomic, strong) UIButton *refreshAlbumPhotosButton;
@@ -60,6 +58,7 @@
 @property (strong, nonnull) NSArray *cachedAlbumPhotos;
 @property (nonatomic, strong) UINavigationController *filtersNavController;
 @property (nonatomic, strong) FTFFiltersViewController *filtersViewController;
+@property (nonatomic, strong) NSString *searchTerm;
 
 @end
 
@@ -77,13 +76,6 @@ BOOL didLikePhotoFromBrowser = NO;
     BOOL _didPageNextBatchOfPhotos;
     BOOL _isCurrentlyLoadingMorePhotos;
     BOOL _showingFilteredResults;
-}
-
-- (UIView *)hostingView {
-    if (!_hostingView) {
-        _hostingView = [UIView new];
-    }
-    return _hostingView;
 }
 
 - (UINavigationController *)albumSelectionMenuNavigationController {
@@ -308,17 +300,7 @@ BOOL didLikePhotoFromBrowser = NO;
         
         [UIView animateWithDuration:1.5 animations:^{
             self.navigationItem.titleView.alpha = 0.0;
-            if ([self.albumToDisplay.name containsString:@":"]) {
-                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:self.albumToDisplay.name];
-                NSArray *words = [self.albumToDisplay.name componentsSeparatedByString:@": "];
-                NSString *albumName = [words firstObject];
-                NSRange range = [self.albumToDisplay.name rangeOfString:albumName];
-                range.length++;
-                [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:range];
-                [self.navBarAlbumTitle setAttributedTitleWithText:self.albumToDisplay.name];
-            } else {
-                [self.navBarAlbumTitle setAttributedTitleWithText:self.albumToDisplay.name];
-            }
+            [self.navBarAlbumTitle setAttributedTitleWithText:self.albumToDisplay.name];
             self.navigationItem.titleView.alpha = 1.0;
         }];
         
@@ -507,6 +489,7 @@ BOOL didLikePhotoFromBrowser = NO;
             
             return;
         }
+        self.searchTerm = [NSString stringWithString:searchTerm];
         [self setFilterIconEnabled:YES];
         self.gridPhotos = photos;
         _showingFilteredResults = YES;
@@ -519,6 +502,7 @@ BOOL didLikePhotoFromBrowser = NO;
     [self setFilterIconEnabled:NO];
     if (_showingFilteredResults) {
         _showingFilteredResults = NO;
+        self.searchTerm = nil;
         self.collectionReusableView.hidden = NO;
         self.gridPhotos = self.cachedAlbumPhotos;
         [self.collectionView reloadData];
@@ -548,7 +532,12 @@ BOOL didLikePhotoFromBrowser = NO;
         ftfCell.photoLikeCount.text = [NSString stringWithFormat:@"%ld", (long)photo.likesCount];
         
         if (![photo.photoDescription isEqual:[NSNull null]]) {
-            ftfCell.photographerName.text = photo.photographerName;
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:photo.photographerName];
+            if (self.searchTerm != nil) {
+                NSRange range = [photo.photographerName rangeOfString:self.searchTerm];
+                [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:range];
+            }
+            ftfCell.photographerName.attributedText = attributedString;
         } else {
             ftfCell.photographerName.text = @"";
         }
