@@ -514,7 +514,7 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="Xdc-WD-bMH">
-                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="Qv5-Wj-j9M">
+                        <barButtonItem key="rightBarButtonItem" image="filter-disabled" id="Qv5-Wj-j9M">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="searchButtonTapped:" destination="iZh-Zc-LQJ" id="wXu-bh-wab"/>
@@ -544,7 +544,7 @@
                         <sections>
                             <tableViewSection headerTitle="Search" id="1TA-MA-SwZ">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="6jr-XQ-peS">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="6jr-XQ-peS">
                                         <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6jr-XQ-peS" id="bb4-V3-dwv">
@@ -590,7 +590,7 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="SG3-4u-sGz">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="SG3-4u-sGz">
                                         <rect key="frame" x="0.0" y="157.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SG3-4u-sGz" id="dA6-KS-bWl">
@@ -813,7 +813,7 @@
                             </tableViewSection>
                             <tableViewSection id="fYd-9D-DTt">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="54" id="mx9-hd-hdO">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="mx9-hd-hdO">
                                         <rect key="frame" x="0.0" y="419.5" width="600" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mx9-hd-hdO" id="giw-g1-BJs">
@@ -1140,7 +1140,8 @@
                                                             <exclude reference="9zF-y5-pk1"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="48" y="8" width="272" height="14"/>
                                                         <mask key="constraints">
                                                             <include reference="9zF-y5-pk1"/>
                                                         </mask>
@@ -1170,6 +1171,9 @@
                                                     <rect key="frame" x="53" y="24" width="229" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="48" y="25" width="259" height="23"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <constraints>
@@ -1495,5 +1499,6 @@
         <image name="Refresh.png" width="50" height="50"/>
         <image name="ThumbUp" width="22" height="22"/>
         <image name="UIBarButtonItemGrid.png" width="20" height="20"/>
+        <image name="filter-disabled" width="28" height="28"/>
     </resources>
 </document>
