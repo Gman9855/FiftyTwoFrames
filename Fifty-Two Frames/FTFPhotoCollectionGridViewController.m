@@ -482,6 +482,7 @@ BOOL didLikePhotoFromBrowser = NO;
         self.collectionReusableView.hidden = NO;
         self.gridPhotos = self.cachedAlbumPhotos;
         [self.collectionView reloadData];
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
     }
 }
 
