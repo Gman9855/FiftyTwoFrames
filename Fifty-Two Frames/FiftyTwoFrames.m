@@ -258,7 +258,7 @@ static NSString * const facebookPageID = @"180889155269546";
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photographerName CONTAINS %@", searchName];
         NSArray *filtered = [namesAndIds filteredArrayUsingPredicate:predicate];
         if (filtered.count == 0) {
-            NSError *error = [NSError errorWithDomain:@"com.52Frames" code:100 userInfo:@{@"message" : @"Could not find photos that match search term."}];
+            NSError *error = [NSError errorWithDomain:@"com.52Frames" code:100 userInfo:@{@"message" : @"Couldn't find photos that match your search term."}];
             block(nil, error);
             return;
         }
@@ -295,7 +295,7 @@ static NSString * const facebookPageID = @"180889155269546";
                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photographerName CONTAINS %@", searchName];
                 NSArray *filtered = [self.albumIdsToNameAndIdsArrays[albumId] filteredArrayUsingPredicate:predicate];
                 if (filtered.count == 0) {
-                    NSError *error = [NSError errorWithDomain:@"com.52Frames" code:100 userInfo:@{@"message" : @"Could not find photos that match search term."}];
+                    NSError *error = [NSError errorWithDomain:@"com.52Frames" code:100 userInfo:@{@"message" : @"Couldn't find photos that match your search term."}];
                     block(nil, error);
                     return;
                 }
