@@ -533,12 +533,14 @@ static NSString * const facebookPageID = @"180889155269546";
         NSArray *photoIdArray = [dict valueForKey:@"id"];
         for (int i = 0; i < photoIdArray.count; i++) {
             NSString *nameAtIndex = photoCaptionArray[i];
-            NSArray *lines = [nameAtIndex componentsSeparatedByString:@"\n"];
-            NSString *name = lines.firstObject;
-            FTFImage *photo = [FTFImage new];
-            photo.photographerName = name;
-            photo.photoID = photoIdArray[i];
-            [namesAndIds addObject:photo];
+            if (![nameAtIndex isEqual:[NSNull null]]) {
+                NSArray *lines = [nameAtIndex componentsSeparatedByString:@"\n"];
+                NSString *name = lines.firstObject;
+                FTFImage *photo = [FTFImage new];
+                photo.photographerName = name;
+                photo.photoID = photoIdArray[i];
+                [namesAndIds addObject:photo];
+            }
         }
     }
     [self.albumIdsToNameAndIdsArrays setObject:[namesAndIds copy] forKey:key];

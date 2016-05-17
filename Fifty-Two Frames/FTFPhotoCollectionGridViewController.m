@@ -129,11 +129,6 @@ BOOL didLikePhotoFromBrowser = NO;
 
 - (void)awakeFromNib {
     self.shouldReloadData = YES;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateForAlbumWithNoPaging:)
-                                                 name:@"albumDoesNotNeedToBePagedNotification"
-                                               object:nil];
 }
 
 - (void)viewDidLoad
@@ -188,13 +183,13 @@ BOOL didLikePhotoFromBrowser = NO;
     [self handlePhotoLikeWithCell:cell andPhoto:photoAtIndex];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqual:@"gridPhotos"]) {
-        if (self.shouldReloadData) {
-            [self.collectionView reloadData];
-        }
-    }
-}
+//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+//    if ([keyPath isEqual:@"gridPhotos"]) {
+//        if (self.shouldReloadData) {
+//            [self.collectionView reloadData];
+//        }
+//    }
+//}
 
 - (void)showProgressHudWithText:(NSString *)text {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
@@ -205,19 +200,6 @@ BOOL didLikePhotoFromBrowser = NO;
     //    [hud setCenter:[self.view convertPoint:self.view.center fromView:self.view.superview]];
     //    [hud setCenter:CGPointMake(self.view.bounds.size.height/2, self.view.bounds.size.width/2)];
 }
-
-//- (void)albumSelectionChanged:(NSNotification *)notification {
-//    _albumSelectionChanged = YES;
-//    _finishedPaging = NO;
-//    if (self.gridPhotos) {
-//        NSIndexPath *firstIndexPathInCollectionView = [NSIndexPath indexPathForItem:0 inSection:0];
-//        [self.collectionView scrollToItemAtIndexPath:firstIndexPathInCollectionView
-//                                    atScrollPosition:UICollectionViewScrollPositionTop
-//                                            animated:NO];
-//    }
-//    
-//    _albumSelectionChanged = NO;
-//}
 
 - (void)albumSelectionChanged:(NSNotification *)notification {
     self.refreshAlbumPhotosButton.hidden = YES;
@@ -236,10 +218,6 @@ BOOL didLikePhotoFromBrowser = NO;
                                                               [self setFilterIconEnabled:NO];
                                                               [self populateAlbumPhotosResultsWithPhotos:photos error:error finishedPaging:finishedPaging];
                                                           }];
-}
-
-- (void)updateForAlbumWithNoPaging:(NSNotification *)notification {
-    _finishedPaging = YES;
 }
 
 - (void)populateAlbumPhotosResultsWithPhotos:(NSArray *)photos
@@ -286,9 +264,7 @@ BOOL didLikePhotoFromBrowser = NO;
         self.collectionView.scrollEnabled = YES;
         self.gridPhotos = photos;
         self.cachedAlbumPhotos = photos;
-        if (_finishedPaging) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"albumDoesNotNeedToBePagedNotification" object:nil];
-        }
+        _finishedPaging = finishedPaging;
         [self.collectionView reloadData];
         
 //        self.settingsButton.enabled = YES;
@@ -531,7 +507,7 @@ BOOL didLikePhotoFromBrowser = NO;
         
         ftfCell.photoLikeCount.text = [NSString stringWithFormat:@"%ld", (long)photo.likesCount];
         
-        if (![photo.photoDescription isEqual:[NSNull null]]) {
+        if (photo.photographerName != nil) {
             NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:photo.photographerName];
             if (self.searchTerm != nil) {
                 NSRange range = [photo.photographerName rangeOfString:self.searchTerm];
