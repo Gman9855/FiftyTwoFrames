@@ -643,7 +643,7 @@ BOOL didLikePhotoFromBrowser = NO;
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
     
-    if (self.browserPhotos.count - index < 4 && !_finishedPaging && !_showingFilteredResults) {
+    if (self.browserPhotos.count - index < 4 && !_finishedPaging) {
         [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosFromFilteredResults:_showingFilteredResults withCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
             _finishedPaging = finishedPaging;
             NSMutableArray *albumPhotos = [self.gridPhotos mutableCopy];
