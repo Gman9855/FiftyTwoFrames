@@ -746,15 +746,9 @@ BOOL didLikePhotoFromBrowser = NO;
     _layoutDidChange = YES;
     UICollectionViewLayout *layout;
     NSString *layoutType;
-    if (self.collectionView.collectionViewLayout == self.listLayout) {
-        layout = self.gridLayout;
-        layoutType = @"grid";
-        self.navigationItem.rightBarButtonItem.title = @"List";
-    } else {
-        layout = self.listLayout;
-        layoutType = @"list";
-        self.navigationItem.rightBarButtonItem.title = @"Grid";
-    }
+    BOOL isListLayout = self.collectionView.collectionViewLayout == self.listLayout;
+    layout = isListLayout ? self.gridLayout : self.listLayout;
+    layoutType = isListLayout ? @"grid" : @"list";
     
     self.currentLayout = layout;
     
