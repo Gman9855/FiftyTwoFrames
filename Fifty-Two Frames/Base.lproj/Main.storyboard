@@ -542,7 +542,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
-                            <tableViewSection headerTitle="Search" id="1TA-MA-SwZ">
+                            <tableViewSection headerTitle="Filter Photos By Framer" id="1TA-MA-SwZ">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="6jr-XQ-peS">
                                         <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
@@ -551,7 +551,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter a name or search keyword" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0Tp-sk-xnJ">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter a name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0Tp-sk-xnJ">
                                                     <rect key="frame" x="-25" y="-30" width="97" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardAppearance="alert" returnKeyType="done"/>
@@ -586,56 +586,6 @@
                                                     <include reference="bVV-ed-wtR"/>
                                                     <include reference="jcH-ny-ap9"/>
                                                     <include reference="w6r-b3-KOB"/>
-                                                </mask>
-                                            </variation>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="SG3-4u-sGz">
-                                        <rect key="frame" x="0.0" y="157.5" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SG3-4u-sGz" id="dA6-KS-bWl">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name only" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSO-HJ-O5J">
-                                                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="FJi-qy-YsA">
-                                                    <rect key="frame" x="-25" y="-15" width="51" height="31"/>
-                                                    <color key="onTintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                </switch>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="CSO-HJ-O5J" firstAttribute="centerY" secondItem="dA6-KS-bWl" secondAttribute="centerY" id="BGF-O6-jE0"/>
-                                                <constraint firstItem="CSO-HJ-O5J" firstAttribute="leading" secondItem="dA6-KS-bWl" secondAttribute="leadingMargin" constant="7" id="P4h-rQ-Js4"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="FJi-qy-YsA" secondAttribute="trailing" constant="7" id="UD7-Z0-Rjf"/>
-                                                <constraint firstItem="FJi-qy-YsA" firstAttribute="centerY" secondItem="dA6-KS-bWl" secondAttribute="centerY" id="t5B-k5-Fud"/>
-                                            </constraints>
-                                            <variation key="default">
-                                                <mask key="subviews">
-                                                    <exclude reference="CSO-HJ-O5J"/>
-                                                    <exclude reference="FJi-qy-YsA"/>
-                                                </mask>
-                                                <mask key="constraints">
-                                                    <exclude reference="UD7-Z0-Rjf"/>
-                                                    <exclude reference="t5B-k5-Fud"/>
-                                                    <exclude reference="BGF-O6-jE0"/>
-                                                    <exclude reference="P4h-rQ-Js4"/>
-                                                </mask>
-                                            </variation>
-                                            <variation key="heightClass=regular-widthClass=compact">
-                                                <mask key="subviews">
-                                                    <include reference="CSO-HJ-O5J"/>
-                                                    <include reference="FJi-qy-YsA"/>
-                                                </mask>
-                                                <mask key="constraints">
-                                                    <include reference="UD7-Z0-Rjf"/>
-                                                    <include reference="t5B-k5-Fud"/>
-                                                    <include reference="BGF-O6-jE0"/>
-                                                    <include reference="P4h-rQ-Js4"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -887,7 +837,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="nameOnlySwitch" destination="FJi-qy-YsA" id="bC2-YY-Kjv"/>
                         <outlet property="searchTextField" destination="0Tp-sk-xnJ" id="GEU-yb-fEf"/>
                         <outlet property="sortByCommentsSwitch" destination="Y91-Kb-gwH" id="svp-3y-kJn"/>
                         <outlet property="sortByLikesSwitch" destination="rOn-6w-CYK" id="PWg-5O-UB4"/>
@@ -1140,8 +1089,7 @@
                                                             <exclude reference="9zF-y5-pk1"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="48" y="8" width="272" height="14"/>
+                                                    <variation key="heightClass=regular-widthClass=compact">
                                                         <mask key="constraints">
                                                             <include reference="9zF-y5-pk1"/>
                                                         </mask>
@@ -1171,9 +1119,6 @@
                                                     <rect key="frame" x="53" y="24" width="229" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="48" y="25" width="259" height="23"/>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <constraints>

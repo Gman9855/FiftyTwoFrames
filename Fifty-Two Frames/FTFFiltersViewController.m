@@ -11,7 +11,6 @@
 @interface FTFFiltersViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
-@property (weak, nonatomic) IBOutlet UISwitch *nameOnlySwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *sortByLikesSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *sortByCommentsSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *sortByNamesSwitch;
@@ -77,14 +76,14 @@
         sortOrder = FTFSortOrderComments;
     }
     
-    [self.delegate filtersViewControllerDidSaveFilters:![self.searchTextField.text isEqualToString:@""] ? self.searchTextField.text : nil  nameOnly:[self.searchTextField.text isEqualToString:@""] ? NO : self.nameOnlySwitch.isOn sortOrder:sortOrder];
+    [self.delegate filtersViewControllerDidSaveFilters:![self.searchTextField.text isEqualToString:@""] ? self.searchTextField.text : nil
+                                             sortOrder:sortOrder];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (IBAction)resetButtonTapped:(UIBarButtonItem *)sender {
     [self.sortByLikesSwitch setOn:NO];
     [self.sortByNamesSwitch setOn:NO];
     [self.sortByCommentsSwitch setOn:NO];
-    [self.nameOnlySwitch setOn:NO];
     self.searchTextField.text = @"";
     
     [self.delegate filtersViewControllerDidResetFilters];
