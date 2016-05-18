@@ -17,7 +17,7 @@ typedef enum {
 
 @protocol FTFFiltersViewControllerDelegate <NSObject>
 
-- (void)filtersViewControllerDidSaveFilters:(NSString *)searchTerm nameOnly:(BOOL)nameOnly sortOrder:(FTFSortOrder)sortOrder;
+- (void)filtersViewControllerDidSaveFilters:(NSString *)searchTerm sortOrder:(FTFSortOrder)sortOrder;
 - (void)filtersViewControllerDidResetFilters;
 
 @end

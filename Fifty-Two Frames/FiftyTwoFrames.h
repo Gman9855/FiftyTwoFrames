@@ -26,9 +26,11 @@
 
 - (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID completionBlock:(void(^)(NSArray *photos, NSError *error, BOOL finishedPaging))block;
 
-- (void)requestAlbumPhotosForPhotographerSearchTerm:(NSString *)searchTerm albumId:(NSString *)albumId completionBlock:(void (^)(NSArray *photos, NSError *error))block;
+- (void)requestAlbumPhotosForPhotographerSearchTerm:(NSString *)searchTerm albumId:(NSString *)albumId completionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block;
 
-- (void)requestNextPageOfAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block;
+- (void)requestNextPageOfAlbumPhotosFromFilteredResults:(BOOL)filtered withCompletionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block;
+
+//- (void)requestNextPageOfAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block;
 
 - (void)publishPhotoLikeWithPhotoID:(NSString *)photoID
                     completionBlock:(void (^)(NSError *error))block;

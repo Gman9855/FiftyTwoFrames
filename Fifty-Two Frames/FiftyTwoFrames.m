@@ -36,6 +36,8 @@ static NSString * const facebookPageID = @"180889155269546";
 @property (nonatomic, strong) NSMutableDictionary *albumResultsFromFacebook;
 @property (nonatomic, strong) NSMutableArray *albumDicts;
 @property (nonatomic, strong) NSMutableArray *albumPhotoDicts;
+@property (nonatomic, strong) NSArray *filteredNamesAndIds;
+@property (nonatomic, strong) NSString *idForCurrentAlbum;
 
 @property (nonatomic, strong) NSMutableArray *weeklyThemeAlbums;
 @property (nonatomic, strong) NSMutableArray *photoWalkAlbums;
@@ -44,6 +46,9 @@ static NSString * const facebookPageID = @"180889155269546";
 @property (nonatomic, strong, readwrite) FTFUser *user;
 
 @end
+
+NSInteger _pagingIndexForFilteredResults = 0;
+BOOL _shouldProvideFilteredResults = NO;
 
 @implementation FiftyTwoFrames
 
@@ -177,6 +182,8 @@ static NSString * const facebookPageID = @"180889155269546";
 
 - (void)requestAlbumPhotosForAlbumWithAlbumID:(NSString *)albumID completionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block
 {
+    self.idForCurrentAlbum = albumID;
+    _shouldProvideFilteredResults = NO;
     if (self.requestConnection) {
         [self.requestConnection cancel];
         self.requestConnection = nil;
@@ -228,34 +235,57 @@ static NSString * const facebookPageID = @"180889155269546";
     }];
 }
 
-- (void)requestNextPageOfAlbumPhotosWithCompletionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block {
+- (void)requestNextPageOfAlbumPhotosFromFilteredResults:(BOOL)filtered withCompletionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block {
     if (self.requestConnection) {
         [self.requestConnection cancel];
         self.requestConnection = nil;
     }
-    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:self.nextPageOfAlbumPhotoResultsURL parameters:nil];
+    NSString *graphPath = filtered ? [self graphPathFromFilteredNamesAndIds:self.filteredNamesAndIds[_pagingIndexForFilteredResults]] : self.nextPageOfAlbumPhotoResultsURL;
+    NSDictionary *parameters = filtered ? self.photoRequestParameters : nil;
+    BOOL finishedPagingFilteredResults = _pagingIndexForFilteredResults == self.filteredNamesAndIds.count - 1;
+    
+    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:parameters];
     self.requestConnection = [[FBSDKGraphRequestConnection alloc] init];
     __weak typeof(self) weakSelf = self;
     [self.requestConnection addRequest:request completionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-        NSString *nextPage = [result valueForKeyPath:@"paging.next"];
-        NSArray *nextBatchOfAlbumPhotos = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:@"data"]];
-        if (nextPage == NULL) {
-            block(nextBatchOfAlbumPhotos, nil, YES);
+        if (filtered) {
+            NSMutableArray *albumPhotos = [NSMutableArray new];
+            NSArray *dataForNextBatchOfPhotos = weakSelf.filteredNamesAndIds[_pagingIndexForFilteredResults];
+            for (FTFImage *photo in dataForNextBatchOfPhotos) {
+                NSString *photoId = photo.photoID;
+                NSArray *parsedPhoto = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:photoId]];
+                if (parsedPhoto.count > 0) {
+                    [albumPhotos addObject:(FTFImage *)parsedPhoto.firstObject];
+                }
+            }
+            
+            block(albumPhotos, nil, finishedPagingFilteredResults);
         } else {
-            weakSelf.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
-            block(nextBatchOfAlbumPhotos, nil, NO);
+            NSString *nextPage = [result valueForKeyPath:@"paging.next"];
+            NSArray *nextBatchOfAlbumPhotos = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:@"data"]];
+            if (nextPage == NULL) {
+                block(nextBatchOfAlbumPhotos, nil, YES);
+            } else {
+                weakSelf.nextPageOfAlbumPhotoResultsURL = [nextPage substringFromIndex:31];
+                block(nextBatchOfAlbumPhotos, nil, NO);
+            }
         }
     }];
     
     [self.requestConnection start];
 }
 
-- (void)requestAlbumPhotosForPhotographerSearchTerm:(NSString *)searchTerm albumId:(NSString *)albumId completionBlock:(void (^)(NSArray *photos, NSError *error))block {
+- (void)requestAlbumPhotosForPhotographerSearchTerm:(NSString *)searchTerm albumId:(NSString *)albumId completionBlock:(void (^)(NSArray *photos, NSError *error, BOOL finishedPaging))block {
+    _shouldProvideFilteredResults = YES;
+    _pagingIndexForFilteredResults = 0;
     __weak typeof(self) weakSelf = self;
-    
+//    if (![self.idForCurrentAlbum isEqualToString:albumId]) {
+//        // user has changed albums
+//        _pagingIndexForFilteredResults = 0;
+//    }
     [self namesAndIdsForPhotographerSearchTerm:searchTerm albumId:albumId completionBlock:^(NSArray *namesAndIds, NSError *error) {
         if (error) {
-            block(nil, error);
+            block(nil, error, YES);
             return;
         }
         NSString *graphPath = [self graphPathFromFilteredNamesAndIds:namesAndIds];
@@ -271,15 +301,50 @@ static NSString * const facebookPageID = @"180889155269546";
                             [albumPhotos addObject:(FTFImage *)parsedPhoto.firstObject];
                         }
                     }
-                    block(albumPhotos, nil);
-                    
+                    BOOL finishedPaging = _pagingIndexForFilteredResults == self.filteredNamesAndIds.count - 1;
+                    if (!finishedPaging) {
+                        _pagingIndexForFilteredResults++;
+                    }
+
+                    block(albumPhotos, nil, finishedPaging);
                 } else {
-                    block(nil, error);
+                    block(nil, error, YES);
                 }
             } else {
                 return;
             }
         }];
+    }];
+}
+
+- (void)requestNextPageOfFilteredResultsWithCompletionBlock:(void (^)(NSArray *photos, NSError *error))block {
+    __weak typeof(self) weakSelf = self;
+    NSArray *nextBatchOfFilteredPhotos = self.filteredNamesAndIds[_pagingIndexForFilteredResults];
+    NSString *graphPath = [self graphPathFromFilteredNamesAndIds:nextBatchOfFilteredPhotos];
+    
+    [[[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:self.photoRequestParameters] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        if (block) {
+            if (!error) {
+                NSMutableArray *albumPhotos = [NSMutableArray new];
+                for (FTFImage *photo in nextBatchOfFilteredPhotos) {
+                    NSString *photoId = photo.photoID;
+                    NSArray *parsedPhoto = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:photoId]];
+                    if (parsedPhoto.count > 0) {
+                        [albumPhotos addObject:(FTFImage *)parsedPhoto.firstObject];
+                    }
+                }
+                
+                if (_pagingIndexForFilteredResults != self.filteredNamesAndIds.count - 1) {
+                    _pagingIndexForFilteredResults++;
+                }
+                block(albumPhotos, nil);
+                
+            } else {
+                block(nil, error);
+            }
+        } else {
+            return;
+        }
     }];
 }
 
@@ -511,13 +576,25 @@ static NSString * const facebookPageID = @"180889155269546";
     NSError *noMatchesFoundError = [NSError errorWithDomain:@"com.52Frames" code:100 userInfo:@{@"message" : @"Couldn't find photos that match your search term."}];
     
     if (self.albumIdsToNameAndIdsArrays[albumId]) {
-        NSArray *filtered = [self filteredNamesAndIdsForSearchTerm:searchTerm albumId:albumId];
-        if (filtered.count == 0) {
+        self.filteredNamesAndIds = [self filteredNamesAndIdsForSearchTerm:searchTerm albumId:albumId];
+        if (self.filteredNamesAndIds.count == 0) {
             block(nil, noMatchesFoundError);
             return;
         }
         
-        block(filtered, nil);
+        NSMutableArray *arraysOfFilteredNamesAndIds = [NSMutableArray new];
+        NSInteger index = 0;
+        NSInteger count = 50;
+        while (index < self.filteredNamesAndIds.count) {
+            if (self.filteredNamesAndIds.count - index <= 50) {
+                count = self.filteredNamesAndIds.count - index;
+            }
+            [arraysOfFilteredNamesAndIds addObject:[self.filteredNamesAndIds subarrayWithRange:NSMakeRange(index, count)]];
+            index += 50;
+        }
+        self.filteredNamesAndIds = [arraysOfFilteredNamesAndIds copy];
+        block(self.filteredNamesAndIds[_pagingIndexForFilteredResults], nil);
+        
     } else {
         [[[FBSDKGraphRequest alloc] initWithGraphPath:self.graphPathForNameSearch parameters:self.parametersForNameSearch] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
             NSString *nextPage = [result valueForKeyPath:@"paging.next"];
@@ -525,13 +602,26 @@ static NSString * const facebookPageID = @"180889155269546";
             if (nextPage == NULL) {
                 [self addNamesAndIdsFromArrayOfFacebookResponses:[self.allNameAndIdResponsesForAlbum copy] forKey:albumId];
                 self.allNameAndIdResponsesForAlbum = nil;
-                NSArray *filtered = [self filteredNamesAndIdsForSearchTerm:searchTerm albumId:albumId];
-                if (filtered.count == 0) {
+                
+                self.filteredNamesAndIds = [self filteredNamesAndIdsForSearchTerm:searchTerm albumId:albumId];
+                if (self.filteredNamesAndIds.count == 0) {
                     block(nil, noMatchesFoundError);
                     return;
                 }
                 
-                block(filtered, nil);
+                NSMutableArray *arraysOfFilteredNamesAndIds = [NSMutableArray new];
+                NSInteger index = 0;
+                NSInteger count = 50;
+                while (index < self.filteredNamesAndIds.count) {
+                    if (self.filteredNamesAndIds.count - index <= 50) {
+                        count = self.filteredNamesAndIds.count - index;
+                    }
+                    [arraysOfFilteredNamesAndIds addObject:[self.filteredNamesAndIds subarrayWithRange:NSMakeRange(index, count)]];
+                    index += 50;
+                }
+                self.filteredNamesAndIds = [arraysOfFilteredNamesAndIds copy];
+                block(self.filteredNamesAndIds[_pagingIndexForFilteredResults], nil);
+                
             } else {
                 self.graphPathForNameSearch = [nextPage substringFromIndex:31];
                 if (self.parametersForNameSearch) {

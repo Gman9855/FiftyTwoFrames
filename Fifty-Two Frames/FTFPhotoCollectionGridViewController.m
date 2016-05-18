@@ -70,6 +70,7 @@ BOOL didLikePhotoFromBrowser = NO;
     BOOL _albumSelectionChanged;
     BOOL _morePhotosToLoad;
     BOOL _finishedPaging;
+    BOOL _unfilteredPhotosFinishedPaging;
     BOOL _didUpdateCells;
     BOOL _layoutDidChange;
     BOOL _didPageNextBatchOfPhotos;
@@ -219,6 +220,8 @@ BOOL didLikePhotoFromBrowser = NO;
                                        error:(NSError *)error
                               finishedPaging: (BOOL)finishedPaging {
     _finishedPaging = finishedPaging;
+    _unfilteredPhotosFinishedPaging = finishedPaging;
+
     [MBProgressHUD hideHUDForView:self.navigationController.view animated:NO];
     self.collectionView.userInteractionEnabled = YES;
     if (self.gridPhotos) {
@@ -437,10 +440,12 @@ BOOL didLikePhotoFromBrowser = NO;
 
 #pragma mark - FTFFiltersViewControllerDelegate
 
-- (void)filtersViewControllerDidSaveFilters:(NSString *)searchTerm nameOnly:(BOOL)nameOnly sortOrder:(FTFSortOrder)sortOrder {
+- (void)filtersViewControllerDidSaveFilters:(NSString *)searchTerm sortOrder:(FTFSortOrder)sortOrder {
     [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    [[FiftyTwoFrames sharedInstance] requestAlbumPhotosForPhotographerSearchTerm:searchTerm albumId:self.albumToDisplay.albumID completionBlock:^(NSArray *photos, NSError *error) {
+    [[FiftyTwoFrames sharedInstance] requestAlbumPhotosForPhotographerSearchTerm:searchTerm albumId:self.albumToDisplay.albumID completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
         [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
+        _finishedPaging = finishedPaging;
+        if (!finishedPaging) _morePhotosToLoad = YES;
         if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error" message:error.userInfo[@"message"] preferredStyle:UIAlertControllerStyleAlert];
@@ -456,20 +461,13 @@ BOOL didLikePhotoFromBrowser = NO;
         self.gridPhotos = photos;
         _showingFilteredResults = YES;
         [self.collectionView reloadData];
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
         self.collectionReusableView.hidden = YES;
     }];
 }
 
 - (void)filtersViewControllerDidResetFilters {
-    [self setFilterIconEnabled:NO];
-    if (_showingFilteredResults) {
-        _showingFilteredResults = NO;
-        self.searchTerm = nil;
-        self.collectionReusableView.hidden = NO;
-        self.gridPhotos = self.cachedAlbumPhotos;
-        [self.collectionView reloadData];
-        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
-    }
+    [self updateUIForResetFilters];
 }
 
 - (void)setFilterIconEnabled:(BOOL)enabled {
@@ -478,6 +476,20 @@ BOOL didLikePhotoFromBrowser = NO;
 
     [self.searchButton setImage:filterImage];
     self.searchButton.tintColor = tintColor;
+}
+
+- (void)updateUIForResetFilters {
+    [self setFilterIconEnabled:NO];
+    if (_showingFilteredResults) {
+        _showingFilteredResults = NO;
+        _finishedPaging = _unfilteredPhotosFinishedPaging;
+        self.searchTerm = nil;
+        self.collectionReusableView.hidden = NO;
+        self.gridPhotos = self.cachedAlbumPhotos;
+        [self.collectionView reloadData];
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+        _morePhotosToLoad = YES;
+    }
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -520,9 +532,9 @@ BOOL didLikePhotoFromBrowser = NO;
         [MBProgressHUD hideHUDForView:self.collectionView animated:NO];
     }
 
-    if (indexPath.row == self.gridPhotos.count - 7) {
-        _morePhotosToLoad = YES;
-    }
+//    if (indexPath.row == self.gridPhotos.count - 4) {
+//        _morePhotosToLoad = YES;
+//    }
     
     [cell updateCellsForLayout:self.currentLayout];
     
@@ -632,7 +644,7 @@ BOOL didLikePhotoFromBrowser = NO;
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
     
     if (self.browserPhotos.count - index < 4 && !_finishedPaging && !_showingFilteredResults) {
-        [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosWithCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
+        [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosFromFilteredResults:_showingFilteredResults withCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
             _finishedPaging = finishedPaging;
             NSMutableArray *albumPhotos = [self.gridPhotos mutableCopy];
             [albumPhotos addObjectsFromArray:photos];
@@ -656,8 +668,10 @@ BOOL didLikePhotoFromBrowser = NO;
 {
     if (self.photoBrowser != nil && viewController == self) {
         NSInteger currentIndex = self.photoBrowser.currentIndex;
+        _layoutDidChange = YES;
         NSIndexPath *ip = [NSIndexPath indexPathForRow:currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:ip atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+        _layoutDidChange = NO;
     }
 }
 
@@ -671,50 +685,50 @@ BOOL didLikePhotoFromBrowser = NO;
     float y = offset.y + bounds.size.height - inset.bottom;
     float h = size.height;
     float reload_distance = -150;
-    if(y > h + reload_distance && self.gridPhotos && _morePhotosToLoad && !_layoutDidChange && !_showingFilteredResults) {
-        _morePhotosToLoad = NO;
-        NSLog(@"Grid hit the bottom");
-        if (!_finishedPaging) {
-            if (![self.navBarAlbumTitle.text isEqualToString:@"Loading more photos..."]) {
-                [UIView animateWithDuration:0.5 animations:^{
-                    self.navigationItem.titleView.alpha = 0.0;
-                    [self.navBarAlbumTitle setAttributedTitleWithText:@"Loading more photos..."];
-                    self.navigationItem.titleView.alpha = 1.0;
-                }];
-            }
-            
-            [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosWithCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
-                _finishedPaging = finishedPaging;
-                
-                NSMutableArray *albumPhotos = [self.gridPhotos mutableCopy];
-                [albumPhotos addObjectsFromArray:photos];
-                NSInteger gridPhotosCount = self.gridPhotos.count;
-                self.gridPhotos = [albumPhotos copy];
-                self.cachedAlbumPhotos = [self.gridPhotos copy];
-                
-                [self.collectionView performBatchUpdates:^{
-                    NSMutableArray *indexPaths = [NSMutableArray new];
-                    for (NSInteger i = gridPhotosCount; i < gridPhotosCount + photos.count; i++) {
-                        NSIndexPath *ip = [NSIndexPath indexPathForRow:i inSection:0];
-                        [indexPaths addObject:ip];
-                    }
-                    [self.collectionView insertItemsAtIndexPaths:indexPaths];
+    if(y > h + reload_distance) {
+        if (self.gridPhotos && _morePhotosToLoad && !_layoutDidChange) {
+            _morePhotosToLoad = NO;
+            NSLog(@"Grid hit the bottom");
+            // if we reset filters, we need to only load more photos if our cached _finishedPaging is true
 
-                } completion:^(BOOL finished) {
-                    [UIView animateWithDuration:0.4 animations:^{
+            if (!_finishedPaging) {
+                if (![self.navBarAlbumTitle.text isEqualToString:@"Loading more photos..."]) {
+                    [UIView animateWithDuration:0.5 animations:^{
                         self.navigationItem.titleView.alpha = 0.0;
-                        [self.navBarAlbumTitle setAttributedTitleWithText:self.albumToDisplay.name];
+                        [self.navBarAlbumTitle setAttributedTitleWithText:@"Loading more photos..."];
                         self.navigationItem.titleView.alpha = 1.0;
                     }];
+                }
+                [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosFromFilteredResults:_showingFilteredResults withCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
+                    
+                    NSMutableArray *albumPhotos = [self.gridPhotos mutableCopy];
+                    [albumPhotos addObjectsFromArray:photos];
+                    NSInteger gridPhotosCount = self.gridPhotos.count;
+                    self.gridPhotos = [albumPhotos copy];
+                    _finishedPaging = finishedPaging;
+                    if (!_showingFilteredResults) {
+                        // update
+                        _unfilteredPhotosFinishedPaging = finishedPaging;
+                        self.cachedAlbumPhotos = [self.gridPhotos copy];
+                    }
+                    [self.collectionView performBatchUpdates:^{
+                        NSMutableArray *indexPaths = [NSMutableArray new];
+                        for (NSInteger i = gridPhotosCount; i < gridPhotosCount + photos.count; i++) {
+                            NSIndexPath *ip = [NSIndexPath indexPathForRow:i inSection:0];
+                            [indexPaths addObject:ip];
+                        }
+                        [self.collectionView insertItemsAtIndexPaths:indexPaths];
+                        
+                    } completion:^(BOOL finished) {
+                        [UIView animateWithDuration:0.4 animations:^{
+                            self.navigationItem.titleView.alpha = 0.0;
+                            [self.navBarAlbumTitle setAttributedTitleWithText:self.albumToDisplay.name];
+                            self.navigationItem.titleView.alpha = 1.0;
+                            _morePhotosToLoad = YES;
+                        }];
+                    }];
                 }];
-                
-                NSNumber *isFinishedPaging = [NSNumber numberWithBool:finishedPaging];
-                NSDictionary *updatedAlbumPhotos = [NSDictionary dictionaryWithObjectsAndKeys:albumPhotos, @"albumPhotos", isFinishedPaging, @"finishedPaging", nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"photoGridDidPageMorePhotosNotification"
-                                                                    object:nil
-                                                                  userInfo:updatedAlbumPhotos];
-                _morePhotosToLoad = YES;
-            }];
+            }
         }
     }
     _layoutDidChange = NO;
