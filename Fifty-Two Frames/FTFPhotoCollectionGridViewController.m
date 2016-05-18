@@ -41,7 +41,6 @@
 @property (nonatomic, strong) FTFListLayout *listLayout;
 @property (nonatomic, strong) CHTCollectionViewWaterfallLayout *gridLayout;
 @property (nonatomic, strong) UICollectionViewLayout *currentLayout;
-@property (nonatomic, assign) BOOL shouldReloadData;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *layoutToggleButton;@property (nonatomic, strong) FTFAlbumSelectionMenuViewController *albumSelectionMenuViewController;
 @property (nonatomic, strong) UINavigationController *albumSelectionMenuNavigationController;
 @property (nonatomic, strong) FTFPhotoBrowserViewController *photoBrowser;
@@ -125,10 +124,6 @@ BOOL didLikePhotoFromBrowser = NO;
         // Custom initialization
     }
     return self;
-}
-
-- (void)awakeFromNib {
-    self.shouldReloadData = YES;
 }
 
 - (void)viewDidLoad
@@ -297,20 +292,11 @@ BOOL didLikePhotoFromBrowser = NO;
 
 - (IBAction)toggleLayout:(UIBarButtonItem *)sender {
     _layoutDidChange = YES;
-    UICollectionViewLayout *layout;
-    NSString *layoutType;
-    NSString *toolbarIconImageName;
-    if (self.collectionView.collectionViewLayout == self.listLayout) {
-        layout = self.gridLayout;
-        layoutType = @"grid";
-        self.navigationItem.rightBarButtonItem.title = @"List";
-        toolbarIconImageName = @"DefaultStyle";
-    } else {
-        layout = self.listLayout;
-        layoutType = @"list";
-        self.navigationItem.rightBarButtonItem.title = @"Grid";
-        toolbarIconImageName = @"Grid";
-    }
+    BOOL isListLayout = self.collectionView.collectionViewLayout == self.listLayout;
+    UICollectionViewLayout *layout = isListLayout ? self.gridLayout : self.listLayout;
+    NSString *layoutType = isListLayout ? @"grid" : @"list";
+    NSString *toolbarIconImageName = isListLayout ? @"DefaultStyle" : @"Grid";
+    
     self.currentLayout = layout;
     self.layoutToggleButton.image = [UIImage imageNamed:toolbarIconImageName];
     
@@ -702,11 +688,9 @@ BOOL didLikePhotoFromBrowser = NO;
                 
                 NSMutableArray *albumPhotos = [self.gridPhotos mutableCopy];
                 [albumPhotos addObjectsFromArray:photos];
-                self.shouldReloadData = NO;
                 NSInteger gridPhotosCount = self.gridPhotos.count;
                 self.gridPhotos = [albumPhotos copy];
                 self.cachedAlbumPhotos = [self.gridPhotos copy];
-                self.shouldReloadData = YES;
                 
                 [self.collectionView performBatchUpdates:^{
                     NSMutableArray *indexPaths = [NSMutableArray new];
@@ -740,34 +724,6 @@ BOOL didLikePhotoFromBrowser = NO;
     [[NSNotificationCenter defaultCenter]
      postNotificationName:@"LayoutDidChange"
      object:self userInfo:userInfo];
-}
-
--(void)changeLayout {
-    _layoutDidChange = YES;
-    UICollectionViewLayout *layout;
-    NSString *layoutType;
-    BOOL isListLayout = self.collectionView.collectionViewLayout == self.listLayout;
-    layout = isListLayout ? self.gridLayout : self.listLayout;
-    layoutType = isListLayout ? @"grid" : @"list";
-    
-    self.currentLayout = layout;
-    
-    NSDictionary *userInfo = @{@"layout": layout, @"layoutType": layoutType};
-    
-    NSArray *visibleCells = [self.collectionView visibleCells];
-    FTFCollectionViewCell *firstPhoto = (FTFCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    BOOL containsFirstPhoto = [visibleCells containsObject:firstPhoto];
-    
-    [UIView animateWithDuration:0.45 delay:0 usingSpringWithDamping:0.865 initialSpringVelocity:1.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        [self.collectionView setCollectionViewLayout:layout animated:NO];
-        if (containsFirstPhoto) {
-            [self.collectionView setContentOffset:CGPointZero];
-            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
-        }
-        
-        [self postLayoutNotification:userInfo];
-
-    } completion:nil];
 }
 
 - (void)didReceiveMemoryWarning

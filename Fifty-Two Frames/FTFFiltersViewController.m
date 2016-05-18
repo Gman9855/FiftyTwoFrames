@@ -23,11 +23,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.searchTextField.delegate = self;
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapReceivedInView:)];
+    [self.view addGestureRecognizer:tapGestureRecognizer];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -52,6 +49,12 @@
     if (sender.isOn) {
         [self.sortByLikesSwitch setOn:NO animated:true];
         [self.sortByCommentsSwitch setOn:NO animated:true];
+    }
+}
+
+- (void)tapReceivedInView:(UITapGestureRecognizer *)sender {
+    if ([self.searchTextField isFirstResponder]) {
+        [self.searchTextField resignFirstResponder];
     }
 }
 
@@ -98,6 +101,11 @@
     if (range.location == 0 && [string isEqualToString:@" "]) {
         return NO;
     }
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
     return YES;
 }
 
