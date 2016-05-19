@@ -10,6 +10,7 @@ target "FiftyTwoFrames" do
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
+  pod 'NMRangeSlider'
 end
 
 target "FiftyTwoFramesTests" do

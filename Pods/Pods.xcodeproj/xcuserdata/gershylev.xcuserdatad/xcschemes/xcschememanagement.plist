@@ -29,6 +29,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>NMRangeSlider.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Parse.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,22 +62,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>05D0BBF2466BC9DED923899F5E1728C4</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>0C1F8E331232C34F034FD26C684AFA0A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3829F6BCDEFB7D97F05B5EFA2FB8AD84</key>
+		<key>3385E626FC7EEE5B718B9C301EBDCD43</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5127D1C7A0D0AB24B1A91E5EBE1E535E</key>
+		<key>408AC5482508E394D18B13FE9A4B9D62</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -87,7 +87,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>96F98367FE821991BC065E4FABE502F0</key>
+		<key>901E49B8DEFCAC8D666029406AE5026F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -102,7 +102,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E06183727A5F8E42D3708C27A006B136</key>
+		<key>AD7D2D5531DD3103C96A9DD2F22FCCE7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -113,11 +113,6 @@
 			<true/>
 		</dict>
 		<key>F21523DE0EE1E35B265242490D97EE4C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FB84D5762991F3081E4D910909F18C83</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -12,6 +12,7 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.10.0):
     - FBSDKCoreKit
+  - NMRangeSlider (1.2.1)
   - Parse (1.12.0):
     - Bolts/Tasks (~> 1.5)
   - pop (1.0.8)
@@ -23,6 +24,7 @@ DEPENDENCIES:
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
+  - NMRangeSlider
   - Parse
   - pop (~> 1.0)
   - SlackTextViewController
@@ -33,10 +35,11 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 13bec8373fb3af94d44daf2aa1e0958687897fbd
   FBSDKLoginKit: d3d4a2e9d31954deb00bfea964167a05ca1ea976
   FBSDKShareKit: 54587b4624706ace1e810cf83412a918141f807a
+  NMRangeSlider: 317ded652431eb90501c8421d9cddc3930d891e6
   Parse: de2c52a9a1421b91ae7594ab8ce191afd184f19b
   pop: bb773ae2c791ca2629de13b347e7a8b450fa6a57
   SlackTextViewController: 57e28248dd38b9753277733544449519842f1ea5
 
-PODFILE CHECKSUM: cb471d86f87b7a49ae1877e975d861b18ab4adcc
+PODFILE CHECKSUM: 27f4a6a143d44498d233709c77750a2b75191865
 
 COCOAPODS: 1.0.0.beta.6
