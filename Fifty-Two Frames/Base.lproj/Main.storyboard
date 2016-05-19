@@ -6,10 +6,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Content Table View Controller-->
+        <!--Table View Controller-->
         <scene sceneID="WE4-O3-ive">
             <objects>
-                <tableViewController id="dCf-uT-a31" customClass="FTFContentTableViewController" sceneMemberID="viewController">
+                <tableViewController id="dCf-uT-a31" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="321" sectionHeaderHeight="22" sectionFooterHeight="22" id="1KI-ts-e1b">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

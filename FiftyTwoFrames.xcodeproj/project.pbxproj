@@ -22,7 +22,6 @@
 		7CBB74EA1C1B7B6C00179997 /* FTFLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */; };
 		7CCE35B61C7A9C400061C760 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC93889193C1C8300418F32 /* Foundation.framework */; };
 		89A6040F0908EE6356345C25 /* libPods-FiftyTwoFramesTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF9E405667ADA43292272B91 /* libPods-FiftyTwoFramesTests.a */; };
-		8B12265019B2DE9700FBFE4E /* FTFPhotoContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */; };
 		8B12265319B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */; };
 		8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */; };
 		8B20E9E21992084C0074E66B /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B20E9E11992084C0074E66B /* libc++.1.dylib */; };
@@ -44,7 +43,6 @@
 		8BA2A6ED194E12E600341260 /* WYPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA2A6EA194E12E600341260 /* WYPopoverController.m */; };
 		8BA2A6EE194E12E600341260 /* WYStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA2A6EC194E12E600341260 /* WYStoryboardPopoverSegue.m */; };
 		8BA2A6F3194E20E700341260 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA2A6F2194E20E700341260 /* QuartzCore.framework */; };
-		8BA2A6F5194E226D00341260 /* FTFContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA2A6F4194E226D00341260 /* FTFContentTableViewController.m */; };
 		8BA2A6F7194E5E5300341260 /* Very-Basic-Cancel-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA2A6F6194E5E5300341260 /* Very-Basic-Cancel-icon.png */; };
 		8BA8792D19674E6A00A43819 /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA878D219674E6900A43819 /* MWCaptionView.m */; };
 		8BA8792E19674E6A00A43819 /* MWGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA878D519674E6900A43819 /* MWGridCell.m */; };
@@ -166,8 +164,6 @@
 		7C7A72C01CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFNavigationBarAlbumTitle.m; sourceTree = "<group>"; };
 		7CBB74E81C1B7B6C00179997 /* FTFLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFLikeButton.h; sourceTree = "<group>"; };
 		7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFLikeButton.m; sourceTree = "<group>"; };
-		8B12264E19B2DE9700FBFE4E /* FTFPhotoContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFPhotoContainerViewController.h; sourceTree = "<group>"; };
-		8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFPhotoContainerViewController.m; sourceTree = "<group>"; };
 		8B12265119B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FTFImage+MWPhotoAdditions.h"; sourceTree = "<group>"; };
 		8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FTFImage+MWPhotoAdditions.m"; sourceTree = "<group>"; };
 		8B20E98B198CA1920074E66B /* FTFYearPopoverTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFYearPopoverTableViewController.h; sourceTree = "<group>"; };
@@ -201,7 +197,6 @@
 		8BA2A6EB194E12E600341260 /* WYStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYStoryboardPopoverSegue.h; sourceTree = "<group>"; };
 		8BA2A6EC194E12E600341260 /* WYStoryboardPopoverSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYStoryboardPopoverSegue.m; sourceTree = "<group>"; };
 		8BA2A6F2194E20E700341260 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		8BA2A6F4194E226D00341260 /* FTFContentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFContentTableViewController.m; sourceTree = "<group>"; };
 		8BA2A6F6194E5E5300341260 /* Very-Basic-Cancel-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Very-Basic-Cancel-icon.png"; sourceTree = "<group>"; };
 		8BA878D119674E6900A43819 /* MWCaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCaptionView.h; sourceTree = "<group>"; };
 		8BA878D219674E6900A43819 /* MWCaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWCaptionView.m; sourceTree = "<group>"; };
@@ -318,7 +313,6 @@
 		8BC938B0193C1C8300418F32 /* FiftyTwoFramesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FiftyTwoFramesTests-Info.plist"; sourceTree = "<group>"; };
 		8BC938B2193C1C8300418F32 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8BC938B4193C1C8300418F32 /* Fifty_Two_FramesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Fifty_Two_FramesTests.m; sourceTree = "<group>"; };
-		8BC938CD193CE3EF00418F32 /* FTFContentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFContentTableViewController.h; sourceTree = "<group>"; };
 		8BC938D019400B5A00418F32 /* FTFTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFTableViewCell.h; sourceTree = "<group>"; };
 		8BC938D119400B5A00418F32 /* FTFTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFTableViewCell.m; sourceTree = "<group>"; };
 		8BC938D71940593400418F32 /* FTFFacebookLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFFacebookLoginViewController.h; sourceTree = "<group>"; };
@@ -458,12 +452,8 @@
 				7C4A04C81C98904400FE3F0F /* FTFListLayout.swift */,
 				8BC938DA194529EB00418F32 /* FTFContainerViewController.h */,
 				8BC938DB194529EB00418F32 /* FTFContainerViewController.m */,
-				8BC938CD193CE3EF00418F32 /* FTFContentTableViewController.h */,
-				8BA2A6F4194E226D00341260 /* FTFContentTableViewController.m */,
 				8BD040951AA6BFEB00700F4C /* FTFAlbumDescriptionViewController.h */,
 				8BD040961AA6BFEB00700F4C /* FTFAlbumDescriptionViewController.m */,
-				8B12264E19B2DE9700FBFE4E /* FTFPhotoContainerViewController.h */,
-				8B12264F19B2DE9700FBFE4E /* FTFPhotoContainerViewController.m */,
 				8BCB4C001993F31700B9C751 /* FTFPhotoBrowserViewController.h */,
 				8BCB4C011993F31700B9C751 /* FTFPhotoBrowserViewController.m */,
 				8BCB4C031994692F00B9C751 /* FTFPhotoCommentsViewController.h */,
@@ -1036,7 +1026,6 @@
 				8BA8793C19674E6A00A43819 /* PSTCollectionViewData.m in Sources */,
 				8BA8798319675FF400A43819 /* UIButton+WebCache.m in Sources */,
 				7C4A04CC1C9B466300FE3F0F /* FTFGridLayout.m in Sources */,
-				8B12265019B2DE9700FBFE4E /* FTFPhotoContainerViewController.m in Sources */,
 				8B6458BF194CFADC006D4B75 /* NSArray+FTFAdditions.m in Sources */,
 				8BC93896193C1C8300418F32 /* main.m in Sources */,
 				8BA8798119675FF400A43819 /* SDWebImageManager.m in Sources */,
@@ -1084,7 +1073,6 @@
 				8BC938D91940593400418F32 /* FTFFacebookLoginViewController.m in Sources */,
 				8BCB4BF719931B7E00B9C751 /* FTFPhotoComment.m in Sources */,
 				8BAC031D19BBD3F700451615 /* FTFCollectionViewCell.m in Sources */,
-				8BA2A6F5194E226D00341260 /* FTFContentTableViewController.m in Sources */,
 				8BA8797F19675FF400A43819 /* SDWebImageDownloader.m in Sources */,
 				8BA8793319674E6A00A43819 /* MWTapDetectingView.m in Sources */,
 				1AA2BAC519C642E90069A92F /* TTTTimeIntervalFormatter.m in Sources */,

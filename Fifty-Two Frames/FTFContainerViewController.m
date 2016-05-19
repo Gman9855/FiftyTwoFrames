@@ -7,7 +7,6 @@
 //
 
 #import "FTFContainerViewController.h"
-#import "FTFContentTableViewController.h"
 #import "FTFFacebookLoginViewController.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
