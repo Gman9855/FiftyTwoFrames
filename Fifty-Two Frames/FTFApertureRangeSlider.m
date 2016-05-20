@@ -18,10 +18,10 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.minimumValue = 1;
     self.maximumValue = 10;
+    self.minimumValue = 1;
+    self.upperValue = 10;  // this sets the position of the knob
     self.lowerValue = 1;
-    self.upperValue = 10;
     self.stepValue = 1.0;
     self.stepValueContinuously = YES;
     self.tintColor = [UIColor orangeColor];

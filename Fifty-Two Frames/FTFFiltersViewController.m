@@ -87,28 +87,13 @@
 }
 
 - (IBAction)apertureRangeSliderValueChanged:(FTFApertureRangeSlider *)sender {
-    NSString *labelText;
-    if (sender.lowerValue == sender.maximumValue) {
-        labelText = sender.upperValueAperture;
-    } else if (sender.upperValue == sender.minimumValue) {
-        labelText = sender.lowerValueAperture;
-    } else {
-        labelText = [NSString stringWithFormat:@"%@ - %@", sender.lowerValueAperture, sender.upperValueAperture];
-    }
-    
-    self.apertureValueLabel.text = labelText;
+    BOOL sameSliderValues = sender.lowerValue == sender.upperValue;
+    self.apertureValueLabel.text = sameSliderValues ? sender.upperValueAperture : [NSString stringWithFormat:@"%@ - %@", sender.lowerValueAperture, sender.upperValueAperture];
 }
 
 - (IBAction)focalLengthRangeSliderValueChanged:(FTFFocalLengthRangeSlider *)sender {
-    NSString *labelText;
-    if (sender.lowerValue == sender.maximumValue) {
-        labelText = sender.upperValueFocalLength;
-    } else if (sender.upperValue == sender.minimumValue) {
-        labelText = sender.lowerValueFocalLength;
-    } else {
-        labelText = [NSString stringWithFormat:@"%@ - %@", sender.lowerValueFocalLength, sender.upperValueFocalLength];
-    }
-    self.focalLengthValueLabel.text = labelText;
+    BOOL sameSliderValues = sender.lowerValue == sender.upperValue;
+    self.focalLengthValueLabel.text = sameSliderValues ? sender.upperValueFocalLength : [NSString stringWithFormat:@"%@ - %@", sender.lowerValueFocalLength, sender.upperValueFocalLength];
 }
 
 - (IBAction)apertureSwitchToggled:(UISwitch *)sender {
