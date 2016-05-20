@@ -19,6 +19,8 @@
 		7C4A04D41C9F426500FE3F0F /* FTFCollectionViewListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04D31C9F426500FE3F0F /* FTFCollectionViewListCell.m */; };
 		7C7783C61CE5FC5200C3BA66 /* FTFFiltersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C7783C51CE5FC5200C3BA66 /* FTFFiltersViewController.m */; };
 		7C7A72C11CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C7A72C01CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m */; };
+		7C810FCF1CEE6A8300A75499 /* FTFApertureRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C810FCE1CEE6A8300A75499 /* FTFApertureRangeSlider.m */; };
+		7C810FD21CEE6A9500A75499 /* FTFFocalLengthRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C810FD11CEE6A9500A75499 /* FTFFocalLengthRangeSlider.m */; };
 		7CBB74EA1C1B7B6C00179997 /* FTFLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */; };
 		7CCE35B61C7A9C400061C760 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC93889193C1C8300418F32 /* Foundation.framework */; };
 		89A6040F0908EE6356345C25 /* libPods-FiftyTwoFramesTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF9E405667ADA43292272B91 /* libPods-FiftyTwoFramesTests.a */; };
@@ -162,6 +164,10 @@
 		7C7783C51CE5FC5200C3BA66 /* FTFFiltersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFFiltersViewController.m; sourceTree = "<group>"; };
 		7C7A72BF1CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFNavigationBarAlbumTitle.h; sourceTree = "<group>"; };
 		7C7A72C01CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFNavigationBarAlbumTitle.m; sourceTree = "<group>"; };
+		7C810FCD1CEE6A8300A75499 /* FTFApertureRangeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFApertureRangeSlider.h; sourceTree = "<group>"; };
+		7C810FCE1CEE6A8300A75499 /* FTFApertureRangeSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFApertureRangeSlider.m; sourceTree = "<group>"; };
+		7C810FD01CEE6A9500A75499 /* FTFFocalLengthRangeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFFocalLengthRangeSlider.h; sourceTree = "<group>"; };
+		7C810FD11CEE6A9500A75499 /* FTFFocalLengthRangeSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFFocalLengthRangeSlider.m; sourceTree = "<group>"; };
 		7CBB74E81C1B7B6C00179997 /* FTFLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFLikeButton.h; sourceTree = "<group>"; };
 		7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFLikeButton.m; sourceTree = "<group>"; };
 		8B12265119B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FTFImage+MWPhotoAdditions.h"; sourceTree = "<group>"; };
@@ -418,6 +424,10 @@
 				8BCB4BF619931B7E00B9C751 /* FTFPhotoComment.m */,
 				7CBB74E81C1B7B6C00179997 /* FTFLikeButton.h */,
 				7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */,
+				7C810FCD1CEE6A8300A75499 /* FTFApertureRangeSlider.h */,
+				7C810FCE1CEE6A8300A75499 /* FTFApertureRangeSlider.m */,
+				7C810FD01CEE6A9500A75499 /* FTFFocalLengthRangeSlider.h */,
+				7C810FD11CEE6A9500A75499 /* FTFFocalLengthRangeSlider.m */,
 			);
 			name = "Model Objects";
 			sourceTree = "<group>";
@@ -1053,6 +1063,7 @@
 				8BA8798719675FF400A43819 /* UIImageView+HighlightedWebCache.m in Sources */,
 				8BA8793419674E6A00A43819 /* MWZoomingScrollView.m in Sources */,
 				8B6458C2194D0BE6006D4B75 /* FTFImage.m in Sources */,
+				7C810FD21CEE6A9500A75499 /* FTFFocalLengthRangeSlider.m in Sources */,
 				7C4A04C91C98904400FE3F0F /* FTFListLayout.swift in Sources */,
 				8BC32592197B71D4002A17AC /* FTFAlbumSelectionMenuViewController.m in Sources */,
 				8B3994DE19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m in Sources */,
@@ -1070,6 +1081,7 @@
 				8BA8793519674E6A00A43819 /* DACircularProgressView.m in Sources */,
 				8BCB4C021993F31700B9C751 /* FTFPhotoBrowserViewController.m in Sources */,
 				8BA8793A19674E6A00A43819 /* PSTCollectionViewCell.m in Sources */,
+				7C810FCF1CEE6A8300A75499 /* FTFApertureRangeSlider.m in Sources */,
 				8BC938D91940593400418F32 /* FTFFacebookLoginViewController.m in Sources */,
 				8BCB4BF719931B7E00B9C751 /* FTFPhotoComment.m in Sources */,
 				8BAC031D19BBD3F700451615 /* FTFCollectionViewCell.m in Sources */,

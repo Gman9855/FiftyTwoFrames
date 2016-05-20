@@ -7,13 +7,21 @@
 //
 
 #import "FTFFiltersViewController.h"
+#import "NMRangeSlider.h"
+#import "FTFApertureRangeSlider.h"
+#import "FTFFocalLengthRangeSlider.h"
 
 @interface FTFFiltersViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *sortByLikesSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *sortByCommentsSwitch;
-@property (weak, nonatomic) IBOutlet UISwitch *sortByNamesSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *apertureSwitch;
+@property (weak, nonatomic) IBOutlet UILabel *apertureValueLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *focalLengthSwitch;
+@property (weak, nonatomic) IBOutlet UILabel *focalLengthValueLabel;
+@property (weak, nonatomic) IBOutlet FTFApertureRangeSlider *apertureRangeSlider;
+@property (weak, nonatomic) IBOutlet FTFFocalLengthRangeSlider *focalLengthRangeSlider;
 
 @end
 
@@ -32,22 +40,13 @@
 }
 - (IBAction)sortByLikesSwitchToggled:(UISwitch *)sender {
     if (sender.isOn) {
-        [self.sortByNamesSwitch setOn:NO animated:true];
         [self.sortByCommentsSwitch setOn:NO animated:true];
     }
 }
 
 - (IBAction)sortByCommentsSwitchToggled:(UISwitch *)sender {
     if (sender.isOn) {
-        [self.sortByNamesSwitch setOn:NO animated:true];
         [self.sortByLikesSwitch setOn:NO animated:true];
-    }
-}
-
-- (IBAction)sortByNameSwitchToggled:(UISwitch *)sender {
-    if (sender.isOn) {
-        [self.sortByLikesSwitch setOn:NO animated:true];
-        [self.sortByCommentsSwitch setOn:NO animated:true];
     }
 }
 
@@ -69,9 +68,7 @@
     if (self.sortByLikesSwitch.isOn) {
         sortOrder = FTFSortOrderLikes;
     }
-    if (self.sortByNamesSwitch.isOn) {
-        sortOrder = FTFSortOrderName;
-    }
+
     if (self.sortByCommentsSwitch.isOn) {
         sortOrder = FTFSortOrderComments;
     }
@@ -82,7 +79,6 @@
 }
 - (IBAction)resetButtonTapped:(UIBarButtonItem *)sender {
     [self.sortByLikesSwitch setOn:NO];
-    [self.sortByNamesSwitch setOn:NO];
     [self.sortByCommentsSwitch setOn:NO];
     self.searchTextField.text = @"";
     
@@ -90,10 +86,64 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (BOOL)shouldSaveFilters {
-    return self.sortByNamesSwitch.isOn || self.sortByLikesSwitch.isOn || self.sortByCommentsSwitch.isOn || ![self.searchTextField.text isEqualToString:@""];
+- (IBAction)apertureRangeSliderValueChanged:(FTFApertureRangeSlider *)sender {
+    NSString *labelText;
+    if (sender.lowerValue == sender.maximumValue) {
+        labelText = sender.upperValueAperture;
+    } else if (sender.upperValue == sender.minimumValue) {
+        labelText = sender.lowerValueAperture;
+    } else {
+        labelText = [NSString stringWithFormat:@"%@ - %@", sender.lowerValueAperture, sender.upperValueAperture];
+    }
+    
+    self.apertureValueLabel.text = labelText;
 }
 
+- (IBAction)focalLengthRangeSliderValueChanged:(FTFFocalLengthRangeSlider *)sender {
+    NSString *labelText;
+    if (sender.lowerValue == sender.maximumValue) {
+        labelText = sender.upperValueFocalLength;
+    } else if (sender.upperValue == sender.minimumValue) {
+        labelText = sender.lowerValueFocalLength;
+    } else {
+        labelText = [NSString stringWithFormat:@"%@ - %@", sender.lowerValueFocalLength, sender.upperValueFocalLength];
+    }
+    self.focalLengthValueLabel.text = labelText;
+}
+
+- (IBAction)apertureSwitchToggled:(UISwitch *)sender {
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
+- (IBAction)focalLengthSwitchToggled:(UISwitch *)sender {
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
+- (BOOL)shouldSaveFilters {
+    return self.sortByLikesSwitch.isOn || self.sortByCommentsSwitch.isOn || ![self.searchTextField.text isEqualToString:@""];
+}
+
+#pragma mark - UITableViewDelegate 
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 1 && indexPath.row == 1) {
+        if (self.apertureSwitch.on) {
+            return 80;
+        } else {
+            return 0;
+        }
+    } else if (indexPath.section == 1 && indexPath.row == 3) {
+        if (self.focalLengthSwitch.on) {
+            return 80;
+        } else {
+            return 0;
+        }
+    }
+    
+    return 44;
+}
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
