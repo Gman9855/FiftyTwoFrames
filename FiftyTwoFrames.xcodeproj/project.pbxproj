@@ -403,6 +403,21 @@
 			name = DateFormatter;
 			sourceTree = "<group>";
 		};
+		7C810FD31CEE9D9500A75499 /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				8BD0408F1AA502EA00700F4C /* FTFCollectionReusableView.h */,
+				8BD040901AA502EA00700F4C /* FTFCollectionReusableView.m */,
+				7C7A72BF1CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.h */,
+				7C7A72C01CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m */,
+				7C810FCD1CEE6A8300A75499 /* FTFApertureRangeSlider.h */,
+				7C810FCE1CEE6A8300A75499 /* FTFApertureRangeSlider.m */,
+				7C810FD01CEE6A9500A75499 /* FTFFocalLengthRangeSlider.h */,
+				7C810FD11CEE6A9500A75499 /* FTFFocalLengthRangeSlider.m */,
+			);
+			name = "Custom Views";
+			sourceTree = "<group>";
+		};
 		8B451D50198178C0005D7159 /* Model Objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -424,10 +439,6 @@
 				8BCB4BF619931B7E00B9C751 /* FTFPhotoComment.m */,
 				7CBB74E81C1B7B6C00179997 /* FTFLikeButton.h */,
 				7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */,
-				7C810FCD1CEE6A8300A75499 /* FTFApertureRangeSlider.h */,
-				7C810FCE1CEE6A8300A75499 /* FTFApertureRangeSlider.m */,
-				7C810FD01CEE6A9500A75499 /* FTFFocalLengthRangeSlider.h */,
-				7C810FD11CEE6A9500A75499 /* FTFFocalLengthRangeSlider.m */,
 			);
 			name = "Model Objects";
 			sourceTree = "<group>";
@@ -726,13 +737,10 @@
 				8BC93898193C1C8300418F32 /* FTFAppDelegate.h */,
 				8BC93899193C1C8300418F32 /* FTFAppDelegate.m */,
 				8B451D50198178C0005D7159 /* Model Objects */,
+				7C810FD31CEE9D9500A75499 /* Custom Views */,
 				8B7D033D19C216C0006839BF /* View Controllers */,
 				8B7D033E19C2179B006839BF /* Custom Table View Cells */,
 				8BC9389B193C1C8300418F32 /* Main.storyboard */,
-				8BD0408F1AA502EA00700F4C /* FTFCollectionReusableView.h */,
-				8BD040901AA502EA00700F4C /* FTFCollectionReusableView.m */,
-				7C7A72BF1CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.h */,
-				7C7A72C01CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m */,
 				8BC938A1193C1C8300418F32 /* Images.xcassets */,
 				8BC93890193C1C8300418F32 /* Supporting Files */,
 				8B6458BD194CFADC006D4B75 /* NSArray+FTFAdditions.h */,

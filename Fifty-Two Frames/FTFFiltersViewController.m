@@ -34,10 +34,6 @@
     [self.view addGestureRecognizer:tapGestureRecognizer];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 - (IBAction)sortByLikesSwitchToggled:(UISwitch *)sender {
     if (sender.isOn) {
         [self.sortByCommentsSwitch setOn:NO animated:true];
