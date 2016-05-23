@@ -41,14 +41,13 @@
 @property (nonatomic, strong) FTFListLayout *listLayout;
 @property (nonatomic, strong) CHTCollectionViewWaterfallLayout *gridLayout;
 @property (nonatomic, strong) UICollectionViewLayout *currentLayout;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *layoutToggleButton;@property (nonatomic, strong) FTFAlbumSelectionMenuViewController *albumSelectionMenuViewController;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *layoutToggleButton;
+@property (nonatomic, strong) FTFAlbumSelectionMenuViewController *albumSelectionMenuViewController;
 @property (nonatomic, strong) UINavigationController *albumSelectionMenuNavigationController;
 @property (nonatomic, strong) FTFPhotoBrowserViewController *photoBrowser;
 @property (nonatomic, strong) FTFAlbum *albumToDisplay;
 @property (nonatomic, strong) FTFAlbumCollection *photoWalksAlbums;
 @property (nonatomic, strong) FTFAlbumCollection *miscellaneousSubmissionsAlbums;
-@property (nonatomic, strong) NSArray *browserPhotos;
-@property (nonatomic, strong) NSArray *thumbnailPhotosForGrid;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
 @property (nonatomic, strong) UIButton *refreshAlbumPhotosButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *gridButton;
@@ -599,14 +598,12 @@ BOOL didLikePhotoFromBrowser = NO;
 #pragma mark - MWPhotoBrowser
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
-    return self.browserPhotos.count;
+    return self.gridPhotos.count;
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
-    if (index < self.browserPhotos.count) {
-        return [self.browserPhotos objectAtIndex:index];
-    }
-    return nil;
+    FTFImage *photo = self.gridPhotos[index];
+    return [photo browserPhotoWithSize:FTFImageSizeLarge];
 }
 
 - (void)pushPhotoBrowserAtPhotoIndex:(NSInteger)index {
@@ -618,38 +615,27 @@ BOOL didLikePhotoFromBrowser = NO;
 - (void)setUpPhotoBrowserForTappedPhotoAtRow {
     self.photoBrowser = [[FTFPhotoBrowserViewController alloc]
                          initWithDelegate:self];
-    if (albumSelectionChanged || ![self.browserPhotos count] || _didPageNextBatchOfPhotos) {
-        self.browserPhotos = [self photosCompatibleForUseInPhotoBrowserWithSize:FTFImageSizeLarge];
-        //repopulate browserPhotos with newly selected album
+    if (albumSelectionChanged || ![self.gridPhotos count] || _didPageNextBatchOfPhotos) {
         albumSelectionChanged = NO;
     }
     self.photoBrowser.albumPhotos = self.gridPhotos;
 }
 
-- (NSArray *)photosCompatibleForUseInPhotoBrowserWithSize:(FTFImageSize)size {
-    NSMutableArray *photos = [NSMutableArray new];
-    for (FTFImage *image in self.gridPhotos) {
-        [photos addObject:[image browserPhotoWithSize:size]];
-    }
-    
-    return [photos copy];
-}
-
 - (MWCaptionView *)photoBrowser:(MWPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index {
-    MWPhoto *photo = [[self photosCompatibleForUseInPhotoBrowserWithSize:FTFImageSizeLarge] objectAtIndex:index];
-    FTFCustomCaptionView *captionView = [[FTFCustomCaptionView alloc] initWithPhoto:photo];
+    FTFImage *photo = self.gridPhotos[index];
+    MWPhoto *browserPhoto = [photo browserPhotoWithSize:FTFImageSizeLarge];
+    FTFCustomCaptionView *captionView = [[FTFCustomCaptionView alloc] initWithPhoto:browserPhoto];
     return captionView;
 }
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
     
-    if (self.browserPhotos.count - index < 4 && !_finishedPaging) {
+    if (self.gridPhotos.count - index < 4 && !_finishedPaging) {
         [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosFromFilteredResults:_showingFilteredResults withCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
             _finishedPaging = finishedPaging;
             NSMutableArray *albumPhotos = [self.gridPhotos mutableCopy];
             [albumPhotos addObjectsFromArray:photos];
             self.gridPhotos = [albumPhotos copy];
-            self.browserPhotos = [self photosCompatibleForUseInPhotoBrowserWithSize:FTFImageSizeLarge];
             self.photoBrowser.albumPhotos = self.gridPhotos;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.photoBrowser reloadData];
@@ -705,6 +691,7 @@ BOOL didLikePhotoFromBrowser = NO;
                     [albumPhotos addObjectsFromArray:photos];
                     NSInteger gridPhotosCount = self.gridPhotos.count;
                     self.gridPhotos = [albumPhotos copy];
+                    NSLog(@"Paged more photos:  Now %ld photos showing", self.gridPhotos.count);
                     _finishedPaging = finishedPaging;
                     if (!_showingFilteredResults) {
                         // update
