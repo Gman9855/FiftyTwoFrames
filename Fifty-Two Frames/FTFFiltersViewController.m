@@ -66,23 +66,57 @@
         [self presentViewController:alertController animated:YES completion:nil];
         return;
     }
-    FTFSortOrder sortOrder = FTFSortOrderNone;
-    if (self.sortByLikesSwitch.isOn) {
-        sortOrder = FTFSortOrderLikes;
-    }
-
-    if (self.sortByCommentsSwitch.isOn) {
-        sortOrder = FTFSortOrderComments;
+    NSNumber *sortOrder = [NSNumber numberWithInt:FTFSortOrderNone];
+    NSNumber *newFramers = [NSNumber numberWithBool:NO];
+    NSNumber *extraCreditChallenge = [NSNumber numberWithBool:NO];
+    NSNumber *apertureLowerValue = [NSNumber numberWithInt:0];
+    NSNumber *apertureUpperValue = [NSNumber numberWithInt:0];
+    NSNumber *focalLengthLowerValue = [NSNumber numberWithInt:0];
+    NSNumber *focalLengthUpperValue = [NSNumber numberWithInt:0];
+    
+    if (self.framerNewSwitch.isOn) {
+        newFramers = [NSNumber numberWithBool:YES];
     }
     
-    [self.delegate filtersViewControllerDidSaveFilters:![self.searchTextField.text isEqualToString:@""] ? self.searchTextField.text : nil
-                                             sortOrder:sortOrder];
+    if (self.extraCreditChallengeSwitch.isOn) {
+        extraCreditChallenge = [NSNumber numberWithBool:YES];
+    }
+    
+    if (self.apertureSwitch.isOn) {
+        apertureLowerValue = [NSNumber numberWithInt:self.apertureRangeSlider.lowerValue];
+        apertureUpperValue = [NSNumber numberWithInt:self.apertureRangeSlider.upperValue];
+    }
+    
+    if (self.focalLengthSwitch.isOn) {
+        focalLengthLowerValue = [NSNumber numberWithInt:self.focalLengthRangeSlider.lowerValue];
+        focalLengthUpperValue = [NSNumber numberWithInt:self.focalLengthRangeSlider.upperValue];
+
+    }
+    
+    if (self.sortByLikesSwitch.isOn) {
+        sortOrder = [NSNumber numberWithInt:FTFSortOrderLikes];
+    }
+    
+    if (self.sortByCommentsSwitch.isOn) {
+        sortOrder = [NSNumber numberWithInt:FTFSortOrderComments];
+    }
+    
+    NSDictionary *filtersDictionary = @{@"searchTerm" : self.searchTextField.text,
+                                        @"sortOrder" : sortOrder,
+                                        @"newFramers" : newFramers,
+                                        @"extraCreditChallenge" : extraCreditChallenge,
+                                        @"apertureLowerValue" : apertureLowerValue,
+                                        @"apertureUpperValue" : apertureUpperValue,
+                                        @"focalLengthLowerValue" : focalLengthLowerValue,
+                                        @"focalLengthUpperValue" : focalLengthUpperValue
+                                        };
+    
+    [self.delegate filtersViewControllerDidSaveFilters:filtersDictionary];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (IBAction)resetButtonTapped:(UIBarButtonItem *)sender {
-    [self.sortByLikesSwitch setOn:NO];
-    [self.sortByCommentsSwitch setOn:NO];
-    self.searchTextField.text = @"";
+    [self resetFilters];
     
     [self.delegate filtersViewControllerDidResetFilters];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -109,19 +143,19 @@
 }
 
 - (BOOL)shouldSaveFilters {
-    return self.sortByLikesSwitch.isOn || self.sortByCommentsSwitch.isOn || ![self.searchTextField.text isEqualToString:@""];
+    return self.framerNewSwitch.isOn || self.extraCreditChallengeSwitch.isOn || self.apertureSwitch.isOn || self.focalLengthSwitch.isOn || self.sortByLikesSwitch.isOn || self.sortByCommentsSwitch.isOn || ![self.searchTextField.text isEqualToString:@""];
 }
 
 #pragma mark - UITableViewDelegate 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 1 && indexPath.row == 1) {
+    if (indexPath.section == 2 && indexPath.row == 1) {
         if (self.apertureSwitch.on) {
             return 80;
         } else {
             return 0;
         }
-    } else if (indexPath.section == 1 && indexPath.row == 3) {
+    } else if (indexPath.section == 2 && indexPath.row == 3) {
         if (self.focalLengthSwitch.on) {
             return 80;
         } else {
@@ -144,6 +178,26 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - Helper Methods
+
+- (void)resetFilters {
+    NSArray *switches = [self switches];
+    for (UISwitch *sw in switches) {
+        if ([sw isOn]) {
+            [sw setOn:NO];
+            if (sw == self.apertureSwitch || sw == self.focalLengthSwitch) {
+                [self.tableView beginUpdates];
+                [self.tableView endUpdates];
+            }
+        }
+    }
+    
+    [self.focalLengthRangeSlider resetKnobs];
+    [self.apertureRangeSlider resetKnobs];
+    
+    self.searchTextField.text = @"";
 }
 
 @end
