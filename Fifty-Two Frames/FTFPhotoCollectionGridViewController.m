@@ -439,9 +439,9 @@ BOOL didLikePhotoFromBrowser = NO;
 
 #pragma mark - FTFFiltersViewControllerDelegate
 
-- (void)filtersViewControllerDidSaveFilters:(NSString *)searchTerm sortOrder:(FTFSortOrder)sortOrder {
+- (void)filtersViewControllerDidSaveFilters:(NSDictionary *)filtersDictionary {
     [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    [[FiftyTwoFrames sharedInstance] requestAlbumPhotosForPhotographerSearchTerm:searchTerm albumId:self.albumToDisplay.albumID completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
+    [[FiftyTwoFrames sharedInstance] requestAlbumPhotosWithFilters:filtersDictionary albumId:self.albumToDisplay.albumID completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
         [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
         _finishedPaging = finishedPaging;
         if (!finishedPaging) _morePhotosToLoad = YES;
@@ -455,7 +455,7 @@ BOOL didLikePhotoFromBrowser = NO;
             
             return;
         }
-        self.searchTerm = [NSString stringWithString:searchTerm];
+        self.searchTerm = filtersDictionary[@"searchTerm"];
         [self setFilterIconEnabled:YES];
         self.gridPhotos = photos;
         _showingFilteredResults = YES;
