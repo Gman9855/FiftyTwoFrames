@@ -13,4 +13,6 @@
 @property (nonatomic, strong) NSString *upperValueFocalLength;
 @property (nonatomic, strong) NSString *lowerValueFocalLength;
 
+- (void)resetKnobs;
+
 @end

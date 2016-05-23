@@ -20,8 +20,7 @@
     [super awakeFromNib];
     self.maximumValue = 10;
     self.minimumValue = 1;
-    self.upperValue = 10;  // this sets the position of the knob
-    self.lowerValue = 1;
+    [self resetKnobs];
     self.stepValue = 1.0;
     self.stepValueContinuously = YES;
     self.tintColor = [UIColor orangeColor];
@@ -51,6 +50,11 @@
     }
     
     return  _apertureValueMapping;
+}
+
+- (void)resetKnobs {
+    self.upperValue = 10;
+    self.lowerValue = 1;
 }
 
 @end

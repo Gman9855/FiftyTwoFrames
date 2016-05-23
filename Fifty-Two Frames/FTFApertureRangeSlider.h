@@ -13,4 +13,6 @@
 @property (nonatomic, strong) NSString *upperValueAperture;
 @property (nonatomic, strong) NSString *lowerValueAperture;
 
+- (void)resetKnobs;
+
 @end

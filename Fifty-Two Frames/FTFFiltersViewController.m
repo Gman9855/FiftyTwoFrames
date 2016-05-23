@@ -17,8 +17,10 @@
 @property (weak, nonatomic) IBOutlet UISwitch *sortByLikesSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *sortByCommentsSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *apertureSwitch;
-@property (weak, nonatomic) IBOutlet UILabel *apertureValueLabel;
 @property (weak, nonatomic) IBOutlet UISwitch *focalLengthSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *extraCreditChallengeSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *framerNewSwitch;
+@property (weak, nonatomic) IBOutlet UILabel *apertureValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *focalLengthValueLabel;
 @property (weak, nonatomic) IBOutlet FTFApertureRangeSlider *apertureRangeSlider;
 @property (weak, nonatomic) IBOutlet FTFFocalLengthRangeSlider *focalLengthRangeSlider;
@@ -26,6 +28,10 @@
 @end
 
 @implementation FTFFiltersViewController
+
+- (NSArray *)switches {
+    return @[self.sortByLikesSwitch, self.sortByCommentsSwitch, self.apertureSwitch, self.focalLengthSwitch, self.extraCreditChallengeSwitch, self.framerNewSwitch];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -125,6 +131,7 @@
     
     return 44;
 }
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {

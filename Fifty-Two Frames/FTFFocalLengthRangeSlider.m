@@ -14,8 +14,7 @@
     [super awakeFromNib];
     self.maximumValue = 300;
     self.minimumValue = 8;
-    self.upperValue = 300;  // this sets the position of the knob
-    self.lowerValue = 8;
+    [self resetKnobs];
     self.stepValue = 1.0;
     self.stepValueContinuously = YES;
 
@@ -28,6 +27,11 @@
 
 - (NSString *)lowerValueFocalLength {
     return [NSString stringWithFormat:@"%dmm", (int)self.lowerValue];
+}
+
+- (void)resetKnobs {
+    self.upperValue = 300;
+    self.lowerValue = 8;
 }
 
 @end
