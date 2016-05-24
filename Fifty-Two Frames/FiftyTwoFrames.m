@@ -654,7 +654,7 @@ BOOL _shouldProvideFilteredResults = NO;
 
 - (void)namesAndIdsForFilters:(NSDictionary *)filters albumId:(NSString *)albumId completionBlock:(void (^)(NSArray *namesAndIds, NSError *error))block {
     
-    NSError *noMatchesFoundError = [NSError errorWithDomain:@"com.52Frames" code:100 userInfo:@{@"message" : @"Couldn't find photos that match your search term."}];
+    NSError *noMatchesFoundError = [NSError errorWithDomain:@"com.52Frames" code:100 userInfo:@{@"message" : @"Couldn't find photos that match your criteria."}];
     
     if (self.albumIdsToNameAndIdsArrays[albumId]) {
         self.filteredNamesAndIds = [self filteredNamesAndIdsForFilters:filters albumId:albumId];
