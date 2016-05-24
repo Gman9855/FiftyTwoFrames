@@ -214,7 +214,7 @@
     for (UISwitch *sw in switches) {
         if ([sw isOn]) {
             [sw setOn:NO];
-            if (sw == self.apertureSwitch || sw == self.focalLengthSwitch) {
+            if (sw == self.apertureSwitch || sw == self.focalLengthSwitch || sw == self.shutterSpeedSwitch) {
                 [self.tableView beginUpdates];
                 [self.tableView endUpdates];
             }
