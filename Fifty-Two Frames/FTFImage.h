@@ -56,5 +56,8 @@ typedef enum {
 
 - (void)addPhotoComment:(FTFPhotoComment *)photoComment;
 
++ (NSArray *)photosWithPhotoResponse:(NSDictionary *)dict;
+
+
 
 @end

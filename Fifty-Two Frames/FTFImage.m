@@ -10,6 +10,7 @@
 
 #import "FTFImage.h"
 #import "SDWebImageManager.h"
+#import "FTFPhotoComment.h"
 
 @interface FTFImage ()
 
@@ -99,6 +100,101 @@
     });
 }
 
++ (NSArray *)photosWithPhotoResponse:(NSDictionary *)dict {
+    NSArray *photoCollections;
+    NSArray *photoDescriptionCollection;
+    NSArray *likesCountCollection;
+    NSArray *commentsCollection;
+    NSArray *userHasLikedPhotoCollection;
+    NSArray *photoIDs = [dict valueForKeyPath:@"id"];
+    if ([photoIDs isKindOfClass:[NSString class]]) {
+        photoIDs = @[[dict valueForKeyPath:@"id"]];
+        photoCollections = @[[dict valueForKeyPath:@"images"]];
+        photoDescriptionCollection = @[[dict valueForKeyPath:@"name"]];
+        likesCountCollection = @[[dict valueForKeyPath:@"likes.summary.total_count"]];
+        if ([dict valueForKeyPath:@"comments.data"]) {
+            commentsCollection = @[[dict valueForKeyPath:@"comments.data"]];
+        }
+        userHasLikedPhotoCollection = @[[dict valueForKeyPath:@"likes.summary.has_liked"]];
+    } else {
+        photoCollections = [dict valueForKeyPath:@"images"];
+        photoDescriptionCollection = [dict valueForKeyPath:@"name"];
+        likesCountCollection = [dict valueForKeyPath:@"likes.summary.total_count"];
+        commentsCollection = [dict valueForKeyPath:@"comments.data"];
+        userHasLikedPhotoCollection = [dict valueForKeyPath:@"likes.summary.has_liked"];
+    }
+    
+    NSMutableArray *objects = [NSMutableArray new];
+    
+    for (int i = 0; i < [photoCollections count]; i++) {
+        NSArray *array = photoCollections[i];
+        NSDictionary *largePhotoDict = array.firstObject;
+        
+        NSDictionary *smallPhotoDict = [self preferredSmallPhotoURLDictFromPhotoArray:photoCollections[i]];
+        
+        //        NSArray *imageURLs = [self urlsFromPhotoArray:photoCollections[i]];
+        NSString *largePhotoStringURL = [largePhotoDict valueForKey:@"source"];
+        NSString *smallPhotoStringURL = [smallPhotoDict valueForKey:@"source"];
+        
+        NSURL *largePhotoURL = [NSURL URLWithString:largePhotoStringURL];
+        NSURL *smallPhotoURL = [NSURL URLWithString:smallPhotoStringURL];
+        
+        FTFImage *image = [[FTFImage alloc] initWithImageURLs:@[largePhotoURL, smallPhotoURL]];
+        
+        CGFloat smallPhotoWidth = [[smallPhotoDict valueForKey:@"width"] floatValue];
+        CGFloat smallPhotoHeight = [[smallPhotoDict valueForKey:@"height"] floatValue];
+        
+        CGFloat largePhotoWidth = [[largePhotoDict valueForKey:@"width"] floatValue];
+        CGFloat largePhotoHeight = [[largePhotoDict valueForKey:@"height"] floatValue];
+        
+        image.smallPhotoSize = CGSizeMake(smallPhotoWidth, smallPhotoHeight);
+        image.largePhotoSize = CGSizeMake(largePhotoWidth, largePhotoHeight);
+        
+        BOOL containsPhotoDescription = ![photoDescriptionCollection[i] isEqual:[NSNull null]];
+        NSString *photoTitle;
+        if (containsPhotoDescription) {
+            NSArray *lines = [photoDescriptionCollection[i] componentsSeparatedByString:@"\n"];
+            for (NSString *string in lines) {
+                if (string.length > 0) {                //the string starting with a " is the title of the photo
+                    NSString *firstLetter = [string substringToIndex:1];
+                    if ([firstLetter isEqualToString:@"\""]) {
+                        photoTitle = string;
+                        break;
+                    }
+                }
+            }
+            
+            image.title = photoTitle.length > 0 ? [[photoTitle stringByReplacingOccurrencesOfString:@"\"" withString:@""] capitalizedString] : [lines[0] capitalizedString];
+            image.photographerName = [lines[0] capitalizedString];
+            image.photoDescription = photoDescriptionCollection[i];
+        }
+        
+        image.likesCount = [likesCountCollection[i]integerValue];
+        image.photoID = photoIDs[i];
+        
+        image.isLiked = [userHasLikedPhotoCollection[i] intValue];
+        NSArray *photoComments = commentsCollection[i];
+        NSMutableArray *arrayOfphotoCommentObjects = [NSMutableArray new];
+        if (photoComments != (id)[NSNull null]) {
+            for (NSDictionary *comment in photoComments) {
+                FTFPhotoComment *photoComment = [FTFPhotoComment new];
+                photoComment.commenterName = [comment valueForKeyPath:@"from.name"];
+                photoComment.commenterID = [comment valueForKeyPath:@"from.id"];
+                NSString *commentDate = [comment valueForKey:@"created_time"];
+                photoComment.createdTime = [self formattedDateStringFromFacebookDate:commentDate];
+                photoComment.likeCount = [comment valueForKey:@"like_count"];
+                photoComment.comment = [comment valueForKey:@"message"];
+                photoComment.commenterProfilePictureURL = [NSURL URLWithString:[comment valueForKeyPath:@"from.picture.data.url"]];
+                [arrayOfphotoCommentObjects addObject:photoComment];
+            }
+            NSSortDescriptor *createdTimeSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdTime" ascending:YES];
+            image.comments = [[arrayOfphotoCommentObjects sortedArrayUsingDescriptors:@[createdTimeSortDescriptor]] copy];
+        }
+        [objects addObject:image];
+    }
+    return objects;
+}
+
 - (void)addPhotoComment:(FTFPhotoComment *)photoComment {
     NSMutableArray *mutableArray;
     if (self.comments != nil) {
@@ -110,5 +206,58 @@
     [mutableArray addObject:photoComment];
     self.comments = [mutableArray copy];
 }
+
+#pragma mark - Helper Methods
+
++ (NSDate *)formattedDateStringFromFacebookDate:(NSString *)fbDate {
+    static NSDateFormatter *dateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterFullStyle];
+        [dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssz"];
+    });
+    
+    return [dateFormatter dateFromString:fbDate];
+}
+
+- (NSArray *)urlsFromPhotoArray:(NSArray *)array;
+{
+    NSString *largeImageURL = [self sourceOfImageData:[array firstObject]];
+    NSString *smallImageURL;
+    for (NSDictionary *dict in array) {
+        smallImageURL = largeImageURL;
+        NSInteger imageHeight = [[dict valueForKeyPath:@"height"]intValue];
+        if (imageHeight <= 500 && imageHeight >= 350) {
+            smallImageURL = [self sourceOfImageData:dict];
+            break;
+        }
+    }
+    
+    return [@[largeImageURL,
+              smallImageURL] map:^id(id object, NSUInteger index) {
+                  return [NSURL URLWithString:object];
+              }];
+}
+
++ (NSDictionary *)preferredSmallPhotoURLDictFromPhotoArray:(NSArray *)array {
+    NSDictionary *smallImageDict = [array firstObject];
+    for (NSDictionary *dict in array) {
+        NSInteger imageHeight = [[dict valueForKeyPath:@"height"]intValue];
+        if (imageHeight <= 500 && imageHeight >= 350) {
+            smallImageDict = dict;
+            break;
+        }
+    }
+    
+    return smallImageDict;
+}
+
+- (NSString *)sourceOfImageData:(NSDictionary *)data {
+    return [data valueForKeyPath:@"source"];
+}
+
+
 
 @end

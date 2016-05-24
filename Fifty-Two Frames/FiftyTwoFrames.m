@@ -201,7 +201,7 @@ BOOL _shouldProvideFilteredResults = NO;
     [self.requestConnection addRequest:request completionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         if (block) {
             if (!error) {
-                NSArray *albumPhotos = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:@"data"]];
+                NSArray *albumPhotos = [FTFImage photosWithPhotoResponse:[result valueForKey:@"data"]];
                 NSString *nextPage = [result valueForKeyPath:@"paging.next"];
                 if (nextPage == NULL) {
                     block(albumPhotos, nil, YES);
@@ -256,7 +256,7 @@ BOOL _shouldProvideFilteredResults = NO;
             NSArray *dataForNextBatchOfPhotos = weakSelf.filteredNamesAndIds[_pagingIndexForFilteredResults];
             for (FTFImage *photo in dataForNextBatchOfPhotos) {
                 NSString *photoId = photo.photoID;
-                NSArray *parsedPhoto = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:photoId]];
+                NSArray *parsedPhoto = [FTFImage photosWithPhotoResponse:[result valueForKey:photoId]];
                 if (parsedPhoto.count > 0) {
                     [albumPhotos addObject:(FTFImage *)parsedPhoto.firstObject];
                 }
@@ -272,7 +272,8 @@ BOOL _shouldProvideFilteredResults = NO;
             _pagingIndexForFilteredResults++;
         } else {
             NSString *nextPage = [result valueForKeyPath:@"paging.next"];
-            NSArray *nextBatchOfAlbumPhotos = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:@"data"]];
+            NSArray *nextBatchOfAlbumPhotos = [FTFImage photosWithPhotoResponse:[result valueForKey:@"data"]];
+
             if (nextPage == NULL) {
                 block(nextBatchOfAlbumPhotos, nil, YES);
             } else {
@@ -289,7 +290,6 @@ BOOL _shouldProvideFilteredResults = NO;
     _shouldProvideFilteredResults = YES;
     _pagingIndexForFilteredResults = 0;
     self.sortOrder = FTFSortOrderNone;
-    __weak typeof(self) weakSelf = self;
 
     [self namesAndIdsForFilters:filters albumId:albumId completionBlock:^(NSArray *namesAndIds, NSError *error) {
         if (error) {
@@ -304,7 +304,8 @@ BOOL _shouldProvideFilteredResults = NO;
                     NSMutableArray *albumPhotos = [NSMutableArray new];
                     for (FTFImage *photo in namesAndIds) {
                         NSString *photoId = photo.photoID;
-                        NSArray *parsedPhoto = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:photoId]];
+                        NSArray *parsedPhoto = [FTFImage photosWithPhotoResponse:[result valueForKey:photoId]];
+
                         if (parsedPhoto.count > 0) {
                             [albumPhotos addObject:(FTFImage *)parsedPhoto.firstObject];
                         }
@@ -331,7 +332,6 @@ BOOL _shouldProvideFilteredResults = NO;
 }
 
 - (void)requestNextPageOfFilteredResultsWithCompletionBlock:(void (^)(NSArray *photos, NSError *error))block {
-    __weak typeof(self) weakSelf = self;
     NSArray *nextBatchOfFilteredPhotos = self.filteredNamesAndIds[_pagingIndexForFilteredResults];
     NSString *graphPath = [self graphPathFromFilteredNamesAndIds:nextBatchOfFilteredPhotos];
     
@@ -341,7 +341,7 @@ BOOL _shouldProvideFilteredResults = NO;
                 NSMutableArray *albumPhotos = [NSMutableArray new];
                 for (FTFImage *photo in nextBatchOfFilteredPhotos) {
                     NSString *photoId = photo.photoID;
-                    NSArray *parsedPhoto = [weakSelf albumPhotosWithAlbumPhotoResponseData:[result valueForKey:photoId]];
+                    NSArray *parsedPhoto = [FTFImage photosWithPhotoResponse:[result valueForKey:photoId]];
                     if (parsedPhoto.count > 0) {
                         [albumPhotos addObject:(FTFImage *)parsedPhoto.firstObject];
                     }
@@ -406,151 +406,6 @@ BOOL _shouldProvideFilteredResults = NO;
 }
 
 #pragma mark - Private Methods
-
-- (NSArray *)albumPhotosWithAlbumPhotoResponseData:(NSDictionary *)dict {
-    NSArray *photoCollections;
-    NSArray *photoDescriptionCollection;
-    NSArray *likesCountCollection;
-    NSArray *commentsCollection;
-    NSArray *userHasLikedPhotoCollection;
-    NSArray *photoIDs = [dict valueForKeyPath:@"id"];
-    if ([photoIDs isKindOfClass:[NSString class]]) {
-        photoIDs = @[[dict valueForKeyPath:@"id"]];
-        photoCollections = @[[dict valueForKeyPath:@"images"]];
-        photoDescriptionCollection = @[[dict valueForKeyPath:@"name"]];
-        likesCountCollection = @[[dict valueForKeyPath:@"likes.summary.total_count"]];
-        if ([dict valueForKeyPath:@"comments.data"]) {
-            commentsCollection = @[[dict valueForKeyPath:@"comments.data"]];
-        }
-        userHasLikedPhotoCollection = @[[dict valueForKeyPath:@"likes.summary.has_liked"]];
-    } else {
-        photoCollections = [dict valueForKeyPath:@"images"];
-        photoDescriptionCollection = [dict valueForKeyPath:@"name"];
-        likesCountCollection = [dict valueForKeyPath:@"likes.summary.total_count"];
-        commentsCollection = [dict valueForKeyPath:@"comments.data"];
-        userHasLikedPhotoCollection = [dict valueForKeyPath:@"likes.summary.has_liked"];
-    }
-    
-    NSMutableArray *objects = [NSMutableArray new];
-    
-    for (int i = 0; i < [photoCollections count]; i++) {
-        NSArray *array = photoCollections[i];
-        NSDictionary *largePhotoDict = array.firstObject;
-        
-        NSDictionary *smallPhotoDict = [self preferredSmallPhotoURLDictFromPhotoArray:photoCollections[i]];
-        
-//        NSArray *imageURLs = [self urlsFromPhotoArray:photoCollections[i]];
-        NSString *largePhotoStringURL = [largePhotoDict valueForKey:@"source"];
-        NSString *smallPhotoStringURL = [smallPhotoDict valueForKey:@"source"];
-        
-        NSURL *largePhotoURL = [NSURL URLWithString:largePhotoStringURL];
-        NSURL *smallPhotoURL = [NSURL URLWithString:smallPhotoStringURL];
-        
-        FTFImage *image = [[FTFImage alloc] initWithImageURLs:@[largePhotoURL, smallPhotoURL]];
-        
-        CGFloat smallPhotoWidth = [[smallPhotoDict valueForKey:@"width"] floatValue];
-        CGFloat smallPhotoHeight = [[smallPhotoDict valueForKey:@"height"] floatValue];
-        
-        CGFloat largePhotoWidth = [[largePhotoDict valueForKey:@"width"] floatValue];
-        CGFloat largePhotoHeight = [[largePhotoDict valueForKey:@"height"] floatValue];
-        
-        image.smallPhotoSize = CGSizeMake(smallPhotoWidth, smallPhotoHeight);
-        image.largePhotoSize = CGSizeMake(largePhotoWidth, largePhotoHeight);
-            
-        BOOL containsPhotoDescription = ![photoDescriptionCollection[i] isEqual:[NSNull null]];
-        NSString *photoTitle;
-        if (containsPhotoDescription) {
-            NSArray *lines = [photoDescriptionCollection[i] componentsSeparatedByString:@"\n"];
-            for (NSString *string in lines) {
-                if (string.length > 0) {                //the string starting with a " is the title of the photo
-                    NSString *firstLetter = [string substringToIndex:1];
-                    if ([firstLetter isEqualToString:@"\""]) {
-                        photoTitle = string;
-                        break;
-                    }
-                }
-            }
-            
-            image.title = photoTitle.length > 0 ? [[photoTitle stringByReplacingOccurrencesOfString:@"\"" withString:@""] capitalizedString] : [lines[0] capitalizedString];
-            image.photographerName = [lines[0] capitalizedString];
-            image.photoDescription = photoDescriptionCollection[i];
-        }
-
-        image.likesCount = [likesCountCollection[i]integerValue];
-        image.photoID = photoIDs[i];
-                
-        image.isLiked = [userHasLikedPhotoCollection[i] intValue];
-        NSArray *photoComments = commentsCollection[i];
-        NSMutableArray *arrayOfphotoCommentObjects = [NSMutableArray new];
-        if (photoComments != (id)[NSNull null]) {
-            for (NSDictionary *comment in photoComments) {
-                FTFPhotoComment *photoComment = [FTFPhotoComment new];
-                photoComment.commenterName = [comment valueForKeyPath:@"from.name"];
-                photoComment.commenterID = [comment valueForKeyPath:@"from.id"];
-                NSString *commentDate = [comment valueForKey:@"created_time"];
-                photoComment.createdTime = [self formattedDateStringFromFacebookDate:commentDate];
-                photoComment.likeCount = [comment valueForKey:@"like_count"];
-                photoComment.comment = [comment valueForKey:@"message"];
-                photoComment.commenterProfilePictureURL = [NSURL URLWithString:[comment valueForKeyPath:@"from.picture.data.url"]];
-                [arrayOfphotoCommentObjects addObject:photoComment];
-            }
-            NSSortDescriptor *createdTimeSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdTime" ascending:YES];
-            image.comments = [[arrayOfphotoCommentObjects sortedArrayUsingDescriptors:@[createdTimeSortDescriptor]] copy];
-        }
-        [objects addObject:image];
-    }
-    return objects;
-}
-
-- (NSDate *)formattedDateStringFromFacebookDate:(NSString *)fbDate {
-    static NSDateFormatter *dateFormatter = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterFullStyle];
-        [dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssz"];
-    });
-
-    return [dateFormatter dateFromString:fbDate];
-}
-
-- (NSArray *)urlsFromPhotoArray:(NSArray *)array;
-{
-    NSString *largeImageURL = [self sourceOfImageData:[array firstObject]];
-    NSString *smallImageURL;
-    for (NSDictionary *dict in array) {
-        smallImageURL = largeImageURL;
-        NSInteger imageHeight = [[dict valueForKeyPath:@"height"]intValue];
-        if (imageHeight <= 500 && imageHeight >= 350) {
-            smallImageURL = [self sourceOfImageData:dict];
-            break;
-        }
-    }
-    
-    return [@[largeImageURL,
-              smallImageURL] map:^id(id object, NSUInteger index) {
-                  return [NSURL URLWithString:object];
-              }];
-}
-
-- (NSDictionary *)preferredSmallPhotoURLDictFromPhotoArray:(NSArray *)array {
-    NSDictionary *smallImageDict = [array firstObject];
-    for (NSDictionary *dict in array) {
-        NSInteger imageHeight = [[dict valueForKeyPath:@"height"]intValue];
-        if (imageHeight <= 500 && imageHeight >= 350) {
-            smallImageDict = dict;
-            break;
-        }
-    }
-    
-    return smallImageDict;
-}
-
-- (NSString *)sourceOfImageData:(NSDictionary *)data;
-{
-    return [data valueForKeyPath:@"source"];
-}
 
 - (void)addNamesAndIdsFromArrayOfFacebookResponses:(NSArray *)responses forKey:(NSString *)key {
     NSMutableArray *namesAndIds = [NSMutableArray new];
