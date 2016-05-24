@@ -28,6 +28,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *photographerName;
 @property (nonatomic, strong) NSString *photoDescription;
 @property (nonatomic, assign) NSInteger likesCount;
+@property (nonatomic, assign) NSInteger commentCount;
 @property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong) NSString *photoID;
 @property (nonatomic, assign) double aperture;

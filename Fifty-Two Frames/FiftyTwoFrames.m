@@ -66,7 +66,7 @@ BOOL _shouldProvideFilteredResults = NO;
 
 - (NSDictionary *)photoRequestParameters {
     if (!_photoRequestParameters) {
-        _photoRequestParameters = @{@"fields" : @"images,id,name,likes.limit(1).summary(true).fields(has_liked),comments.fields(from.fields(picture.type(large),id,name),created_time,message)"};
+        _photoRequestParameters = @{@"fields" : @"images,id,name,likes.limit(0).summary(true).fields(has_liked),comments.fields(from.fields(picture.type(large),id,name),created_time,message)"};
     }
     
     return _photoRequestParameters;
@@ -74,7 +74,7 @@ BOOL _shouldProvideFilteredResults = NO;
 
 - (NSDictionary *)parametersForNameSearch {
     if (!_parametersForNameSearch) {
-        _parametersForNameSearch = [NSDictionary dictionaryWithObjectsAndKeys:@"name, likes.limit(1).summary(true)", @"fields", nil];
+        _parametersForNameSearch = [NSDictionary dictionaryWithObjectsAndKeys:@"name, likes.limit(0).summary(true), comments.limit(0).summary(true)", @"fields", nil];
     }
     
     return _parametersForNameSearch;
@@ -263,14 +263,7 @@ BOOL _shouldProvideFilteredResults = NO;
             }
             
             if (self.sortOrder != FTFSortOrderNone) {
-                NSString *sortKey;
-                if (self.sortOrder == FTFSortOrderLikes) {
-                    sortKey = @"likesCount";
-                } else if (self.sortOrder == FTFSortOrderComments) {
-                    sortKey = @"comments.count";
-                }
-                NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:sortKey ascending:NO];
-                NSArray *sortedPhotos = [albumPhotos sortedArrayUsingDescriptors:@[sortDescriptor]];
+                NSArray *sortedPhotos = [weakSelf sortedArray:albumPhotos withSortOrder:weakSelf.sortOrder];
                 block(sortedPhotos, nil, finishedPagingFilteredResults);
             } else {
                 block(albumPhotos, nil, finishedPagingFilteredResults);
@@ -322,15 +315,7 @@ BOOL _shouldProvideFilteredResults = NO;
                     }
                     if (![filters[@"sortOrder"] isEqual:[NSNumber numberWithInt:3]]) {
                         FTFSortOrder sortOrder = (FTFSortOrder)[filters[@"sortOrder"] integerValue];
-                        self.sortOrder = sortOrder;
-                        NSString *sortKey;
-                        if (sortOrder == FTFSortOrderLikes) {
-                            sortKey = @"likesCount";
-                        } else if (sortOrder == FTFSortOrderComments) {
-                            sortKey = @"comments.count";
-                        }
-                        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:sortKey ascending:NO];
-                        NSArray *sortedPhotos = [albumPhotos sortedArrayUsingDescriptors:@[sortDescriptor]];
+                        NSArray *sortedPhotos = [self sortedArray:albumPhotos withSortOrder:sortOrder];
                         block(sortedPhotos, nil, finishedPaging);
                     } else {
                         block(albumPhotos, nil, finishedPaging);
@@ -573,6 +558,7 @@ BOOL _shouldProvideFilteredResults = NO;
         NSArray *photoCaptionArray = [dict valueForKeyPath:@"name"];
         NSArray *photoIdArray = [dict valueForKey:@"id"];
         NSArray *photoLikesCountArray = [dict valueForKeyPath:@"likes.summary.total_count"];
+        NSArray *photoCommentCountArray = [dict valueForKeyPath:@"comments.summary.total_count"];
         for (int i = 0; i < photoIdArray.count; i++) {
             NSString *captionAtIndex = photoCaptionArray[i];
             if (![captionAtIndex isEqual:[NSNull null]]) {
@@ -582,6 +568,7 @@ BOOL _shouldProvideFilteredResults = NO;
                 photo.photographerName = name;
                 photo.photoID = photoIdArray[i];
                 photo.likesCount = [photoLikesCountArray[i] integerValue];
+                photo.commentCount = [photoCommentCountArray[i] integerValue];
                 for (NSString *string in lines) {
                     if ([string containsString:@"Shutter: "]) {
                         NSArray *splitElements = [string componentsSeparatedByString:@" "];
@@ -620,10 +607,8 @@ BOOL _shouldProvideFilteredResults = NO;
                             photo.ISO = [split.firstObject integerValue];
                         } else {
                             photo.ISO = [splitElements.lastObject integerValue];
-                            NSLog(@"ISO: %ld", (long)photo.ISO);
                         }
                         photo.isoString = splitElements.lastObject;
-                        NSLog(@"%@", photo.isoString);
                         continue;
                     }
                     if ([string containsString:@"Critique: "]) {
@@ -735,6 +720,31 @@ BOOL _shouldProvideFilteredResults = NO;
         return nil;
     }
     
+    NSArray *namesAndIds = self.albumIdsToNameAndIdsArrays[albumId];
+    NSArray *filteredArray = [self filteredArray:namesAndIds withFilters:filters];
+    FTFSortOrder sortOrder = (FTFSortOrder)[filters[@"sortOrder"] integerValue];
+    return [self sortedArray:filteredArray withSortOrder:sortOrder];
+}
+
+- (NSArray *)sortedArray:(NSArray *)arrayToSort withSortOrder:(FTFSortOrder)sortOrder {
+    NSArray *sortedArray;
+    if (sortOrder != FTFSortOrderNone) {
+        NSString *sortKey;
+        if (sortOrder == FTFSortOrderLikes) {
+            sortKey = @"likesCount";
+        } else if (sortOrder == FTFSortOrderComments) {
+            sortKey = @"commentCount";
+        }
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:sortKey ascending:NO];
+        sortedArray = [arrayToSort sortedArrayUsingDescriptors:@[sortDescriptor]];
+    } else {
+        sortedArray = arrayToSort;
+    }
+    
+    return sortedArray;
+}
+
+- (NSArray *)filteredArray:(NSArray *)arrayToFilter withFilters:(NSDictionary *)filters {
     NSMutableArray *predicates = [NSMutableArray new];
     
     if (![filters[@"apertureLowerValue"] isEqualToNumber:@0]) {
@@ -773,29 +783,7 @@ BOOL _shouldProvideFilteredResults = NO;
     }
     
     NSCompoundPredicate *compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
-    NSArray *namesAndIds = self.albumIdsToNameAndIdsArrays[albumId];
-    NSArray *filteredArray = [namesAndIds filteredArrayUsingPredicate:compoundPredicate];
-    NSArray *filteredResults;
-    
-    if (![filters[@"sortOrder"] isEqual:[NSNumber numberWithInt:3]]) {
-        FTFSortOrder sortOrder = (FTFSortOrder)[filters[@"sortOrder"] integerValue];
-        self.sortOrder = sortOrder;
-        NSString *sortKey;
-        if (sortOrder == FTFSortOrderLikes) {
-            sortKey = @"likesCount";
-        } else if (sortOrder == FTFSortOrderComments) {
-            sortKey = @"comments.count";
-        }
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:sortKey ascending:NO];
-        filteredResults = [filteredArray sortedArrayUsingDescriptors:@[sortDescriptor]];
-        for (FTFImage *img in filteredResults) {
-            NSLog(@"%ld", img.likesCount);
-        }
-    } else {
-        filteredResults = filteredArray;
-    }
-    
-    return filteredResults;
+    return [arrayToFilter filteredArrayUsingPredicate:compoundPredicate];
 }
 
 @end
