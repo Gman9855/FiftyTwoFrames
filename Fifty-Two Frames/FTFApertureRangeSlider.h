@@ -10,8 +10,10 @@
 
 @interface FTFApertureRangeSlider : NMRangeSlider
 
-@property (nonatomic, strong) NSString *upperValueAperture;
-@property (nonatomic, strong) NSString *lowerValueAperture;
+@property (nonatomic, assign) double upperValueAperture;
+@property (nonatomic, assign) double lowerValueAperture;
+@property (nonatomic, strong) NSString *upperValueApertureString;
+@property (nonatomic, strong) NSString *lowerValueApertureString;
 
 - (void)resetKnobs;
 

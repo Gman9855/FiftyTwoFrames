@@ -757,11 +757,6 @@ BOOL _shouldProvideFilteredResults = NO;
         [predicates addObject:predicate];
     }
     
-    if (![filters[@"extraCreditChallenge"] isEqualToNumber:@0]) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"qualifiesForExtraCreditChallenge == %@", filters[@"extraCreditChallenge"]];
-        [predicates addObject:predicate];
-    }
-    
     if (![filters[@"focalLengthLowerValue"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"focalLength >= %@", filters[@"focalLengthLowerValue"]];
         [predicates addObject:predicate];
@@ -769,6 +764,21 @@ BOOL _shouldProvideFilteredResults = NO;
     
     if (![filters[@"focalLengthUpperValue"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"focalLength <= %@", filters[@"focalLengthUpperValue"]];
+        [predicates addObject:predicate];
+    }
+    
+    if (![filters[@"shutterSpeedLowerValue"] isEqualToNumber:@0]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"shutterSpeed >= %@", filters[@"shutterSpeedLowerValue"]];
+        [predicates addObject:predicate];
+    }
+    
+    if (![filters[@"shutterSpeedUpperValue"] isEqualToNumber:@0]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"shutterSpeed <= %@", filters[@"shutterSpeedUpperValue"]];
+        [predicates addObject:predicate];
+    }
+    
+    if (![filters[@"extraCreditChallenge"] isEqualToNumber:@0]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"qualifiesForExtraCreditChallenge == %@", filters[@"extraCreditChallenge"]];
         [predicates addObject:predicate];
     }
     

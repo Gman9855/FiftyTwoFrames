@@ -10,6 +10,7 @@
 #import "NMRangeSlider.h"
 #import "FTFApertureRangeSlider.h"
 #import "FTFFocalLengthRangeSlider.h"
+#import "FTFShutterSpeedRangeSlider.h"
 
 @interface FTFFiltersViewController () <UITextFieldDelegate>
 
@@ -18,19 +19,22 @@
 @property (weak, nonatomic) IBOutlet UISwitch *sortByCommentsSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *apertureSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *focalLengthSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *shutterSpeedSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *extraCreditChallengeSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *framerNewSwitch;
 @property (weak, nonatomic) IBOutlet UILabel *apertureValueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *shutterSpeedValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *focalLengthValueLabel;
 @property (weak, nonatomic) IBOutlet FTFApertureRangeSlider *apertureRangeSlider;
 @property (weak, nonatomic) IBOutlet FTFFocalLengthRangeSlider *focalLengthRangeSlider;
+@property (weak, nonatomic) IBOutlet FTFShutterSpeedRangeSlider *shutterSpeedRangeSlider;
 
 @end
 
 @implementation FTFFiltersViewController
 
 - (NSArray *)switches {
-    return @[self.sortByLikesSwitch, self.sortByCommentsSwitch, self.apertureSwitch, self.focalLengthSwitch, self.extraCreditChallengeSwitch, self.framerNewSwitch];
+    return @[self.sortByLikesSwitch, self.sortByCommentsSwitch, self.apertureSwitch, self.focalLengthSwitch, self.shutterSpeedSwitch, self.extraCreditChallengeSwitch, self.framerNewSwitch];
 }
 
 - (void)viewDidLoad {
@@ -73,6 +77,8 @@
     NSNumber *apertureUpperValue = [NSNumber numberWithInt:0];
     NSNumber *focalLengthLowerValue = [NSNumber numberWithInt:0];
     NSNumber *focalLengthUpperValue = [NSNumber numberWithInt:0];
+    NSNumber *shutterSpeedLowerValue = [NSNumber numberWithInt:0];
+    NSNumber *shutterSpeedUpperValue = [NSNumber numberWithInt:0];
     
     if (self.framerNewSwitch.isOn) {
         newFramers = [NSNumber numberWithBool:YES];
@@ -83,14 +89,18 @@
     }
     
     if (self.apertureSwitch.isOn) {
-        apertureLowerValue = [NSNumber numberWithInt:self.apertureRangeSlider.lowerValue];
-        apertureUpperValue = [NSNumber numberWithInt:self.apertureRangeSlider.upperValue];
+        apertureLowerValue = [NSNumber numberWithDouble:self.apertureRangeSlider.lowerValueAperture];
+        apertureUpperValue = [NSNumber numberWithDouble:self.apertureRangeSlider.upperValueAperture];
     }
     
     if (self.focalLengthSwitch.isOn) {
         focalLengthLowerValue = [NSNumber numberWithInt:self.focalLengthRangeSlider.lowerValue];
         focalLengthUpperValue = [NSNumber numberWithInt:self.focalLengthRangeSlider.upperValue];
-
+    }
+    
+    if (self.shutterSpeedSwitch.isOn) {
+        shutterSpeedLowerValue = [NSNumber numberWithDouble:self.shutterSpeedRangeSlider.lowerValueShutterSpeed];
+        shutterSpeedUpperValue = [NSNumber numberWithDouble:self.shutterSpeedRangeSlider.upperValueShutterSpeed];
     }
     
     if (self.sortByLikesSwitch.isOn) {
@@ -108,7 +118,9 @@
                                         @"apertureLowerValue" : apertureLowerValue,
                                         @"apertureUpperValue" : apertureUpperValue,
                                         @"focalLengthLowerValue" : focalLengthLowerValue,
-                                        @"focalLengthUpperValue" : focalLengthUpperValue
+                                        @"focalLengthUpperValue" : focalLengthUpperValue,
+                                        @"shutterSpeedLowerValue" : shutterSpeedLowerValue,
+                                        @"shutterSpeedUpperValue" : shutterSpeedUpperValue
                                         };
     
     [self.delegate filtersViewControllerDidSaveFilters:filtersDictionary];
@@ -124,12 +136,17 @@
 
 - (IBAction)apertureRangeSliderValueChanged:(FTFApertureRangeSlider *)sender {
     BOOL sameSliderValues = sender.lowerValue == sender.upperValue;
-    self.apertureValueLabel.text = sameSliderValues ? sender.upperValueAperture : [NSString stringWithFormat:@"%@ - %@", sender.lowerValueAperture, sender.upperValueAperture];
+    self.apertureValueLabel.text = sameSliderValues ? [NSString stringWithFormat:@"%@", sender.upperValueApertureString] : [NSString stringWithFormat:@"%@ - %@", sender.lowerValueApertureString, sender.upperValueApertureString];
 }
 
 - (IBAction)focalLengthRangeSliderValueChanged:(FTFFocalLengthRangeSlider *)sender {
     BOOL sameSliderValues = sender.lowerValue == sender.upperValue;
     self.focalLengthValueLabel.text = sameSliderValues ? sender.upperValueFocalLength : [NSString stringWithFormat:@"%@ - %@", sender.lowerValueFocalLength, sender.upperValueFocalLength];
+}
+
+- (IBAction)shutterSpeedRangeSliderValueChanged:(FTFShutterSpeedRangeSlider *)sender {
+    BOOL sameSliderValues = sender.lowerValue == sender.upperValue;
+    self.shutterSpeedValueLabel.text = sameSliderValues ? sender.upperValueShutterSpeedString : [NSString stringWithFormat:@"%@ - %@", sender.lowerValueShutterSpeedString, sender.upperValueShutterSpeedString];
 }
 
 - (IBAction)apertureSwitchToggled:(UISwitch *)sender {
@@ -141,9 +158,13 @@
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
 }
+- (IBAction)shutterSpeedSwitchToggled:(UISwitch *)sender {
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
 
 - (BOOL)shouldSaveFilters {
-    return self.framerNewSwitch.isOn || self.extraCreditChallengeSwitch.isOn || self.apertureSwitch.isOn || self.focalLengthSwitch.isOn || self.sortByLikesSwitch.isOn || self.sortByCommentsSwitch.isOn || ![self.searchTextField.text isEqualToString:@""];
+    return self.framerNewSwitch.isOn || self.extraCreditChallengeSwitch.isOn || self.apertureSwitch.isOn || self.focalLengthSwitch.isOn || self.shutterSpeedSwitch.isOn || self.sortByLikesSwitch.isOn || self.sortByCommentsSwitch.isOn || ![self.searchTextField.text isEqualToString:@""];
 }
 
 #pragma mark - UITableViewDelegate 
@@ -157,6 +178,12 @@
         }
     } else if (indexPath.section == 2 && indexPath.row == 3) {
         if (self.focalLengthSwitch.on) {
+            return 80;
+        } else {
+            return 0;
+        }
+    } else if (indexPath.section == 2 && indexPath.row == 5) {
+        if (self.shutterSpeedSwitch.isOn) {
             return 80;
         } else {
             return 0;

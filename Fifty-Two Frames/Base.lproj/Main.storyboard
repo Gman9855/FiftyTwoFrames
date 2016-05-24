@@ -645,10 +645,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="44" id="Fq8-FE-7WH">
-                                        <rect key="frame" x="0.0" y="415.5" width="600" height="80"/>
+                                        <rect key="frame" x="0.0" y="237.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fq8-FE-7WH" id="g6y-az-KEI">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="79.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="fUj-kd-cj3">
@@ -674,10 +674,10 @@
                                                     <exclude reference="Tk1-uS-dkZ"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="YAb-4H-Efz"/>
-                                                    <exclude reference="gEQ-Sm-yHi"/>
                                                     <exclude reference="Vbn-eN-Cni"/>
                                                     <exclude reference="sJQ-rd-vXz"/>
+                                                    <exclude reference="YAb-4H-Efz"/>
+                                                    <exclude reference="gEQ-Sm-yHi"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=compact">
@@ -686,20 +686,20 @@
                                                     <include reference="Tk1-uS-dkZ"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="YAb-4H-Efz"/>
-                                                    <include reference="gEQ-Sm-yHi"/>
                                                     <include reference="Vbn-eN-Cni"/>
                                                     <include reference="sJQ-rd-vXz"/>
+                                                    <include reference="YAb-4H-Efz"/>
+                                                    <include reference="gEQ-Sm-yHi"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="v9O-5r-qMN">
+                            <tableViewSection headerTitle="Camera Settings" id="v9O-5r-qMN">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="44" id="IgJ-2k-ifu">
-                                        <rect key="frame" x="0.0" y="237.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="317.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IgJ-2k-ifu" id="B3b-m4-T8N">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -752,7 +752,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="80" id="Vxq-Sg-eR1">
-                                        <rect key="frame" x="0.0" y="281.5" width="600" height="80"/>
+                                        <rect key="frame" x="0.0" y="361.5" width="600" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Vxq-Sg-eR1" id="5Xw-UV-zTM">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="79.5"/>
@@ -820,7 +820,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="pDw-uB-Ue8">
-                                        <rect key="frame" x="0.0" y="361.5" width="600" height="54"/>
+                                        <rect key="frame" x="0.0" y="441.5" width="600" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pDw-uB-Ue8" id="Cpc-5w-PGK">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="53.5"/>
@@ -873,7 +873,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="80" id="0EC-22-GWM">
-                                        <rect key="frame" x="0.0" y="415.5" width="600" height="80"/>
+                                        <rect key="frame" x="0.0" y="495.5" width="600" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0EC-22-GWM" id="5ws-gS-Kew">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="79.5"/>
@@ -940,12 +940,166 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="44" id="3wl-uW-E6t">
+                                        <rect key="frame" x="0.0" y="495.5" width="600" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3wl-uW-E6t" id="47i-DQ-20B">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="79.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gbq-GV-ria" customClass="FTFFocalLengthRangeSlider">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="33" id="nhS-lX-0Pb"/>
+                                                    </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="nhS-lX-0Pb"/>
+                                                        </mask>
+                                                    </variation>
+                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                        <mask key="constraints">
+                                                            <include reference="nhS-lX-0Pb"/>
+                                                        </mask>
+                                                    </variation>
+                                                    <connections>
+                                                        <action selector="focalLengthRangeSliderValueChanged:" destination="rOI-sC-pRY" eventType="valueChanged" id="w7D-ea-CbK"/>
+                                                    </connections>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shutter Speed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ha-TK-2ir">
+                                                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="YlU-tW-i7E">
+                                                    <rect key="frame" x="-25" y="-15" width="51" height="31"/>
+                                                    <color key="onTintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <connections>
+                                                        <action selector="shutterSpeedSwitchToggled:" destination="rOI-sC-pRY" eventType="valueChanged" id="atr-xO-7sp"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Gbq-GV-ria" firstAttribute="top" secondItem="2ha-TK-2ir" secondAttribute="bottom" constant="9" id="2Oj-Hu-0w5"/>
+                                                <constraint firstItem="2ha-TK-2ir" firstAttribute="centerY" secondItem="47i-DQ-20B" secondAttribute="centerY" id="MtW-ln-1bq"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="YlU-tW-i7E" secondAttribute="trailing" constant="7" id="ZoC-VT-C2L"/>
+                                                <constraint firstItem="2ha-TK-2ir" firstAttribute="leading" secondItem="47i-DQ-20B" secondAttribute="leadingMargin" constant="9" id="ah7-EV-cIh"/>
+                                                <constraint firstItem="Gbq-GV-ria" firstAttribute="leading" secondItem="47i-DQ-20B" secondAttribute="leadingMargin" constant="10" id="bWe-YM-GOw"/>
+                                                <constraint firstAttribute="topMargin" secondItem="2ha-TK-2ir" secondAttribute="top" id="dgH-5N-s3v"/>
+                                                <constraint firstItem="YlU-tW-i7E" firstAttribute="centerY" secondItem="47i-DQ-20B" secondAttribute="centerY" id="fuo-3c-a0J"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Gbq-GV-ria" secondAttribute="trailing" constant="10" id="ush-NH-lOp"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="subviews">
+                                                    <exclude reference="Gbq-GV-ria"/>
+                                                    <exclude reference="2ha-TK-2ir"/>
+                                                    <exclude reference="YlU-tW-i7E"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <exclude reference="MtW-ln-1bq"/>
+                                                    <exclude reference="ah7-EV-cIh"/>
+                                                    <exclude reference="dgH-5N-s3v"/>
+                                                    <exclude reference="2Oj-Hu-0w5"/>
+                                                    <exclude reference="bWe-YM-GOw"/>
+                                                    <exclude reference="ush-NH-lOp"/>
+                                                    <exclude reference="ZoC-VT-C2L"/>
+                                                    <exclude reference="fuo-3c-a0J"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="subviews">
+                                                    <include reference="Gbq-GV-ria"/>
+                                                    <include reference="2ha-TK-2ir"/>
+                                                    <include reference="YlU-tW-i7E"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <include reference="MtW-ln-1bq"/>
+                                                    <include reference="ah7-EV-cIh"/>
+                                                    <include reference="dgH-5N-s3v"/>
+                                                    <include reference="2Oj-Hu-0w5"/>
+                                                    <include reference="bWe-YM-GOw"/>
+                                                    <include reference="ush-NH-lOp"/>
+                                                    <include reference="ZoC-VT-C2L"/>
+                                                    <include reference="fuo-3c-a0J"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="80" id="Adz-dE-wWj">
+                                        <rect key="frame" x="0.0" y="495.5" width="600" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Adz-dE-wWj" id="mNA-r3-kaX">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="79.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dxf-I9-rUF" customClass="FTFShutterSpeedRangeSlider">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="33" id="JdR-5y-t9H"/>
+                                                    </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="JdR-5y-t9H"/>
+                                                        </mask>
+                                                    </variation>
+                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                        <mask key="constraints">
+                                                            <include reference="JdR-5y-t9H"/>
+                                                        </mask>
+                                                    </variation>
+                                                    <connections>
+                                                        <action selector="shutterSpeedRangeSliderValueChanged:" destination="rOI-sC-pRY" eventType="valueChanged" id="7kK-eB-yK8"/>
+                                                    </connections>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/2000th - 1 Second+" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xnR-V9-zsU">
+                                                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="topMargin" secondItem="xnR-V9-zsU" secondAttribute="top" id="GRC-88-6g3"/>
+                                                <constraint firstItem="dxf-I9-rUF" firstAttribute="top" secondItem="xnR-V9-zsU" secondAttribute="bottom" constant="9" id="JcJ-P7-86g"/>
+                                                <constraint firstItem="dxf-I9-rUF" firstAttribute="leading" secondItem="mNA-r3-kaX" secondAttribute="leadingMargin" constant="10" id="N88-wu-fzG"/>
+                                                <constraint firstItem="xnR-V9-zsU" firstAttribute="leading" secondItem="mNA-r3-kaX" secondAttribute="leadingMargin" constant="9" id="Nmq-U4-oT5"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="dxf-I9-rUF" secondAttribute="trailing" constant="10" id="RcV-4M-I3l"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="subviews">
+                                                    <exclude reference="dxf-I9-rUF"/>
+                                                    <exclude reference="xnR-V9-zsU"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <exclude reference="Nmq-U4-oT5"/>
+                                                    <exclude reference="GRC-88-6g3"/>
+                                                    <exclude reference="JcJ-P7-86g"/>
+                                                    <exclude reference="N88-wu-fzG"/>
+                                                    <exclude reference="RcV-4M-I3l"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="subviews">
+                                                    <include reference="dxf-I9-rUF"/>
+                                                    <include reference="xnR-V9-zsU"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <include reference="Nmq-U4-oT5"/>
+                                                    <include reference="GRC-88-6g3"/>
+                                                    <include reference="JcJ-P7-86g"/>
+                                                    <include reference="N88-wu-fzG"/>
+                                                    <include reference="RcV-4M-I3l"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Sort by" id="VTD-gf-5X5">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="8dt-Te-rRL">
-                                        <rect key="frame" x="0.0" y="545.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="625.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8dt-Te-rRL" id="2nc-mq-0uf">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -1000,7 +1154,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="3n1-9L-1tL">
-                                        <rect key="frame" x="0.0" y="589.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="669.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3n1-9L-1tL" id="aPG-bV-RcN">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -1059,7 +1213,7 @@
                             <tableViewSection id="fYd-9D-DTt">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="mx9-hd-hdO">
-                                        <rect key="frame" x="0.0" y="669.5" width="600" height="54"/>
+                                        <rect key="frame" x="0.0" y="749.5" width="600" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mx9-hd-hdO" id="giw-g1-BJs">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="53.5"/>
@@ -1141,6 +1295,9 @@
                         <outlet property="focalLengthValueLabel" destination="MrH-SD-Ye1" id="2kc-wB-yk1"/>
                         <outlet property="framerNewSwitch" destination="CGl-Mh-nhr" id="Rh6-VK-Puz"/>
                         <outlet property="searchTextField" destination="0Tp-sk-xnJ" id="GEU-yb-fEf"/>
+                        <outlet property="shutterSpeedRangeSlider" destination="dxf-I9-rUF" id="iyu-RY-i6U"/>
+                        <outlet property="shutterSpeedSwitch" destination="YlU-tW-i7E" id="68e-4J-6M8"/>
+                        <outlet property="shutterSpeedValueLabel" destination="xnR-V9-zsU" id="mhQ-lO-6B4"/>
                         <outlet property="sortByCommentsSwitch" destination="Y91-Kb-gwH" id="svp-3y-kJn"/>
                         <outlet property="sortByLikesSwitch" destination="rOn-6w-CYK" id="PWg-5O-UB4"/>
                     </connections>
