@@ -24,6 +24,7 @@
 		7CBB74EA1C1B7B6C00179997 /* FTFLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */; };
 		7CCE35B61C7A9C400061C760 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC93889193C1C8300418F32 /* Foundation.framework */; };
 		7CDEFB341CF434D400384AC6 /* FTFShutterSpeedRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CDEFB331CF434D400384AC6 /* FTFShutterSpeedRangeSlider.m */; };
+		7CDEFB371CF513FF00384AC6 /* FTFISORangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CDEFB361CF513FF00384AC6 /* FTFISORangeSlider.m */; };
 		89A6040F0908EE6356345C25 /* libPods-FiftyTwoFramesTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF9E405667ADA43292272B91 /* libPods-FiftyTwoFramesTests.a */; };
 		8B12265319B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */; };
 		8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */; };
@@ -173,6 +174,8 @@
 		7CBB74E91C1B7B6C00179997 /* FTFLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFLikeButton.m; sourceTree = "<group>"; };
 		7CDEFB321CF434D400384AC6 /* FTFShutterSpeedRangeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFShutterSpeedRangeSlider.h; sourceTree = "<group>"; };
 		7CDEFB331CF434D400384AC6 /* FTFShutterSpeedRangeSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFShutterSpeedRangeSlider.m; sourceTree = "<group>"; };
+		7CDEFB351CF513FF00384AC6 /* FTFISORangeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFISORangeSlider.h; sourceTree = "<group>"; };
+		7CDEFB361CF513FF00384AC6 /* FTFISORangeSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFISORangeSlider.m; sourceTree = "<group>"; };
 		8B12265119B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FTFImage+MWPhotoAdditions.h"; sourceTree = "<group>"; };
 		8B12265219B3D37100FBFE4E /* FTFImage+MWPhotoAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FTFImage+MWPhotoAdditions.m"; sourceTree = "<group>"; };
 		8B20E98B198CA1920074E66B /* FTFYearPopoverTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFYearPopoverTableViewController.h; sourceTree = "<group>"; };
@@ -419,6 +422,8 @@
 				7C810FD11CEE6A9500A75499 /* FTFFocalLengthRangeSlider.m */,
 				7CDEFB321CF434D400384AC6 /* FTFShutterSpeedRangeSlider.h */,
 				7CDEFB331CF434D400384AC6 /* FTFShutterSpeedRangeSlider.m */,
+				7CDEFB351CF513FF00384AC6 /* FTFISORangeSlider.h */,
+				7CDEFB361CF513FF00384AC6 /* FTFISORangeSlider.m */,
 			);
 			name = "Custom Views";
 			sourceTree = "<group>";
@@ -1096,6 +1101,7 @@
 				8BCB4C021993F31700B9C751 /* FTFPhotoBrowserViewController.m in Sources */,
 				8BA8793A19674E6A00A43819 /* PSTCollectionViewCell.m in Sources */,
 				7C810FCF1CEE6A8300A75499 /* FTFApertureRangeSlider.m in Sources */,
+				7CDEFB371CF513FF00384AC6 /* FTFISORangeSlider.m in Sources */,
 				8BC938D91940593400418F32 /* FTFFacebookLoginViewController.m in Sources */,
 				8BCB4BF719931B7E00B9C751 /* FTFPhotoComment.m in Sources */,
 				8BAC031D19BBD3F700451615 /* FTFCollectionViewCell.m in Sources */,

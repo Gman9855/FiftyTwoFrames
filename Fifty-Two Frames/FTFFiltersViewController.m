@@ -11,6 +11,7 @@
 #import "FTFApertureRangeSlider.h"
 #import "FTFFocalLengthRangeSlider.h"
 #import "FTFShutterSpeedRangeSlider.h"
+#import "FTFISORangeSlider.h"
 
 @interface FTFFiltersViewController () <UITextFieldDelegate>
 
@@ -21,13 +22,16 @@
 @property (weak, nonatomic) IBOutlet UISwitch *focalLengthSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *shutterSpeedSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *extraCreditChallengeSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *ISOSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *framerNewSwitch;
 @property (weak, nonatomic) IBOutlet UILabel *apertureValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *shutterSpeedValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *focalLengthValueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *ISOValueLabel;
 @property (weak, nonatomic) IBOutlet FTFApertureRangeSlider *apertureRangeSlider;
 @property (weak, nonatomic) IBOutlet FTFFocalLengthRangeSlider *focalLengthRangeSlider;
 @property (weak, nonatomic) IBOutlet FTFShutterSpeedRangeSlider *shutterSpeedRangeSlider;
+@property (weak, nonatomic) IBOutlet FTFISORangeSlider *ISORangeSlider;
 
 @end
 
@@ -79,6 +83,8 @@
     NSNumber *focalLengthUpperValue = [NSNumber numberWithInt:0];
     NSNumber *shutterSpeedLowerValue = [NSNumber numberWithInt:0];
     NSNumber *shutterSpeedUpperValue = [NSNumber numberWithInt:0];
+    NSNumber *ISOLowerValue = [NSNumber numberWithInt:0];
+    NSNumber *ISOUpperValue = [NSNumber numberWithInt:0];
     
     if (self.framerNewSwitch.isOn) {
         newFramers = [NSNumber numberWithBool:YES];
@@ -103,6 +109,11 @@
         shutterSpeedUpperValue = [NSNumber numberWithDouble:self.shutterSpeedRangeSlider.upperValueShutterSpeed];
     }
     
+    if (self.ISOSwitch.isOn) {
+        ISOLowerValue = [NSNumber numberWithInteger:self.ISORangeSlider.lowerValueISO];
+        ISOUpperValue = [NSNumber numberWithInteger:self.ISORangeSlider.upperValueISO];
+    }
+    
     if (self.sortByLikesSwitch.isOn) {
         sortOrder = [NSNumber numberWithInt:FTFSortOrderLikes];
     }
@@ -120,7 +131,9 @@
                                         @"focalLengthLowerValue" : focalLengthLowerValue,
                                         @"focalLengthUpperValue" : focalLengthUpperValue,
                                         @"shutterSpeedLowerValue" : shutterSpeedLowerValue,
-                                        @"shutterSpeedUpperValue" : shutterSpeedUpperValue
+                                        @"shutterSpeedUpperValue" : shutterSpeedUpperValue,
+                                        @"ISOLowerValue" : ISOLowerValue,
+                                        @"ISOUpperValue" : ISOUpperValue
                                         };
     
     [self.delegate filtersViewControllerDidSaveFilters:filtersDictionary];
@@ -148,23 +161,18 @@
     BOOL sameSliderValues = sender.lowerValue == sender.upperValue;
     self.shutterSpeedValueLabel.text = sameSliderValues ? sender.upperValueShutterSpeedString : [NSString stringWithFormat:@"%@ - %@", sender.lowerValueShutterSpeedString, sender.upperValueShutterSpeedString];
 }
-
-- (IBAction)apertureSwitchToggled:(UISwitch *)sender {
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
+- (IBAction)ISORangeSliderValueChanged:(FTFISORangeSlider *)sender {
+    BOOL sameSliderValues = sender.lowerValue == sender.upperValue;
+    self.ISOValueLabel.text = sameSliderValues ? sender.upperValueISOString : [NSString stringWithFormat:@"%@ - %@", sender.lowerValueISOString, sender.upperValueISOString];
 }
 
-- (IBAction)focalLengthSwitchToggled:(UISwitch *)sender {
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
-}
-- (IBAction)shutterSpeedSwitchToggled:(UISwitch *)sender {
+- (IBAction)toggleSubmenuCellVisibility:(UISwitch *)sender {
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
 }
 
 - (BOOL)shouldSaveFilters {
-    return self.framerNewSwitch.isOn || self.extraCreditChallengeSwitch.isOn || self.apertureSwitch.isOn || self.focalLengthSwitch.isOn || self.shutterSpeedSwitch.isOn || self.sortByLikesSwitch.isOn || self.sortByCommentsSwitch.isOn || ![self.searchTextField.text isEqualToString:@""];
+    return self.framerNewSwitch.isOn || self.extraCreditChallengeSwitch.isOn || self.apertureSwitch.isOn || self.focalLengthSwitch.isOn || self.shutterSpeedSwitch.isOn || self.ISOSwitch.isOn || self.sortByLikesSwitch.isOn || self.sortByCommentsSwitch.isOn || ![self.searchTextField.text isEqualToString:@""];
 }
 
 #pragma mark - UITableViewDelegate 
@@ -184,6 +192,12 @@
         }
     } else if (indexPath.section == 2 && indexPath.row == 5) {
         if (self.shutterSpeedSwitch.isOn) {
+            return 80;
+        } else {
+            return 0;
+        }
+    } else if (indexPath.section == 2 && indexPath.row == 7) {
+        if (self.ISOSwitch.isOn) {
             return 80;
         } else {
             return 0;
@@ -214,7 +228,7 @@
     for (UISwitch *sw in switches) {
         if ([sw isOn]) {
             [sw setOn:NO];
-            if (sw == self.apertureSwitch || sw == self.focalLengthSwitch || sw == self.shutterSpeedSwitch) {
+            if (sw == self.apertureSwitch || sw == self.focalLengthSwitch || sw == self.shutterSpeedSwitch || sw == self.ISOSwitch) {
                 [self.tableView beginUpdates];
                 [self.tableView endUpdates];
             }

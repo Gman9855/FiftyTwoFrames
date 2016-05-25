@@ -622,6 +622,16 @@ BOOL _shouldProvideFilteredResults = NO;
         [predicates addObject:predicate];
     }
     
+    if (![filters[@"ISOLowerValue"] isEqualToNumber:@0]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ISO >= %@", filters[@"ISOLowerValue"]];
+        [predicates addObject:predicate];
+    }
+    
+    if (![filters[@"ISOUpperValue"] isEqualToNumber:@0]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ISO <= %@", filters[@"ISOUpperValue"]];
+        [predicates addObject:predicate];
+    }
+    
     if (![filters[@"shutterSpeedLowerValue"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"shutterSpeed >= %@", filters[@"shutterSpeedLowerValue"]];
         [predicates addObject:predicate];
