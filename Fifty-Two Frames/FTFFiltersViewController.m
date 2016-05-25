@@ -45,6 +45,7 @@
     [super viewDidLoad];
     self.searchTextField.delegate = self;
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapReceivedInView:)];
+    tapGestureRecognizer.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:tapGestureRecognizer];
 }
 
@@ -178,26 +179,47 @@
 #pragma mark - UITableViewDelegate 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 2 && indexPath.row == 1) {
-        if (self.apertureSwitch.on) {
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+    BOOL exposureCellIsSelected = cell.isSelected;
+    
+    if (indexPath.section == 1 && indexPath.row == 1) {
+        if (exposureCellIsSelected) {
+            return 44;
+        } else {
+            return 0;
+        }
+    } else if (indexPath.section == 1 && indexPath.row == 2) {
+        if (self.apertureSwitch.on && exposureCellIsSelected) {
             return 80;
         } else {
             return 0;
         }
-    } else if (indexPath.section == 2 && indexPath.row == 3) {
-        if (self.focalLengthSwitch.on) {
+    } else if (indexPath.section == 1 && indexPath.row == 3) {
+        if (exposureCellIsSelected) {
+            return 44;
+        } else {
+            return 0;
+        }
+    } else if (indexPath.section == 1 && indexPath.row == 4) {
+        if (self.shutterSpeedSwitch.isOn && exposureCellIsSelected) {
             return 80;
         } else {
             return 0;
         }
-    } else if (indexPath.section == 2 && indexPath.row == 5) {
-        if (self.shutterSpeedSwitch.isOn) {
+    } else if (indexPath.section == 1 && indexPath.row == 5) {
+        if (exposureCellIsSelected) {
+            return 44;
+        } else {
+            return 0;
+        }
+    } else if (indexPath.section == 1 && indexPath.row == 6) {
+        if (self.ISOSwitch.isOn && exposureCellIsSelected) {
             return 80;
         } else {
             return 0;
         }
-    } else if (indexPath.section == 2 && indexPath.row == 7) {
-        if (self.ISOSwitch.isOn) {
+    } else if (indexPath.section == 2 && indexPath.row == 1) {
+        if (self.focalLengthSwitch.isOn) {
             return 80;
         } else {
             return 0;
@@ -205,6 +227,16 @@
     }
     
     return 44;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 1 && indexPath.row == 0) {
+        UITableViewCell *exposureCell = [self.tableView cellForRowAtIndexPath:indexPath];
+        [exposureCell setSelected:!exposureCell.isSelected];
+        [self.tableView beginUpdates];
+        [self.tableView endUpdates];
+    }
+    return nil;
 }
 
 #pragma mark - UITextFieldDelegate
