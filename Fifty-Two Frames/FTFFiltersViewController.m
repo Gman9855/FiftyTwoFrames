@@ -170,6 +170,9 @@ typedef enum {
     [self resetFilters];
     
     [self.delegate filtersViewControllerDidResetFilters];
+    if ([self.searchTextField isFirstResponder]) {
+        [self.searchTextField resignFirstResponder];
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
