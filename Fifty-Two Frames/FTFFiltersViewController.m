@@ -12,6 +12,7 @@
 #import "FTFFocalLengthRangeSlider.h"
 #import "FTFShutterSpeedRangeSlider.h"
 #import "FTFISORangeSlider.h"
+#import "FTFImage.h"
 
 @interface FTFFiltersViewController () <UITextFieldDelegate>
 
@@ -36,7 +37,12 @@ typedef enum {
     FTFMoreFiltersSectionFocalLengthSwitch,
     FTFMoreFiltersSectionFocalLengthSlider,
     FTFMoreFiltersSectionNewFramersSwitch,
-    FTFMoreFiltersSectionExtraCreditChallengeSwitch
+    FTFMoreFiltersSectionExtraCreditChallengeSwitch,
+    FTFMoreFiltersSectionCritiqueTypeDropdown,
+    FTFMoreFiltersSectionCritiqueTypeRegular,
+    FTFMoreFiltersSectionCritiqueTypeShredAway,
+    FTFMoreFiltersSectionCritiqueTypeExtraSensitive,
+    FTFMoreFiltersSectionCritiqueTypeNotInterested
 } FTFMoreFiltersSection;
 
 typedef enum {
@@ -65,12 +71,25 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIImageView *sortByLikesCheckbox;
 @property (weak, nonatomic) IBOutlet UIImageView *sortByCommentsCheckbox;
 @property (weak, nonatomic) IBOutlet UIImageView *sortByDefaultImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *critiqueTypeRegularCheckbox;
+@property (weak, nonatomic) IBOutlet UIImageView *critiqueTypeShredAwayCheckbox;
+@property (weak, nonatomic) IBOutlet UIImageView *critiqueTypeExtraSensitiveCheckbox;
+@property (weak, nonatomic) IBOutlet UIImageView *critiqueTypeNotInterestedCheckbox;
+@property (weak, nonatomic) IBOutlet UIImageView *exposureDownArrow;
+@property (weak, nonatomic) IBOutlet UIImageView *critiqueTypeDownArrow;
+@property (weak, nonatomic) IBOutlet UIImageView *sortByDownArrow;
 @property (weak, nonatomic) IBOutlet UILabel *sortByLabel;
+
 @property (nonatomic, assign) BOOL exposureDropdownIsSelected;
 @property (nonatomic, assign) BOOL sortByDropdownIsSelected;
 @property (nonatomic, assign) BOOL sortByDefaultIsSelected;
 @property (nonatomic, assign) BOOL sortByLikesIsSelected;
 @property (nonatomic, assign) BOOL sortByCommentsIsSelected;
+@property (nonatomic, assign) BOOL critiqueTypeDropdownIsSelected;
+@property (nonatomic, assign) BOOL critiqueTypeRegularIsSelected;
+@property (nonatomic, assign) BOOL critiqueTypeShredAwayIsSelected;
+@property (nonatomic, assign) BOOL critiqueTypeExtraSensitiveIsSelected;
+@property (nonatomic, assign) BOOL critiqueTypeNotInterestedIsSelected;
 
 @end
 
@@ -82,7 +101,6 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.sortByDefaultIsSelected = YES;
     self.searchTextField.delegate = self;
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapReceivedInView:)];
     tapGestureRecognizer.cancelsTouchesInView = NO;
@@ -104,6 +122,10 @@ typedef enum {
         return;
     }
     NSNumber *sortOrder = [NSNumber numberWithInt:FTFSortOrderNone];
+    NSNumber *critiqueTypeRegular = [NSNumber numberWithInt:0];
+    NSNumber *critiqueTypeShredAway = [NSNumber numberWithInt:0];
+    NSNumber *critiqueTypeExtraSensitive = [NSNumber numberWithInt:0];
+    NSNumber *critiqueTypeNotInterested = [NSNumber numberWithInt:0];
     NSNumber *newFramers = [NSNumber numberWithBool:NO];
     NSNumber *extraCreditChallenge = [NSNumber numberWithBool:NO];
     NSNumber *apertureLowerValue = [NSNumber numberWithInt:0];
@@ -149,8 +171,28 @@ typedef enum {
         sortOrder = [NSNumber numberWithInt:FTFSortOrderComments];
     }
     
+    if (self.critiqueTypeRegularIsSelected) {
+        critiqueTypeRegular = [NSNumber numberWithInt:FTFImageCritiqueTypeRegular];
+    }
+    
+    if (self.critiqueTypeShredAwayIsSelected) {
+        critiqueTypeShredAway = [NSNumber numberWithInt:FTFImageCritiqueTypeShredAway];
+    }
+    
+    if (self.critiqueTypeExtraSensitiveIsSelected) {
+        critiqueTypeExtraSensitive = [NSNumber numberWithInt:FTFImageCritiqueTypeExtraSensitive];
+    }
+    
+    if (self.critiqueTypeNotInterestedIsSelected) {
+        critiqueTypeNotInterested = [NSNumber numberWithInt:FTFImageCritiqueTypeNotInterested];
+    }
+    
     NSDictionary *filtersDictionary = @{@"searchTerm" : self.searchTextField.text,
                                         @"sortOrder" : sortOrder,
+                                        @"critiqueTypeRegular" : critiqueTypeRegular,
+                                        @"critiqueTypeShredAway" : critiqueTypeShredAway,
+                                        @"critiqueTypeExtraSensitive" : critiqueTypeExtraSensitive,
+                                        @"critiqueTypeNotInterested" : critiqueTypeNotInterested,
                                         @"newFramers" : newFramers,
                                         @"extraCreditChallenge" : extraCreditChallenge,
                                         @"apertureLowerValue" : apertureLowerValue,
@@ -197,6 +239,8 @@ typedef enum {
 }
 
 - (IBAction)toggleSubmenuCellVisibility:(UISwitch *)sender {
+    BOOL exposureSubSwitchIsOn = self.apertureSwitch.isOn || self.shutterSpeedSwitch.isOn || self.ISOSwitch.isOn;
+    self.exposureDownArrow.image = [UIImage imageNamed:exposureSubSwitchIsOn ? @"DownArrow-Highlighted" : @"DownArrow-Regular"];
     [self updateSubmenuCellVisibility];
 }
 
@@ -226,6 +270,14 @@ typedef enum {
             switch (indexPath.row) {
                 case FTFMoreFiltersSectionFocalLengthSlider:
                     return self.focalLengthSwitch.isOn ? 80 : 0;
+                case FTFMoreFiltersSectionCritiqueTypeRegular:
+                    return self.critiqueTypeDropdownIsSelected ? 44 : 0;
+                case FTFMoreFiltersSectionCritiqueTypeShredAway:
+                    return self.critiqueTypeDropdownIsSelected ? 44 : 0;
+                case FTFMoreFiltersSectionCritiqueTypeExtraSensitive:
+                    return self.critiqueTypeDropdownIsSelected ? 44 : 0;
+                case FTFMoreFiltersSectionCritiqueTypeNotInterested:
+                    return self.critiqueTypeDropdownIsSelected ? 44 : 0;
                 default:
                     break;
             }
@@ -246,6 +298,11 @@ typedef enum {
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *sortByLabelText = @"Default";
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.3f;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionFade;
+    
     switch (indexPath.section) {
         case FTFFilterSectionExposure:
             switch (indexPath.row) {
@@ -257,8 +314,43 @@ typedef enum {
                     break;
             }
             break;
+        case FTFFilterSectionMoreFilters:
+            switch (indexPath.row) {
+                case FTFMoreFiltersSectionCritiqueTypeDropdown:
+                    self.critiqueTypeDropdownIsSelected = !self.critiqueTypeDropdownIsSelected;
+                    [self updateSubmenuCellVisibility];
+                    return nil;
+                case FTFMoreFiltersSectionCritiqueTypeRegular:
+                    self.critiqueTypeRegularIsSelected = !self.critiqueTypeRegularIsSelected;
+                    break;
+                case FTFMoreFiltersSectionCritiqueTypeShredAway:
+                    self.critiqueTypeShredAwayIsSelected = !self.critiqueTypeShredAwayIsSelected;
+                    break;
+                case FTFMoreFiltersSectionCritiqueTypeExtraSensitive:
+                    self.critiqueTypeExtraSensitiveIsSelected = !self.critiqueTypeExtraSensitiveIsSelected;
+                    break;
+                case FTFMoreFiltersSectionCritiqueTypeNotInterested:
+                    self.critiqueTypeNotInterestedIsSelected = !self.critiqueTypeNotInterestedIsSelected;
+                    break;
+                default:
+                    break;
+            }
+            self.critiqueTypeRegularCheckbox.image = [UIImage imageNamed:self.critiqueTypeRegularIsSelected ? @"Checked" : @"Unchecked"];
+            self.critiqueTypeShredAwayCheckbox.image = [UIImage imageNamed:self.critiqueTypeShredAwayIsSelected ? @"Checked" : @"Unchecked"];
+            self.critiqueTypeExtraSensitiveCheckbox.image = [UIImage imageNamed:self.critiqueTypeExtraSensitiveIsSelected ? @"Checked" : @"Unchecked"];
+            self.critiqueTypeNotInterestedCheckbox.image = [UIImage imageNamed:self.critiqueTypeNotInterestedIsSelected ? @"Checked" : @"Unchecked"];
+            
+            [self.critiqueTypeRegularCheckbox.layer addAnimation:transition forKey:nil];
+            [self.critiqueTypeShredAwayCheckbox.layer addAnimation:transition forKey:nil];
+            [self.critiqueTypeExtraSensitiveCheckbox.layer addAnimation:transition forKey:nil];
+            [self.critiqueTypeNotInterestedCheckbox.layer addAnimation:transition forKey:nil];
+            
+            BOOL critiqueTypeSubitemIsSelected = self.critiqueTypeRegularIsSelected || self.critiqueTypeShredAwayIsSelected || self.critiqueTypeExtraSensitiveIsSelected || self.critiqueTypeNotInterestedIsSelected;
+            self.critiqueTypeDownArrow.image = [UIImage imageNamed:critiqueTypeSubitemIsSelected ? @"DownArrow-Highlighted" : @"DownArrow-Regular"];
+            
+            return nil;
         case FTFFilterSectionSortBy:
-            self.sortByDropdownIsSelected = !self.sortByDropdownIsSelected;
+            self.sortByDropdownIsSelected = !self.sortByDropdownIsSelected; // this results in closing the submenu cells after a selection is made
             self.sortByDefaultIsSelected = NO;
             self.sortByLikesIsSelected = NO;
             self.sortByCommentsIsSelected = NO;
@@ -290,13 +382,12 @@ typedef enum {
         [self updateSubmenuCellVisibility];
     });
     
+    BOOL sortBySubitemIsSelected = self.sortByCommentsIsSelected || self.sortByLikesIsSelected;
+    self.sortByDownArrow.image = [UIImage imageNamed:sortBySubitemIsSelected ? @"DownArrow-Highlighted" : @"DownArrow-Regular"];
+    
     self.sortByCommentsCheckbox.image = [UIImage imageNamed:self.sortByCommentsIsSelected ? @"Checked" : @"Unchecked"];
     self.sortByLikesCheckbox.image = [UIImage imageNamed:self.sortByLikesIsSelected ? @"Checked" : @"Unchecked"];
     self.sortByDefaultCheckbox.image = [UIImage imageNamed:self.sortByDefaultIsSelected ? @"Checked" : @"Unchecked"];
-    CATransition *transition = [CATransition animation];
-    transition.duration = 0.3f;
-    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    transition.type = kCATransitionFade;
     
     [self.sortByCommentsCheckbox.layer addAnimation:transition forKey:nil];
     [self.sortByLikesCheckbox.layer addAnimation:transition forKey:nil];
@@ -339,18 +430,20 @@ typedef enum {
     
     if (self.exposureDropdownIsSelected) {
         self.exposureDropdownIsSelected = NO;
+        self.exposureDownArrow.image = [UIImage imageNamed:@"DownArrow-Regular"];
         [self updateSubmenuCellVisibility];
     }
     
     if (!self.sortByDefaultIsSelected) {
-        self.sortByCommentsCheckbox.image = [UIImage imageNamed:@"Unchecked"];
-        self.sortByLikesCheckbox.image = [UIImage imageNamed:@"Unchecked"];
-        self.sortByDefaultCheckbox.image = [UIImage imageNamed:@"Checked"];
-        self.sortByCommentsIsSelected = NO;
-        self.sortByLikesIsSelected = NO;
-        self.sortByDefaultIsSelected = YES;
-        self.sortByLabel.text = @"Default";
+        [self resetSortBySubitems];
     }
+    
+    if (self.critiqueTypeDropdownIsSelected) {
+        self.critiqueTypeDropdownIsSelected = NO;
+        [self updateSubmenuCellVisibility];
+    }
+    
+    [self resetCritiqueTypeSubitems];
     
     [self.focalLengthRangeSlider resetKnobs];
     [self.apertureRangeSlider resetKnobs];
@@ -359,12 +452,35 @@ typedef enum {
 }
 
 - (BOOL)shouldSaveFilters {
-    return ![self.searchTextField.text isEqualToString:@""] || self.framerNewSwitch.isOn || self.extraCreditChallengeSwitch.isOn || self.apertureSwitch.isOn || self.focalLengthSwitch.isOn || self.shutterSpeedSwitch.isOn || self.ISOSwitch.isOn || self.sortByLikesIsSelected || self.sortByCommentsIsSelected;
+    return ![self.searchTextField.text isEqualToString:@""] || self.framerNewSwitch.isOn || self.extraCreditChallengeSwitch.isOn || self.apertureSwitch.isOn || self.focalLengthSwitch.isOn || self.shutterSpeedSwitch.isOn || self.ISOSwitch.isOn || self.critiqueTypeRegularIsSelected || self.critiqueTypeShredAwayIsSelected || self.critiqueTypeExtraSensitiveIsSelected || self.critiqueTypeNotInterestedIsSelected || self.sortByLikesIsSelected || self.sortByCommentsIsSelected;
 }
 
 - (void)updateSubmenuCellVisibility {
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
+}
+
+- (void)resetSortBySubitems {
+    self.sortByDownArrow.image = [UIImage imageNamed:@"DownArrow-Regular"];
+    self.sortByCommentsCheckbox.image = [UIImage imageNamed:@"Unchecked"];
+    self.sortByLikesCheckbox.image = [UIImage imageNamed:@"Unchecked"];
+    self.sortByDefaultCheckbox.image = [UIImage imageNamed:@"Checked"];
+    self.sortByCommentsIsSelected = NO;
+    self.sortByLikesIsSelected = NO;
+    self.sortByDefaultIsSelected = YES;
+    self.sortByLabel.text = @"Default";
+}
+
+- (void)resetCritiqueTypeSubitems {
+    self.critiqueTypeRegularIsSelected = NO;
+    self.critiqueTypeShredAwayIsSelected = NO;
+    self.critiqueTypeExtraSensitiveIsSelected = NO;
+    self.critiqueTypeNotInterestedIsSelected = NO;
+    self.critiqueTypeRegularCheckbox.image = [UIImage imageNamed:@"Unchecked"];
+    self.critiqueTypeShredAwayCheckbox.image = [UIImage imageNamed:@"Unchecked"];
+    self.critiqueTypeExtraSensitiveCheckbox.image = [UIImage imageNamed:@"Unchecked"];
+    self.critiqueTypeNotInterestedCheckbox.image = [UIImage imageNamed:@"Unchecked"];
+    self.critiqueTypeDownArrow.image = [UIImage imageNamed:@"DownArrow-Regular"];
 }
 
 @end

@@ -16,10 +16,11 @@ typedef enum {
 } FTFImageSize;
 
 typedef enum {
+    FTFImageCritiqueTypeAll,
     FTFImageCritiqueTypeRegular,
     FTFImageCritiqueTypeShredAway,
     FTFImageCritiqueTypeExtraSensitive,
-    FTFImageCritiqueTypeNotInterested
+    FTFImageCritiqueTypeNotInterested,
 } FTFImageCritiqueType;
 
 @interface FTFImage : NSObject

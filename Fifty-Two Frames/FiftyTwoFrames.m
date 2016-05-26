@@ -652,6 +652,26 @@ BOOL _shouldProvideFilteredResults = NO;
         [predicates addObject:predicate];
     }
     
+    if (![filters[@"critiqueTypeRegular"] isEqualToNumber:@0]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"critiqueType == %@", filters[@"critiqueTypeRegular"]];
+        [predicates addObject:predicate];
+    }
+    
+    if (![filters[@"critiqueTypeShredAway"] isEqualToNumber:@0]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"critiqueType == %@", filters[@"critiqueTypeShredAway"]];
+        [predicates addObject:predicate];
+    }
+    
+    if (![filters[@"critiqueTypeExtraSensitive"] isEqualToNumber:@0]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"critiqueType == %@", filters[@"critiqueTypeExtraSensitive"]];
+        [predicates addObject:predicate];
+    }
+    
+    if (![filters[@"critiqueTypeNotInterested"] isEqualToNumber:@0]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"critiqueType == %@", filters[@"critiqueTypeNotInterested"]];
+        [predicates addObject:predicate];
+    }
+    
     if (![filters[@"searchTerm"] isEqualToString:@""]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photographerName CONTAINS %@", filters[@"searchTerm"]];
         [predicates addObject:predicate];
