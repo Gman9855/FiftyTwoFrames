@@ -151,8 +151,8 @@ typedef enum {
     }
     
     if (self.focalLengthSwitch.isOn) {
-        focalLengthLowerValue = [NSNumber numberWithInt:self.focalLengthRangeSlider.lowerValue];
-        focalLengthUpperValue = [NSNumber numberWithInt:self.focalLengthRangeSlider.upperValue];
+        focalLengthLowerValue = [NSNumber numberWithInteger:self.focalLengthRangeSlider.lowerValue];
+        focalLengthUpperValue = [NSNumber numberWithInteger:self.focalLengthRangeSlider.upperValue];
     }
     
     if (self.shutterSpeedSwitch.isOn) {
@@ -377,7 +377,7 @@ typedef enum {
             break;
     }
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.sortByLabel.text = sortByLabelText;
         [self updateSubmenuCellVisibility];
     });

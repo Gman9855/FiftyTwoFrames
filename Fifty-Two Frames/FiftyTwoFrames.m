@@ -478,6 +478,12 @@ BOOL _shouldProvideFilteredResults = NO;
                         }
                         continue;
                     }
+                    if ([string containsString:@"Lens: "]) {
+                        NSArray *splitElements = [string componentsSeparatedByString:@"@"];
+                        NSString *focalLengthString = splitElements.lastObject;
+                        photo.focalLength = [focalLengthString integerValue];
+                    }
+                    
                     if ([string containsString:@"This photo qualifies for the"]) {
                         photo.qualifiesForExtraCreditChallenge = YES;
                         continue;
@@ -600,57 +606,57 @@ BOOL _shouldProvideFilteredResults = NO;
 }
 
 - (NSArray *)filteredArray:(NSArray *)arrayToFilter withFilters:(NSDictionary *)filters {
-    NSMutableArray *predicates = [NSMutableArray new];
+    NSMutableArray *andPredicates = [NSMutableArray new];
     NSMutableArray *critiqueTypePredicates = [NSMutableArray new];
     
     if (![filters[@"apertureLowerValue"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"aperture >= %@", filters[@"apertureLowerValue"]];
-        [predicates addObject:predicate];
+        [andPredicates addObject:predicate];
     }
     
     if (![filters[@"apertureUpperValue"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"aperture <= %@", filters[@"apertureUpperValue"]];
-        [predicates addObject:predicate];
+        [andPredicates addObject:predicate];
     }
     
     if (![filters[@"focalLengthLowerValue"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"focalLength >= %@", filters[@"focalLengthLowerValue"]];
-        [predicates addObject:predicate];
+        [andPredicates addObject:predicate];
     }
     
     if (![filters[@"focalLengthUpperValue"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"focalLength <= %@", filters[@"focalLengthUpperValue"]];
-        [predicates addObject:predicate];
+        [andPredicates addObject:predicate];
     }
     
     if (![filters[@"ISOLowerValue"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ISO >= %@", filters[@"ISOLowerValue"]];
-        [predicates addObject:predicate];
+        [andPredicates addObject:predicate];
     }
     
     if (![filters[@"ISOUpperValue"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ISO <= %@", filters[@"ISOUpperValue"]];
-        [predicates addObject:predicate];
+        [andPredicates addObject:predicate];
     }
     
     if (![filters[@"shutterSpeedLowerValue"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"shutterSpeed >= %@", filters[@"shutterSpeedLowerValue"]];
-        [predicates addObject:predicate];
+        [andPredicates addObject:predicate];
     }
     
     if (![filters[@"shutterSpeedUpperValue"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"shutterSpeed <= %@", filters[@"shutterSpeedUpperValue"]];
-        [predicates addObject:predicate];
+        [andPredicates addObject:predicate];
     }
     
     if (![filters[@"extraCreditChallenge"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"qualifiesForExtraCreditChallenge == %@", filters[@"extraCreditChallenge"]];
-        [predicates addObject:predicate];
+        [andPredicates addObject:predicate];
     }
     
     if (![filters[@"newFramers"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fromNewFramer == %@", filters[@"newFramers"]];
-        [predicates addObject:predicate];
+        [andPredicates addObject:predicate];
     }
     
     if (![filters[@"critiqueTypeRegular"] isEqualToNumber:@0]) {
@@ -675,12 +681,27 @@ BOOL _shouldProvideFilteredResults = NO;
     
     if (![filters[@"searchTerm"] isEqualToString:@""]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photographerName CONTAINS %@", filters[@"searchTerm"]];
-        [predicates addObject:predicate];
+        [andPredicates addObject:predicate];
     }
     
-    NSCompoundPredicate *compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
-    NSCompoundPredicate *orPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:critiqueTypePredicates];
-    NSCompoundPredicate *finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[compoundPredicate, orPredicate]];
+    NSCompoundPredicate *finalPredicate;
+    
+    if (andPredicates.count == 0) {
+        if (critiqueTypePredicates.count == 0) {
+            return arrayToFilter;
+        } else {
+            finalPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:critiqueTypePredicates];
+        }
+    } else {
+        if (critiqueTypePredicates.count == 0) {
+            finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:andPredicates];
+        } else {
+            NSCompoundPredicate *orPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:critiqueTypePredicates];
+            NSCompoundPredicate *andPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:andPredicates];
+            finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[andPredicate, orPredicate]];
+        }
+    }
+    
     return [arrayToFilter filteredArrayUsingPredicate:finalPredicate];
 }
 
