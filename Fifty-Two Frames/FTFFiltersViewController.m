@@ -445,10 +445,6 @@ typedef enum {
     
     [self resetCritiqueTypeSubitems];
     
-    [self.focalLengthRangeSlider resetKnobs];
-    [self.apertureRangeSlider resetKnobs];
-    [self.ISORangeSlider resetKnobs];
-    [self.shutterSpeedRangeSlider resetKnobs];
     
     self.searchTextField.text = @"";
 }
@@ -460,6 +456,14 @@ typedef enum {
 - (void)updateSubmenuCellVisibility {
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
+}
+
+- (void)resetExposureSubitems {
+    [self.focalLengthRangeSlider resetKnobs];
+    [self.apertureRangeSlider resetKnobs];
+    [self.ISORangeSlider resetKnobs];
+    [self.shutterSpeedRangeSlider resetKnobs];
+    self.exposureDownArrow.image = [UIImage imageNamed:@"DownArrow-Regular"];
 }
 
 - (void)resetSortBySubitems {
