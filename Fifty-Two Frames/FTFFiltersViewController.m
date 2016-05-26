@@ -299,7 +299,7 @@ typedef enum {
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *sortByLabelText = @"Default";
     CATransition *transition = [CATransition animation];
-    transition.duration = 0.3f;
+    transition.duration = 0.2f;
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     transition.type = kCATransitionFade;
     
