@@ -82,6 +82,7 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.sortByDefaultIsSelected = YES;
     self.searchTextField.delegate = self;
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapReceivedInView:)];
     tapGestureRecognizer.cancelsTouchesInView = NO;
@@ -199,10 +200,6 @@ typedef enum {
     [self updateSubmenuCellVisibility];
 }
 
-- (BOOL)shouldSaveFilters {
-    return ![self.searchTextField.text isEqualToString:@""] || self.framerNewSwitch.isOn || self.extraCreditChallengeSwitch.isOn || self.apertureSwitch.isOn || self.focalLengthSwitch.isOn || self.shutterSpeedSwitch.isOn || self.ISOSwitch.isOn;
-}
-
 #pragma mark - UITableViewDelegate 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -248,84 +245,62 @@ typedef enum {
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == FTFFilterSectionExposure && indexPath.row == FTFExposureSectionExposureDropdown) {
-        self.exposureDropdownIsSelected = !self.exposureDropdownIsSelected;
-        [self updateSubmenuCellVisibility];
-    } else if (indexPath.section == FTFFilterSectionSortBy) {
-        if (indexPath.row == FTFSortBySectionDropdown) {
+    NSString *sortByLabelText = @"Default";
+    switch (indexPath.section) {
+        case FTFFilterSectionExposure:
+            switch (indexPath.row) {
+                case FTFExposureSectionExposureDropdown:
+                    self.exposureDropdownIsSelected = !self.exposureDropdownIsSelected;
+                    [self updateSubmenuCellVisibility];
+                    return nil;
+                default:
+                    break;
+            }
+            break;
+        case FTFFilterSectionSortBy:
             self.sortByDropdownIsSelected = !self.sortByDropdownIsSelected;
-            [self updateSubmenuCellVisibility];
-            return nil;
-        }
-        
-        if (indexPath.row == FTFSortBySectionDefault) {
-            if (!self.sortByDefaultIsSelected) {
-                self.sortByDefaultIsSelected = YES;
-                self.sortByDropdownIsSelected = !self.sortByDropdownIsSelected;
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    self.sortByLabel.text = @"Default";
+            self.sortByDefaultIsSelected = NO;
+            self.sortByLikesIsSelected = NO;
+            self.sortByCommentsIsSelected = NO;
+            switch (indexPath.row) {
+                case FTFSortBySectionDropdown:
                     [self updateSubmenuCellVisibility];
-                });
-                
-                if (self.sortByCommentsIsSelected) {
-                    self.sortByCommentsIsSelected = NO;
-                }
-                
-                if (self.sortByLikesIsSelected) {
-                    self.sortByLikesIsSelected = NO;;
-                }
+                    return nil;
+                case FTFSortBySectionDefault:
+                    self.sortByDefaultIsSelected = YES;
+                    sortByLabelText = @"Default";
+                    break;
+                case FTFSortBySectionLikes:
+                    self.sortByLikesIsSelected = YES;
+                    sortByLabelText = @"Likes";
+                    break;
+                case FTFSortBySectionComments:
+                    self.sortByCommentsIsSelected = YES;
+                    sortByLabelText = @"Comments";
+                    break;
+                default:
+                    break;
             }
-        }
-        
-        if (indexPath.row == FTFSortBySectionLikes) {
-            
-            if (!self.sortByLikesIsSelected) {
-                self.sortByLikesIsSelected = YES;
-                self.sortByDropdownIsSelected = !self.sortByDropdownIsSelected;
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    self.sortByLabel.text = @"Likes";
-                    [self updateSubmenuCellVisibility];
-                });
-                
-                if (self.sortByDefaultIsSelected) {
-                    self.sortByDefaultIsSelected = NO;
-                }
-                
-                if (self.sortByCommentsIsSelected) {
-                    self.sortByCommentsIsSelected = NO;
-                }
-            }
-        } else if (indexPath.row == FTFSortBySectionComments) {
-            if (!self.sortByCommentsIsSelected) {
-                self.sortByCommentsIsSelected = YES;
-                self.sortByDropdownIsSelected = !self.sortByDropdownIsSelected;
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    self.sortByLabel.text = @"Comments";
-                    [self updateSubmenuCellVisibility];
-                });
-                
-                if (self.sortByDefaultIsSelected) {
-                    self.sortByDefaultIsSelected = NO;
-                }
-                
-                if (self.sortByLikesIsSelected) {
-                    self.sortByLikesIsSelected = NO;;
-                }
-            }
-        }
-        
-        self.sortByCommentsCheckbox.image = [UIImage imageNamed:self.sortByCommentsIsSelected ? @"Checked" : @"Unchecked"];
-        self.sortByLikesCheckbox.image = [UIImage imageNamed:self.sortByLikesIsSelected ? @"Checked" : @"Unchecked"];
-        self.sortByDefaultCheckbox.image = [UIImage imageNamed:self.sortByDefaultIsSelected ? @"Checked" : @"Unchecked"];
-        CATransition *transition = [CATransition animation];
-        transition.duration = 0.3f;
-        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        transition.type = kCATransitionFade;
-        
-        [self.sortByCommentsCheckbox.layer addAnimation:transition forKey:nil];
-        [self.sortByLikesCheckbox.layer addAnimation:transition forKey:nil];
-        [self.sortByDefaultCheckbox.layer addAnimation:transition forKey:nil];
+        default:
+            break;
     }
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.sortByLabel.text = sortByLabelText;
+        [self updateSubmenuCellVisibility];
+    });
+    
+    self.sortByCommentsCheckbox.image = [UIImage imageNamed:self.sortByCommentsIsSelected ? @"Checked" : @"Unchecked"];
+    self.sortByLikesCheckbox.image = [UIImage imageNamed:self.sortByLikesIsSelected ? @"Checked" : @"Unchecked"];
+    self.sortByDefaultCheckbox.image = [UIImage imageNamed:self.sortByDefaultIsSelected ? @"Checked" : @"Unchecked"];
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.3f;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionFade;
+    
+    [self.sortByCommentsCheckbox.layer addAnimation:transition forKey:nil];
+    [self.sortByLikesCheckbox.layer addAnimation:transition forKey:nil];
+    [self.sortByDefaultCheckbox.layer addAnimation:transition forKey:nil];
     
     return nil;
 }
@@ -381,6 +356,10 @@ typedef enum {
     [self.apertureRangeSlider resetKnobs];
     
     self.searchTextField.text = @"";
+}
+
+- (BOOL)shouldSaveFilters {
+    return ![self.searchTextField.text isEqualToString:@""] || self.framerNewSwitch.isOn || self.extraCreditChallengeSwitch.isOn || self.apertureSwitch.isOn || self.focalLengthSwitch.isOn || self.shutterSpeedSwitch.isOn || self.ISOSwitch.isOn || self.sortByLikesIsSelected || self.sortByCommentsIsSelected;
 }
 
 - (void)updateSubmenuCellVisibility {
