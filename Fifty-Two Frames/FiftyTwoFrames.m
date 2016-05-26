@@ -601,6 +601,7 @@ BOOL _shouldProvideFilteredResults = NO;
 
 - (NSArray *)filteredArray:(NSArray *)arrayToFilter withFilters:(NSDictionary *)filters {
     NSMutableArray *predicates = [NSMutableArray new];
+    NSMutableArray *critiqueTypePredicates = [NSMutableArray new];
     
     if (![filters[@"apertureLowerValue"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"aperture >= %@", filters[@"apertureLowerValue"]];
@@ -654,22 +655,22 @@ BOOL _shouldProvideFilteredResults = NO;
     
     if (![filters[@"critiqueTypeRegular"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"critiqueType == %@", filters[@"critiqueTypeRegular"]];
-        [predicates addObject:predicate];
+        [critiqueTypePredicates addObject:predicate];
     }
     
     if (![filters[@"critiqueTypeShredAway"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"critiqueType == %@", filters[@"critiqueTypeShredAway"]];
-        [predicates addObject:predicate];
+        [critiqueTypePredicates addObject:predicate];
     }
     
     if (![filters[@"critiqueTypeExtraSensitive"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"critiqueType == %@", filters[@"critiqueTypeExtraSensitive"]];
-        [predicates addObject:predicate];
+        [critiqueTypePredicates addObject:predicate];
     }
     
     if (![filters[@"critiqueTypeNotInterested"] isEqualToNumber:@0]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"critiqueType == %@", filters[@"critiqueTypeNotInterested"]];
-        [predicates addObject:predicate];
+        [critiqueTypePredicates addObject:predicate];
     }
     
     if (![filters[@"searchTerm"] isEqualToString:@""]) {
@@ -678,7 +679,9 @@ BOOL _shouldProvideFilteredResults = NO;
     }
     
     NSCompoundPredicate *compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
-    return [arrayToFilter filteredArrayUsingPredicate:compoundPredicate];
+    NSCompoundPredicate *orPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:critiqueTypePredicates];
+    NSCompoundPredicate *finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[compoundPredicate, orPredicate]];
+    return [arrayToFilter filteredArrayUsingPredicate:finalPredicate];
 }
 
 @end
