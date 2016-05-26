@@ -59,7 +59,7 @@
 }
 
 - (void)resetKnobs {
-    self.upperValue = 11;
+    self.upperValue = 6;
     self.lowerValue = 1;
 }
 

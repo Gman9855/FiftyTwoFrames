@@ -447,6 +447,8 @@ typedef enum {
     
     [self.focalLengthRangeSlider resetKnobs];
     [self.apertureRangeSlider resetKnobs];
+    [self.ISORangeSlider resetKnobs];
+    [self.shutterSpeedRangeSlider resetKnobs];
     
     self.searchTextField.text = @"";
 }
