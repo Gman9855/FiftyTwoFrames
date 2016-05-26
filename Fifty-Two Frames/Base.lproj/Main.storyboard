@@ -1030,7 +1030,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="More Filters" id="COO-Sd-AWi">
+                            <tableViewSection id="COO-Sd-AWi">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="pDw-uB-Ue8">
                                         <rect key="frame" x="0.0" y="455.5" width="600" height="54"/>
