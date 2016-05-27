@@ -363,10 +363,7 @@ BOOL _shouldProvideFilteredResults = NO;
 
 - (void)publishPhotoCommentWithPhotoID:(NSString *)photoID comment:(NSString *)comment completionBlock:(void (^)(NSError *error))block
 {
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            comment, @"message",
-                            nil];
-    
+    NSDictionary *params = @{@"message" : comment};
     [[[FBSDKGraphRequest alloc] initWithGraphPath:[NSString stringWithFormat:@"/%@/comments", photoID] parameters:params HTTPMethod:@"Post"] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         block(error);
     }];

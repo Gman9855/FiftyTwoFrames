@@ -40,7 +40,6 @@
 		8B20E98D198CA1920074E66B /* FTFYearPopoverTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B20E98C198CA1920074E66B /* FTFYearPopoverTableViewController.m */; };
 		8B20E9E21992084C0074E66B /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B20E9E11992084C0074E66B /* libc++.1.dylib */; };
 		8B3994DE19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3994DD19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m */; };
-		8B41EC171BCF2AFF00E6D6D2 /* FTFCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B41EC161BCF2AFF00E6D6D2 /* FTFCommentsViewController.m */; };
 		8B451D4B197ECD55005D7159 /* calendar-128.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B451D4A197ECD55005D7159 /* calendar-128.png */; };
 		8B451D531981B9B4005D7159 /* FTFAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D521981B9B4005D7159 /* FTFAlbum.m */; };
 		8B451D561981C046005D7159 /* FTFAlbumCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B451D551981C046005D7159 /* FTFAlbumCollection.m */; };
@@ -203,8 +202,6 @@
 		8B20E9E11992084C0074E66B /* libc++.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.1.dylib"; path = "usr/lib/libc++.1.dylib"; sourceTree = SDKROOT; };
 		8B3994DC19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbumSelectionMenuTableViewCell.h; sourceTree = "<group>"; };
 		8B3994DD19BE71070065EBAF /* FTFAlbumSelectionMenuTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbumSelectionMenuTableViewCell.m; sourceTree = "<group>"; };
-		8B41EC151BCF2AFF00E6D6D2 /* FTFCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFCommentsViewController.h; sourceTree = "<group>"; };
-		8B41EC161BCF2AFF00E6D6D2 /* FTFCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFCommentsViewController.m; sourceTree = "<group>"; };
 		8B451D4A197ECD55005D7159 /* calendar-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar-128.png"; sourceTree = "<group>"; };
 		8B451D511981B9B4005D7159 /* FTFAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFAlbum.h; sourceTree = "<group>"; };
 		8B451D521981B9B4005D7159 /* FTFAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFAlbum.m; sourceTree = "<group>"; };
@@ -511,8 +508,6 @@
 				8BCB4C011993F31700B9C751 /* FTFPhotoBrowserViewController.m */,
 				8BCB4C031994692F00B9C751 /* FTFPhotoCommentsViewController.h */,
 				8BCB4C041994692F00B9C751 /* FTFPhotoCommentsViewController.m */,
-				8B41EC151BCF2AFF00E6D6D2 /* FTFCommentsViewController.h */,
-				8B41EC161BCF2AFF00E6D6D2 /* FTFCommentsViewController.m */,
 				8BC938D71940593400418F32 /* FTFFacebookLoginViewController.h */,
 				8BC938D81940593400418F32 /* FTFFacebookLoginViewController.m */,
 				7C7783C41CE5FC5200C3BA66 /* FTFFiltersViewController.h */,
@@ -1129,7 +1124,6 @@
 				1AEB1B3B19C5725100EB67D2 /* FTFUser.m in Sources */,
 				8BA8793D19674E6A00A43819 /* PSTCollectionViewFlowLayout.m in Sources */,
 				8B7D033B19C0DF4D006839BF /* FTFAlbumCategoryCollection.m in Sources */,
-				8B41EC171BCF2AFF00E6D6D2 /* FTFCommentsViewController.m in Sources */,
 				8BA8792E19674E6A00A43819 /* MWGridCell.m in Sources */,
 				8BA8793E19674E6A00A43819 /* PSTCollectionViewItemKey.m in Sources */,
 				7C4A04D41C9F426500FE3F0F /* FTFCollectionViewListCell.m in Sources */,

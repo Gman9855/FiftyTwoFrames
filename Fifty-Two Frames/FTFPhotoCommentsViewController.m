@@ -15,19 +15,22 @@
 #import "FiftyTwoFrames.h"
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "MBProgressHUD.h"
 
 static NSAttributedString *bluePostString = nil;
 static NSAttributedString *lightGrayPostString = nil;
 
-@interface FTFPhotoCommentsViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface FTFPhotoCommentsViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *inputViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewToSendButtonSpacingConstraint;
 
 @property (weak, nonatomic, readwrite) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *postCommentButton;
 @property (nonatomic, assign) NSInteger keyboardHeight;
-@property (weak, nonatomic) IBOutlet UIView *textFieldContainerView;
+@property (weak, nonatomic) IBOutlet UIView *textViewContainingView;
 
 @end
 
@@ -40,16 +43,15 @@ static NSString * const reuseIdentifier = @"commentCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.textFieldContainerView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    self.textFieldContainerView.layer.borderWidth = 0.5;
-    self.tableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
+    self.textViewContainingView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.textViewContainingView.layer.borderWidth = 0.5;
     self.postCommentButton.enabled = NO;
+    self.textView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    self.textView.layer.borderWidth = 0.5;
+    self.textView.text = @"Say something about the photo...";
+    self.textView.textColor = [UIColor lightGrayColor];
     self.tableView.estimatedRowHeight = 75;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    
-    [self.textField addTarget:self
-                  action:@selector(textFieldDidChange:)
-        forControlEvents:UIControlEventEditingChanged];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -63,7 +65,7 @@ static NSString * const reuseIdentifier = @"commentCell";
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.textField.delegate = self;
+    self.textView.delegate = self;
     [NSTimer scheduledTimerWithTimeInterval:(arc4random() % 6) + 6
                                      target:self
                                    selector:@selector(updateVisibleCells:)
@@ -102,24 +104,50 @@ static NSString * const reuseIdentifier = @"commentCell";
     }];
 }
 
-#pragma mark - Text Field Delegate
+#pragma mark - Text View Delegate
 
-- (void)textFieldDidChange:(NSNotification *)notification {
+- (void)textViewDidChange:(UITextView *)textView {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         bluePostString = [[NSAttributedString alloc]initWithString:self.postCommentButton.titleLabel.text attributes:@{NSForegroundColorAttributeName : self.postCommentButton.tintColor}];
         lightGrayPostString = [[NSAttributedString alloc]initWithString:self.postCommentButton.titleLabel.text attributes:@{NSForegroundColorAttributeName : [UIColor lightGrayColor]}];
     });
     
-    BOOL textFieldHasText = (![self.textField.text isEqualToString:@""]);
+    BOOL textFieldHasText = (![self.textView.text isEqualToString:@""]);
     [self setPostButtonColorWithEnabledState:textFieldHasText];
     
+    self.postCommentButton.enabled = [self.textView.text length] > 0;
+    
+    CGSize textViewSize = [textView sizeThatFits:CGSizeMake(textView.bounds.size.width, FLT_MAX)];
+    self.textViewHeightConstraint.constant = textViewSize.height;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if (range.location == 0 && [text isEqualToString:@" "]) {
+        return NO;
+    }
+    return YES;
+}
+
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    if ([textView.text isEqualToString:@"Say something about the photo..."]) {
+        textView.text = @"";
+        textView.textColor = [UIColor blackColor];
+    }
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    if ([textView.text isEqualToString:@""]) {
+        textView.text = @"Say something about the photo...";
+        textView.textColor = [UIColor lightGrayColor];
+    }
 }
 
 #pragma mark - Actions
 
 - (IBAction)doneButtonTapped:(UIBarButtonItem *)sender {
-    if ([self.textField isFirstResponder]) {
+    if ([self.textView isFirstResponder]) {
         [self.view endEditing:YES];
     }
     [self dismissViewControllerAnimated:true completion:nil];
@@ -149,8 +177,8 @@ static NSString * const reuseIdentifier = @"commentCell";
 }
 
 - (IBAction)tapReceivedInTableView:(UITapGestureRecognizer *)sender {
-    if ([self.textField isFirstResponder]) {
-        [self.view endEditing:YES];
+    if ([self.textView isFirstResponder]) {
+        [self.textView resignFirstResponder];
     }
 }
 
@@ -199,17 +227,17 @@ static NSString * const reuseIdentifier = @"commentCell";
         //    [self.textField resignFirstResponder];
         //    [self.textField becomeFirstResponder];
         shouldIgnoreKeyboardEvents = NO;
-        postedComment.comment = self.textField.text;
-        
+        postedComment.comment = self.textView.text;
+        [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         [[FiftyTwoFrames sharedInstance] publishPhotoCommentWithPhotoID:self.photo.photoID
                                                                 comment:postedComment.comment
                                                         completionBlock:^(NSError *error) {
-                                                            
+                                                            [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
             if (error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self setPostButtonColorWithEnabledState:YES];
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                    message:@"Could not post your comment.  Please check your internet and try again."
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                    message:@"We tried!  Looks like your internet is down.  Please try again."
                                                                    delegate:self
                                                           cancelButtonTitle:@"Okay"
                                                           otherButtonTitles:nil];
@@ -236,7 +264,7 @@ static NSString * const reuseIdentifier = @"commentCell";
                     NSIndexPath *lastCellIndex = [NSIndexPath indexPathForRow:self.photo.comments.count - 1 inSection:0];
                     [self.tableView scrollToRowAtIndexPath:lastCellIndex atScrollPosition:UITableViewScrollPositionBottom animated: [visibleCells containsObject:commentCell] ? NO : YES];
                     
-                    self.textField.text = nil;
+                    self.textView.text = nil;
                     [self setPostButtonColorWithEnabledState:NO];
                 });
                 
@@ -264,9 +292,7 @@ static NSString * const reuseIdentifier = @"commentCell";
         [alertController addAction:cancelAction];
         [alertController addAction:okAction];
         [self presentViewController:alertController animated:true completion:nil];
-
     }
-    
 }
 
 #pragma mark - Helper methods
