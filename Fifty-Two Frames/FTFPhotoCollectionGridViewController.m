@@ -190,6 +190,7 @@ BOOL didLikePhotoFromBrowser = NO;
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     if (![text isEqualToString:@""]) {
         hud.labelText = text;
+        hud.labelFont = [UIFont fontWithName:@"Lato-Regular" size:16];
     }
     
     //    [hud setCenter:[self.view convertPoint:self.view.center fromView:self.view.superview]];

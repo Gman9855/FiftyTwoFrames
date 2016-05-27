@@ -56,6 +56,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
+    cell.textLabel.font = [UIFont fontWithName:@"Lato-Regular" size:12];
     cell.textLabel.text = self.years[indexPath.row];
     return cell;
 }

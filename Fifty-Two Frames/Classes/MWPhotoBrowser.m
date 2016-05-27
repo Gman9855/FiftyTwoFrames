@@ -250,7 +250,7 @@
         }
         _previousViewControllerBackButton = previousViewController.navigationItem.backBarButtonItem; // remember previous
 
-        previousViewController.navigationItem.backBarButtonItem = newBackButton;
+//        previousViewController.navigationItem.backBarButtonItem = newBackButton;
     }
 
     // Toolbar items

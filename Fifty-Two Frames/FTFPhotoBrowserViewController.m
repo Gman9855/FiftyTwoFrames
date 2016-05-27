@@ -85,7 +85,7 @@ NSString *const didPressLikeNotification = @"didPressLikeNotification";
     [self photoCommentsVC].delegate = self;
     
     self.navigationBarLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-    self.navigationBarLabel.font = [UIFont boldSystemFontOfSize:15];
+    self.navigationBarLabel.font = [UIFont fontWithName:@"Lato-Bold" size:15];
     self.navigationBarLabel.shadowColor = [UIColor clearColor];
     self.navigationBarLabel.textColor = [UIColor orangeColor];
     self.navigationItem.titleView = self.navigationBarLabel;

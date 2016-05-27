@@ -24,6 +24,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSDictionary *barButtonAppearanceDict = @{NSFontAttributeName : [UIFont fontWithName:@"Lato-Regular" size:15.0], NSForegroundColorAttributeName: [UIColor whiteColor]};
+    [[UIBarButtonItem appearance] setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
+    
+    NSMutableDictionary *titleBarAttributes = [NSMutableDictionary dictionaryWithDictionary: [[UINavigationBar appearance] titleTextAttributes]];
+    [titleBarAttributes setValue:[UIFont fontWithName:@"Lato-Regular" size:16] forKey:NSFontAttributeName];
+    [[UINavigationBar appearance] setTitleTextAttributes:titleBarAttributes];
     [Parse setApplicationId:@"XXG1mhiISVKufte798cl8ScMYYkq2YXEc8HBkR5p"
                   clientKey:@"s6zCQa7DzB4hQKWaaNqdfsdt4YELOWqfuMqZWvNE"];
     UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |

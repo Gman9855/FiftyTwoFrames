@@ -22,7 +22,7 @@
     if (self = [super initWithFrame:CGRectMake(0, 0, 200, 85)]) {
         self.textAlignment = NSTextAlignmentCenter;
         self.textColor = [UIColor whiteColor];
-        self.font = [UIFont boldSystemFontOfSize:14];
+        self.font = [UIFont fontWithName:@"Lato-Regular" size:14];
         self.numberOfLines = 2;
         
         [self setAttributedTitleWithText:title];

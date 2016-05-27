@@ -12,6 +12,16 @@
 		1AD3044A19CF748D0001823F /* FTFActivityIndicatorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AD3044919CF748D0001823F /* FTFActivityIndicatorCell.m */; };
 		1AEB1B3B19C5725100EB67D2 /* FTFUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AEB1B3A19C5725100EB67D2 /* FTFUser.m */; };
 		677896C3AE7DE1E46DB0F680 /* libPods-FiftyTwoFrames.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE94CFCC2C0AAC11C4755925 /* libPods-FiftyTwoFrames.a */; };
+		7C0BBDBB1CF7B73200EB5351 /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDB11CF7B34A00EB5351 /* Lato-Black.ttf */; };
+		7C0BBDBC1CF7B73200EB5351 /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDB21CF7B34A00EB5351 /* Lato-BlackItalic.ttf */; };
+		7C0BBDBD1CF7B73200EB5351 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDB31CF7B34A00EB5351 /* Lato-Bold.ttf */; };
+		7C0BBDBE1CF7B73200EB5351 /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDB41CF7B34A00EB5351 /* Lato-BoldItalic.ttf */; };
+		7C0BBDBF1CF7B73200EB5351 /* Lato-Hairline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDB51CF7B34A00EB5351 /* Lato-Hairline.ttf */; };
+		7C0BBDC01CF7B73200EB5351 /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDB61CF7B34A00EB5351 /* Lato-HairlineItalic.ttf */; };
+		7C0BBDC11CF7B73200EB5351 /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDB71CF7B34A00EB5351 /* Lato-Italic.ttf */; };
+		7C0BBDC21CF7B73200EB5351 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDB81CF7B34A00EB5351 /* Lato-Light.ttf */; };
+		7C0BBDC31CF7B73200EB5351 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDB91CF7B34A00EB5351 /* Lato-LightItalic.ttf */; };
+		7C0BBDC41CF7B73200EB5351 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDBA1CF7B34A00EB5351 /* Lato-Regular.ttf */; };
 		7C4A04C91C98904400FE3F0F /* FTFListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04C81C98904400FE3F0F /* FTFListLayout.swift */; };
 		7C4A04CC1C9B466300FE3F0F /* FTFGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */; };
 		7C4A04CE1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4A04CD1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib */; };
@@ -151,6 +161,16 @@
 		1AD3044919CF748D0001823F /* FTFActivityIndicatorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFActivityIndicatorCell.m; sourceTree = "<group>"; };
 		1AEB1B3919C5725100EB67D2 /* FTFUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFUser.h; sourceTree = "<group>"; };
 		1AEB1B3A19C5725100EB67D2 /* FTFUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFUser.m; sourceTree = "<group>"; };
+		7C0BBDB11CF7B34A00EB5351 /* Lato-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Black.ttf"; sourceTree = "<group>"; };
+		7C0BBDB21CF7B34A00EB5351 /* Lato-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BlackItalic.ttf"; sourceTree = "<group>"; };
+		7C0BBDB31CF7B34A00EB5351 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
+		7C0BBDB41CF7B34A00EB5351 /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
+		7C0BBDB51CF7B34A00EB5351 /* Lato-Hairline.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Hairline.ttf"; sourceTree = "<group>"; };
+		7C0BBDB61CF7B34A00EB5351 /* Lato-HairlineItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-HairlineItalic.ttf"; sourceTree = "<group>"; };
+		7C0BBDB71CF7B34A00EB5351 /* Lato-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Italic.ttf"; sourceTree = "<group>"; };
+		7C0BBDB81CF7B34A00EB5351 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
+		7C0BBDB91CF7B34A00EB5351 /* Lato-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-LightItalic.ttf"; sourceTree = "<group>"; };
+		7C0BBDBA1CF7B34A00EB5351 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
 		7C4A04C81C98904400FE3F0F /* FTFListLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTFListLayout.swift; sourceTree = "<group>"; };
 		7C4A04CA1C9B466300FE3F0F /* FTFGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFGridLayout.h; sourceTree = "<group>"; };
 		7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFGridLayout.m; sourceTree = "<group>"; };
@@ -416,6 +436,8 @@
 				8BD040901AA502EA00700F4C /* FTFCollectionReusableView.m */,
 				7C7A72BF1CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.h */,
 				7C7A72C01CC5C0DF00E8C415 /* FTFNavigationBarAlbumTitle.m */,
+				1AA2BAC619C8BC650069A92F /* FTFCustomCaptionView.h */,
+				1AA2BAC719C8BC650069A92F /* FTFCustomCaptionView.m */,
 				7C810FCD1CEE6A8300A75499 /* FTFApertureRangeSlider.h */,
 				7C810FCE1CEE6A8300A75499 /* FTFApertureRangeSlider.m */,
 				7C810FD01CEE6A9500A75499 /* FTFFocalLengthRangeSlider.h */,
@@ -491,8 +513,6 @@
 				8BCB4C041994692F00B9C751 /* FTFPhotoCommentsViewController.m */,
 				8B41EC151BCF2AFF00E6D6D2 /* FTFCommentsViewController.h */,
 				8B41EC161BCF2AFF00E6D6D2 /* FTFCommentsViewController.m */,
-				1AA2BAC619C8BC650069A92F /* FTFCustomCaptionView.h */,
-				1AA2BAC719C8BC650069A92F /* FTFCustomCaptionView.m */,
 				8BC938D71940593400418F32 /* FTFFacebookLoginViewController.h */,
 				8BC938D81940593400418F32 /* FTFFacebookLoginViewController.m */,
 				7C7783C41CE5FC5200C3BA66 /* FTFFiltersViewController.h */,
@@ -764,6 +784,16 @@
 		8BC93890193C1C8300418F32 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7C0BBDB11CF7B34A00EB5351 /* Lato-Black.ttf */,
+				7C0BBDB21CF7B34A00EB5351 /* Lato-BlackItalic.ttf */,
+				7C0BBDB31CF7B34A00EB5351 /* Lato-Bold.ttf */,
+				7C0BBDB41CF7B34A00EB5351 /* Lato-BoldItalic.ttf */,
+				7C0BBDB51CF7B34A00EB5351 /* Lato-Hairline.ttf */,
+				7C0BBDB61CF7B34A00EB5351 /* Lato-HairlineItalic.ttf */,
+				7C0BBDB71CF7B34A00EB5351 /* Lato-Italic.ttf */,
+				7C0BBDB81CF7B34A00EB5351 /* Lato-Light.ttf */,
+				7C0BBDB91CF7B34A00EB5351 /* Lato-LightItalic.ttf */,
+				7C0BBDBA1CF7B34A00EB5351 /* Lato-Regular.ttf */,
 				1AA2BAC219C642CD0069A92F /* DateFormatter */,
 				8BC3258F1979D5DC002A17AC /* MBProgressHUD */,
 				8BA878CF19674E2700A43819 /* MWPhotoBrowser */,
@@ -912,6 +942,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C0BBDBB1CF7B73200EB5351 /* Lato-Black.ttf in Resources */,
+				7C0BBDBC1CF7B73200EB5351 /* Lato-BlackItalic.ttf in Resources */,
+				7C0BBDBD1CF7B73200EB5351 /* Lato-Bold.ttf in Resources */,
+				7C0BBDBE1CF7B73200EB5351 /* Lato-BoldItalic.ttf in Resources */,
+				7C0BBDBF1CF7B73200EB5351 /* Lato-Hairline.ttf in Resources */,
+				7C0BBDC01CF7B73200EB5351 /* Lato-HairlineItalic.ttf in Resources */,
+				7C0BBDC11CF7B73200EB5351 /* Lato-Italic.ttf in Resources */,
+				7C0BBDC21CF7B73200EB5351 /* Lato-Light.ttf in Resources */,
+				7C0BBDC31CF7B73200EB5351 /* Lato-LightItalic.ttf in Resources */,
+				7C0BBDC41CF7B73200EB5351 /* Lato-Regular.ttf in Resources */,
 				8BA8793719674E6A00A43819 /* README.mdown in Resources */,
 				8B451D4B197ECD55005D7159 /* calendar-128.png in Resources */,
 				8BC938A2193C1C8300418F32 /* Images.xcassets in Resources */,

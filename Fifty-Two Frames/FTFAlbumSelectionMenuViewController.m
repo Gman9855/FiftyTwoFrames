@@ -149,7 +149,11 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
     [super viewDidLoad];
     
     [self setUpNoAlbumsLabelAppearance];
-    
+    UIFont *font = [UIFont fontWithName:@"Lato-Regular" size:12];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObject:font
+                                                           forKey:NSFontAttributeName];
+    [self.segmentedControl setTitleTextAttributes:attributes
+                                    forState:UIControlStateNormal];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [[NSNotificationCenter defaultCenter]addObserver:self
@@ -161,6 +165,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
         self.yearButton.enabled = NO;
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = @"Loading albums";
+        hud.labelFont = [UIFont fontWithName:@"Lato-Regular" size:16];
     }
 }
 
