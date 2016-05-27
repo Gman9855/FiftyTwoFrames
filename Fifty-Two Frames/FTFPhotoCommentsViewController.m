@@ -48,8 +48,6 @@ static NSString * const reuseIdentifier = @"commentCell";
     self.postCommentButton.enabled = NO;
     self.textView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     self.textView.layer.borderWidth = 0.5;
-    self.textView.text = @"Say something about the photo...";
-    self.textView.textColor = [UIColor lightGrayColor];
     self.tableView.estimatedRowHeight = 75;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
@@ -127,21 +125,6 @@ static NSString * const reuseIdentifier = @"commentCell";
         return NO;
     }
     return YES;
-}
-
-
-- (void)textViewDidBeginEditing:(UITextView *)textView {
-    if ([textView.text isEqualToString:@"Say something about the photo..."]) {
-        textView.text = @"";
-        textView.textColor = [UIColor blackColor];
-    }
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView {
-    if ([textView.text isEqualToString:@""]) {
-        textView.text = @"Say something about the photo...";
-        textView.textColor = [UIColor lightGrayColor];
-    }
 }
 
 #pragma mark - Actions
