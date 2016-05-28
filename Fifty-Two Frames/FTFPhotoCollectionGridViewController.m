@@ -143,8 +143,6 @@ BOOL didLikePhotoFromBrowser = NO;
     self.navigationController.toolbarHidden = YES;
     self.navigationController.delegate = self;
     
-    self.filtersViewController.delegate = self;
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(albumSelectionChanged:)
                                                  name:@"albumSelectedNotification"
@@ -290,6 +288,7 @@ BOOL didLikePhotoFromBrowser = NO;
     [self presentViewController:self.albumSelectionMenuNavigationController animated:true completion:nil];
 }
 - (IBAction)searchButtonTapped:(UIBarButtonItem *)sender {
+    self.filtersViewController.delegate = self;
     [self presentViewController:self.filtersNavController animated:YES completion:nil];
 }
 

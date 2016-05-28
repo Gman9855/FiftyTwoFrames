@@ -18,7 +18,7 @@
 
 typedef enum {
     FTFFilterSectionNameSearch,
-    FTFFilterSectionExposure,
+    FTFFilterSectionExif,
     FTFFilterSectionMoreFilters,
     FTFFilterSectionSortBy
 } FTFFilterSection;
@@ -101,6 +101,8 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.rightBarButtonItem.title = @"";
+    self.navigationItem.rightBarButtonItem.enabled = NO;
     self.searchTextField.delegate = self;
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapReceivedInView:)];
     tapGestureRecognizer.cancelsTouchesInView = NO;
@@ -206,7 +208,14 @@ typedef enum {
                                         };
     
     [self.delegate filtersViewControllerDidSaveFilters:filtersDictionary];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!self.navigationItem.rightBarButtonItem.enabled) {
+                self.navigationItem.rightBarButtonItem.title = @"Reset";
+                self.navigationItem.rightBarButtonItem.enabled = YES;
+            }
+        });
+    }];
 }
 
 - (IBAction)resetButtonTapped:(UIBarButtonItem *)sender {
@@ -217,6 +226,8 @@ typedef enum {
         [self.searchTextField resignFirstResponder];
     }
     [self dismissViewControllerAnimated:YES completion:nil];
+    self.navigationItem.rightBarButtonItem.title = @"";
+    self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
 - (IBAction)apertureRangeSliderValueChanged:(FTFApertureRangeSlider *)sender {
@@ -248,7 +259,7 @@ typedef enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
-        case FTFFilterSectionExposure:
+        case FTFFilterSectionExif:
             switch (indexPath.row) {
                 case FTFExifSectionApertureSwitch:
                     return self.exposureDropdownIsSelected ? 44 : 0;
@@ -304,9 +315,9 @@ typedef enum {
     transition.duration = 0.2f;
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     transition.type = kCATransitionFade;
-    
+
     switch (indexPath.section) {
-        case FTFFilterSectionExposure:
+        case FTFFilterSectionExif:
             switch (indexPath.row) {
                 case FTFExifSectionExifDropdown:
                     self.exposureDropdownIsSelected = !self.exposureDropdownIsSelected;
