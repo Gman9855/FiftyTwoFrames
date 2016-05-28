@@ -574,7 +574,7 @@
         <scene sceneID="zB8-oC-IWC">
             <objects>
                 <tableViewController storyboardIdentifier="filtersViewController" id="rOI-sC-pRY" customClass="FTFFiltersViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="faN-mg-UkH">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="faN-mg-UkH">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -754,6 +754,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="80" id="Vxq-Sg-eR1">
                                         <rect key="frame" x="0.0" y="281.5" width="600" height="80"/>
@@ -822,6 +823,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="44" id="3wl-uW-E6t">
                                         <rect key="frame" x="0.0" y="361.5" width="600" height="44"/>
@@ -875,6 +877,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="80" id="Adz-dE-wWj">
                                         <rect key="frame" x="0.0" y="405.5" width="600" height="80"/>
@@ -943,6 +946,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="44" id="r8v-sx-CXk">
                                         <rect key="frame" x="0.0" y="485.5" width="600" height="44"/>
@@ -996,6 +1000,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="80" id="Dfj-zO-TOE">
                                         <rect key="frame" x="0.0" y="529.5" width="600" height="80"/>
@@ -1064,6 +1069,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="pDw-uB-Ue8">
                                         <rect key="frame" x="0.0" y="645.5" width="600" height="54"/>
@@ -1117,6 +1123,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="80" id="0EC-22-GWM">
                                         <rect key="frame" x="0.0" y="699.5" width="600" height="80"/>
@@ -1185,6 +1192,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -1433,6 +1441,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="9fJ-Fd-BvB">
                                         <rect key="frame" x="0.0" y="955.5" width="600" height="44"/>
@@ -1506,6 +1515,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="aCj-Xy-HiC">
                                         <rect key="frame" x="0.0" y="999.5" width="600" height="44"/>
@@ -1579,6 +1589,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="dgt-RQ-QLo">
                                         <rect key="frame" x="0.0" y="1043.5" width="600" height="44"/>
@@ -1652,6 +1663,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -1800,6 +1812,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="uFA-Bu-Enz">
                                         <rect key="frame" x="0.0" y="1225.5" width="600" height="44"/>
@@ -1873,6 +1886,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="3n1-9L-1tL">
                                         <rect key="frame" x="0.0" y="1269.5" width="600" height="44"/>
@@ -1946,6 +1960,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
