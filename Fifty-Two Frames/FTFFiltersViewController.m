@@ -24,18 +24,18 @@ typedef enum {
 } FTFFilterSection;
 
 typedef enum {
-    FTFExposureSectionExposureDropdown,
-    FTFExposureSectionApertureSwitch,
-    FTFExposureSectionApertureSlider,
-    FTFExposureSectionShutterSpeedSwitch,
-    FTFExposureSectionShutterSpeedSlider,
-    FTFExposureSectionISOSwitch,
-    FTFExposureSectionISOSlider,
-} FTFExposureSection;
+    FTFExifSectionExifDropdown,
+    FTFExifSectionApertureSwitch,
+    FTFExifSectionApertureSlider,
+    FTFExifSectionShutterSpeedSwitch,
+    FTFExifSectionShutterSpeedSlider,
+    FTFExifSectionISOSwitch,
+    FTFExifSectionISOSlider,
+    FTFExifSectionFocalLengthSwitch,
+    FTFExifSectionFocalLengthSlider,
+} FTFExifSection;
 
 typedef enum {
-    FTFMoreFiltersSectionFocalLengthSwitch,
-    FTFMoreFiltersSectionFocalLengthSlider,
     FTFMoreFiltersSectionNewFramersSwitch,
     FTFMoreFiltersSectionExtraCreditChallengeSwitch,
     FTFMoreFiltersSectionCritiqueTypeDropdown,
@@ -239,7 +239,7 @@ typedef enum {
 }
 
 - (IBAction)toggleSubmenuCellVisibility:(UISwitch *)sender {
-    BOOL exposureSubSwitchIsOn = self.apertureSwitch.isOn || self.shutterSpeedSwitch.isOn || self.ISOSwitch.isOn;
+    BOOL exposureSubSwitchIsOn = self.apertureSwitch.isOn || self.shutterSpeedSwitch.isOn || self.ISOSwitch.isOn || self.focalLengthSwitch.isOn;
     self.exposureDownArrow.image = [UIImage imageNamed:exposureSubSwitchIsOn ? @"DownArrow-Highlighted" : @"DownArrow-Regular"];
     [self updateSubmenuCellVisibility];
 }
@@ -250,26 +250,28 @@ typedef enum {
     switch (indexPath.section) {
         case FTFFilterSectionExposure:
             switch (indexPath.row) {
-                case FTFExposureSectionApertureSwitch:
+                case FTFExifSectionApertureSwitch:
                     return self.exposureDropdownIsSelected ? 44 : 0;
-                case FTFExposureSectionApertureSlider:
+                case FTFExifSectionApertureSlider:
                     return self.apertureSwitch.on && self.exposureDropdownIsSelected ? 80 : 0;
-                case FTFExposureSectionShutterSpeedSwitch:
+                case FTFExifSectionShutterSpeedSwitch:
                     return self.exposureDropdownIsSelected ? 44 : 0;
-                case FTFExposureSectionShutterSpeedSlider:
+                case FTFExifSectionShutterSpeedSlider:
                     return self.shutterSpeedSwitch.on && self.exposureDropdownIsSelected ? 80 : 0;
-                case FTFExposureSectionISOSwitch:
+                case FTFExifSectionISOSwitch:
                     return self.exposureDropdownIsSelected ? 44 : 0;
-                case FTFExposureSectionISOSlider:
+                case FTFExifSectionISOSlider:
                     return self.ISOSwitch.on && self.exposureDropdownIsSelected ? 80 : 0;
+                case FTFExifSectionFocalLengthSwitch:
+                    return self.exposureDropdownIsSelected ? 44 : 0;
+                case FTFExifSectionFocalLengthSlider:
+                    return self.focalLengthSwitch.isOn && self.exposureDropdownIsSelected ? 80 : 0;
                 default:
                     break;
             }
             break;
         case FTFFilterSectionMoreFilters:
             switch (indexPath.row) {
-                case FTFMoreFiltersSectionFocalLengthSlider:
-                    return self.focalLengthSwitch.isOn ? 80 : 0;
                 case FTFMoreFiltersSectionCritiqueTypeRegular:
                     return self.critiqueTypeDropdownIsSelected ? 44 : 0;
                 case FTFMoreFiltersSectionCritiqueTypeShredAway:
@@ -306,7 +308,7 @@ typedef enum {
     switch (indexPath.section) {
         case FTFFilterSectionExposure:
             switch (indexPath.row) {
-                case FTFExposureSectionExposureDropdown:
+                case FTFExifSectionExifDropdown:
                     self.exposureDropdownIsSelected = !self.exposureDropdownIsSelected;
                     [self updateSubmenuCellVisibility];
                     return nil;
