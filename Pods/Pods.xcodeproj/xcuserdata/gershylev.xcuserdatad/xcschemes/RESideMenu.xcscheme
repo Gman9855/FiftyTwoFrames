@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '2BE6EE91648B9740B6F9991066839C19'
-               BlueprintName = 'SlackTextViewController'
+               BlueprintIdentifier = '2273377980D565EB428559C3022A1AF7'
+               BlueprintName = 'RESideMenu'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libSlackTextViewController.a'>
+               BuildableName = 'libRESideMenu.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

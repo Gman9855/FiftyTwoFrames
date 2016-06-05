@@ -16,6 +16,7 @@ PODS:
   - Parse (1.12.0):
     - Bolts/Tasks (~> 1.5)
   - pop (1.0.8)
+  - RESideMenu (4.0.7)
   - SlackTextViewController (1.7)
 
 DEPENDENCIES:
@@ -27,6 +28,7 @@ DEPENDENCIES:
   - NMRangeSlider
   - Parse
   - pop (~> 1.0)
+  - RESideMenu
   - SlackTextViewController
 
 SPEC CHECKSUMS:
@@ -38,8 +40,9 @@ SPEC CHECKSUMS:
   NMRangeSlider: 317ded652431eb90501c8421d9cddc3930d891e6
   Parse: de2c52a9a1421b91ae7594ab8ce191afd184f19b
   pop: bb773ae2c791ca2629de13b347e7a8b450fa6a57
+  RESideMenu: f24c508404b49c667344c54aba7e590883533958
   SlackTextViewController: 57e28248dd38b9753277733544449519842f1ea5
 
-PODFILE CHECKSUM: 27f4a6a143d44498d233709c77750a2b75191865
+PODFILE CHECKSUM: 8689d3022f38b1fb4b6e97c9fc3c9db9eda4b17d
 
 COCOAPODS: 1.0.0.beta.6

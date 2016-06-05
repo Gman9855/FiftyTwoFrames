@@ -49,6 +49,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>RESideMenu.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SlackTextViewController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -62,27 +67,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>05D0BBF2466BC9DED923899F5E1728C4</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>0C1F8E331232C34F034FD26C684AFA0A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>2273377980D565EB428559C3022A1AF7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2BE6EE91648B9740B6F9991066839C19</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>3385E626FC7EEE5B718B9C301EBDCD43</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>3829F6BCDEFB7D97F05B5EFA2FB8AD84</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>408AC5482508E394D18B13FE9A4B9D62</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -97,16 +97,6 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>901E49B8DEFCAC8D666029406AE5026F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>96F98367FE821991BC065E4FABE502F0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>9B36D462102DAF8E84F6D9AB9C868C59</key>
 		<dict>
 			<key>primary</key>
@@ -117,7 +107,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AD7D2D5531DD3103C96A9DD2F22FCCE7</key>
+		<key>C3F1893C23E88E31FC8F460ED1B04562</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C5935B1D406561ECE86CD23D18D47820</key>
 		<dict>
 			<key>primary</key>
 			<true/>
