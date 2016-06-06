@@ -114,7 +114,9 @@ BOOL _shouldProvideFilteredResults = NO;
 
 - (void)requestUserWithCompletionBlock:(void (^)(FTFUser *user, NSError *error))block {
     
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"id, name, picture.fields(url)", @"fields", nil];
+//    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"id, name, picture.fields(url)", @"fields", nil];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"id, name, picture.type(large)", @"fields", nil];
+
     [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:params] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
         if (!error) {
             self.user = [[FTFUser alloc] initWithDictionary:result];
