@@ -32,6 +32,9 @@
         frostedViewController.direction = REFrostedViewControllerDirectionLeft;
         frostedViewController.liveBlurBackgroundStyle = REFrostedViewControllerLiveBackgroundStyleDark;
         frostedViewController.animationDuration = 0.25;
+        CGSize size = self.view.bounds.size;
+        size.width = size.width / 1.5;
+        frostedViewController.menuViewSize = size;
         _contentViewController = frostedViewController;
     }
     return _contentViewController;

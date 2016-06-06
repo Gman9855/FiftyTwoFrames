@@ -30,14 +30,13 @@
 {
     [super viewDidLoad];
 //    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorColor = [UIColor colorWithRed:150/255.0f green:161/255.0f blue:177/255.0f alpha:1.0f];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.opaque = NO;
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.tableHeaderView = ({
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 204.0f)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 214.0f)];
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 40, 100, 100)];
         imageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         FiftyTwoFrames *ftf = [FiftyTwoFrames sharedInstance];
@@ -45,20 +44,19 @@
         [imageView setImageWithURL:ftf.user.profilePictureURL];
         imageView.layer.masksToBounds = YES;
         imageView.layer.cornerRadius = 50.0;
-        imageView.layer.borderColor = [UIColor whiteColor].CGColor;
+        imageView.layer.borderColor = [UIColor orangeColor].CGColor;
         imageView.layer.borderWidth = 3.0f;
         imageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
         imageView.layer.shouldRasterize = YES;
         imageView.clipsToBounds = YES;
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 160, 0, 24)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 155, self.frostedViewController.menuViewSize.width - 18, 50)];
         label.text = ftf.user.name;
-        label.font = [UIFont fontWithName:@"Lato-Regular" size:21];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.numberOfLines = 2;
+        label.font = [UIFont fontWithName:@"Lato-Regular" size:19];
         label.backgroundColor = [UIColor clearColor];
-//        label.textColor = [UIColor colorWithRed:62/255.0f green:68/255.0f blue:75/255.0f alpha:1.0f];
         label.textColor = [UIColor whiteColor];
-        [label sizeToFit];
-        label.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         
         [view addSubview:imageView];
         [view addSubview:label];
