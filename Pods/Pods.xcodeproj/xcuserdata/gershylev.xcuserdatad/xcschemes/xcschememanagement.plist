@@ -49,7 +49,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>RESideMenu.xcscheme</key>
+		<key>REFrostedViewController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -72,17 +72,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2273377980D565EB428559C3022A1AF7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2BE6EE91648B9740B6F9991066839C19</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>3385E626FC7EEE5B718B9C301EBDCD43</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>34E434B615B5625E4AFC64B274B4EDBC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>458E765CFE735984FE76FA5556DE77E3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -107,12 +107,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C3F1893C23E88E31FC8F460ED1B04562</key>
+		<key>C948A2E6854E7B7B5E50D08F89FA9D35</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C5935B1D406561ECE86CD23D18D47820</key>
+		<key>D66F56EC825372F05A11AEC900E43CA1</key>
 		<dict>
 			<key>primary</key>
 			<true/>

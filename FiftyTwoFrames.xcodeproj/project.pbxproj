@@ -22,6 +22,8 @@
 		7C0BBDC21CF7B73200EB5351 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDB81CF7B34A00EB5351 /* Lato-Light.ttf */; };
 		7C0BBDC31CF7B73200EB5351 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDB91CF7B34A00EB5351 /* Lato-LightItalic.ttf */; };
 		7C0BBDC41CF7B73200EB5351 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDBA1CF7B34A00EB5351 /* Lato-Regular.ttf */; };
+		7C14EF891D0411DE00FEFE34 /* photo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7C14EF881D0411DE00FEFE34 /* photo.jpg */; };
+		7C14EF8C1D04BF3F00FEFE34 /* FTFSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C14EF8B1D04BF3F00FEFE34 /* FTFSideMenuViewController.m */; };
 		7C4A04C91C98904400FE3F0F /* FTFListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04C81C98904400FE3F0F /* FTFListLayout.swift */; };
 		7C4A04CC1C9B466300FE3F0F /* FTFGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */; };
 		7C4A04CE1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4A04CD1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib */; };
@@ -170,6 +172,9 @@
 		7C0BBDB81CF7B34A00EB5351 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
 		7C0BBDB91CF7B34A00EB5351 /* Lato-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-LightItalic.ttf"; sourceTree = "<group>"; };
 		7C0BBDBA1CF7B34A00EB5351 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
+		7C14EF881D0411DE00FEFE34 /* photo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = photo.jpg; sourceTree = "<group>"; };
+		7C14EF8A1D04BF3F00FEFE34 /* FTFSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFSideMenuViewController.h; sourceTree = "<group>"; };
+		7C14EF8B1D04BF3F00FEFE34 /* FTFSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFSideMenuViewController.m; sourceTree = "<group>"; };
 		7C4A04C81C98904400FE3F0F /* FTFListLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTFListLayout.swift; sourceTree = "<group>"; };
 		7C4A04CA1C9B466300FE3F0F /* FTFGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFGridLayout.h; sourceTree = "<group>"; };
 		7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFGridLayout.m; sourceTree = "<group>"; };
@@ -475,6 +480,7 @@
 		8B6458B9194CDE88006D4B75 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7C14EF881D0411DE00FEFE34 /* photo.jpg */,
 				8BAC032219BBE71D00451615 /* placeholder.png */,
 				8BAC031619BAFE2C00451615 /* UIBarButtonItemGrid@2x.png */,
 				8B451D4A197ECD55005D7159 /* calendar-128.png */,
@@ -497,6 +503,8 @@
 				8BD200281975018A00F9F347 /* Album List VC */,
 				8BAC031819BB7C0F00451615 /* FTFPhotoCollectionGridViewController.h */,
 				8BAC031919BB7C0F00451615 /* FTFPhotoCollectionGridViewController.m */,
+				7C14EF8A1D04BF3F00FEFE34 /* FTFSideMenuViewController.h */,
+				7C14EF8B1D04BF3F00FEFE34 /* FTFSideMenuViewController.m */,
 				7C4A04CA1C9B466300FE3F0F /* FTFGridLayout.h */,
 				7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */,
 				7C4A04C81C98904400FE3F0F /* FTFListLayout.swift */,
@@ -939,6 +947,7 @@
 			files = (
 				7C0BBDBB1CF7B73200EB5351 /* Lato-Black.ttf in Resources */,
 				7C0BBDBC1CF7B73200EB5351 /* Lato-BlackItalic.ttf in Resources */,
+				7C14EF891D0411DE00FEFE34 /* photo.jpg in Resources */,
 				7C0BBDBD1CF7B73200EB5351 /* Lato-Bold.ttf in Resources */,
 				7C0BBDBE1CF7B73200EB5351 /* Lato-BoldItalic.ttf in Resources */,
 				7C0BBDBF1CF7B73200EB5351 /* Lato-Hairline.ttf in Resources */,
@@ -1142,6 +1151,7 @@
 				8BA8797F19675FF400A43819 /* SDWebImageDownloader.m in Sources */,
 				8BA8793319674E6A00A43819 /* MWTapDetectingView.m in Sources */,
 				1AA2BAC519C642E90069A92F /* TTTTimeIntervalFormatter.m in Sources */,
+				7C14EF8C1D04BF3F00FEFE34 /* FTFSideMenuViewController.m in Sources */,
 				8B451D561981C046005D7159 /* FTFAlbumCollection.m in Sources */,
 				1AD3044A19CF748D0001823F /* FTFActivityIndicatorCell.m in Sources */,
 				8BA8798419675FF400A43819 /* UIImage+GIF.m in Sources */,

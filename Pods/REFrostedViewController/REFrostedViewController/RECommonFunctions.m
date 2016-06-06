@@ -1,8 +1,8 @@
 //
 // RECommonFunctions.m
-// RESideMenu
+// REFrostedViewController
 //
-// Copyright (c) 2013-2014 Roman Efimov (https://github.com/romaonthego)
+// Copyright (c) 2013 Roman Efimov (https://github.com/romaonthego)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,9 @@
 //
 
 #import "RECommonFunctions.h"
+#import <UIKit/UIKit.h>
 
-BOOL RESideMenuUIKitIsFlatMode(void)
+BOOL REFrostedViewControllerUIKitIsFlatMode(void)
 {
     static BOOL isUIKitFlatMode = NO;
     static dispatch_once_t onceToken;
@@ -33,10 +34,10 @@ BOOL RESideMenuUIKitIsFlatMode(void)
         if (floor(NSFoundationVersionNumber) > 993.0) {
             // If your app is running in legacy mode, tintColor will be nil - else it must be set to some color.
             if (UIApplication.sharedApplication.keyWindow) {
-                isUIKitFlatMode = [UIApplication.sharedApplication.delegate.window performSelector:@selector(tintColor)] != nil;
+                isUIKitFlatMode = [UIApplication.sharedApplication.delegate.window respondsToSelector:@selector(tintColor)];
             } else {
                 // Possible that we're called early on (e.g. when used in a Storyboard). Adapt and use a temporary window.
-                isUIKitFlatMode = [[UIWindow new] performSelector:@selector(tintColor)] != nil;
+                isUIKitFlatMode = [[UIWindow new] respondsToSelector:@selector(tintColor)];
             }
         }
     });

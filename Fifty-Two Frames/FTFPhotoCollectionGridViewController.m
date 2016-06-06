@@ -32,6 +32,8 @@
 #import "FTFFiltersViewController.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#include "REFrostedViewController.h"
+#import "FTFSideMenuViewController.h"
 
 @interface FTFPhotoCollectionGridViewController () <CHTCollectionViewDelegateWaterfallLayout, UINavigationControllerDelegate, MWPhotoBrowserDelegate, FTFFiltersViewControllerDelegate>
 
@@ -129,6 +131,7 @@ BOOL didLikePhotoFromBrowser = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.listLayout = [[FTFListLayout alloc] init];
     self.gridLayout = [[CHTCollectionViewWaterfallLayout alloc] init];
     self.gridLayout.columnCount = 2;
@@ -290,6 +293,10 @@ BOOL didLikePhotoFromBrowser = NO;
 - (IBAction)searchButtonTapped:(UIBarButtonItem *)sender {
     self.filtersViewController.delegate = self;
     [self presentViewController:self.filtersNavController animated:YES completion:nil];
+}
+
+- (IBAction)sideMenuButtonTapped:(UIBarButtonItem *)sender {
+    [self.frostedViewController presentMenuViewController];
 }
 
 - (IBAction)toggleLayout:(UIBarButtonItem *)sender {

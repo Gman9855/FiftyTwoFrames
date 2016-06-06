@@ -8,7 +8,10 @@
 
 #import "FTFContainerViewController.h"
 #import "FTFFacebookLoginViewController.h"
+#import "FTFPhotoCollectionGridViewController.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#include "REFrostedViewController.h"
+#import "FTFSideMenuViewController.h"
 
 
 @interface FTFContainerViewController ()
@@ -23,7 +26,13 @@
 
 - (UIViewController *)contentViewController {
     if (!_contentViewController) {
-        _contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"collectionViewNavController"];
+        UINavigationController *collectionNavVC = [self.storyboard instantiateViewControllerWithIdentifier:@"collectionViewNavController"];
+        FTFSideMenuViewController *menuController = [self.storyboard instantiateViewControllerWithIdentifier:@"sidemenuVC"];
+        REFrostedViewController *frostedViewController = [[REFrostedViewController alloc] initWithContentViewController:collectionNavVC menuViewController:menuController];
+        frostedViewController.direction = REFrostedViewControllerDirectionLeft;
+        frostedViewController.liveBlurBackgroundStyle = REFrostedViewControllerLiveBackgroundStyleDark;
+        frostedViewController.animationDuration = 0.25;
+        _contentViewController = frostedViewController;
     }
     return _contentViewController;
 }

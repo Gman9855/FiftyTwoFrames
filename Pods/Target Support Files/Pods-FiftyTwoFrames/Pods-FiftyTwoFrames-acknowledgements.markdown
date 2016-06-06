@@ -164,7 +164,7 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-## RESideMenu
+## REFrostedViewController
 
 Copyright (c) 2013 Roman Efimov (https://github.com/romaonthego).
 
