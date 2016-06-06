@@ -37,7 +37,7 @@
     self.tableView.opaque = NO;
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.tableHeaderView = ({
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 184.0f)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 204.0f)];
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 40, 100, 100)];
         imageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         FiftyTwoFrames *ftf = [FiftyTwoFrames sharedInstance];
@@ -51,7 +51,7 @@
         imageView.layer.shouldRasterize = YES;
         imageView.clipsToBounds = YES;
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 0, 24)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 160, 0, 24)];
         label.text = ftf.user.name;
         label.font = [UIFont fontWithName:@"Lato-Regular" size:21];
         label.backgroundColor = [UIColor clearColor];
