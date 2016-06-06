@@ -81,7 +81,7 @@
         if (self.currentViewController) {
             [self transitionFromViewController:self.currentViewController
                               toViewController:newViewController
-                                      duration:1.2
+                                      duration:1.0
                                        options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionTransitionFlipFromRight
                                     animations:^{
                                         [self.currentViewController removeFromParentViewController];

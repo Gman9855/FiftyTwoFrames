@@ -7,10 +7,13 @@
 //
 
 #import "FTFSideMenuViewController.h"
+#import "FTFPhotoCollectionGridViewController.h"
 #import "FiftyTwoFrames.h"
 #import "FTFUser.h"
 #import "UIImageView+WebCache.h"
-
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+@import SafariServices;
 #include "REFrostedViewController.h"
 
 @interface FTFSideMenuViewController ()
@@ -104,18 +107,33 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UINavigationController *navigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
+    NSString *urlString;
+    switch (indexPath.row) {
+        case 0:
+            urlString = @"http://52frames.com/deadline/";
+            break;
+        case 1:
+            urlString = @"http://www.52Frames.com/about/";
+            break;
+        case 2:
+            urlString = @"http://52frames.com/get-started/";
+            break;
+        case 3:
+            urlString = @"http://www.patreon.com/52Frames";
+            break;
+        case 4:
+            [[FBSDKLoginManager new] logOut];
+            break;
+        default:
+            break;
+    }
     
-//    if (indexPath.section == 0 && indexPath.row == 0) {
-//        DEMOHomeViewController *homeViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"homeController"];
-//        navigationController.viewControllers = @[homeViewController];
-//    } else {
-//        DEMOSecondViewController *secondViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"secondController"];
-//        navigationController.viewControllers = @[secondViewController];
-//    }
+    FTFPhotoCollectionGridViewController *grid = (FTFPhotoCollectionGridViewController *)self.frostedViewController.contentViewController;
+    SFSafariViewController *safariVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:urlString] entersReaderIfAvailable:NO];
+    [grid presentViewController:safariVC animated:YES completion:nil];
     
-    self.frostedViewController.contentViewController = navigationController;
     [self.frostedViewController hideMenuViewController];
+
 }
 
 #pragma mark -
@@ -133,7 +151,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
 {
-    return 3;
+    return 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -147,7 +165,7 @@
     }
     
     if (indexPath.section == 0) {
-        NSArray *titles = @[@"Become a Patron", @"About us", @"Log out"];
+        NSArray *titles = @[@"This week's challenge", @"About 52Frames", @"Join the community", @"Become a Patron", @"Log out"];
         cell.textLabel.text = titles[indexPath.row];
     }
     
