@@ -35,7 +35,7 @@
 #include "REFrostedViewController.h"
 #import "FTFSideMenuViewController.h"
 
-@interface FTFPhotoCollectionGridViewController () <CHTCollectionViewDelegateWaterfallLayout, UINavigationControllerDelegate, MWPhotoBrowserDelegate, FTFFiltersViewControllerDelegate>
+@interface FTFPhotoCollectionGridViewController () <CHTCollectionViewDelegateWaterfallLayout, UINavigationControllerDelegate, MWPhotoBrowserDelegate, FTFFiltersViewControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) FTFCollectionReusableView *collectionReusableView;
 @property (nonatomic, strong) UILabel *navBarTitle;
@@ -131,7 +131,9 @@ BOOL didLikePhotoFromBrowser = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panReceivedInView:)];
+    panGestureRecognizer.delegate = self;
+    [self.view addGestureRecognizer:panGestureRecognizer];
     self.listLayout = [[FTFListLayout alloc] init];
     self.gridLayout = [[CHTCollectionViewWaterfallLayout alloc] init];
     self.gridLayout.columnCount = 2;
@@ -436,6 +438,14 @@ BOOL didLikePhotoFromBrowser = NO;
         self.albumToDisplay = album;
         [self populateAlbumPhotosResultsWithPhotos:album.photos error:error finishedPaging:finishedPaging];
     }];
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    return [gestureRecognizer locationInView:self.view].x < 35;
+}
+
+- (void)panReceivedInView:(UIPanGestureRecognizer *)sender {
+    [self.frostedViewController panGestureRecognized:sender];
 }
 
 #pragma mark - UIStoryboardSegue

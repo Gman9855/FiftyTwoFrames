@@ -99,9 +99,12 @@
             break;
     }
     
-    FTFPhotoCollectionGridViewController *grid = (FTFPhotoCollectionGridViewController *)self.frostedViewController.contentViewController;
-    SFSafariViewController *safariVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:urlString] entersReaderIfAvailable:NO];
-    [grid presentViewController:safariVC animated:YES completion:nil];
+    if (indexPath.row != 4) {
+        FTFPhotoCollectionGridViewController *grid = (FTFPhotoCollectionGridViewController *)self.frostedViewController.contentViewController;
+        SFSafariViewController *safariVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:urlString] entersReaderIfAvailable:NO];
+        [grid presentViewController:safariVC animated:YES completion:nil];
+    }
+    
     
     [self.frostedViewController hideMenuViewController];
 
