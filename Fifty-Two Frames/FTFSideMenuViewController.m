@@ -75,33 +75,6 @@
     cell.textLabel.font = [UIFont fontWithName:@"Lato-Regular" size:17];
 }
 
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)sectionIndex
-//{
-//    if (sectionIndex == 0)
-//        return nil;
-//    
-//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 34)];
-//    view.backgroundColor = [UIColor colorWithRed:167/255.0f green:167/255.0f blue:167/255.0f alpha:0.6f];
-//    
-//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 8, 0, 0)];
-//    label.text = @"Friends Online";
-//    label.font = [UIFont systemFontOfSize:15];
-//    label.textColor = [UIColor whiteColor];
-//    label.backgroundColor = [UIColor clearColor];
-//    [label sizeToFit];
-//    [view addSubview:label];
-//    
-//    return view;
-//}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionIndex
-{
-    if (sectionIndex == 0)
-        return 0;
-    
-    return 34;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

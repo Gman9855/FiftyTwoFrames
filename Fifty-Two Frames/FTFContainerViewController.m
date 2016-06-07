@@ -31,7 +31,7 @@
         REFrostedViewController *frostedViewController = [[REFrostedViewController alloc] initWithContentViewController:collectionNavVC menuViewController:menuController];
         frostedViewController.direction = REFrostedViewControllerDirectionLeft;
         frostedViewController.liveBlurBackgroundStyle = REFrostedViewControllerLiveBackgroundStyleDark;
-        frostedViewController.animationDuration = 0.25;
+        frostedViewController.animationDuration = 0.4;
         CGSize size = self.view.bounds.size;
         size.width = size.width / 1.5;
         frostedViewController.menuViewSize = size;

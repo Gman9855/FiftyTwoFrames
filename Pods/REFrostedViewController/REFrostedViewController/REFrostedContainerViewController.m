@@ -182,7 +182,7 @@
     };
     
     if (self.frostedViewController.direction == REFrostedViewControllerDirectionLeft) {
-        [UIView animateWithDuration:self.frostedViewController.animationDuration animations:^{
+        [UIView animateWithDuration:self.frostedViewController.animationDuration delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.1 options:nil animations:^{
             [self setContainerFrame:CGRectMake(0, 0, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
             [self setBackgroundViewsAlpha:self.frostedViewController.backgroundFadeAmount];
         } completion:completionHandler];
@@ -231,7 +231,8 @@
     }
     
     if (self.frostedViewController.direction == REFrostedViewControllerDirectionLeft) {
-        [UIView animateWithDuration:self.frostedViewController.animationDuration animations:^{
+        
+        [UIView animateWithDuration:self.frostedViewController.animationDuration - 0.15 animations:^{
             [self setContainerFrame:CGRectMake(- self.frostedViewController.calculatedMenuViewSize.width, 0, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
             [self setBackgroundViewsAlpha:0];
         } completion:^(BOOL finished) {
