@@ -25,19 +25,17 @@
 @implementation FTFContainerViewController
 
 - (UIViewController *)contentViewController {
-    if (!_contentViewController) {
-        UINavigationController *collectionNavVC = [self.storyboard instantiateViewControllerWithIdentifier:@"collectionViewNavController"];
-        FTFSideMenuViewController *menuController = [self.storyboard instantiateViewControllerWithIdentifier:@"sidemenuVC"];
-        REFrostedViewController *frostedViewController = [[REFrostedViewController alloc] initWithContentViewController:collectionNavVC menuViewController:menuController];
-        frostedViewController.direction = REFrostedViewControllerDirectionLeft;
-        frostedViewController.liveBlurBackgroundStyle = REFrostedViewControllerLiveBackgroundStyleDark;
-        frostedViewController.animationDuration = 0.4;
-        frostedViewController.panGestureEnabled = YES;
-        CGSize size = self.view.bounds.size;
-        size.width = size.width / 1.5;
-        frostedViewController.menuViewSize = size;
-        _contentViewController = frostedViewController;
-    }
+    UINavigationController *collectionNavVC = [self.storyboard instantiateViewControllerWithIdentifier:@"collectionViewNavController"];
+    FTFSideMenuViewController *menuController = [self.storyboard instantiateViewControllerWithIdentifier:@"sidemenuVC"];
+    REFrostedViewController *frostedViewController = [[REFrostedViewController alloc] initWithContentViewController:collectionNavVC menuViewController:menuController];
+    frostedViewController.direction = REFrostedViewControllerDirectionLeft;
+    frostedViewController.liveBlurBackgroundStyle = REFrostedViewControllerLiveBackgroundStyleDark;
+    frostedViewController.animationDuration = 0.4;
+    frostedViewController.panGestureEnabled = YES;
+    CGSize size = self.view.bounds.size;
+    size.width = size.width / 1.5;
+    frostedViewController.menuViewSize = size;
+    _contentViewController = frostedViewController;
     return _contentViewController;
 }
 
