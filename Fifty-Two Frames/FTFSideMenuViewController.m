@@ -16,11 +16,9 @@
 @import SafariServices;
 #include "REFrostedViewController.h"
 
-@interface FTFSideMenuViewController ()
+@interface FTFSideMenuViewController () <SFSafariViewControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIImageView *userProfilePicture;
-@property (weak, nonatomic) IBOutlet UILabel *name;
-
+@property (nonatomic, strong) NSArray *menuItems;
 
 @end
 
@@ -100,11 +98,13 @@
     }
     
     if (indexPath.row != 4) {
-        FTFPhotoCollectionGridViewController *grid = (FTFPhotoCollectionGridViewController *)self.frostedViewController.contentViewController;
+        UINavigationController *grid = (UINavigationController *)self.frostedViewController.contentViewController;
         SFSafariViewController *safariVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:urlString] entersReaderIfAvailable:NO];
+        safariVC.view.tintColor = [UIColor orangeColor];
+        safariVC.delegate = self;
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
         [grid presentViewController:safariVC animated:YES completion:nil];
     }
-    
     
     [self.frostedViewController hideMenuViewController];
 
@@ -112,6 +112,14 @@
 
 #pragma mark -
 #pragma mark UITableView Datasource
+
+- (NSArray *)menuItems {
+    if (!_menuItems) {
+        _menuItems = @[@"This week's challenge", @"About 52Frames", @"Join the community", @"Become a Patron", @"Log out"];
+    }
+    
+    return _menuItems;
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -125,7 +133,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
 {
-    return 5;
+    return self.menuItems.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -139,11 +147,16 @@
     }
     
     if (indexPath.section == 0) {
-        NSArray *titles = @[@"This week's challenge", @"About 52Frames", @"Join the community", @"Become a Patron", @"Log out"];
-        cell.textLabel.text = titles[indexPath.row];
+        cell.textLabel.text = self.menuItems[indexPath.row];
     }
     
     return cell;
+}
+
+#pragma mark - SFSafariViewControllerDelegate
+
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 @end
