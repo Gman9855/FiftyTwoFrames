@@ -13,6 +13,7 @@
 #import "UIImageView+WebCache.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <FBSDKShareKit/FBSDKShareKit.h>
 @import SafariServices;
 #include "REFrostedViewController.h"
 
@@ -60,6 +61,22 @@
         [view addSubview:label];
         view;
     });
+    
+    UIView *likeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 35)];
+    FBSDKLikeControl *likeButton = [FBSDKLikeControl new];
+    likeButton.objectID = @"http://www.facebook.com/52Frames";
+    likeButton.likeControlHorizontalAlignment = FBSDKLikeControlHorizontalAlignmentLeft;
+    likeButton.likeControlStyle = FBSDKLikeControlStyleBoxCount;
+    UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(18, 0, likeButton.frame.size.height, likeButton.frame.size.height)];
+    logo.image = [UIImage imageNamed:@"52f-square-whitebg-large"];
+    logo.layer.cornerRadius = 3;
+    
+    CGRect frame = likeButton.frame;
+    frame.origin.x = 55;
+    likeButton.frame = frame;
+    [likeView addSubview:logo];
+    [likeView addSubview:likeButton];
+    self.tableView.tableFooterView = likeView;
 }
 
 #pragma mark -
@@ -73,8 +90,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"Lato-Regular" size:17];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSString *urlString;
     switch (indexPath.row) {
