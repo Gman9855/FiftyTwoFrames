@@ -28,14 +28,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.separatorColor = [UIColor colorWithRed:150/255.0f green:161/255.0f blue:177/255.0f alpha:1.0f];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.tableView setShowsVerticalScrollIndicator:NO];
+    self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.opaque = NO;
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.tableHeaderView = ({
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 214.0f)];
+        UIView *lineSeparator = [[UIView alloc] initWithFrame:CGRectMake(0, 213.75, self.view.bounds.size.width, 0.25)];
+        lineSeparator.backgroundColor = [UIColor darkGrayColor];
+        [view addSubview:lineSeparator];
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 40, 100, 100)];
         imageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         FiftyTwoFrames *ftf = [FiftyTwoFrames sharedInstance];
@@ -43,7 +47,7 @@
         [imageView setImageWithURL:ftf.user.profilePictureURL];
         imageView.layer.masksToBounds = YES;
         imageView.layer.cornerRadius = 50.0;
-        imageView.layer.borderColor = [UIColor orangeColor].CGColor;
+        imageView.layer.borderColor = [UIColor whiteColor].CGColor;
         imageView.layer.borderWidth = 3.0f;
         imageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
         imageView.layer.shouldRasterize = YES;
@@ -61,22 +65,6 @@
         [view addSubview:label];
         view;
     });
-    
-    UIView *likeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 35)];
-    FBSDKLikeControl *likeButton = [FBSDKLikeControl new];
-    likeButton.objectID = @"http://www.facebook.com/52Frames";
-    likeButton.likeControlHorizontalAlignment = FBSDKLikeControlHorizontalAlignmentLeft;
-    likeButton.likeControlStyle = FBSDKLikeControlStyleBoxCount;
-    UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(18, 0, likeButton.frame.size.height, likeButton.frame.size.height)];
-    logo.image = [UIImage imageNamed:@"52f-square-whitebg-large"];
-    logo.layer.cornerRadius = 3;
-    
-    CGRect frame = likeButton.frame;
-    frame.origin.x = 55;
-    likeButton.frame = frame;
-    [likeView addSubview:logo];
-    [likeView addSubview:likeButton];
-    self.tableView.tableFooterView = likeView;
 }
 
 #pragma mark -
@@ -107,13 +95,16 @@
             urlString = @"http://www.patreon.com/52Frames";
             break;
         case 4:
+            urlString = @"http://www.facebook.com/52Frames";
+            break;
+        case 5:
             [[FBSDKLoginManager new] logOut];
             break;
         default:
             break;
     }
     
-    if (indexPath.row != 4) {
+    if (indexPath.row != 5) {
         UINavigationController *grid = (UINavigationController *)self.frostedViewController.contentViewController;
         SFSafariViewController *safariVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:urlString] entersReaderIfAvailable:NO];
         safariVC.view.tintColor = [UIColor orangeColor];
@@ -131,7 +122,7 @@
 
 - (NSArray *)menuItems {
     if (!_menuItems) {
-        _menuItems = @[@"This week's challenge", @"About 52Frames", @"Join the community", @"Become a Patron", @"Log out"];
+        _menuItems = @[@"This week's challenge", @"About 52Frames", @"Join the community", @"Become a Patron", @"Like us on Facebook", @"Log out"];
     }
     
     return _menuItems;
