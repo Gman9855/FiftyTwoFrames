@@ -222,6 +222,7 @@
         <!--Side Menu View Controller-->
         <scene sceneID="so6-NP-p3c">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RZS-nw-jux" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController storyboardIdentifier="sidemenuVC" id="LkC-IW-rdm" customClass="FTFSideMenuViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="dbz-yX-dNM">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
@@ -245,7 +246,6 @@
                         </connections>
                     </tableView>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="RZS-nw-jux" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1180.5" y="851.25"/>
         </scene>

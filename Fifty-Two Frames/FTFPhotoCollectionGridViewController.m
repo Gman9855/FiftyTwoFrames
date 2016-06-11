@@ -177,7 +177,7 @@ BOOL didLikePhotoFromBrowser = NO;
     int indexOfPhoto = [notification.object intValue];
     NSIndexPath *ip = [NSIndexPath indexPathForRow:indexOfPhoto inSection:0];
     FTFImage *photoAtIndex = self.gridPhotos[indexOfPhoto];
-    FTFCollectionViewCell *cell = (FTFCollectionViewCell *)[self.collectionView cellForRowAtIndexPath:ip];
+    FTFCollectionViewCell *cell = (FTFCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:ip];
     [self handlePhotoLikeWithCell:cell andPhoto:photoAtIndex];
 }
 
