@@ -266,14 +266,18 @@ BOOL didLikePhotoFromBrowser = NO;
         self.gridPhotos = photos;
         self.cachedAlbumPhotos = photos;
         _finishedPaging = finishedPaging;
-        [self.collectionView reloadData];
+        [self.collectionView performBatchUpdates:^{
+            [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+        } completion:nil];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSIndexPath *ip = [NSIndexPath indexPathForItem:0 inSection:0];
+            [self.collectionView scrollToItemAtIndexPath:ip atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+        });
         
 //        self.settingsButton.enabled = YES;
         self.gridButton.enabled = YES;
         self.albumInfoButton.enabled = YES;
-        NSIndexPath *ip = [NSIndexPath indexPathForItem:0 inSection:0];
-        
-        [self.collectionView scrollToItemAtIndexPath:ip atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
         
         [UIView animateWithDuration:1.5 animations:^{
             self.navigationItem.titleView.alpha = 0.0;
@@ -476,8 +480,13 @@ BOOL didLikePhotoFromBrowser = NO;
         [self setFilterIconEnabled:YES];
         self.gridPhotos = photos;
         _showingFilteredResults = YES;
-        [self.collectionView reloadData];
-        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+        [self.collectionView performBatchUpdates:^{
+            [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+        } completion:nil];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+        });
         self.collectionReusableView.hidden = YES;
     }];
 }
@@ -553,18 +562,21 @@ BOOL didLikePhotoFromBrowser = NO;
 //    }
     
     [cell updateCellsForLayout:self.currentLayout];
-    
+    cell.thumbnailView.backgroundColor = [UIColor darkGrayColor];
+
     [cell.thumbnailView setImageWithURL:photoAtIndex.smallPhotoURL
-                       placeholderImage:[UIImage imageNamed:@"placeholder"]
+                       placeholderImage:nil
                                 options:SDWebImageRetryFailed
                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                                    if (cacheType == SDImageCacheTypeNone || cacheType == SDImageCacheTypeDisk) {
+                                  NSLog(@"Cache type:  %ld", (long)cacheType);
+                                    if (cacheType == SDImageCacheTypeNone) {
                                         CATransition *t = [CATransition animation];
-                                        t.duration = 0.12;
+                                        t.duration = 0.17;
+                                        t.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
                                         t.type = kCATransitionFade;
                                         [cell.thumbnailView.layer addAnimation:t forKey:@"ftf"];
                                     }
-
+                                    cell.thumbnailView.backgroundColor = [UIColor blackColor];
                                     cell.thumbnailView.image = image;
     }];
     
