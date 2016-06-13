@@ -107,6 +107,7 @@ typedef enum {
     saveButton.backgroundColor = [UIColor orangeColor];
     [saveButton setTitle:@"Save" forState:UIControlStateNormal];
     saveButton.titleLabel.font = [UIFont fontWithName:@"Lato-Bold" size:16];
+    saveButton.alpha = 0.8;
     [saveButton addTarget:self action:@selector(saveButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.navigationController.view addSubview:saveButton];
 
