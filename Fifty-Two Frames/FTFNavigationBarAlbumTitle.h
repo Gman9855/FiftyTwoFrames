@@ -13,5 +13,8 @@
 - (instancetype)initWithTitle:(NSString *)title;
 
 - (void)setAttributedTitleWithText:(NSString *)title;
+- (void)startAnimating;
+- (void)stopAnimating;
+
 
 @end

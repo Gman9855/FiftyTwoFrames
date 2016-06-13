@@ -708,14 +708,15 @@ BOOL didLikePhotoFromBrowser = NO;
 
             if (!_finishedPaging) {
                 if (![self.navBarAlbumTitle.text isEqualToString:@"Loading more photos..."]) {
-                    [UIView animateWithDuration:0.5 animations:^{
-                        self.navigationItem.titleView.alpha = 0.0;
-                        [self.navBarAlbumTitle setAttributedTitleWithText:@"Loading more photos..."];
-                        self.navigationItem.titleView.alpha = 1.0;
-                    }];
+//                    [UIView animateWithDuration:0.5 animations:^{
+//                        self.navigationItem.titleView.alpha = 0.0;
+//                        [self.navBarAlbumTitle setAttributedTitleWithText:@"Loading more photos..."];
+//                        self.navigationItem.titleView.alpha = 1.0;
+//                    }];
+                    [self.navBarAlbumTitle setAttributedTitleWithText:@"Loading more photos..."];
+                    [self.navBarAlbumTitle startAnimating];
                 }
                 [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosFromFilteredResults:_showingFilteredResults withCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
-                    
                     NSMutableArray *albumPhotos = [self.gridPhotos mutableCopy];
                     [albumPhotos addObjectsFromArray:photos];
                     NSInteger gridPhotosCount = self.gridPhotos.count;
@@ -727,6 +728,7 @@ BOOL didLikePhotoFromBrowser = NO;
                         _unfilteredPhotosFinishedPaging = finishedPaging;
                         self.cachedAlbumPhotos = [self.gridPhotos copy];
                     }
+                    [self.navBarAlbumTitle stopAnimating];
                     [self.collectionView performBatchUpdates:^{
                         NSMutableArray *indexPaths = [NSMutableArray new];
                         for (NSInteger i = gridPhotosCount; i < gridPhotosCount + photos.count; i++) {
