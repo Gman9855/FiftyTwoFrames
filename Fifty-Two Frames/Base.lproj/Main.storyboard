@@ -222,7 +222,6 @@
         <!--Side Menu View Controller-->
         <scene sceneID="so6-NP-p3c">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="RZS-nw-jux" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController storyboardIdentifier="sidemenuVC" id="LkC-IW-rdm" customClass="FTFSideMenuViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="dbz-yX-dNM">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
@@ -230,10 +229,10 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="122" id="W59-Jk-9GR">
-                                <rect key="frame" x="0.0" y="35" width="600" height="143"/>
+                                <rect key="frame" x="0.0" y="49.5" width="600" height="122"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="W59-Jk-9GR" id="eJ4-9v-2s7">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="142.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="121.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -246,6 +245,7 @@
                         </connections>
                     </tableView>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RZS-nw-jux" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1180.5" y="851.25"/>
         </scene>
@@ -570,7 +570,7 @@
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="2ms-lF-24l"/>
                         <barButtonItem image="Grid" id="6hq-8B-leE">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="toggleLayout:" destination="iZh-Zc-LQJ" id="3Co-GZ-Dif"/>
                             </connections>

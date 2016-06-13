@@ -58,7 +58,7 @@ BOOL isAnimating = YES;
 - (void)startAnimating {
     if (isAnimating) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [UIView animateWithDuration:0.25 animations:^{
+            [UIView animateWithDuration:0.35 animations:^{
                 self.alpha = !self.alpha;
             } completion:^(BOOL finished) {
                 [self startAnimating];

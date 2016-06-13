@@ -310,10 +310,10 @@ BOOL didLikePhotoFromBrowser = NO;
     BOOL isListLayout = self.collectionView.collectionViewLayout == self.listLayout;
     UICollectionViewLayout *layout = isListLayout ? self.gridLayout : self.listLayout;
     NSString *layoutType = isListLayout ? @"grid" : @"list";
-    NSString *toolbarIconImageName = isListLayout ? @"DefaultStyle" : @"Grid";
     
     self.currentLayout = layout;
-    self.layoutToggleButton.image = [UIImage imageNamed:toolbarIconImageName];
+    self.layoutToggleButton.tintColor = isListLayout ? [UIColor orangeColor] : [UIColor whiteColor];
+    
     
     NSDictionary *userInfo = @{@"layout": layout, @"layoutType": layoutType};
     
