@@ -14,7 +14,6 @@
             <string>Lato-Bold</string>
             <string>Lato-Bold</string>
             <string>Lato-Bold</string>
-            <string>Lato-Bold</string>
         </mutableArray>
         <mutableArray key="Lato-Regular.ttf">
             <string>Lato-Regular</string>
@@ -358,9 +357,6 @@
                                                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="13"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
-                                                            <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                                <rect key="frame" x="5" y="5" width="74" height="18.5"/>
-                                                            </variation>
                                                         </label>
                                                         <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MuI-sK-lu0" customClass="FTFLikeButton">
                                                             <rect key="frame" x="527" y="296" width="27" height="23"/>
@@ -2051,60 +2047,8 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="fYd-9D-DTt">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="mx9-hd-hdO">
-                                        <rect key="frame" x="0.0" y="1349.5" width="600" height="54"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mx9-hd-hdO" id="giw-g1-BJs">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="53.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U7n-J5-I7c">
-                                                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                                    <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="15"/>
-                                                    <state key="normal" title="Save">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="7"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="saveButtonTapped:" destination="rOI-sC-pRY" eventType="touchUpInside" id="O80-em-w4q"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="U7n-J5-I7c" secondAttribute="trailing" constant="20" id="27M-cH-a6W"/>
-                                                <constraint firstItem="U7n-J5-I7c" firstAttribute="centerY" secondItem="giw-g1-BJs" secondAttribute="centerY" id="HQ1-iY-bqq"/>
-                                                <constraint firstItem="U7n-J5-I7c" firstAttribute="leading" secondItem="giw-g1-BJs" secondAttribute="leadingMargin" constant="20" id="vA1-0f-W7G"/>
-                                            </constraints>
-                                            <variation key="default">
-                                                <mask key="subviews">
-                                                    <exclude reference="U7n-J5-I7c"/>
-                                                </mask>
-                                                <mask key="constraints">
-                                                    <exclude reference="27M-cH-a6W"/>
-                                                    <exclude reference="HQ1-iY-bqq"/>
-                                                    <exclude reference="vA1-0f-W7G"/>
-                                                </mask>
-                                            </variation>
-                                            <variation key="heightClass=regular-widthClass=compact">
-                                                <mask key="subviews">
-                                                    <include reference="U7n-J5-I7c"/>
-                                                </mask>
-                                                <mask key="constraints">
-                                                    <include reference="27M-cH-a6W"/>
-                                                    <include reference="HQ1-iY-bqq"/>
-                                                    <include reference="vA1-0f-W7G"/>
-                                                </mask>
-                                            </variation>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
+                            <tableViewSection id="dMj-xe-U8J">
+                                <cells/>
                             </tableViewSection>
                         </sections>
                         <connections>

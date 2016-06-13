@@ -101,6 +101,14 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    saveButton.frame = CGRectMake(0, self.view.bounds.size.height - 44, self.view.bounds.size.width, 44);
+    saveButton.backgroundColor = [UIColor orangeColor];
+    [saveButton setTitle:@"Save" forState:UIControlStateNormal];
+    saveButton.titleLabel.font = [UIFont fontWithName:@"Lato-Bold" size:16];
+    [saveButton addTarget:self action:@selector(saveButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationController.view addSubview:saveButton];
+
     self.navigationItem.rightBarButtonItem.title = @"";
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.searchTextField.delegate = self;
@@ -115,7 +123,7 @@ typedef enum {
     }
 }
 
-- (IBAction)saveButtonTapped:(UIButton *)sender {
+- (void)saveButtonTapped:(UIButton *)sender {
     if (![self shouldSaveFilters]) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Oops!" message:@"Looks like you missed something." preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
