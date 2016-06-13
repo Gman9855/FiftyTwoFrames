@@ -90,6 +90,7 @@ typedef enum {
 @property (nonatomic, assign) BOOL critiqueTypeShredAwayIsSelected;
 @property (nonatomic, assign) BOOL critiqueTypeExtraSensitiveIsSelected;
 @property (nonatomic, assign) BOOL critiqueTypeNotInterestedIsSelected;
+@property (nonatomic, assign) BOOL isShowingFilteredResults;
 
 @end
 
@@ -109,8 +110,6 @@ typedef enum {
     [saveButton addTarget:self action:@selector(saveButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.navigationController.view addSubview:saveButton];
 
-    self.navigationItem.rightBarButtonItem.title = @"";
-    self.navigationItem.rightBarButtonItem.enabled = NO;
     self.searchTextField.delegate = self;
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapReceivedInView:)];
     tapGestureRecognizer.cancelsTouchesInView = NO;
@@ -216,26 +215,23 @@ typedef enum {
                                         };
     
     [self.delegate filtersViewControllerDidSaveFilters:filtersDictionary];
-    [self dismissViewControllerAnimated:YES completion:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!self.navigationItem.rightBarButtonItem.enabled) {
-                self.navigationItem.rightBarButtonItem.title = @"Reset";
-                self.navigationItem.rightBarButtonItem.enabled = YES;
-            }
-        });
-    }];
+    self.isShowingFilteredResults = YES;
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)resetButtonTapped:(UIBarButtonItem *)sender {
-    [self resetFilters];
-    
-    [self.delegate filtersViewControllerDidResetFilters];
-    if ([self.searchTextField isFirstResponder]) {
-        [self.searchTextField resignFirstResponder];
+    if ([self shouldSaveFilters]) {
+        [self resetFilters];
+        
+        if (self.isShowingFilteredResults) {
+            [self.delegate filtersViewControllerDidResetFilters];
+            self.isShowingFilteredResults = NO;
+        }
+        
+        if ([self.searchTextField isFirstResponder]) {
+            [self.searchTextField resignFirstResponder];
+        }
     }
-    [self dismissViewControllerAnimated:YES completion:nil];
-    self.navigationItem.rightBarButtonItem.title = @"";
-    self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
 - (IBAction)apertureRangeSliderValueChanged:(FTFApertureRangeSlider *)sender {

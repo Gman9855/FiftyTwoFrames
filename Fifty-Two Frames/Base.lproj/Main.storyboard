@@ -357,6 +357,9 @@
                                                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="13"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
+                                                            <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                                <rect key="frame" x="5" y="5" width="74" height="18"/>
+                                                            </variation>
                                                         </label>
                                                         <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MuI-sK-lu0" customClass="FTFLikeButton">
                                                             <rect key="frame" x="527" y="296" width="27" height="23"/>
