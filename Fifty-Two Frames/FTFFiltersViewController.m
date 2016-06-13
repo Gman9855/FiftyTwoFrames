@@ -340,6 +340,8 @@ typedef enum {
                 case FTFMoreFiltersSectionCritiqueTypeDropdown:
                     self.critiqueTypeDropdownIsSelected = !self.critiqueTypeDropdownIsSelected;
                     [self updateSubmenuCellVisibility];
+                    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:FTFMoreFiltersSectionCritiqueTypeNotInterested inSection:indexPath.section] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                    
                     return nil;
                 case FTFMoreFiltersSectionCritiqueTypeRegular:
                     self.critiqueTypeRegularIsSelected = !self.critiqueTypeRegularIsSelected;
@@ -378,6 +380,7 @@ typedef enum {
             switch (indexPath.row) {
                 case FTFSortBySectionDropdown:
                     [self updateSubmenuCellVisibility];
+                    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:FTFSortBySectionComments inSection:indexPath.section] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
                     return nil;
                 case FTFSortBySectionDefault:
                     self.sortByDefaultIsSelected = YES;
