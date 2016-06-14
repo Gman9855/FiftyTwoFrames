@@ -71,6 +71,7 @@ BOOL didLikePhotoFromBrowser = NO;
     BOOL _albumSelectionChanged;
     BOOL _morePhotosToLoad;
     BOOL _finishedPaging;
+    BOOL _isLoadingMorePhotos;
     BOOL _unfilteredPhotosFinishedPaging;
     BOOL _didUpdateCells;
     BOOL _layoutDidChange;
@@ -663,7 +664,7 @@ BOOL didLikePhotoFromBrowser = NO;
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
     
-    if (self.gridPhotos.count - index < 4 && !_finishedPaging) {
+    if (self.gridPhotos.count - index < 4 && !_finishedPaging && !_isLoadingMorePhotos) {
         [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosFromFilteredResults:_showingFilteredResults withCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
             _finishedPaging = finishedPaging;
             NSMutableArray *albumPhotos = [self.gridPhotos mutableCopy];
@@ -718,6 +719,7 @@ BOOL didLikePhotoFromBrowser = NO;
                         self.navigationItem.titleView.alpha = 1.0;
                     }];
                 }
+                _isLoadingMorePhotos = YES;
                 [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosFromFilteredResults:_showingFilteredResults withCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
                     NSMutableArray *albumPhotos = [self.gridPhotos mutableCopy];
                     [albumPhotos addObjectsFromArray:photos];
@@ -744,6 +746,12 @@ BOOL didLikePhotoFromBrowser = NO;
                             [self.navBarAlbumTitle setAttributedTitleWithText:self.albumToDisplay.name];
                             self.navigationItem.titleView.alpha = 1.0;
                             _morePhotosToLoad = YES;
+                            _isLoadingMorePhotos = NO;
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                self.photoBrowser.albumPhotos = self.gridPhotos;
+                                [self.photoBrowser reloadData];
+
+                            });
                         }];
                     }];
                 }];
