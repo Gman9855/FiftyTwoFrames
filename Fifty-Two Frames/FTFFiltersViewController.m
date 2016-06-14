@@ -114,7 +114,8 @@ typedef enum {
                   action:@selector(textFieldDidChange:)
         forControlEvents:UIControlEventEditingChanged];
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    saveButton.frame = CGRectMake(0, self.view.bounds.size.height - 44, self.view.bounds.size.width, 44);
+    saveButton.frame = CGRectMake(15, self.view.bounds.size.height - 54, self.view.bounds.size.width - 30, 44);
+    saveButton.layer.cornerRadius = 5;
     saveButton.backgroundColor = [UIColor orangeColor];
     [saveButton setTitle:@"Save" forState:UIControlStateNormal];
     saveButton.titleLabel.font = [UIFont fontWithName:@"Lato-Bold" size:16];
