@@ -333,8 +333,16 @@ BOOL didLikePhotoFromBrowser = NO;
 - (IBAction)albumInfoButtonTapped:(UIBarButtonItem *)sender {
     FTFAlbumDescriptionViewController *albumDescriptionVC = (FTFAlbumDescriptionViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"albumDescriptionVC"];
     albumDescriptionVC.album = self.albumToDisplay;
+    UIBlurEffect * blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *beView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    beView.frame = self.view.bounds;
+    
+    albumDescriptionVC.view.frame = self.view.bounds;
+    albumDescriptionVC.view.backgroundColor = [UIColor clearColor];
+    [albumDescriptionVC.view insertSubview:beView atIndex:0];
+    albumDescriptionVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    
     albumDescriptionVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [albumDescriptionVC setModalPresentationStyle:UIModalPresentationOverCurrentContext];
     [self presentViewController:albumDescriptionVC animated:YES completion:nil];
 }
 
