@@ -122,7 +122,7 @@
 
 - (NSArray *)menuItems {
     if (!_menuItems) {
-        _menuItems = @[@"This week's challenge", @"About 52Frames", @"Join the community", @"Become a Patron", @"Like us on Facebook", @"Log out"];
+        _menuItems = @[@"This week's challenge", @"About 52Frames", @"Join the community", @"Become a Patron", @"Like 52F on Facebook", @"Log out"];
     }
     
     return _menuItems;
