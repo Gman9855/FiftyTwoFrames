@@ -144,8 +144,7 @@ static NSString * const reuseIdentifier = @"reuseIdentifier";
 
 #pragma mark - View Controller Lifecycle
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     [self setUpNoAlbumsLabelAppearance];

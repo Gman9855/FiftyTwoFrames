@@ -358,7 +358,7 @@
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                             <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                                <rect key="frame" x="5" y="5" width="74" height="18"/>
+                                                                <rect key="frame" x="5" y="5" width="74" height="18.5"/>
                                                             </variation>
                                                         </label>
                                                         <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MuI-sK-lu0" customClass="FTFLikeButton">
@@ -561,7 +561,7 @@
                         </connections>
                     </collectionView>
                     <toolbarItems>
-                        <barButtonItem image="Menu" id="2TP-we-hYh">
+                        <barButtonItem image="AlbumMenu" id="2TP-we-hYh">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="albumMenuButtonTapped:" destination="iZh-Zc-LQJ" id="tLC-Ui-Jlu"/>
@@ -2133,7 +2133,7 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="72" sectionHeaderHeight="22" sectionFooterHeight="22" id="7ge-Jf-o5k">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="reuseIdentifier" rowHeight="72" id="7fG-Bq-XFC" customClass="FTFAlbumSelectionMenuTableViewCell">
                                 <rect key="frame" x="0.0" y="86" width="600" height="72"/>
@@ -2153,7 +2153,7 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="albumName" destination="Bdc-g7-br3" id="eiT-T9-hFJ"/>
                                     <outlet property="albumThumbnail" destination="ANg-bt-Viq" id="j67-gV-9uB"/>
@@ -2196,8 +2196,8 @@
                             </connections>
                         </segmentedControl>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="segmentedControl" destination="R2j-DH-PeO" id="xEl-5Z-BRy"/>
                         <outlet property="yearButton" destination="SyI-Uc-dci" id="zYC-Hn-Hya"/>
@@ -2659,6 +2659,7 @@
     </scenes>
     <resources>
         <image name="52f-square-whitebg-large.png" width="2000" height="2000"/>
+        <image name="AlbumMenu" width="22" height="22"/>
         <image name="Checked" width="100" height="100"/>
         <image name="DownArrow-Regular" width="96" height="96"/>
         <image name="Grid" width="22" height="22"/>

@@ -82,6 +82,14 @@ BOOL didLikePhotoFromBrowser = NO;
 - (UINavigationController *)albumSelectionMenuNavigationController {
     if (!_albumSelectionMenuNavigationController) {
         _albumSelectionMenuNavigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"albumListNavController"];
+        UIBlurEffect * blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+        UIVisualEffectView *beView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        beView.frame = self.view.bounds;
+        
+        _albumSelectionMenuNavigationController.view.frame = self.view.bounds;
+        _albumSelectionMenuNavigationController.view.backgroundColor = [UIColor clearColor];
+        [_albumSelectionMenuNavigationController.view insertSubview:beView atIndex:0];
+        _albumSelectionMenuNavigationController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     }
     return _albumSelectionMenuNavigationController;
 }
@@ -181,23 +189,12 @@ BOOL didLikePhotoFromBrowser = NO;
     [self handlePhotoLikeWithCell:cell andPhoto:photoAtIndex];
 }
 
-//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-//    if ([keyPath isEqual:@"gridPhotos"]) {
-//        if (self.shouldReloadData) {
-//            [self.collectionView reloadData];
-//        }
-//    }
-//}
-
 - (void)showProgressHudWithText:(NSString *)text {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     if (![text isEqualToString:@""]) {
         hud.labelText = text;
         hud.labelFont = [UIFont fontWithName:@"Lato-Regular" size:16];
     }
-    
-    //    [hud setCenter:[self.view convertPoint:self.view.center fromView:self.view.superview]];
-    //    [hud setCenter:CGPointMake(self.view.bounds.size.height/2, self.view.bounds.size.width/2)];
 }
 
 - (void)albumSelectionChanged:(NSNotification *)notification {
@@ -208,10 +205,11 @@ BOOL didLikePhotoFromBrowser = NO;
     albumSelectionChanged = YES;
     _morePhotosToLoad = NO;
     _showingFilteredResults = NO;
-    [self showProgressHudWithText:nil];
     [self.photoBrowser setCurrentPhotoIndex:0];
     
     self.albumToDisplay = [notification.userInfo objectForKey:@"selectedAlbum"];
+    [self showProgressHudWithText:[NSString stringWithFormat:@"Loading %@", self.albumToDisplay.name]];
+
     [[FiftyTwoFrames sharedInstance]requestAlbumPhotosForAlbumWithAlbumID:self.albumToDisplay.albumID
                                                           completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
                                                               [self setFilterIconEnabled:NO];
@@ -289,9 +287,7 @@ BOOL didLikePhotoFromBrowser = NO;
     }
 }
 
-
 #pragma mark - Action Methods
-
 
 - (IBAction)albumMenuButtonTapped:(UIBarButtonItem *)sender {
     [self presentViewController:self.albumSelectionMenuNavigationController animated:true completion:nil];
@@ -461,7 +457,7 @@ BOOL didLikePhotoFromBrowser = NO;
 #pragma mark - FTFFiltersViewControllerDelegate
 
 - (void)filtersViewControllerDidSaveFilters:(NSDictionary *)filtersDictionary {
-    [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    [self showProgressHudWithText:@"Applying filters"];
     [[FiftyTwoFrames sharedInstance] requestAlbumPhotosWithFilters:filtersDictionary albumId:self.albumToDisplay.albumID completionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
         [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
         _finishedPaging = finishedPaging;
@@ -708,13 +704,11 @@ BOOL didLikePhotoFromBrowser = NO;
 
             if (!_finishedPaging) {
                 if (![self.navBarAlbumTitle.text isEqualToString:@"Loading more photos..."]) {
-//                    [UIView animateWithDuration:0.5 animations:^{
-//                        self.navigationItem.titleView.alpha = 0.0;
-//                        [self.navBarAlbumTitle setAttributedTitleWithText:@"Loading more photos..."];
-//                        self.navigationItem.titleView.alpha = 1.0;
-//                    }];
-                    [self.navBarAlbumTitle setAttributedTitleWithText:@"Loading more photos..."];
-                    [self.navBarAlbumTitle startAnimating];
+                    [UIView animateWithDuration:0.5 animations:^{
+                        self.navigationItem.titleView.alpha = 0.0;
+                        [self.navBarAlbumTitle setAttributedTitleWithText:@"Loading more photos..."];
+                        self.navigationItem.titleView.alpha = 1.0;
+                    }];
                 }
                 [[FiftyTwoFrames sharedInstance] requestNextPageOfAlbumPhotosFromFilteredResults:_showingFilteredResults withCompletionBlock:^(NSArray *photos, NSError *error, BOOL finishedPaging) {
                     NSMutableArray *albumPhotos = [self.gridPhotos mutableCopy];
@@ -728,7 +722,6 @@ BOOL didLikePhotoFromBrowser = NO;
                         _unfilteredPhotosFinishedPaging = finishedPaging;
                         self.cachedAlbumPhotos = [self.gridPhotos copy];
                     }
-                    [self.navBarAlbumTitle stopAnimating];
                     [self.collectionView performBatchUpdates:^{
                         NSMutableArray *indexPaths = [NSMutableArray new];
                         for (NSInteger i = gridPhotosCount; i < gridPhotosCount + photos.count; i++) {
