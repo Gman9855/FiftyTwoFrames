@@ -39,6 +39,8 @@
             <string>Lato-Regular</string>
             <string>Lato-Regular</string>
             <string>Lato-Regular</string>
+            <string>Lato-Regular</string>
+            <string>Lato-Regular</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -357,6 +359,9 @@
                                                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="13"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
+                                                            <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                                <rect key="frame" x="5" y="5" width="74" height="18"/>
+                                                            </variation>
                                                         </label>
                                                         <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MuI-sK-lu0" customClass="FTFLikeButton">
                                                             <rect key="frame" x="527" y="296" width="27" height="23"/>
@@ -756,6 +761,9 @@
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="28" y="13.5" width="54" height="16.5"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <constraints>
@@ -872,6 +880,9 @@
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="28" y="13.5" width="90.5" height="16.5"/>
+                                                    </variation>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="YlU-tW-i7E">
                                                     <rect key="frame" x="-25" y="-15" width="51" height="31"/>
@@ -945,6 +956,9 @@
                                                     <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="28" y="8" width="128" height="15.5"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <constraints>
@@ -1068,6 +1082,9 @@
                                                     <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="28" y="8" width="135" height="15.5"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <constraints>
@@ -1125,6 +1142,9 @@
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="28" y="18.5" width="81.5" height="16.5"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <constraints>
@@ -1172,6 +1192,9 @@
                                                     <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="28" y="8" width="86" height="15.5"/>
+                                                    </variation>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aMe-dN-vAz" customClass="FTFFocalLengthRangeSlider">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -1245,10 +1268,16 @@
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="17" y="13" width="89.5" height="17.5"/>
+                                                    </variation>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="CGl-Mh-nhr">
                                                     <rect key="frame" x="-25" y="-15" width="51" height="31"/>
                                                     <color key="onTintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <connections>
+                                                        <action selector="toggleResetButtonHidden:" destination="rOI-sC-pRY" eventType="valueChanged" id="csk-3S-RiK"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -1293,12 +1322,18 @@
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="fUj-kd-cj3">
                                                     <rect key="frame" x="-25" y="-15" width="51" height="31"/>
                                                     <color key="onTintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <connections>
+                                                        <action selector="toggleResetButtonHidden:" destination="rOI-sC-pRY" eventType="valueChanged" id="6lS-Tx-l6I"/>
+                                                    </connections>
                                                 </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Extra Credit Challenge" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tk1-uS-dkZ">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="17" y="13" width="151" height="17.5"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <constraints>
@@ -1416,6 +1451,9 @@
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="28" y="13.5" width="101.5" height="16.5"/>
+                                                    </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Unchecked" translatesAutoresizingMaskIntoConstraints="NO" id="Zf5-gE-6YL">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -1564,6 +1602,9 @@
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="28" y="13.5" width="91" height="16.5"/>
+                                                    </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Unchecked" translatesAutoresizingMaskIntoConstraints="NO" id="y3i-L7-hcL">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -1638,6 +1679,9 @@
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="28" y="13.5" width="88.5" height="16.5"/>
+                                                    </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Unchecked" translatesAutoresizingMaskIntoConstraints="NO" id="ttH-cN-1b4">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -1716,6 +1760,9 @@
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="17" y="13" width="48" height="17.5"/>
+                                                    </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DownArrow-Regular" translatesAutoresizingMaskIntoConstraints="NO" id="UdY-94-uT9">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -1787,6 +1834,9 @@
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="28" y="13.5" width="44.5" height="16.5"/>
+                                                    </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checked" translatesAutoresizingMaskIntoConstraints="NO" id="RQj-hr-aY5">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -1856,7 +1906,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Likes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YjI-ON-iKD">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Likes (Ascending)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YjI-ON-iKD">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1923,6 +1973,80 @@
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="Swu-gK-fqp">
+                                        <rect key="frame" x="0.0" y="1225.5" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Swu-gK-fqp" id="Dt6-D6-WPZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Likes (Descending)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="POM-QN-pFO">
+                                                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Unchecked" translatesAutoresizingMaskIntoConstraints="NO" id="J6e-af-EgZ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="25.5" id="NaX-Pc-O0s">
+                                                            <variation key="heightClass=regular-widthClass=compact" constant="30"/>
+                                                        </constraint>
+                                                        <constraint firstAttribute="width" constant="25" id="Y6f-PF-Vez">
+                                                            <variation key="heightClass=regular-widthClass=compact" constant="30"/>
+                                                        </constraint>
+                                                    </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="Y6f-PF-Vez"/>
+                                                            <exclude reference="NaX-Pc-O0s"/>
+                                                        </mask>
+                                                    </variation>
+                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                        <mask key="constraints">
+                                                            <include reference="Y6f-PF-Vez"/>
+                                                            <include reference="NaX-Pc-O0s"/>
+                                                        </mask>
+                                                    </variation>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="leadingMargin" secondItem="POM-QN-pFO" secondAttribute="leading" id="GBh-UI-ZTv">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="-20"/>
+                                                </constraint>
+                                                <constraint firstItem="POM-QN-pFO" firstAttribute="centerY" secondItem="Dt6-D6-WPZ" secondAttribute="centerY" id="Lu5-qc-4dv"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="J6e-af-EgZ" secondAttribute="trailing" constant="15" id="grW-XV-yRg">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="10"/>
+                                                </constraint>
+                                                <constraint firstItem="J6e-af-EgZ" firstAttribute="centerY" secondItem="Dt6-D6-WPZ" secondAttribute="centerY" id="tlc-9U-7oO"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="subviews">
+                                                    <exclude reference="POM-QN-pFO"/>
+                                                    <exclude reference="J6e-af-EgZ"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <exclude reference="Lu5-qc-4dv"/>
+                                                    <exclude reference="GBh-UI-ZTv"/>
+                                                    <exclude reference="tlc-9U-7oO"/>
+                                                    <exclude reference="grW-XV-yRg"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="subviews">
+                                                    <include reference="POM-QN-pFO"/>
+                                                    <include reference="J6e-af-EgZ"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <include reference="Lu5-qc-4dv"/>
+                                                    <include reference="GBh-UI-ZTv"/>
+                                                    <include reference="tlc-9U-7oO"/>
+                                                    <include reference="grW-XV-yRg"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="3n1-9L-1tL">
                                         <rect key="frame" x="0.0" y="1269.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
@@ -1930,7 +2054,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Spr-SA-fCw">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comments (Ascending)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Spr-SA-fCw">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1997,6 +2121,80 @@
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="yv6-le-jzJ">
+                                        <rect key="frame" x="0.0" y="1269.5" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yv6-le-jzJ" id="gd2-mI-aBA">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comments (Descending)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8q9-yf-sD6">
+                                                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Unchecked" translatesAutoresizingMaskIntoConstraints="NO" id="r8U-Ig-wxw">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="25" id="DCx-YY-lca">
+                                                            <variation key="heightClass=regular-widthClass=compact" constant="30"/>
+                                                        </constraint>
+                                                        <constraint firstAttribute="height" constant="25.5" id="ZcQ-Uu-orW">
+                                                            <variation key="heightClass=regular-widthClass=compact" constant="30"/>
+                                                        </constraint>
+                                                    </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="ZcQ-Uu-orW"/>
+                                                            <exclude reference="DCx-YY-lca"/>
+                                                        </mask>
+                                                    </variation>
+                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                        <mask key="constraints">
+                                                            <include reference="ZcQ-Uu-orW"/>
+                                                            <include reference="DCx-YY-lca"/>
+                                                        </mask>
+                                                    </variation>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="r8U-Ig-wxw" firstAttribute="centerY" secondItem="gd2-mI-aBA" secondAttribute="centerY" id="02N-9M-FR6"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="r8U-Ig-wxw" secondAttribute="trailing" constant="15" id="0EM-ze-G8B">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="10"/>
+                                                </constraint>
+                                                <constraint firstItem="8q9-yf-sD6" firstAttribute="centerY" secondItem="gd2-mI-aBA" secondAttribute="centerY" id="NMb-Ng-kz7"/>
+                                                <constraint firstAttribute="leadingMargin" secondItem="8q9-yf-sD6" secondAttribute="leading" id="SUZ-ev-45t">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="-20"/>
+                                                </constraint>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="subviews">
+                                                    <exclude reference="8q9-yf-sD6"/>
+                                                    <exclude reference="r8U-Ig-wxw"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <exclude reference="NMb-Ng-kz7"/>
+                                                    <exclude reference="SUZ-ev-45t"/>
+                                                    <exclude reference="0EM-ze-G8B"/>
+                                                    <exclude reference="02N-9M-FR6"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="subviews">
+                                                    <include reference="8q9-yf-sD6"/>
+                                                    <include reference="r8U-Ig-wxw"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <include reference="NMb-Ng-kz7"/>
+                                                    <include reference="SUZ-ev-45t"/>
+                                                    <include reference="0EM-ze-G8B"/>
+                                                    <include reference="02N-9M-FR6"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection id="dMj-xe-U8J">
@@ -2040,16 +2238,19 @@
                         <outlet property="focalLengthSwitch" destination="jql-b2-4q3" id="RVd-Zn-r2M"/>
                         <outlet property="focalLengthValueLabel" destination="MrH-SD-Ye1" id="2kc-wB-yk1"/>
                         <outlet property="framerNewSwitch" destination="CGl-Mh-nhr" id="Rh6-VK-Puz"/>
+                        <outlet property="resetButton" destination="RQM-X0-za4" id="BYb-Wa-02P"/>
                         <outlet property="searchTextField" destination="0Tp-sk-xnJ" id="GEU-yb-fEf"/>
                         <outlet property="shutterSpeedRangeSlider" destination="dxf-I9-rUF" id="iyu-RY-i6U"/>
                         <outlet property="shutterSpeedSwitch" destination="YlU-tW-i7E" id="68e-4J-6M8"/>
                         <outlet property="shutterSpeedValueLabel" destination="xnR-V9-zsU" id="mhQ-lO-6B4"/>
-                        <outlet property="sortByCommentsCheckbox" destination="qHV-90-wqG" id="Nzz-ZZ-y02"/>
+                        <outlet property="sortByCommentsAscendingCheckbox" destination="qHV-90-wqG" id="fpU-Je-WCo"/>
+                        <outlet property="sortByCommentsDescendingCheckbox" destination="r8U-Ig-wxw" id="DVk-KI-CLB"/>
                         <outlet property="sortByDefaultCheckbox" destination="RQj-hr-aY5" id="Z8I-DG-B43"/>
                         <outlet property="sortByDefaultImageView" destination="UdY-94-uT9" id="Fz3-j3-eQg"/>
                         <outlet property="sortByDownArrow" destination="UdY-94-uT9" id="mMe-wg-OkJ"/>
                         <outlet property="sortByLabel" destination="MaL-eR-a9C" id="wEp-iL-iMY"/>
-                        <outlet property="sortByLikesCheckbox" destination="Dbw-qe-wty" id="Wdn-VJ-IYs"/>
+                        <outlet property="sortByLikesAscendingCheckbox" destination="Dbw-qe-wty" id="Zjz-fD-O4A"/>
+                        <outlet property="sortByLikesDescendingCheckbox" destination="J6e-af-EgZ" id="4ze-0S-ZmC"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OVl-L0-x3I" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2177,6 +2378,9 @@
                                         <state key="normal" title="Post">
                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                            <rect key="frame" x="361" y="8" width="31" height="34"/>
+                                        </variation>
                                         <connections>
                                             <action selector="postButtonTapped:" destination="1bL-XK-cUj" eventType="touchUpInside" id="6Dh-Vl-jQL"/>
                                         </connections>
@@ -2194,6 +2398,9 @@
                                                 <integer key="value" value="5"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                            <rect key="frame" x="8" y="8" width="345" height="34"/>
+                                        </variation>
                                     </textView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.94208733974358971" green="0.94208733974358971" blue="0.94208733974358971" alpha="1" colorSpace="calibratedRGB"/>
@@ -2257,7 +2464,8 @@
                                                             <exclude reference="Ids-14-Mhw"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="48" y="50" width="53.5" height="14"/>
                                                         <mask key="constraints">
                                                             <include reference="Ids-14-Mhw"/>
                                                         </mask>

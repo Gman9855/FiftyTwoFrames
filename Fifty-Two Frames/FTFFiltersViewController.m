@@ -48,8 +48,10 @@ typedef enum {
 typedef enum {
     FTFSortBySectionDropdown,
     FTFSortBySectionDefault,
-    FTFSortBySectionLikes,
-    FTFSortBySectionComments
+    FTFSortBySectionLikesAscending,
+    FTFSortBySectionLikesDescending,
+    FTFSortBySectionCommentsAscending,
+    FTFSortBySectionCommentsDescending
 } FTFSortBySection;
 
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
@@ -68,8 +70,10 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet FTFShutterSpeedRangeSlider *shutterSpeedRangeSlider;
 @property (weak, nonatomic) IBOutlet FTFISORangeSlider *ISORangeSlider;
 @property (weak, nonatomic) IBOutlet UIImageView *sortByDefaultCheckbox;
-@property (weak, nonatomic) IBOutlet UIImageView *sortByLikesCheckbox;
-@property (weak, nonatomic) IBOutlet UIImageView *sortByCommentsCheckbox;
+@property (weak, nonatomic) IBOutlet UIImageView *sortByLikesAscendingCheckbox;
+@property (weak, nonatomic) IBOutlet UIImageView *sortByLikesDescendingCheckbox;
+@property (weak, nonatomic) IBOutlet UIImageView *sortByCommentsAscendingCheckbox;
+@property (weak, nonatomic) IBOutlet UIImageView *sortByCommentsDescendingCheckbox;
 @property (weak, nonatomic) IBOutlet UIImageView *sortByDefaultImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *critiqueTypeRegularCheckbox;
 @property (weak, nonatomic) IBOutlet UIImageView *critiqueTypeShredAwayCheckbox;
@@ -79,12 +83,15 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIImageView *critiqueTypeDownArrow;
 @property (weak, nonatomic) IBOutlet UIImageView *sortByDownArrow;
 @property (weak, nonatomic) IBOutlet UILabel *sortByLabel;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *resetButton;
 
 @property (nonatomic, assign) BOOL exposureDropdownIsSelected;
 @property (nonatomic, assign) BOOL sortByDropdownIsSelected;
 @property (nonatomic, assign) BOOL sortByDefaultIsSelected;
-@property (nonatomic, assign) BOOL sortByLikesIsSelected;
-@property (nonatomic, assign) BOOL sortByCommentsIsSelected;
+@property (nonatomic, assign) BOOL sortByLikesAscendingIsSelected;
+@property (nonatomic, assign) BOOL sortByLikesDescendingIsSelected;
+@property (nonatomic, assign) BOOL sortByCommentsAscendingIsSelected;
+@property (nonatomic, assign) BOOL sortByCommentsDescendingIsSelected;
 @property (nonatomic, assign) BOOL critiqueTypeDropdownIsSelected;
 @property (nonatomic, assign) BOOL critiqueTypeRegularIsSelected;
 @property (nonatomic, assign) BOOL critiqueTypeShredAwayIsSelected;
@@ -102,6 +109,10 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setResetButtonHidden:YES];
+    [self.searchTextField addTarget:self
+                  action:@selector(textFieldDidChange:)
+        forControlEvents:UIControlEventEditingChanged];
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     saveButton.frame = CGRectMake(0, self.view.bounds.size.height - 44, self.view.bounds.size.width, 44);
     saveButton.backgroundColor = [UIColor orangeColor];
@@ -175,10 +186,20 @@ typedef enum {
         ISOUpperValue = [NSNumber numberWithInteger:self.ISORangeSlider.upperValueISO];
     }
     
-    if (self.sortByLikesIsSelected) {
-        sortOrder = [NSNumber numberWithInt:FTFSortOrderLikes];
-    } else if (self.sortByCommentsIsSelected) {
-        sortOrder = [NSNumber numberWithInt:FTFSortOrderComments];
+    if (self.sortByLikesAscendingIsSelected) {
+        sortOrder = [NSNumber numberWithInt:FTFSortOrderLikesAscending];
+    }
+    
+    if (self.sortByLikesDescendingIsSelected) {
+        sortOrder = [NSNumber numberWithInt:FTFSortOrderLikesDescending];
+    }
+    
+    if (self.sortByCommentsAscendingIsSelected) {
+        sortOrder = [NSNumber numberWithInt:FTFSortOrderCommentsAscending];
+    }
+    
+    if (self.sortByCommentsDescendingIsSelected) {
+        sortOrder = [NSNumber numberWithInt:FTFSortOrderCommentsDescending];
     }
     
     if (self.critiqueTypeRegularIsSelected) {
@@ -232,6 +253,7 @@ typedef enum {
         if ([self.searchTextField isFirstResponder]) {
             [self.searchTextField resignFirstResponder];
         }
+        [self setResetButtonHidden:YES];
     }
 }
 
@@ -258,6 +280,12 @@ typedef enum {
     BOOL exposureSubSwitchIsOn = self.apertureSwitch.isOn || self.shutterSpeedSwitch.isOn || self.ISOSwitch.isOn || self.focalLengthSwitch.isOn;
     self.exposureDownArrow.image = [UIImage imageNamed:exposureSubSwitchIsOn ? @"DownArrow-Highlighted" : @"DownArrow-Regular"];
     [self updateSubmenuCellVisibility];
+    
+    [self setResetButtonHidden:![self shouldSaveFilters]];
+}
+
+- (IBAction)toggleResetButtonHidden:(id)sender {
+    [self setResetButtonHidden:![self shouldSaveFilters]];
 }
 
 #pragma mark - UITableViewDelegate 
@@ -368,28 +396,60 @@ typedef enum {
             BOOL critiqueTypeSubitemIsSelected = self.critiqueTypeRegularIsSelected || self.critiqueTypeShredAwayIsSelected || self.critiqueTypeExtraSensitiveIsSelected || self.critiqueTypeNotInterestedIsSelected;
             self.critiqueTypeDownArrow.image = [UIImage imageNamed:critiqueTypeSubitemIsSelected ? @"DownArrow-Highlighted" : @"DownArrow-Regular"];
             
+            [self setResetButtonHidden:![self shouldSaveFilters]];
+            
             return nil;
         case FTFFilterSectionSortBy:
             self.sortByDropdownIsSelected = !self.sortByDropdownIsSelected; // this results in closing the submenu cells after a selection is made
             self.sortByDefaultIsSelected = NO;
-            self.sortByLikesIsSelected = NO;
-            self.sortByCommentsIsSelected = NO;
+            self.sortByLikesAscendingIsSelected = NO;
+            self.sortByLikesDescendingIsSelected = NO;
+            self.sortByCommentsAscendingIsSelected = NO;
+            self.sortByCommentsDescendingIsSelected = NO;
+
             switch (indexPath.row) {
                 case FTFSortBySectionDropdown:
                     [self updateSubmenuCellVisibility];
-                    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:FTFSortBySectionComments inSection:indexPath.section] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                    if (!self.sortByDropdownIsSelected) {
+                        if ([self.sortByLabel.text isEqualToString:@"Likes (Ascending)"]) {
+                            self.sortByLikesAscendingIsSelected = YES;
+                        }
+                        
+                        if ([self.sortByLabel.text isEqualToString:@"Likes (Descending)"]) {
+                            self.sortByLikesDescendingIsSelected = YES;
+                        }
+                        
+                        if ([self.sortByLabel.text isEqualToString:@"Comments (Ascending)"]) {
+                            self.sortByCommentsAscendingIsSelected = YES;
+                        }
+                        
+                        if ([self.sortByLabel.text isEqualToString:@"Comments (Descending)"]) {
+                            self.sortByCommentsDescendingIsSelected = YES;
+                        }
+                    } else {
+                        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:FTFSortBySectionCommentsDescending inSection:indexPath.section] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                    }
+                    
                     return nil;
                 case FTFSortBySectionDefault:
                     self.sortByDefaultIsSelected = YES;
                     sortByLabelText = @"Default";
                     break;
-                case FTFSortBySectionLikes:
-                    self.sortByLikesIsSelected = YES;
-                    sortByLabelText = @"Likes";
+                case FTFSortBySectionLikesAscending:
+                    self.sortByLikesAscendingIsSelected = YES;
+                    sortByLabelText = @"Likes (Ascending)";
                     break;
-                case FTFSortBySectionComments:
-                    self.sortByCommentsIsSelected = YES;
-                    sortByLabelText = @"Comments";
+                case FTFSortBySectionLikesDescending:
+                    self.sortByLikesDescendingIsSelected = YES;
+                    sortByLabelText = @"Likes (Descending)";
+                    break;
+                case FTFSortBySectionCommentsAscending:
+                    self.sortByCommentsAscendingIsSelected = YES;
+                    sortByLabelText = @"Comments (Ascending)";
+                    break;
+                case FTFSortBySectionCommentsDescending:
+                    self.sortByCommentsDescendingIsSelected = YES;
+                    sortByLabelText = @"Comments (Descending)";
                     break;
                 default:
                     break;
@@ -401,23 +461,32 @@ typedef enum {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.sortByLabel.text = sortByLabelText;
         [self updateSubmenuCellVisibility];
+        [self setResetButtonHidden:![self shouldSaveFilters]];
     });
     
-    BOOL sortBySubitemIsSelected = self.sortByCommentsIsSelected || self.sortByLikesIsSelected;
+    BOOL sortBySubitemIsSelected = self.sortByCommentsAscendingIsSelected || self.sortByCommentsDescendingIsSelected || self.sortByLikesAscendingIsSelected || self.sortByLikesDescendingIsSelected;
     self.sortByDownArrow.image = [UIImage imageNamed:sortBySubitemIsSelected ? @"DownArrow-Highlighted" : @"DownArrow-Regular"];
     
-    self.sortByCommentsCheckbox.image = [UIImage imageNamed:self.sortByCommentsIsSelected ? @"Checked" : @"Unchecked"];
-    self.sortByLikesCheckbox.image = [UIImage imageNamed:self.sortByLikesIsSelected ? @"Checked" : @"Unchecked"];
+    self.sortByCommentsAscendingCheckbox.image = [UIImage imageNamed:self.sortByCommentsAscendingIsSelected ? @"Checked" : @"Unchecked"];
+    self.sortByCommentsDescendingCheckbox.image = [UIImage imageNamed:self.sortByCommentsDescendingIsSelected ? @"Checked" : @"Unchecked"];
+    self.sortByLikesAscendingCheckbox.image = [UIImage imageNamed:self.sortByLikesAscendingIsSelected ? @"Checked" : @"Unchecked"];
+    self.sortByLikesDescendingCheckbox.image = [UIImage imageNamed:self.sortByLikesDescendingIsSelected ? @"Checked" : @"Unchecked"];
     self.sortByDefaultCheckbox.image = [UIImage imageNamed:self.sortByDefaultIsSelected ? @"Checked" : @"Unchecked"];
     
-    [self.sortByCommentsCheckbox.layer addAnimation:transition forKey:nil];
-    [self.sortByLikesCheckbox.layer addAnimation:transition forKey:nil];
+    [self.sortByCommentsAscendingCheckbox.layer addAnimation:transition forKey:nil];
+    [self.sortByCommentsDescendingCheckbox.layer addAnimation:transition forKey:nil];
+    [self.sortByLikesAscendingCheckbox.layer addAnimation:transition forKey:nil];
+    [self.sortByCommentsDescendingCheckbox.layer addAnimation:transition forKey:nil];
     [self.sortByDefaultCheckbox.layer addAnimation:transition forKey:nil];
-    
+
     return nil;
 }
 
 #pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidChange:(id)sender {
+    [self setResetButtonHidden:![self shouldSaveFilters]];
+}
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if (range.location == 0 && [string isEqualToString:@" "]) {
@@ -471,7 +540,7 @@ typedef enum {
 }
 
 - (BOOL)shouldSaveFilters {
-    return ![self.searchTextField.text isEqualToString:@""] || self.framerNewSwitch.isOn || self.extraCreditChallengeSwitch.isOn || self.apertureSwitch.isOn || self.focalLengthSwitch.isOn || self.shutterSpeedSwitch.isOn || self.ISOSwitch.isOn || self.critiqueTypeRegularIsSelected || self.critiqueTypeShredAwayIsSelected || self.critiqueTypeExtraSensitiveIsSelected || self.critiqueTypeNotInterestedIsSelected || self.sortByLikesIsSelected || self.sortByCommentsIsSelected;
+    return ![self.searchTextField.text isEqualToString:@""] || self.framerNewSwitch.isOn || self.extraCreditChallengeSwitch.isOn || self.apertureSwitch.isOn || self.focalLengthSwitch.isOn || self.shutterSpeedSwitch.isOn || self.ISOSwitch.isOn || self.critiqueTypeRegularIsSelected || self.critiqueTypeShredAwayIsSelected || self.critiqueTypeExtraSensitiveIsSelected || self.critiqueTypeNotInterestedIsSelected || self.sortByLikesAscendingIsSelected || self.sortByLikesDescendingIsSelected || self.sortByCommentsAscendingIsSelected || self.sortByCommentsDescendingIsSelected;
 }
 
 - (void)updateSubmenuCellVisibility {
@@ -489,11 +558,16 @@ typedef enum {
 
 - (void)resetSortBySubitems {
     self.sortByDownArrow.image = [UIImage imageNamed:@"DownArrow-Regular"];
-    self.sortByCommentsCheckbox.image = [UIImage imageNamed:@"Unchecked"];
-    self.sortByLikesCheckbox.image = [UIImage imageNamed:@"Unchecked"];
+    self.sortByCommentsAscendingCheckbox.image = [UIImage imageNamed:@"Unchecked"];
+    self.sortByCommentsDescendingCheckbox.image = [UIImage imageNamed:@"Unchecked"];
+    self.sortByLikesAscendingCheckbox.image = [UIImage imageNamed:@"Unchecked"];
+    self.sortByLikesDescendingCheckbox.image = [UIImage imageNamed:@"Unchecked"];
+
     self.sortByDefaultCheckbox.image = [UIImage imageNamed:@"Checked"];
-    self.sortByCommentsIsSelected = NO;
-    self.sortByLikesIsSelected = NO;
+    self.sortByCommentsAscendingIsSelected = NO;
+    self.sortByCommentsDescendingIsSelected = NO;
+    self.sortByLikesAscendingIsSelected = NO;
+    self.sortByLikesDescendingIsSelected = NO;
     self.sortByDefaultIsSelected = YES;
     self.sortByLabel.text = @"Default";
 }
@@ -508,6 +582,19 @@ typedef enum {
     self.critiqueTypeExtraSensitiveCheckbox.image = [UIImage imageNamed:@"Unchecked"];
     self.critiqueTypeNotInterestedCheckbox.image = [UIImage imageNamed:@"Unchecked"];
     self.critiqueTypeDownArrow.image = [UIImage imageNamed:@"DownArrow-Regular"];
+}
+
+- (void)setResetButtonHidden:(BOOL)hidden {
+    NSMutableArray *navBarButtons = [self.navigationItem.rightBarButtonItems mutableCopy];
+    if (hidden) {
+        [navBarButtons removeObject:self.resetButton];
+        [self.navigationItem setRightBarButtonItems:navBarButtons];
+    } else {
+        if (![navBarButtons containsObject:self.resetButton]) {
+            [navBarButtons addObject:self.resetButton];
+            [self.navigationItem setRightBarButtonItems:navBarButtons];
+        }
+    }
 }
 
 @end

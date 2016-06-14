@@ -10,8 +10,10 @@
 
 typedef enum {
     FTFSortOrderName,
-    FTFSortOrderLikes,
-    FTFSortOrderComments,
+    FTFSortOrderLikesAscending,
+    FTFSortOrderLikesDescending,
+    FTFSortOrderCommentsAscending,
+    FTFSortOrderCommentsDescending,
     FTFSortOrderNone
 } FTFSortOrder;
 

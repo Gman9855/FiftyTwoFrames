@@ -590,12 +590,28 @@ BOOL _shouldProvideFilteredResults = NO;
     NSArray *sortedArray;
     if (sortOrder != FTFSortOrderNone) {
         NSString *sortKey;
-        if (sortOrder == FTFSortOrderLikes) {
-            sortKey = @"likesCount";
-        } else if (sortOrder == FTFSortOrderComments) {
-            sortKey = @"commentCount";
+        BOOL ascending;
+        switch (sortOrder) {
+            case FTFSortOrderLikesAscending:
+                sortKey = @"likesCount";
+                ascending = YES;
+                break;
+            case FTFSortOrderLikesDescending:
+                sortKey = @"likesCount";
+                ascending = NO;
+                break;
+            case FTFSortOrderCommentsAscending:
+                sortKey = @"commentCount";
+                ascending = YES;
+                break;
+            case FTFSortOrderCommentsDescending:
+                sortKey = @"commentCount";
+                ascending = NO;
+                break;
+            default:
+                break;
         }
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:sortKey ascending:NO];
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:sortKey ascending:ascending];
         sortedArray = [arrayToSort sortedArrayUsingDescriptors:@[sortDescriptor]];
     } else {
         sortedArray = arrayToSort;
