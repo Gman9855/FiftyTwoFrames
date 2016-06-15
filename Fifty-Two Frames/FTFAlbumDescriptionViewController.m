@@ -34,11 +34,24 @@
 - (void)viewDidLoad;
 {
     [super viewDidLoad];
+    [self.textView addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
     [self _updateText];
 }
 
 - (IBAction)tappedInView:(UITapGestureRecognizer *)sender {
     [self dismissViewControllerAnimated:true completion:nil];
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    UITextView *tv = object;
+    CGFloat topCorrect = ([tv bounds].size.height - [tv     contentSize].height * [tv zoomScale])/2.0;
+    topCorrect = ( topCorrect < 0.0 ? 0.0 : topCorrect );
+    [tv setContentInset:UIEdgeInsetsMake(topCorrect,0,0,0)];
+}
+
+- (void)dealloc {
+    [self.textView removeObserver:self forKeyPath:@"contentSize"];
 }
 
 @end
