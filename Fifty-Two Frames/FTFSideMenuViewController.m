@@ -11,6 +11,7 @@
 #import "FiftyTwoFrames.h"
 #import "FTFUser.h"
 #import "UIImageView+WebCache.h"
+#import "FTFSideMenuHeaderView.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
@@ -20,6 +21,7 @@
 @interface FTFSideMenuViewController () <SFSafariViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *menuItems;
+@property (nonatomic, strong) FTFSideMenuHeaderView *headerView;
 
 @end
 
@@ -35,36 +37,12 @@
     self.tableView.dataSource = self;
     self.tableView.opaque = NO;
     self.tableView.backgroundColor = [UIColor clearColor];
-    self.tableView.tableHeaderView = ({
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 214.0f)];
-        UIView *lineSeparator = [[UIView alloc] initWithFrame:CGRectMake(0, 213.75, self.view.bounds.size.width, 0.25)];
-        lineSeparator.backgroundColor = [UIColor darkGrayColor];
-        [view addSubview:lineSeparator];
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 40, 100, 100)];
-        imageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-        FiftyTwoFrames *ftf = [FiftyTwoFrames sharedInstance];
-        
-        [imageView setImageWithURL:ftf.user.profilePictureURL];
-        imageView.layer.masksToBounds = YES;
-        imageView.layer.cornerRadius = 50.0;
-        imageView.layer.borderColor = [UIColor whiteColor].CGColor;
-        imageView.layer.borderWidth = 3.0f;
-        imageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
-        imageView.layer.shouldRasterize = YES;
-        imageView.clipsToBounds = YES;
-        
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 155, self.frostedViewController.menuViewSize.width - 18, 50)];
-        label.text = ftf.user.name;
-        label.textAlignment = NSTextAlignmentCenter;
-        label.numberOfLines = 2;
-        label.font = [UIFont fontWithName:@"Lato-Regular" size:19];
-        label.backgroundColor = [UIColor clearColor];
-        label.textColor = [UIColor whiteColor];
-        
-        [view addSubview:imageView];
-        [view addSubview:label];
-        view;
-    });
+    
+    self.headerView = [[[NSBundle mainBundle] loadNibNamed:@"SideMenuHeaderView" owner:self options:nil] objectAtIndex:0];
+    FiftyTwoFrames *ftf = [FiftyTwoFrames sharedInstance];
+    [self.headerView.imageView setImageWithURL:ftf.user.profilePictureURL];
+    self.headerView.nameLabel.text = ftf.user.name;
+    self.tableView.tableHeaderView = self.headerView;
 }
 
 #pragma mark -
@@ -73,7 +51,6 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     cell.backgroundColor = [UIColor clearColor];
-//    cell.textLabel.textColor = [UIColor colorWithRed:62/255.0f green:68/255.0f blue:75/255.0f alpha:1.0f];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont fontWithName:@"Lato-Regular" size:17];
 }
@@ -158,6 +135,12 @@
     }
     
     return cell;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView.contentOffset.y < 0) {
+        [self.headerView updateImageViewSizeForContentOffset:scrollView.contentOffset.y];
+    }
 }
 
 #pragma mark - SFSafariViewControllerDelegate

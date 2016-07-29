@@ -356,7 +356,7 @@
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                             <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                                <rect key="frame" x="5" y="5" width="74" height="18.5"/>
+                                                                <rect key="frame" x="5" y="5" width="74" height="18"/>
                                                             </variation>
                                                         </label>
                                                         <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MuI-sK-lu0" customClass="FTFLikeButton">
@@ -758,7 +758,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="28" y="13" width="54" height="16.5"/>
+                                                        <rect key="frame" x="28" y="13.5" width="54" height="16.5"/>
                                                     </variation>
                                                 </label>
                                             </subviews>
@@ -877,7 +877,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="28" y="13" width="90.5" height="16.5"/>
+                                                        <rect key="frame" x="28" y="13.5" width="90.5" height="16.5"/>
                                                     </variation>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="YlU-tW-i7E">
@@ -1139,7 +1139,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="28" y="18" width="81.5" height="16.5"/>
+                                                        <rect key="frame" x="28" y="18.5" width="81.5" height="16.5"/>
                                                     </variation>
                                                 </label>
                                             </subviews>
@@ -1448,7 +1448,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="28" y="13" width="101.5" height="16.5"/>
+                                                        <rect key="frame" x="28" y="13.5" width="101.5" height="16.5"/>
                                                     </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Unchecked" translatesAutoresizingMaskIntoConstraints="NO" id="Zf5-gE-6YL">
@@ -1599,7 +1599,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="28" y="13" width="91" height="16.5"/>
+                                                        <rect key="frame" x="28" y="13.5" width="91" height="16.5"/>
                                                     </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Unchecked" translatesAutoresizingMaskIntoConstraints="NO" id="y3i-L7-hcL">
@@ -1676,7 +1676,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="28" y="13" width="88.5" height="16.5"/>
+                                                        <rect key="frame" x="28" y="13.5" width="88.5" height="16.5"/>
                                                     </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Unchecked" translatesAutoresizingMaskIntoConstraints="NO" id="ttH-cN-1b4">
@@ -1831,7 +1831,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="28" y="13" width="44.5" height="16.5"/>
+                                                        <rect key="frame" x="28" y="13.5" width="44.5" height="16.5"/>
                                                     </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checked" translatesAutoresizingMaskIntoConstraints="NO" id="RQj-hr-aY5">

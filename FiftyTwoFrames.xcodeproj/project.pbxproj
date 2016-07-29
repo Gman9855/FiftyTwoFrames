@@ -24,6 +24,8 @@
 		7C0BBDC41CF7B73200EB5351 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0BBDBA1CF7B34A00EB5351 /* Lato-Regular.ttf */; };
 		7C14EF891D0411DE00FEFE34 /* photo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7C14EF881D0411DE00FEFE34 /* photo.jpg */; };
 		7C14EF8C1D04BF3F00FEFE34 /* FTFSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C14EF8B1D04BF3F00FEFE34 /* FTFSideMenuViewController.m */; };
+		7C1602C21D31563F00E19709 /* SideMenuHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1602C11D31563F00E19709 /* SideMenuHeaderView.xib */; };
+		7C1602C51D31581100E19709 /* FTFSideMenuHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C1602C41D31581100E19709 /* FTFSideMenuHeaderView.m */; };
 		7C4A04C91C98904400FE3F0F /* FTFListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04C81C98904400FE3F0F /* FTFListLayout.swift */; };
 		7C4A04CC1C9B466300FE3F0F /* FTFGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */; };
 		7C4A04CE1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4A04CD1C9F3EE700FE3F0F /* FTFCollectionViewGridCell.xib */; };
@@ -175,6 +177,9 @@
 		7C14EF881D0411DE00FEFE34 /* photo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = photo.jpg; sourceTree = "<group>"; };
 		7C14EF8A1D04BF3F00FEFE34 /* FTFSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFSideMenuViewController.h; sourceTree = "<group>"; };
 		7C14EF8B1D04BF3F00FEFE34 /* FTFSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFSideMenuViewController.m; sourceTree = "<group>"; };
+		7C1602C11D31563F00E19709 /* SideMenuHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideMenuHeaderView.xib; sourceTree = "<group>"; };
+		7C1602C31D31581100E19709 /* FTFSideMenuHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFSideMenuHeaderView.h; sourceTree = "<group>"; };
+		7C1602C41D31581100E19709 /* FTFSideMenuHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFSideMenuHeaderView.m; sourceTree = "<group>"; };
 		7C4A04C81C98904400FE3F0F /* FTFListLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTFListLayout.swift; sourceTree = "<group>"; };
 		7C4A04CA1C9B466300FE3F0F /* FTFGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFGridLayout.h; sourceTree = "<group>"; };
 		7C4A04CB1C9B466300FE3F0F /* FTFGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTFGridLayout.m; sourceTree = "<group>"; };
@@ -448,6 +453,9 @@
 				7CDEFB331CF434D400384AC6 /* FTFShutterSpeedRangeSlider.m */,
 				7CDEFB351CF513FF00384AC6 /* FTFISORangeSlider.h */,
 				7CDEFB361CF513FF00384AC6 /* FTFISORangeSlider.m */,
+				7C1602C11D31563F00E19709 /* SideMenuHeaderView.xib */,
+				7C1602C31D31581100E19709 /* FTFSideMenuHeaderView.h */,
+				7C1602C41D31581100E19709 /* FTFSideMenuHeaderView.m */,
 			);
 			name = "Custom Views";
 			sourceTree = "<group>";
@@ -857,12 +865,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8BC938B8193C1C8300418F32 /* Build configuration list for PBXNativeTarget "FiftyTwoFrames" */;
 			buildPhases = (
-				9EF701B483CE96C1B316C30E /* 📦 Check Pods Manifest.lock */,
+				9EF701B483CE96C1B316C30E /* [CP] Check Pods Manifest.lock */,
 				8BC93882193C1C8200418F32 /* Sources */,
 				8BC93883193C1C8200418F32 /* Frameworks */,
 				8BC93884193C1C8200418F32 /* Resources */,
-				6A48B5AFEEC6FC91B85CD23D /* 📦 Embed Pods Frameworks */,
-				F9D601EE7FE9BFD1D35C64E9 /* 📦 Copy Pods Resources */,
+				6A48B5AFEEC6FC91B85CD23D /* [CP] Embed Pods Frameworks */,
+				F9D601EE7FE9BFD1D35C64E9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -877,12 +885,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8BC938BB193C1C8300418F32 /* Build configuration list for PBXNativeTarget "FiftyTwoFramesTests" */;
 			buildPhases = (
-				3C3B71EDBD988B77A9A79983 /* 📦 Check Pods Manifest.lock */,
+				3C3B71EDBD988B77A9A79983 /* [CP] Check Pods Manifest.lock */,
 				8BC938A3193C1C8300418F32 /* Sources */,
 				8BC938A4193C1C8300418F32 /* Frameworks */,
 				8BC938A5193C1C8300418F32 /* Resources */,
-				C21C35E53A6FC87132ED2CE7 /* 📦 Embed Pods Frameworks */,
-				8D84092ACB7896B293196E18 /* 📦 Copy Pods Resources */,
+				C21C35E53A6FC87132ED2CE7 /* [CP] Embed Pods Frameworks */,
+				8D84092ACB7896B293196E18 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -949,6 +957,7 @@
 				7C0BBDBC1CF7B73200EB5351 /* Lato-BlackItalic.ttf in Resources */,
 				7C14EF891D0411DE00FEFE34 /* photo.jpg in Resources */,
 				7C0BBDBD1CF7B73200EB5351 /* Lato-Bold.ttf in Resources */,
+				7C1602C21D31563F00E19709 /* SideMenuHeaderView.xib in Resources */,
 				7C0BBDBE1CF7B73200EB5351 /* Lato-BoldItalic.ttf in Resources */,
 				7C0BBDBF1CF7B73200EB5351 /* Lato-Hairline.ttf in Resources */,
 				7C0BBDC01CF7B73200EB5351 /* Lato-HairlineItalic.ttf in Resources */,
@@ -991,14 +1000,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3C3B71EDBD988B77A9A79983 /* 📦 Check Pods Manifest.lock */ = {
+		3C3B71EDBD988B77A9A79983 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1006,14 +1015,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		6A48B5AFEEC6FC91B85CD23D /* 📦 Embed Pods Frameworks */ = {
+		6A48B5AFEEC6FC91B85CD23D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1021,14 +1030,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FiftyTwoFrames/Pods-FiftyTwoFrames-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8D84092ACB7896B293196E18 /* 📦 Copy Pods Resources */ = {
+		8D84092ACB7896B293196E18 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1036,14 +1045,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FiftyTwoFramesTests/Pods-FiftyTwoFramesTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9EF701B483CE96C1B316C30E /* 📦 Check Pods Manifest.lock */ = {
+		9EF701B483CE96C1B316C30E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1051,14 +1060,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		C21C35E53A6FC87132ED2CE7 /* 📦 Embed Pods Frameworks */ = {
+		C21C35E53A6FC87132ED2CE7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1066,14 +1075,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FiftyTwoFramesTests/Pods-FiftyTwoFramesTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F9D601EE7FE9BFD1D35C64E9 /* 📦 Copy Pods Resources */ = {
+		F9D601EE7FE9BFD1D35C64E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1145,6 +1154,7 @@
 				8BA8793A19674E6A00A43819 /* PSTCollectionViewCell.m in Sources */,
 				7C810FCF1CEE6A8300A75499 /* FTFApertureRangeSlider.m in Sources */,
 				7CDEFB371CF513FF00384AC6 /* FTFISORangeSlider.m in Sources */,
+				7C1602C51D31581100E19709 /* FTFSideMenuHeaderView.m in Sources */,
 				8BC938D91940593400418F32 /* FTFFacebookLoginViewController.m in Sources */,
 				8BCB4BF719931B7E00B9C751 /* FTFPhotoComment.m in Sources */,
 				8BAC031D19BBD3F700451615 /* FTFCollectionViewCell.m in Sources */,
